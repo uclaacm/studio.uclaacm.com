@@ -1,16 +1,25 @@
 import * as React from "react";
 
 import Image from "next/image";
-import Link from "next/link";
+import Link from "~/components/Link";
 
 import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 
 import wordmark from "~/assets/images/wordmark.png"
 import logo from "~/assets/images/logo.png"
 import uclove from "~/assets/images/uclove.png"
 
+import { styled } from "@mui/material/styles";
+
 type HomeProps = {}
+
+const HomeLink = styled(Link)(({theme}) => ({
+    color: "#FB4469",
+    textAlign: "center",
+    textTransform: "lowercase"
+}))
 
 export default function Home({}: HomeProps){
 	return (
@@ -18,20 +27,19 @@ export default function Home({}: HomeProps){
             sx={{
                 width: "100%",
                 height: "100%",
-                display: "flex",
-                justifyContent: "center",
-                backgroundColor: "blue",
                 backgroundImage: `url(${uclove.src})`,
-                alignItems: "start",
+
+                display: "flex",
+                alignItems: "center",
             }}
         >
-            <Box
+            <Container
+                maxWidth="md"
                 sx={(theme) => ({
-                    width: "50vw",
                     backgroundColor: theme.palette.background.default,
-                    mt: "15vh",
                     p: theme.spacing(8),
-                    boxShadow: 3,
+                    mb: theme.spacing(16),
+                    boxShadow: theme.shadows[4],
                     opacity: 0.9,
                 })}
             >
@@ -72,44 +80,32 @@ export default function Home({}: HomeProps){
                     justifyContent="center"
                     sx={{ "& > * + *": { marginLeft: "2rem" } }} // & selects current, > * selects children, + * selects siblings
                 >
-                    <Link href="/about-us" className="homeLink">
+                    <HomeLink href="/about-us">
                         <Typography
                             variant="h3"
-                            textAlign="center"
-                            textTransform="lowercase"
-                            sx={{
-                                flex: 1,
-                                cursor: "pointer",
-                            }}
-                            color="textPrimary"
+                            color="text.primary"
                         >
                             About Us
                         </Typography>
-                    </Link>
-                    <Link href="/studios" className="homeLink">
+                    </HomeLink>
+                    <HomeLink href="/studios">
                         <Typography
                             variant="h3"
-                            textAlign="center"
-                            textTransform="lowercase"
-                            sx={{ flex: 1, cursor: "pointer" }}
-                            color="textPrimary"
+                            color="text.primary"
                         >
                             Studios
                         </Typography>
-                    </Link>
-                    <Link href="/events" className="homeLink">
+                    </HomeLink>
+                    <HomeLink href="/events">
                         <Typography
                             variant="h3"
-                            textAlign="center"
-                            textTransform="lowercase"
-                            sx={{ flex: 1, cursor: "pointer" }}
-                            color="textPrimary"
+                            color="text.primary"
                         >
                             Events
                         </Typography>
-                    </Link>
+                    </HomeLink>
                 </Box>
-            </Box>
+            </Container>
         </Box>
     );
 }
