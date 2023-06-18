@@ -109,3 +109,6 @@ export default function Home({}: HomeProps){
         </Box>
     );
 }
+
+// home uses custom layout
+Home.getLayout = page => page;
