@@ -1,10 +1,21 @@
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
 import "@fontsource/poppins/800.css";
+import "@fontsource/poppins/400.css";
 import "@fontsource/poppins";
+
+// https://design.uclaacm.com/committees/studio/
 
 export default responsiveFontSizes(createTheme({
 	palette: {
+        primary: {
+            main: "#FB4469",
+        },
+        secondary: {
+            light: "#FF8C93",
+            main: "#E83D3D",
+            dark: "#4C1941",
+        },
 		background: {
 			default: "#FCFCFC"
 		}
@@ -24,20 +35,20 @@ export default responsiveFontSizes(createTheme({
             fontWeight: 700
         },
         h3: {
-            fontSize: "3rem",
+            fontSize: "1.5rem",
             fontWeight: 700
         },
         h4: {
             fontSize: "1.5rem",
-            fontWeight: 700
+            fontWeight: 400
         },
         h5: {
             fontSize: "1.25rem",
-            fontWeight: 700
+            fontWeight: 400
         },
         h6: {
             fontSize: "1rem",
-            fontWeight: 700
+            fontWeight: 400
         },
         subtitle1: {
             fontSize: "1rem",

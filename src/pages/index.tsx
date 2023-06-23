@@ -12,26 +12,35 @@ import logo from "~/assets/images/logo.png"
 import uclove from "~/assets/images/uclove.png"
 
 import { styled } from "@mui/material/styles";
+import Title from "~/components/Title";
+
+const HomeLink = styled(Link)(({theme}) => ({
+    textAlign: "center",
+    textTransform: "lowercase",
+
+    color: theme.palette.text.primary,
+    textDecorationColor: theme.palette.primary.main,
+    "&:not(:last-child)": {
+        marginRight: theme.spacing(1),
+    }
+}))
 
 type HomeProps = {}
 
-const HomeLink = styled(Link)(({theme}) => ({
-    color: "#FB4469",
-    textAlign: "center",
-    textTransform: "lowercase"
-}))
-
 export default function Home({}: HomeProps){
-	return (
+	return <>
+        <Title/>
         <Box
-            sx={{
+            sx={(theme) => ({
                 width: "100%",
                 height: "100%",
                 backgroundImage: `url(${uclove.src})`,
 
                 display: "flex",
                 alignItems: "center",
-            }}
+
+                p: theme.spacing(4),
+            })}
         >
             <Container
                 maxWidth="md"
@@ -80,34 +89,19 @@ export default function Home({}: HomeProps){
                     justifyContent="center"
                     sx={{ "& > * + *": { marginLeft: "2rem" } }} // & selects current, > * selects children, + * selects siblings
                 >
-                    <HomeLink href="/about-us">
-                        <Typography
-                            variant="h3"
-                            color="text.primary"
-                        >
-                            About Us
-                        </Typography>
+                    <HomeLink href="/about-us" variant="h2">
+                        About Us
                     </HomeLink>
-                    <HomeLink href="/studios">
-                        <Typography
-                            variant="h3"
-                            color="text.primary"
-                        >
-                            Studios
-                        </Typography>
+                    <HomeLink href="/studios" variant="h2">
+                        Studios
                     </HomeLink>
-                    <HomeLink href="/events">
-                        <Typography
-                            variant="h3"
-                            color="text.primary"
-                        >
-                            Events
-                        </Typography>
+                    <HomeLink href="/events" variant="h2">
+                        Events
                     </HomeLink>
                 </Box>
             </Container>
         </Box>
-    );
+    </>
 }
 
 // home uses custom layout

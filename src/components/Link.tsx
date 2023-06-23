@@ -1,3 +1,6 @@
+// same as MUI's link component, but defaults to using Next's link component in the background so that browser side
+// routing will still work with MUI links
+
 import * as React from "react";
 
 import Link from "next/link";
