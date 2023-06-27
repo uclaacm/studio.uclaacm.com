@@ -106,8 +106,9 @@ export default function NavBar(){
 	React.useEffect(() => {
 		window.addEventListener("gamepadconnected", onGamepadConnected);
 		if(!input){
-			if(navigator.getGamepads().length > 0){
-				setInput(new GamepadInput(navigator.getGamepads()[0]));
+			const gamepads = navigator.getGamepads().filter(g => g);
+			if(gamepads.length > 0){
+				setInput(new GamepadInput(gamepads[0]));
 			}
 		}
 		if(input){
