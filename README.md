@@ -26,6 +26,15 @@ Now open the repository in a terminal and install required packages using:
 
 (if it doesn't recognize yarn, restart terminal)
 
+### Environment Variables
+
+A few environment variables are required for the backend. These can be specified using a [.env](https://www.npmjs.com/package/dotenv) file with the format:
+
+```
+SUPABASE_URL=db.${something}.supabase.co # Supabase -> Settings -> API -> Project URL
+SUPABASE_ANON_KEY=${key}  # Supabase -> Settings -> API -> Project API keys -> anon public
+```
+
 ### Running
 
 The scripts are visible in `package.json`, but `yarn dev`/`yarn run dev` runs the development server.
