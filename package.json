@@ -1,20 +1,25 @@
 {
+  "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@fontsource/poppins": "^4.5.10",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.12.0",
+    "@octokit/rest": "^19.0.13",
     "@supabase/supabase-js": "^2.26.0",
+    "@tinacms/cli": "^1.5.21",
+    "mongodb-level": "^0.0.2",
     "next": "^13.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "sass": "^1.62.1"
+    "sass": "^1.62.1",
+    "tinacms": "^1.2.0"
   },
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "tinacms dev -c \"next dev\"",
+    "build": "tinacms build && next build",
+    "start": "tinacms build && next start",
     "lint": "next lint"
   },
   "devDependencies": {
