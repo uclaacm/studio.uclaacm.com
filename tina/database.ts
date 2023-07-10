@@ -96,8 +96,7 @@ const localRoot = path.join(process.cwd(), "content");
 async function localOnPut(key: string, value: string): Promise<void> {
     const filePath = path.join(localRoot, key);
     const dir = path.dirname(filePath)
-    fs.mkdir(dir, { recursive: true });
-    console.log(`Writing file ${filePath}`)
+    await fs.mkdir(dir, { recursive: true });
     await fs.writeFile(filePath, value);
 };
 

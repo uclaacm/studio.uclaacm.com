@@ -20,14 +20,15 @@
 
     "baseUrl": "./src",
     "paths": {
-      "~/*": ["*"]
+      "~/*": ["*"],
+      "cms/*": ["../tina/__generated__/*"],
     }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "src/server.js"  ],
   "exclude": [
     "node_modules"
   ]

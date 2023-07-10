@@ -11,16 +11,20 @@
     "@tinacms/cli": "^1.5.21",
     "mongodb-level": "^0.0.2",
     "next": "^13.3.0",
+    "next-tinacms-cloudinary": "^4.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sass": "^1.62.1",
     "tinacms": "^1.2.0"
   },
   "scripts": {
+    "dev:ssl": "tinacms dev -c \"yarn next:ssl\"",
     "dev": "tinacms dev -c \"next dev\"",
     "build": "tinacms build && next build",
     "start": "tinacms build && next start",
-    "lint": "next lint"
+    "next:ssl": "node src/server.js",
+    "lint": "next lint",
+    "gencerts": "node genCerts.js"
   },
   "devDependencies": {
     "@types/node": "18.15.11",

@@ -1,7 +1,11 @@
 import { defineConfig } from "tinacms";
 
+const host = process.env.HOST || "http://localhost:3000"
+
+const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === "true";
+
 const config = defineConfig({
-  contentApiUrlOverride: "/api/gql",
+  contentApiUrlOverride: `${host}/api/gql`,
   // admin: {
   //   auth: {
   //     useLocalAuth: process.env.TINA_PUBLIC_IS_LOCAL === "true",
@@ -41,16 +45,17 @@ const config = defineConfig({
     process.env.HEAD!, // Netlify branch env
   token: process.env.TINA_TOKEN! || "foo",
   media: {
-    // If you wanted cloudinary do this
-    // loadCustomStore: async () => {
-    //   const pack = await import("next-tinacms-cloudinary");
-    //   return pack.TinaCloudCloudinaryMediaStore;
-    // },
-    // this is the config for the tina cloud media store
-    tina: {
-      publicFolder: "public",
-      mediaRoot: "uploads",
-    },
+    ...isLocal ? {
+      tina: {
+        mediaRoot: "media",
+        publicFolder: "public",
+      }
+    } : {
+      loadCustomStore: async () => {
+        const pack = await import("next-tinacms-cloudinary");
+        return pack.TinaCloudCloudinaryMediaStore;
+      },
+    }
   },
   build: {
     publicFolder: "public", // The public asset folder for your framework
@@ -89,6 +94,13 @@ const config = defineConfig({
               A short and accurate summary of the content of the page.
               Several browsers, like Firefox and Opera, use this as the default description of bookmarked pages.
             `,
+            required: true,
+          },
+          {
+            type: "image",
+            label: "Image",
+            name: "image",
+            description: `Image`,
             required: true,
           },
           {
