@@ -6,6 +6,8 @@ import theme from "~/theme";
 
 import { AppPropsWithLayout } from "~/@types";
 
+import { Auth0Provider } from '@auth0/auth0-react';
+
 import "~/stylesheets/main.scss"
 
 import Layout from "~/components/Layout";

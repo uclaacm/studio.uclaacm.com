@@ -37,58 +37,58 @@ if (isLocal) {
 }
 
 async function githubOnPut(key: string, value: string): Promise<void> {
-    // let sha;
-    // try {
-    //     const {
-    //     // @ts-ignore
-    //     data: { sha: existingSha },
-    //     } = await octokit.repos.getContent({
-    //     owner,
-    //     repo,
-    //     path: key,
-    //     branch,
-    //     });
-    //     sha = existingSha;
-    // } catch (e) {}
+    let sha;
+    try {
+        const {
+            // @ts-ignore
+            data: { sha: existingSha },
+        } = await octokit.repos.getContent({
+            owner,
+            repo,
+            path: key,
+            branch,
+        });
+        sha = existingSha;
+    } catch (e) {}
 
-    // const { data } = await octokit.repos.createOrUpdateFileContents({
-    //     owner,
-    //     repo,
-    //     path: key,
-    //     message: "commit from self-hosted tina",
-    //     content: Buffer.from(value).toString("base64"),
-    //     branch,
-    //     sha,
-    // });
+    const { data } = await octokit.repos.createOrUpdateFileContents({
+        owner,
+        repo,
+        path: key,
+        message: "commit from self-hosted tina",
+        content: Buffer.from(value).toString("base64"),
+        branch,
+        sha,
+    });
 };
 
 async function githubOnDelete(key: string): Promise<void> {
-    // let sha;
-    // try {
-    //     const {
-    //         // @ts-ignore
-    //         data: { sha: existingSha },
-    //     } = await octokit.repos.getContent({
-    //         owner,
-    //         repo,
-    //         path: key,
-    //         branch,
-    //     });
-    //     sha = existingSha;
-    // } catch (e) {
-    //     console.log(e);
-    // }
-    // if (sha) {
-    //     const { data } = await octokit.repos.deleteFile({
-    //     owner,
-    //     repo,
-    //     path: key,
-    //     message: "commit from self-hosted tina",
-    //     branch,
-    //     sha,
-    //     });
-    //     console.log("data", data);
-    // }
+    let sha;
+    try {
+        const {
+            // @ts-ignore
+            data: { sha: existingSha },
+        } = await octokit.repos.getContent({
+            owner,
+            repo,
+            path: key,
+            branch,
+        });
+        sha = existingSha;
+    } catch (e) {
+        console.log(e);
+    }
+    if (sha) {
+        const { data } = await octokit.repos.deleteFile({
+            owner,
+            repo,
+            path: key,
+            message: "commit from self-hosted tina",
+            branch,
+            sha,
+        });
+        console.log("data", data);
+    }
 };
 
 const localRoot = path.join(process.cwd(), "content");
