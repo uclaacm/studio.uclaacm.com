@@ -2,6 +2,8 @@ import { defineConfig } from "tinacms";
 
 const host = process.env.URL || process.env.HOST || "https://localhost:3000"
 
+console.log(process.env.HOST)
+
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === "true";
 
 const collectionRoot = `content`
