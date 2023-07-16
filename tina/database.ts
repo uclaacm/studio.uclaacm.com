@@ -108,10 +108,7 @@ async function localOnDelete(key: string): Promise<void> {
 
 
 
-
-
 export default createDatabase({
-    bridge: new GithubBridge(""),
 	level: isLocal ? localLevelStore as Level : mongodbLevelStore,
 	onPut: isLocal ? localOnPut : githubOnPut,
 	onDelete: isLocal ? localOnDelete : githubOnDelete,
