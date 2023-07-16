@@ -1,28 +1,20 @@
 import { NextApiHandler } from "next";
+import { claimsIsAuthorized, getUser, userIsAuthorized } from "~/auth0Util";
 import { databaseRequest } from "~/db/connection";
 
-const nextApiHandler: NextApiHandler = async (req, res) => {
-  // Use your own authentication logic here
-  // const isAuthorized = headers.authorization === "Bearer some-token"
+import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0"
 
-  // Example if using TinaCloud for auth
-//   const tinaCloudUser = await isUserAuthorized({
-//     clientID: process.env.NEXT_PUBLIC_TINA_CLIENT_ID,
-//     token: req.headers.authorization,
-//   });
 
-//   const isAuthorized =
-//     process.env.TINA_PUBLIC_IS_LOCAL === "true" ||
-//     tinaCloudUser?.verified ||
-//     false;
-
-  if (true) {
+const nextApiHandler: NextApiHandler = withApiAuthRequired(async (req, res) => {
+  const { user } = await getSession(req, res);
+  if(claimsIsAuthorized(user)){
     const { query, variables } = req.body;
     const result = await databaseRequest({ query, variables });
     return res.json(result);
-  } else {
-    return res.status(401).json({ error: "Unauthorized" });
   }
-};
+  else {
+    res.status(401).end("Unauthorized");
+  }
+});
 
 export default nextApiHandler;

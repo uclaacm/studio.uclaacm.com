@@ -10,7 +10,6 @@ const config = defineConfig({
     auth: {
       useLocalAuth: process.env.TINA_PUBLIC_IS_LOCAL === "true",
 
-      // Uncomment this to use custom auth
       customAuth: true,
       authenticate: async () => {
         window.location.assign("/api/auth/login?returnTo=/admin/");
@@ -21,7 +20,7 @@ const config = defineConfig({
           .catch(e => false);
       },
       logout: async () => {
-        window.location.assign("/api/auth/logout");
+        window.location.assign(`/api/auth/logout?returnTo=/admin/`);
       },
     },
   },
@@ -50,7 +49,18 @@ const config = defineConfig({
   },
   schema: {
     collections: [
-
+      {
+        label: "Test",
+        name: "test",
+        path: "test",
+        fields: [
+          {
+            type: "string",
+            label: "string",
+            name: "string"
+          }
+        ]
+      },
       {
         label: "Byte Sized Tutorials",
         name: "tutorial",
