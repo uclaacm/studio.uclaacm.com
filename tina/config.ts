@@ -1,6 +1,6 @@
 import { defineConfig } from "tinacms";
 
-const host = process.env.HOST || "https://localhost:3000"
+const host = process.env.URL || process.env.HOST || "https://localhost:3000"
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === "true";
 

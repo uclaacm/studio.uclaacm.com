@@ -30,6 +30,7 @@
     "dev:server:": "run-script-os",
     "dev:server:win32": "export TINA_PUBLIC_IS_LOCAL=false && yarn build:cms:server && yarn start",
     "dev:server:nix": "export TINA_PUBLIC_IS_LOCAL=false && yarn build:cms:server && yarn start",
+    "build:cms": "yarn build:cms:server",
     "build:cms:server": "run-script-os",
     "build:cms:server:win32": "set TINA_PUBLIC_IS_LOCAL=false && tinacms build",
     "build:cms:server:nix": "export TINA_PUBLIC_IS_LOCAL=false && tinacms build",
