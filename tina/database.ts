@@ -112,4 +112,5 @@ export default createDatabase({
 	level: isLocal ? localLevelStore as Level : mongodbLevelStore,
 	onPut: isLocal ? localOnPut : githubOnPut,
 	onDelete: isLocal ? localOnDelete : githubOnDelete,
+    tinaDirectory: "tina"
 })

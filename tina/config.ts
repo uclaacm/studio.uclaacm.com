@@ -4,6 +4,8 @@ const host = process.env.HOST || "https://localhost:3000"
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === "true";
 
+const collectionRoot = `content`
+
 const config = defineConfig({
   contentApiUrlOverride: `${host}/api/gql`,
   admin: {
@@ -29,6 +31,7 @@ const config = defineConfig({
     process.env.NEXT_PUBLIC_TINA_BRANCH! || // custom branch env override
     process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF! || // Vercel branch env
     process.env.HEAD!, // Netlify branch env
+  token: process.env.TINA_TOKEN! || "foo",
   media: {
     ...isLocal ? {
       tina: {
@@ -51,7 +54,7 @@ const config = defineConfig({
       {
         label: "Test",
         name: "test",
-        path: "test",
+        path: `${collectionRoot}/test`,
         fields: [
           {
             type: "string",
@@ -63,7 +66,7 @@ const config = defineConfig({
       {
         label: "Byte Sized Tutorials",
         name: "tutorial",
-        path: "tutorials",
+        path: `${collectionRoot}/tutorials`,
         fields: [
           {
             type: "string",
