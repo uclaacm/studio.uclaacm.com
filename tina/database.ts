@@ -6,7 +6,6 @@ import { Octokit } from '@octokit/rest'
 
 import path from 'path';
 import * as fs from 'node:fs/promises';
-import { GithubBridge } from '~/cms/GithubBridge';
 
 // `isLocal` determines if the database is running in "Local Mode" or "Production Mode". You can set this value in your .env file or use a different method for determining the value. In this example we are using an environment variable.
 
