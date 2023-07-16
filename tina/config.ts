@@ -1,6 +1,6 @@
 import { defineConfig } from "tinacms";
 
-const host = process.env.URL || process.env.HOST || "https://localhost:3000"
+const host = process.env.URL || process.env.HOST || ""
 
 console.log(process.env.HOST)
 
