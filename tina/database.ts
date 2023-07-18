@@ -36,10 +36,8 @@ if (isLocal) {
 	localLevelStore.openConnection()
 }
 
-const root = "content";
-
 async function githubOnPut(key: string, value: string): Promise<void> {
-    const filePath = path.join(root, key);
+    const filePath = key;
     let sha;
     try {
         const {
@@ -66,7 +64,7 @@ async function githubOnPut(key: string, value: string): Promise<void> {
 };
 
 async function githubOnDelete(key: string): Promise<void> {
-    const filePath = path.join(root, key);
+    const filePath = key;
     let sha;
     try {
         const {
@@ -95,20 +93,22 @@ async function githubOnDelete(key: string): Promise<void> {
 };
 
 async function localOnPut(key: string, value: string): Promise<void> {
-    const filePath = path.join(root, key);
+    const filePath = path.join(process.cwd(), key);
     const dir = path.dirname(filePath)
     await fs.mkdir(dir, { recursive: true });
     await fs.writeFile(filePath, value);
 };
 
 async function localOnDelete(key: string): Promise<void> {
-    const currentPath = path.join(process.cwd(), "content", key);
+    const currentPath = path.join(process.cwd(), key);
     await fs.rm(currentPath);
 };
 
-export default createDatabase({
+const db = createDatabase({
 	level: isLocal ? localLevelStore as Level : mongodbLevelStore,
 	onPut: isLocal ? localOnPut : githubOnPut,
 	onDelete: isLocal ? localOnDelete : githubOnDelete,
-    tinaDirectory: "tina"
+    tinaDirectory: "tina",
 })
+
+export default db;

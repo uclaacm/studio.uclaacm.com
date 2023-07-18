@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Tutorial } from "cms/types";
+import { Test, Tutorial } from "cms/types";
 import { client } from "cms/client"
 
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";

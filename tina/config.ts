@@ -4,6 +4,8 @@ const host = process.env.URL || process.env.HOST || ""
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL.trim() === "true";
 
+const root = "content/"
+
 const config = defineConfig({
   contentApiUrlOverride: `${host}/api/gql`,
   admin: {
@@ -52,7 +54,7 @@ const config = defineConfig({
       {
         label: "Test",
         name: "test",
-        path: `test`,
+        path: `${root}test`,
         fields: [
           {
             type: "string",
@@ -64,7 +66,7 @@ const config = defineConfig({
       {
         label: "Byte Sized Tutorials",
         name: "tutorial",
-        path: `tutorials`,
+        path: `${root}tutorials`,
         fields: [
           {
             type: "string",
