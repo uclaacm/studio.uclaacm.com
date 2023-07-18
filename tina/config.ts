@@ -2,11 +2,9 @@ import { defineConfig } from "tinacms";
 
 const host = process.env.URL || process.env.HOST || ""
 
-console.log(process.env.HOST)
+const isLocal = process.env.TINA_PUBLIC_IS_LOCAL.trim() === "true";
 
-const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === "true";
-
-const collectionRoot = `content`
+const root = "content/"
 
 const config = defineConfig({
   contentApiUrlOverride: `${host}/api/gql`,
@@ -56,7 +54,7 @@ const config = defineConfig({
       {
         label: "Test",
         name: "test",
-        path: `${collectionRoot}/test`,
+        path: `${root}test`,
         fields: [
           {
             type: "string",
@@ -68,7 +66,7 @@ const config = defineConfig({
       {
         label: "Byte Sized Tutorials",
         name: "tutorial",
-        path: `${collectionRoot}/tutorials`,
+        path: `${root}tutorials`,
         fields: [
           {
             type: "string",

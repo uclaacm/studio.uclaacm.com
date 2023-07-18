@@ -11,7 +11,7 @@ import * as fs from 'node:fs/promises';
 
 // When in "Local Mode" a local levelDB server is used and data is saved to the file system
 // When in "Production Mode" Your provided LevelDB implementation is used (MongoDB Level in this example) and data is written to the Git repository with "onPut" and "onDelete" callback functions
-const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === 'true'
+const isLocal = process.env.TINA_PUBLIC_IS_LOCAL.trim() === 'true'
 
 if (isLocal) console.log('Running TinaCMS in local mode.')
 else console.log('Running TinaCMS in production mode.')
@@ -37,6 +37,7 @@ if (isLocal) {
 }
 
 async function githubOnPut(key: string, value: string): Promise<void> {
+    const filePath = key;
     let sha;
     try {
         const {
@@ -45,7 +46,7 @@ async function githubOnPut(key: string, value: string): Promise<void> {
         } = await octokit.repos.getContent({
             owner,
             repo,
-            path: key,
+            path: filePath,
             branch,
         });
         sha = existingSha;
@@ -54,7 +55,7 @@ async function githubOnPut(key: string, value: string): Promise<void> {
     const { data } = await octokit.repos.createOrUpdateFileContents({
         owner,
         repo,
-        path: key,
+        path: filePath,
         message: "commit from self-hosted tina",
         content: Buffer.from(value).toString("base64"),
         branch,
@@ -63,6 +64,7 @@ async function githubOnPut(key: string, value: string): Promise<void> {
 };
 
 async function githubOnDelete(key: string): Promise<void> {
+    const filePath = key;
     let sha;
     try {
         const {
@@ -71,7 +73,7 @@ async function githubOnDelete(key: string): Promise<void> {
         } = await octokit.repos.getContent({
             owner,
             repo,
-            path: key,
+            path: filePath,
             branch,
         });
         sha = existingSha;
@@ -82,34 +84,31 @@ async function githubOnDelete(key: string): Promise<void> {
         const { data } = await octokit.repos.deleteFile({
             owner,
             repo,
-            path: key,
+            path: filePath,
             message: "commit from self-hosted tina",
             branch,
             sha,
         });
-        console.log("data", data);
     }
 };
 
-const localRoot = path.join(process.cwd(), "content");
-
 async function localOnPut(key: string, value: string): Promise<void> {
-    const filePath = path.join(localRoot, key);
+    const filePath = path.join(process.cwd(), key);
     const dir = path.dirname(filePath)
     await fs.mkdir(dir, { recursive: true });
     await fs.writeFile(filePath, value);
 };
 
 async function localOnDelete(key: string): Promise<void> {
-    const currentPath = path.join(process.cwd(), "content", key);
+    const currentPath = path.join(process.cwd(), key);
     await fs.rm(currentPath);
 };
 
-
-
-export default createDatabase({
+const db = createDatabase({
 	level: isLocal ? localLevelStore as Level : mongodbLevelStore,
 	onPut: isLocal ? localOnPut : githubOnPut,
 	onDelete: isLocal ? localOnDelete : githubOnDelete,
-    tinaDirectory: "tina"
+    tinaDirectory: "tina",
 })
+
+export default db;
