@@ -11,7 +11,7 @@ import * as fs from 'node:fs/promises';
 
 // When in "Local Mode" a local levelDB server is used and data is saved to the file system
 // When in "Production Mode" Your provided LevelDB implementation is used (MongoDB Level in this example) and data is written to the Git repository with "onPut" and "onDelete" callback functions
-const isLocal = process.env.TINA_PUBLIC_IS_LOCAL.trim() === 'true'
+import { isLocal } from './isLocal';
 
 if (isLocal) console.log('Running TinaCMS in local mode.')
 else console.log('Running TinaCMS in production mode.')

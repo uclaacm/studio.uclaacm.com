@@ -1,10 +1,10 @@
 import { NextApiHandler } from "next";
-import { claimsIsAuthorized, getUser, userIsAuthorized } from "~/auth0Util";
+import { claimsIsAuthorized } from "~/auth/util";
 import { databaseRequest } from "~/db/connection";
 
 import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0"
 
-const isLocal = process.env.TINA_PUBLIC_IS_LOCAL.trim() === "true";
+import { isLocal } from "cms/../isLocal";
 
 const nextApiHandlerServer: NextApiHandler = withApiAuthRequired(async (req, res) => {
   const { user } = await getSession(req, res);

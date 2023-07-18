@@ -5,4 +5,4 @@ const client = new Auth0Client({
 	clientId: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
 });
 
-export { client };
+export default client;

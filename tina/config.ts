@@ -2,7 +2,7 @@ import { defineConfig } from "tinacms";
 
 const host = process.env.URL || process.env.HOST || ""
 
-const isLocal = process.env.TINA_PUBLIC_IS_LOCAL.trim() === "true";
+import { isLocal } from "./isLocal";
 
 const root = "content/"
 
