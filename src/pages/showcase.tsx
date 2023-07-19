@@ -2,8 +2,13 @@ import * as React from "react";
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Masonry from '@mui/lab/Masonry';
 import {ImageList, ImageListItem} from '@mui/material'; // for masonry
+import ImageListItemBar from '@mui/material/ImageListItemBar';
+import IconButton from '@mui/material/IconButton';
+import InfoIcon from '@mui/icons-material/Info';
+
+
+import Masonry from '@mui/lab/Masonry';
 import { styled } from '@mui/material/styles'; // for styling
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'; // expand icon
 import Paper from '@mui/material/Paper'; // paper
@@ -12,26 +17,42 @@ import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material"; /
 
 type ShowcaseProps = {};
 
-// export default function Showcase({}: ShowcaseProps) {
-//     return (
-//         <Box>
-//             <Typography variant="h1">Showcase</Typography>
+const colNum = 5;
+const gapSize = 15;
 
-//             {/* <ImageList variant="masonry" cols={3} gap={15}>
-//                 {itemData.map((item) => (
-//                     <ImageListItem key={item.img}>
-//                     <img
-//                         src={`${item.img}?w=248&fit=crop&auto=format`}
-//                         srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-//                         alt={item.title}
-//                         loading="lazy"
-//                     />
-//                     </ImageListItem>
-//                 ))}
-//             </ImageList> */}
-//         </Box>
-//     );
-// }
+// need a lower zindex
+export default function Showcase({}: ShowcaseProps) {
+    return (
+        <Box>
+            <Typography variant="h1">Showcase</Typography>
+            <Typography variant="h2">2023</Typography>
+            <ImageList variant="masonry" cols={colNum} gap={gapSize}>
+                {itemData.map((item) => (
+                    <ImageListItem key={item.img}>
+                    <img
+                        src={`${item.img}?w=248&fit=crop&auto=format`}
+                        srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                        alt={item.title}
+                        loading="lazy"
+                    />
+                    <ImageListItemBar
+                        title={item.title}
+                        subtitle={item.author}
+                        actionIcon={
+                          <IconButton
+                            sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                            aria-label={`info about ${item.title}`}
+                          >
+                            <InfoIcon />
+                          </IconButton>
+                        }
+                    />
+                    </ImageListItem>
+                ))}
+            </ImageList>
+        </Box>
+    );
+}
 
 // {/* <Paper key={index}>
 // <Accordion sx={{ minHeight: height }}>
@@ -42,31 +63,31 @@ type ShowcaseProps = {};
 // </Accordion>
 // </Paper> */}
 
-const heights = [150, 30, 90, 70, 90, 100, 150, 30, 50, 80];
+// const heights = [150, 30, 90, 70, 90, 100, 150, 30, 50, 80];
 
-const StyledAccordion = styled(Accordion)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  color: theme.palette.text.secondary,
-}));
+// const StyledAccordion = styled(Accordion)(({ theme }) => ({
+//   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+//   color: theme.palette.text.secondary,
+// }));
 
-export default function MasonryWithVariableHeightItems() {
-  return (
-    <Box sx={{ width: 500, minHeight: 377 }}>
-      <Masonry columns={3} spacing={2}>
-        {heights.map((height, index) => (
-          <Paper key={index}>
-            <StyledAccordion sx={{ minHeight: height }}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography>Accordion {index + 1}</Typography>
-              </AccordionSummary>
-              <AccordionDetails>Contents</AccordionDetails>
-            </StyledAccordion>
-          </Paper>
-        ))}
-      </Masonry>
-    </Box>
-  );
-}
+// export default function MasonryWithVariableHeightItems() {
+//   return (
+//     <Box sx={{ width: 500, minHeight: 377 }}>
+//       <Masonry columns={3} spacing={2}>
+//         {heights.map((height, index) => (
+//           <Paper key={index}>
+//             <StyledAccordion sx={{ minHeight: height }}>
+//               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+//                 <Typography>Accordion {index + 1}</Typography>
+//               </AccordionSummary>
+//               <AccordionDetails>Contents</AccordionDetails>
+//             </StyledAccordion>
+//           </Paper>
+//         ))}
+//       </Masonry>
+//     </Box>
+//   );
+// }
 
 const itemData = [
     {
