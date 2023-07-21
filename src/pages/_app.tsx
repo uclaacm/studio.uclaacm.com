@@ -9,6 +9,7 @@ import { AppPropsWithLayout } from "~/@types";
 import "~/stylesheets/main.scss"
 
 import Layout from "~/components/Layout";
+import { InputProvider } from "~/components/Input";
 
 export default function App({Component, pageProps}: AppPropsWithLayout){
 	// optional layout function
@@ -16,8 +17,10 @@ export default function App({Component, pageProps}: AppPropsWithLayout){
 
 	return <>
 		<ThemeProvider theme={theme}>
-			<CssBaseline/>
-			{getLayout(<Component {...pageProps}/>)}
+			<InputProvider>
+				<CssBaseline/>
+				{getLayout(<Component {...pageProps}/>)}
+			</InputProvider>
 		</ThemeProvider>
 	</>
 }

@@ -5,7 +5,7 @@ import Box from "@mui/material/Box"
 import Image, { StaticImageData } from "next/image"
 
 import CloseButtonIcon from "~/assets/images/icons/close.svg"
-import HomeButtonIcon from "~/assets/images/icons/home.svg"
+
 
 import { NavBarContents } from "~/components/NavBar";
 
@@ -13,17 +13,13 @@ type NavBarRadialButtonProps = {
 	icon: string | StaticImageData,
 	rotationDeg?: number,
 	shadowRotationDeg?: number,
-	onActivate?: () => void,
-	onDeactivate?: () => void,
+	active: boolean,
 }
 
 let indexCounter = 0;
 
-function NavBarRadialButton({icon, rotationDeg, shadowRotationDeg, onActivate, onDeactivate}: NavBarRadialButtonProps){
-	++indexCounter;
-
-	const [index, setIndex] = React.useState(indexCounter);
-	const [active, setActive] = React.useState(false);
+function NavBarRadialButton({icon, rotationDeg, shadowRotationDeg, active}: NavBarRadialButtonProps){
+	const index = indexCounter++;
 	const shadowOffset = 10;
 
 	rotationDeg = rotationDeg ?? 0;
@@ -34,16 +30,6 @@ function NavBarRadialButton({icon, rotationDeg, shadowRotationDeg, onActivate, o
 	const shadowRotationRad = shadowRotationDeg * Math.PI / 180;
 
 	const shadowId = `shadow-${index}`
-
-	const onMouseEnter = () => {
-		setActive(true);
-		if(onActivate) onActivate();
-	}
-
-	const onMouseLeave = () => {
-		setActive(false);
-		if(onDeactivate) onDeactivate();
-	}
 
 	const theme = useTheme();
 	return (
@@ -67,8 +53,6 @@ function NavBarRadialButton({icon, rotationDeg, shadowRotationDeg, onActivate, o
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 376 248" style={{position: "absolute"}}>
 				<g filter={`url(#${shadowId})`}>
 					<path
-						onMouseEnter={onMouseEnter}
-						onMouseLeave={onMouseLeave}
 						style={{
 							pointerEvents: "auto",
 							fill: active ? theme.palette.primary.main : "#dee6ed",
@@ -120,16 +104,16 @@ export type NavBarRadialProps = {
 	offsetLeft?: string,
 	buttonFrequency?: number,
 	buttonPhase?: number,
-	contents: NavBarContents[]
+	contents: NavBarContents[],
+	selected: number,
+	setSelected: React.Dispatch<React.SetStateAction<number>>,
 }
 
-export default function NavBarRadial({offsetLeft, contents, buttonFrequency, buttonPhase}: NavBarRadialProps){
-	const [active, setActive] = React.useState(0);
-
+export default function NavBarRadial({offsetLeft, contents, buttonFrequency, buttonPhase, selected, setSelected}: NavBarRadialProps){
 	buttonFrequency ??= 60;
 	buttonPhase ??= 0;
 
-	const radialContents = contents.filter(content => content.hideInRadial !== true);
+	let buttonContents = Array.from(contents.entries()).filter(([_, {hideInRadial}]) => !hideInRadial);
 
 	return (
 		<Box sx={theme => ({
@@ -155,8 +139,13 @@ export default function NavBarRadial({offsetLeft, contents, buttonFrequency, but
 					left: "calc((100% - var(--width))/2)",
 					top: "calc((100% - var(--width))/2)",
 				}}/>
-				{radialContents.map(({buttonIcon}, i) => (
-					<NavBarRadialButton key={i} rotationDeg={buttonFrequency * i + buttonPhase} icon={buttonIcon}/>
+				{buttonContents.map(([originalIndex, {icon, hideInRadial}], i) => (
+					hideInRadial || <NavBarRadialButton
+						key={i}
+						rotationDeg={buttonFrequency * i + buttonPhase}
+						icon={icon}
+						active={selected === originalIndex}
+					/>
 				))}
 			</Box>
 		</Box>
