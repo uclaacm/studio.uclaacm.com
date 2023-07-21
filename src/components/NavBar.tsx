@@ -179,7 +179,7 @@ export default function NavBar(){
 			</Drawer>
 			<Selection selectionRef={refs[selectedRefIndex]}/>
 			<Backdrop open={open}>
-				<NavBarRadial offsetLeft={DRAWER_WIDTH_OPEN} contents={navBarContents} selected={selectedRefIndex} setSelected={setSelectedRefIndex}/>
+				<NavBarRadial open={open} offsetLeft={DRAWER_WIDTH_OPEN} contents={navBarContents} selected={selectedRefIndex} setSelected={setSelectedRefIndex}/>
 			</Backdrop>
 		</>
 	)
