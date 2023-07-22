@@ -148,6 +148,14 @@ const config = defineConfig({
             required: true,
           },
         ]
+      },
+      {
+        label: "Showcase",
+        name: "showcase",
+        path: `${root}showcase`,
+        fields: [
+
+        ]
       }
     ],
   },
