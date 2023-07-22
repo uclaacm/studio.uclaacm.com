@@ -15,31 +15,46 @@ export type SelectionRect = {
 }
 
 export type SelectionProps = {
-	selectionRef?: React.MutableRefObject<HTMLLIElement>,
+	selectionRef?: React.MutableRefObject<HTMLElement>,
 	containerSelector?: string,
+	boxSizing?: "border-box" | "content-box",
+	useClientWidth?: boolean,
+	useClientHeight?: boolean,
+	offsetBorder?: boolean,
+	transitionMaxWidth?: boolean,
 }
 
-export function Selection({selectionRef, containerSelector}: SelectionProps){
+export function Selection({selectionRef, containerSelector, boxSizing, useClientWidth, useClientHeight, offsetBorder, transitionMaxWidth}: SelectionProps){
 	const [rect, setRect] = React.useState<SelectionRect | null>(null);
-	containerSelector = containerSelector ?? ".MuiBox-root";
+	useClientWidth ??= false;
+	useClientHeight ??= false;
+	offsetBorder ??= false;
+	transitionMaxWidth ??= false;
 
 	const resizeObserver = new ResizeObserver((entries) => {
 		if(entries.length > 0){
 			const contentRect = entries[0].contentRect;
 			const target = entries[0].target as HTMLLIElement;
-			const boxWidth = (target.querySelector(containerSelector) as HTMLDivElement).offsetWidth;
+
+			const clientWidth = (
+				containerSelector ? (target.querySelector(containerSelector) as HTMLElement) : target
+			).offsetWidth;
+			const clientHeight = (
+				containerSelector ? (target.querySelector(containerSelector) as HTMLElement) : target
+			).offsetHeight;
+
  			setRect({
 				top: target.offsetTop,
 				left: target.offsetLeft,
-				width: Math.min(boxWidth, contentRect.width),
-				height: contentRect.height,
+				width: useClientWidth ? clientWidth : Math.min(clientWidth, contentRect.width),
+				height: useClientHeight ? clientHeight : contentRect.height,
 				maxWidth: target.offsetWidth
 			})
 		}
 	})
 
 	React.useEffect(() => {
-		if(selectionRef.current){
+		if(selectionRef?.current){
 			resizeObserver.disconnect();
 			resizeObserver.observe(selectionRef.current);
 		}
@@ -56,13 +71,13 @@ export function Selection({selectionRef, containerSelector}: SelectionProps){
 			borderRadius: theme.shape.borderRadius,
 			position: "absolute",
 
-			top: rect?.top,
-			left: rect?.left,
-			width: rect?.width,
-			height: rect?.height,
-			maxWidth: rect?.maxWidth,
+			top: offsetBorder ? `calc(${rect?.top}px - ${theme.spacing(1)})` : `${rect?.top}px`,
+			left: offsetBorder ? `calc(${rect?.left}px - ${theme.spacing(1)})` : `${rect?.left}px`,
+			width: `${rect?.width}px`,
+			height: `${rect?.height}px`,
+			maxWidth: `${rect?.maxWidth}px`,
 
-			transition: theme.transitions.create(["top", "width"], {
+			transition: theme.transitions.create(["top", "width", "left", "height", ...transitionMaxWidth ? ["max-width"] : []], {
 				duration: theme.transitions.duration.shortest,
 				easing: theme.transitions.easing.easeOut,
 			}),
@@ -85,7 +100,9 @@ export function Selection({selectionRef, containerSelector}: SelectionProps){
 				backgroundSize: "contain",
 				backgroundPosition: "center",
 				content: `""`
-			}
+			},
+
+			boxSizing: boxSizing,
 		})}/>
 	}
 	return null;

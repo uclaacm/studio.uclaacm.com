@@ -5,25 +5,21 @@ import Box from "@mui/material/Box"
 import Image, { StaticImageData } from "next/image"
 
 import CloseButtonIcon from "~/assets/images/icons/close.svg"
-import HomeButtonIcon from "~/assets/images/icons/home.svg"
+
 
 import { NavBarContents } from "~/components/NavBar";
+import { useInput } from "./Input";
+import { Axis, GamepadAxisChangeEvent, GamepadJoystickChangeEvent, Joystick } from "~/util/gamepad";
 
 type NavBarRadialButtonProps = {
+	uniqueKey: string,
 	icon: string | StaticImageData,
 	rotationDeg?: number,
 	shadowRotationDeg?: number,
-	onActivate?: () => void,
-	onDeactivate?: () => void,
+	active: boolean,
 }
 
-let indexCounter = 0;
-
-function NavBarRadialButton({icon, rotationDeg, shadowRotationDeg, onActivate, onDeactivate}: NavBarRadialButtonProps){
-	++indexCounter;
-
-	const [index, setIndex] = React.useState(indexCounter);
-	const [active, setActive] = React.useState(false);
+function NavBarRadialButton({uniqueKey, icon, rotationDeg, shadowRotationDeg, active}: NavBarRadialButtonProps){
 	const shadowOffset = 10;
 
 	rotationDeg = rotationDeg ?? 0;
@@ -33,17 +29,7 @@ function NavBarRadialButton({icon, rotationDeg, shadowRotationDeg, onActivate, o
 	shadowRotationDeg = shadowRotationDeg ?? 90;
 	const shadowRotationRad = shadowRotationDeg * Math.PI / 180;
 
-	const shadowId = `shadow-${index}`
-
-	const onMouseEnter = () => {
-		setActive(true);
-		if(onActivate) onActivate();
-	}
-
-	const onMouseLeave = () => {
-		setActive(false);
-		if(onDeactivate) onDeactivate();
-	}
+	const shadowId = `shadow-${uniqueKey}`
 
 	const theme = useTheme();
 	return (
@@ -67,8 +53,6 @@ function NavBarRadialButton({icon, rotationDeg, shadowRotationDeg, onActivate, o
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 376 248" style={{position: "absolute"}}>
 				<g filter={`url(#${shadowId})`}>
 					<path
-						onMouseEnter={onMouseEnter}
-						onMouseLeave={onMouseLeave}
 						style={{
 							pointerEvents: "auto",
 							fill: active ? theme.palette.primary.main : "#dee6ed",
@@ -117,19 +101,62 @@ function NavBarRadialButton({icon, rotationDeg, shadowRotationDeg, onActivate, o
 }
 
 export type NavBarRadialProps = {
+	open: boolean,
 	offsetLeft?: string,
 	buttonFrequency?: number,
 	buttonPhase?: number,
-	contents: NavBarContents[]
+	contents: NavBarContents[],
+	selected: number,
+	setSelected: React.Dispatch<React.SetStateAction<number>>,
 }
 
-export default function NavBarRadial({offsetLeft, contents, buttonFrequency, buttonPhase}: NavBarRadialProps){
-	const [active, setActive] = React.useState(0);
-
+export default function NavBarRadial({open, offsetLeft, contents, buttonFrequency, buttonPhase, selected, setSelected}: NavBarRadialProps){
 	buttonFrequency ??= 60;
 	buttonPhase ??= 0;
 
-	const radialContents = contents.filter(content => content.hideInRadial !== true);
+	let buttonContents = Array.from(contents.entries()).filter(([_, {hideInRadial}]) => !hideInRadial);
+
+	const input = useInput();
+	React.useEffect(() => {
+		if(input){
+			hookInput();
+			return unhookInput;
+		}
+	})
+
+	function hookInput() {
+		input.addEventListener("gamepadjoystickchange", onJoystickChange);
+	}
+	function unhookInput() {
+		input.removeEventListener("gamepadjoystickchange", onJoystickChange);
+	}
+
+	function onJoystickChange(e: GamepadJoystickChangeEvent){
+		if(!open || e.joystick !== Joystick.Right || !e.defined) return;
+		const thetaDeg = e.theta * 180 / Math.PI;
+		// buttons start at 90 and go clockwise
+		//
+		// button center angle: 90 - (buttonFrequency * i + buttonPhase)
+		// button arc: buttonFrequency
+		// button start = button center angle - button arc / 2
+		// button end = button center angle + button arc / 2
+		// button start < thetaDeg < button end
+		// 90 - (buttonFrequency * i + buttonPhase) - buttonFrequency / 2 < thetaDeg < 90 - (buttonFrequency * i + buttonPhase) + buttonFrequency / 2
+		//  - (buttonFrequency * i + buttonPhase) - buttonFrequency / 2 < thetaDeg - 90 < - (buttonFrequency * i + buttonPhase) + buttonFrequency / 2
+		// buttonFrequency * i + buttonPhase - buttonFrequency / 2 < 90 - thetaDeg < buttonFrequency * i + buttonPhase + buttonFrequency / 2
+		// buttonFrequency * i - buttonFrequency / 2 < 90 - thetaDeg - buttonPhase < buttonFrequency * i + buttonFrequency / 2
+		// i < (90 - thetaDeg - buttonPhase + buttonFrequency / 2)/buttonFrequency < i + 1
+		// since i is an integer, we have i = floor((90 - thetaDeg - buttonPhase + buttonFrequency / 2)/buttonFrequency)
+		let i = Math.floor(
+			(90 - thetaDeg - buttonPhase + buttonFrequency / 2)/buttonFrequency
+		);
+		// if they overshoot or undershoot, just give it to em
+		if(i === -1) ++i;
+		if(i === buttonContents.length) --i;
+		if(i >= 0 && i < buttonContents.length && buttonContents[i][0] !== selected) {
+			setSelected(buttonContents[i][0]);
+		}
+	}
 
 	return (
 		<Box sx={theme => ({
@@ -155,8 +182,13 @@ export default function NavBarRadial({offsetLeft, contents, buttonFrequency, but
 					left: "calc((100% - var(--width))/2)",
 					top: "calc((100% - var(--width))/2)",
 				}}/>
-				{radialContents.map(({buttonIcon}, i) => (
-					<NavBarRadialButton key={i} rotationDeg={buttonFrequency * i + buttonPhase} icon={buttonIcon}/>
+				{buttonContents.map(([originalIndex, {icon, hideInRadial}], i) => (
+					hideInRadial || <NavBarRadialButton
+						key={i} uniqueKey={i.toString()}
+						rotationDeg={buttonFrequency * i + buttonPhase}
+						icon={icon}
+						active={selected === originalIndex}
+					/>
 				))}
 			</Box>
 		</Box>

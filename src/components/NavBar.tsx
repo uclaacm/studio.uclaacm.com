@@ -15,17 +15,17 @@ import MuiListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { styled, useTheme } from "@mui/material";
 
-import MenuIcon from "@mui/icons-material/Menu";
-import HomeIcon from "@mui/icons-material/Home";
-
 import { Axis, GamepadButtonPressedEvent, GamepadButtonRepeatEvent, GamepadInput, XBoxButton } from "~/util/gamepad";
 import NextLink from "next/link";
 import NavBarRadial from "~/components/NavBarRadial";
 import Image, { StaticImageData } from "next/image";
 
-import HomeIconSVG from "~/assets/images/icons/home.svg"
-import MenuIconSVG from "~/assets/images/icons/menu.svg"
-import ControllerIconSVG from "~/assets/images/icons/controller.svg"
+import HomeIcon from "~/assets/images/icons/home.svg"
+import MenuIcon from "~/assets/images/icons/menu.svg"
+import InfoIcon from "~/assets/images/icons/info.svg"
+import ControllerIcon from "~/assets/images/icons/controller.svg"
+import { useInput } from "./Input";
+import { useRouter } from "next/router";
 
 const DRAWER_ICON_WIDTH = 36;
 const DRAWER_ICON_WIDTH_PX = `${DRAWER_ICON_WIDTH}px`;
@@ -45,7 +45,7 @@ const Drawer = styled(MuiDrawer, {shouldForwardProp: prop => prop !== "open"})((
 }))
 
 
-const Selection = dynamic(() => import("~/components/NavBarSelection").then(mod => mod.Selection), { ssr: false });
+const Selection = dynamic(() => import("~/components/Selection").then(mod => mod.Selection), { ssr: false });
 
 
 type DrawerListItemProps = {
@@ -69,68 +69,87 @@ const ListItemIcon = styled(MuiListItemIcon)(({theme}) => ({
 
 export type NavBarContents = {
 	icon: typeof MenuIcon,
-	buttonIcon: StaticImageData,
 	text?: string,
 	href?: string,
+	hrefIsEnd?: boolean,
 	hideInRadial?: boolean,
 }
 
 const navBarContents: NavBarContents[] = [
 	{
 		icon: MenuIcon,
-		buttonIcon: MenuIconSVG,
 		hideInRadial: true,
 	},
 	{
 		icon: HomeIcon,
-		buttonIcon: HomeIconSVG,
-		text: "Home",
+		text: "home",
 		href: "/",
-	}
+		hrefIsEnd: true,
+	},
+	{
+		icon: InfoIcon,
+		text: "about",
+		href: "/about-us",
+	},
+	{
+		icon: ControllerIcon,
+		text: "studios",
+		href: "/studios",
+	},
+	{
+		icon: ControllerIcon,
+		text: "events",
+		href: "/events",
+	},
 ]
 
-const BUTTON_HOLD_INTERVAL = 500;
-
 export default function NavBar(){
-	const [open, setOpen] = React.useState(true);
-	const [input, setInput] = React.useState<GamepadInput | null>(null);
+	const router = useRouter();
+
+	const [open, setOpen] = React.useState(false);
 	const toggleOpen = (v: boolean) => () => setOpen(v);
 
-	const refs = new Array(navBarContents.length).fill(0).map((v, i) => React.useRef<HTMLLIElement>(null));
-	const [selectedRefIndex, setSelectedRefIndex] = React.useState<number>(0);
-	const selectPreviousRef = () => setSelectedRefIndex(selectedRefIndex === 0 ? selectedRefIndex : (selectedRefIndex - 1) % refs.length);
-	const selectNextRef = () => setSelectedRefIndex(selectedRefIndex === refs.length - 1 ? selectedRefIndex : (selectedRefIndex + 1) % refs.length);
+	// refs for each navbar entry
+	const buttonRefs = Array.from({ length: navBarContents.length }).map(_ => React.useRef<HTMLLIElement>(null));
 
-	let animationFrame: number | null = null;
+	// index of current page in the navbar
+	const [currentPageButtonIndex, setCurrentPageButtonIndex] = React.useState<number>(
+		navBarContents.findIndex(
+			({href, hrefIsEnd}) => href !== undefined && router.asPath.startsWith(href) && (!hrefIsEnd || router.asPath.endsWith(href))
+		) ?? 0
+	);
+	// update current nav bar page on route change
+	React.useEffect(() => {
+		const newPageButtonIndex = navBarContents.findIndex(
+			({href, hrefIsEnd}) => href !== undefined && router.asPath.startsWith(href) && (!hrefIsEnd || router.asPath.endsWith(href))
+		) ?? 0;
+		if(currentPageButtonIndex !== newPageButtonIndex) setCurrentPageButtonIndex(newPageButtonIndex);
+	}, [router.asPath])
+
+	// highlighted nav bar page
+	const [selectedButtonIndex, setSelectedButtonIndex] = React.useState<number>(currentPageButtonIndex);
+	const selectPreviousButton = () => setSelectedButtonIndex(selectedButtonIndex === 0 ? selectedButtonIndex : (selectedButtonIndex - 1) % buttonRefs.length);
+	const selectNextButton = () => setSelectedButtonIndex(selectedButtonIndex === buttonRefs.length - 1 ? selectedButtonIndex : (selectedButtonIndex + 1) % buttonRefs.length);
+
+	// reset selected page to the current page when close menu
+	React.useEffect(() => {
+		if(open === false && selectedButtonIndex !== currentPageButtonIndex) setSelectedButtonIndex(currentPageButtonIndex);
+	}, [open]);
+
+	const input = useInput();
 
 	React.useEffect(() => {
-		window.addEventListener("gamepadconnected", onGamepadConnected);
-		if(!input){
-			const gamepads = navigator.getGamepads().filter(g => g);
-			if(gamepads.length > 0){
-				setInput(new GamepadInput(gamepads[0]));
-			}
-		}
 		if(input){
 			hookInput();
-		}
-		return () => {
-			window.removeEventListener("gamepadconnected", onGamepadConnected);
-			if(animationFrame) cancelAnimationFrame(animationFrame);
-			if(input) {
+			return () => {
 				unHookInput();
 			}
 		}
 	});
 
-	function onGamepadConnected(e: GamepadEvent){
-		setInput(new GamepadInput(e.gamepad));
-	}
-
 	function hookInput(){
 		input.addEventListener("gamepadbuttonpressed", onButtonPressed);
 		input.addEventListener("gamepadbuttonrepeat", onButtonPressed);
-		animationFrame = requestAnimationFrame(gamepadLoop);
 	}
 
 	function unHookInput(){
@@ -143,28 +162,21 @@ export default function NavBar(){
 			setOpen(!open);
 		}
 		else if(e.button === XBoxButton.Down){
-			if(open) selectNextRef();
+			if(open) selectNextButton();
 		}
 		else if(e.button === XBoxButton.Up){
-			if(open) selectPreviousRef();
+			if(open) selectPreviousButton();
 		}
 		else if(e.button === XBoxButton.A){
 			if(open){
-				refs[selectedRefIndex].current?.querySelector("a")?.click();
+				buttonRefs[selectedButtonIndex].current?.querySelector("a")?.click();
 			}
 		}
 	}
 
-	function gamepadLoop(){
-		if(!input) return;
-		input.update();
-
-		animationFrame = requestAnimationFrame(gamepadLoop);
-	}
-
 	const onMouseEnterListItem = (i: number) => () => {
 		setOpen(true);
-		setSelectedRefIndex(i);
+		setSelectedButtonIndex(i);
 	}
 
 	const theme = useTheme();
@@ -183,17 +195,15 @@ export default function NavBar(){
 				onMouseLeave={toggleOpen(false)}
 			>
 				<List>
-					{navBarContents.map(({icon: Icon, text, href, buttonIcon}, i) => (
-						<DrawerListItem key={i} onMouseEnter={onMouseEnterListItem(i)} ref={refs[i]} href={href}>
+					{navBarContents.map(({icon, text, href}, i) => (
+						<DrawerListItem key={i} onMouseEnter={onMouseEnterListItem(i)} ref={buttonRefs[i]} href={href}>
 							<Box sx={theme => ({display: "flex", alignItems: "center", padding: `0 ${theme.spacing(1)}`})}>
-								{Icon && (
-									<ListItemIcon sx={{
-										...text ? {} : {mr: 0},
+								<ListItemIcon sx={{
+									...text ? {} : {mr: 0},
 
-									}}>
-										<Image src={buttonIcon} alt={text} width={DRAWER_ICON_WIDTH} style={{padding: theme.spacing(0.25)}}/>
-									</ListItemIcon>
-								)}
+								}}>
+									<Image src={icon} alt={text} width={DRAWER_ICON_WIDTH} style={{padding: theme.spacing(0.25)}}/>
+								</ListItemIcon>
 								{text && (
 									<Typography variant="h3" sx={theme => ({mr: theme.spacing(1)})}>
 										{text}
@@ -204,9 +214,9 @@ export default function NavBar(){
 					))}
 				</List>
 			</Drawer>
-			<Selection selectionRef={refs[selectedRefIndex]}/>
+			<Selection selectionRef={buttonRefs[selectedButtonIndex]} containerSelector=".MuiBox-root"/>
 			<Backdrop open={open}>
-				<NavBarRadial offsetLeft={DRAWER_WIDTH_OPEN} contents={navBarContents}/>
+				<NavBarRadial open={open} offsetLeft={DRAWER_WIDTH_OPEN} contents={navBarContents} selected={selectedButtonIndex} setSelected={setSelectedButtonIndex}/>
 			</Backdrop>
 		</>
 	)
