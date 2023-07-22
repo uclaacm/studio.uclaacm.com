@@ -1,24 +1,59 @@
 {
+  "private": true,
   "dependencies": {
+    "@auth0/auth0-react": "^2.1.1",
+    "@auth0/auth0-spa-js": "^2.0.8",
+    "@auth0/nextjs-auth0": "^2.6.3",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@fontsource/poppins": "^4.5.10",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.12.0",
+    "@octokit/rest": "^19.0.13",
+    "@supabase/supabase-js": "^2.26.0",
+    "@tinacms/cli": "^1.5.21",
+    "dotenv": "^16.3.1",
+    "mongodb-level": "^0.0.2",
     "next": "^13.3.0",
+    "next-tinacms-cloudinary": "^4.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "sass": "^1.62.1"
+    "sass": "^1.62.1",
+    "tinacms": "^1.2.0"
   },
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev:ssl": "run-script-os",
+    "dev:ssl:nix": "export TINA_PUBLIC_IS_LOCAL=true && tinacms dev -c \"export TINA_PUBLIC_IS_LOCAL=true && yarn start:ssl\"",
+    "dev:ssl:win32": "set TINA_PUBLIC_IS_LOCAL=true && tinacms dev -c \"set TINA_PUBLIC_IS_LOCAL=true && yarn start:ssl\"",
+    "dev": "run-script-os",
+    "dev:nix": "export TINA_PUBLIC_IS_LOCAL=true && tinacms dev -c \"next dev\"",
+    "dev:win32": "set TINA_PUBLIC_IS_LOCAL=true && tinacms dev -c \"next dev\"",
+    "dev:server:ssl": "run-script-os",
+    "dev:server:ssl:win32": "set TINA_PUBLIC_IS_LOCAL=false && yarn build:cms:server && yarn start:ssl",
+    "dev:server:ssl:nix": "export TINA_PUBLIC_IS_LOCAL=false && yarn build:cms:server && yarn start:ssl",
+    "dev:server:": "run-script-os",
+    "dev:server:win32": "export TINA_PUBLIC_IS_LOCAL=false && yarn build:cms:server && yarn start",
+    "dev:server:nix": "export TINA_PUBLIC_IS_LOCAL=false && yarn build:cms:server && yarn start",
+    "build:cms": "yarn build:cms:server",
+    "build:cms:server": "run-script-os",
+    "build:cms:server:win32": "set TINA_PUBLIC_IS_LOCAL=false && tinacms build",
+    "build:cms:server:nix": "export TINA_PUBLIC_IS_LOCAL=false && tinacms build",
+    "build:cms:local": "tinacms build",
+    "build:next": "next build",
+    "build": "yarn build:cms && yarn build:next",
     "start": "next start",
-    "lint": "next lint"
+    "start:ssl": "run-script-os",
+    "start:ssl:nix": "export HOST=https://localhost:3000 && node src/https-server.js",
+    "start:ssl:win32": "set HOST=https://localhost:3000 && node src/https-server.js",
+    "lint": "next lint",
+    "gencerts": "node genCerts.js"
   },
   "devDependencies": {
     "@types/node": "18.15.11",
     "@types/react": "18.0.35",
+    "run-script-os": "^1.1.6",
+    "supabase": "^1.74.0",
+    "ts-node": "^10.9.1",
     "typescript": "5.0.4"
   }
 }
