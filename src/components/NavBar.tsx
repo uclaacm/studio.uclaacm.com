@@ -25,6 +25,7 @@ import MenuIcon from "~/assets/images/icons/menu.svg"
 import InfoIcon from "~/assets/images/icons/info.svg"
 import ControllerIcon from "~/assets/images/icons/controller.svg"
 import { useInput } from "./Input";
+import { useRouter } from "next/router";
 
 const DRAWER_ICON_WIDTH = 36;
 const DRAWER_ICON_WIDTH_PX = `${DRAWER_ICON_WIDTH}px`;
@@ -70,6 +71,7 @@ export type NavBarContents = {
 	icon: typeof MenuIcon,
 	text?: string,
 	href?: string,
+	hrefIsEnd?: boolean,
 	hideInRadial?: boolean,
 }
 
@@ -82,22 +84,57 @@ const navBarContents: NavBarContents[] = [
 		icon: HomeIcon,
 		text: "Home",
 		href: "/",
+		hrefIsEnd: true,
 	},
 	{
 		icon: InfoIcon,
 		text: "About",
 		href: "/about-us",
 	},
+	{
+		icon: ControllerIcon,
+		text: "Studios",
+		href: "/studios",
+	},
 ]
 
 export default function NavBar(){
+	const router = useRouter();
+	console.log(`"${router.asPath}"`)
+	navBarContents.forEach(({href}) => href && console.log(`"${href}"`))
+	console.log(navBarContents.findIndex(
+		({href}) => href !== undefined && router.asPath.startsWith(href)
+	))
+
 	const [open, setOpen] = React.useState(true);
 	const toggleOpen = (v: boolean) => () => setOpen(v);
 
+	// refs for each navbar entry
 	const refs = new Array(navBarContents.length).fill(0).map((v, i) => React.useRef<HTMLLIElement>(null));
-	const [selectedRefIndex, setSelectedRefIndex] = React.useState<number>(0);
+
+	// index of current page in the navbar
+	const [pageRefIndex, setPageRefIndex] = React.useState<number>(
+		navBarContents.findIndex(
+			({href, hrefIsEnd}) => href !== undefined && router.asPath.startsWith(href) && (!hrefIsEnd || router.asPath.endsWith(href))
+		) ?? 0
+	);
+	// update current nav bar page on route change
+	React.useEffect(() => {
+		const newPageRefIndex = navBarContents.findIndex(
+			({href, hrefIsEnd}) => href !== undefined && router.asPath.startsWith(href) && (!hrefIsEnd || router.asPath.endsWith(href))
+		) ?? 0;
+		if(pageRefIndex !== newPageRefIndex) setPageRefIndex(newPageRefIndex);
+	}, [router.asPath])
+
+	// highlighted nav bar page
+	const [selectedRefIndex, setSelectedRefIndex] = React.useState<number>(pageRefIndex);
 	const selectPreviousRef = () => setSelectedRefIndex(selectedRefIndex === 0 ? selectedRefIndex : (selectedRefIndex - 1) % refs.length);
 	const selectNextRef = () => setSelectedRefIndex(selectedRefIndex === refs.length - 1 ? selectedRefIndex : (selectedRefIndex + 1) % refs.length);
+
+	// reset selected page to the current page when close menu
+	React.useEffect(() => {
+		if(open === false && selectedRefIndex !== pageRefIndex) setSelectedRefIndex(pageRefIndex);
+	}, [open]);
 
 	const input = useInput();
 

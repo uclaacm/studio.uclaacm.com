@@ -12,16 +12,14 @@ import { useInput } from "./Input";
 import { Axis, GamepadAxisChangeEvent, GamepadJoystickChangeEvent, Joystick } from "~/util/gamepad";
 
 type NavBarRadialButtonProps = {
+	uniqueKey: string,
 	icon: string | StaticImageData,
 	rotationDeg?: number,
 	shadowRotationDeg?: number,
 	active: boolean,
 }
 
-let indexCounter = 0;
-
-function NavBarRadialButton({icon, rotationDeg, shadowRotationDeg, active}: NavBarRadialButtonProps){
-	const index = indexCounter++;
+function NavBarRadialButton({uniqueKey, icon, rotationDeg, shadowRotationDeg, active}: NavBarRadialButtonProps){
 	const shadowOffset = 10;
 
 	rotationDeg = rotationDeg ?? 0;
@@ -31,7 +29,7 @@ function NavBarRadialButton({icon, rotationDeg, shadowRotationDeg, active}: NavB
 	shadowRotationDeg = shadowRotationDeg ?? 90;
 	const shadowRotationRad = shadowRotationDeg * Math.PI / 180;
 
-	const shadowId = `shadow-${index}`
+	const shadowId = `shadow-${uniqueKey}`
 
 	const theme = useTheme();
 	return (
@@ -186,7 +184,7 @@ export default function NavBarRadial({open, offsetLeft, contents, buttonFrequenc
 				}}/>
 				{buttonContents.map(([originalIndex, {icon, hideInRadial}], i) => (
 					hideInRadial || <NavBarRadialButton
-						key={i}
+						key={i} uniqueKey={i.toString()}
 						rotationDeg={buttonFrequency * i + buttonPhase}
 						icon={icon}
 						active={selected === originalIndex}
