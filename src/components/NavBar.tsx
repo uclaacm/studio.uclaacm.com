@@ -45,7 +45,7 @@ const Drawer = styled(MuiDrawer, {shouldForwardProp: prop => prop !== "open"})((
 }))
 
 
-const Selection = dynamic(() => import("~/components/NavBarSelection").then(mod => mod.Selection), { ssr: false });
+const Selection = dynamic(() => import("~/components/Selection").then(mod => mod.Selection), { ssr: false });
 
 
 type DrawerListItemProps = {
@@ -82,58 +82,58 @@ const navBarContents: NavBarContents[] = [
 	},
 	{
 		icon: HomeIcon,
-		text: "Home",
+		text: "home",
 		href: "/",
 		hrefIsEnd: true,
 	},
 	{
 		icon: InfoIcon,
-		text: "About",
+		text: "about",
 		href: "/about-us",
 	},
 	{
 		icon: ControllerIcon,
-		text: "Studios",
+		text: "studios",
 		href: "/studios",
+	},
+	{
+		icon: ControllerIcon,
+		text: "events",
+		href: "/events",
 	},
 ]
 
 export default function NavBar(){
 	const router = useRouter();
-	console.log(`"${router.asPath}"`)
-	navBarContents.forEach(({href}) => href && console.log(`"${href}"`))
-	console.log(navBarContents.findIndex(
-		({href}) => href !== undefined && router.asPath.startsWith(href)
-	))
 
-	const [open, setOpen] = React.useState(true);
+	const [open, setOpen] = React.useState(false);
 	const toggleOpen = (v: boolean) => () => setOpen(v);
 
 	// refs for each navbar entry
-	const refs = new Array(navBarContents.length).fill(0).map((v, i) => React.useRef<HTMLLIElement>(null));
+	const buttonRefs = Array.from({ length: navBarContents.length }).map(_ => React.useRef<HTMLLIElement>(null));
 
 	// index of current page in the navbar
-	const [pageRefIndex, setPageRefIndex] = React.useState<number>(
+	const [currentPageButtonIndex, setCurrentPageButtonIndex] = React.useState<number>(
 		navBarContents.findIndex(
 			({href, hrefIsEnd}) => href !== undefined && router.asPath.startsWith(href) && (!hrefIsEnd || router.asPath.endsWith(href))
 		) ?? 0
 	);
 	// update current nav bar page on route change
 	React.useEffect(() => {
-		const newPageRefIndex = navBarContents.findIndex(
+		const newPageButtonIndex = navBarContents.findIndex(
 			({href, hrefIsEnd}) => href !== undefined && router.asPath.startsWith(href) && (!hrefIsEnd || router.asPath.endsWith(href))
 		) ?? 0;
-		if(pageRefIndex !== newPageRefIndex) setPageRefIndex(newPageRefIndex);
+		if(currentPageButtonIndex !== newPageButtonIndex) setCurrentPageButtonIndex(newPageButtonIndex);
 	}, [router.asPath])
 
 	// highlighted nav bar page
-	const [selectedRefIndex, setSelectedRefIndex] = React.useState<number>(pageRefIndex);
-	const selectPreviousRef = () => setSelectedRefIndex(selectedRefIndex === 0 ? selectedRefIndex : (selectedRefIndex - 1) % refs.length);
-	const selectNextRef = () => setSelectedRefIndex(selectedRefIndex === refs.length - 1 ? selectedRefIndex : (selectedRefIndex + 1) % refs.length);
+	const [selectedButtonIndex, setSelectedButtonIndex] = React.useState<number>(currentPageButtonIndex);
+	const selectPreviousButton = () => setSelectedButtonIndex(selectedButtonIndex === 0 ? selectedButtonIndex : (selectedButtonIndex - 1) % buttonRefs.length);
+	const selectNextButton = () => setSelectedButtonIndex(selectedButtonIndex === buttonRefs.length - 1 ? selectedButtonIndex : (selectedButtonIndex + 1) % buttonRefs.length);
 
 	// reset selected page to the current page when close menu
 	React.useEffect(() => {
-		if(open === false && selectedRefIndex !== pageRefIndex) setSelectedRefIndex(pageRefIndex);
+		if(open === false && selectedButtonIndex !== currentPageButtonIndex) setSelectedButtonIndex(currentPageButtonIndex);
 	}, [open]);
 
 	const input = useInput();
@@ -162,21 +162,21 @@ export default function NavBar(){
 			setOpen(!open);
 		}
 		else if(e.button === XBoxButton.Down){
-			if(open) selectNextRef();
+			if(open) selectNextButton();
 		}
 		else if(e.button === XBoxButton.Up){
-			if(open) selectPreviousRef();
+			if(open) selectPreviousButton();
 		}
 		else if(e.button === XBoxButton.A){
 			if(open){
-				refs[selectedRefIndex].current?.querySelector("a")?.click();
+				buttonRefs[selectedButtonIndex].current?.querySelector("a")?.click();
 			}
 		}
 	}
 
 	const onMouseEnterListItem = (i: number) => () => {
 		setOpen(true);
-		setSelectedRefIndex(i);
+		setSelectedButtonIndex(i);
 	}
 
 	const theme = useTheme();
@@ -196,7 +196,7 @@ export default function NavBar(){
 			>
 				<List>
 					{navBarContents.map(({icon, text, href}, i) => (
-						<DrawerListItem key={i} onMouseEnter={onMouseEnterListItem(i)} ref={refs[i]} href={href}>
+						<DrawerListItem key={i} onMouseEnter={onMouseEnterListItem(i)} ref={buttonRefs[i]} href={href}>
 							<Box sx={theme => ({display: "flex", alignItems: "center", padding: `0 ${theme.spacing(1)}`})}>
 								<ListItemIcon sx={{
 									...text ? {} : {mr: 0},
@@ -214,9 +214,9 @@ export default function NavBar(){
 					))}
 				</List>
 			</Drawer>
-			<Selection selectionRef={refs[selectedRefIndex]}/>
+			<Selection selectionRef={buttonRefs[selectedButtonIndex]} containerSelector=".MuiBox-root"/>
 			<Backdrop open={open}>
-				<NavBarRadial open={open} offsetLeft={DRAWER_WIDTH_OPEN} contents={navBarContents} selected={selectedRefIndex} setSelected={setSelectedRefIndex}/>
+				<NavBarRadial open={open} offsetLeft={DRAWER_WIDTH_OPEN} contents={navBarContents} selected={selectedButtonIndex} setSelected={setSelectedButtonIndex}/>
 			</Backdrop>
 		</>
 	)
