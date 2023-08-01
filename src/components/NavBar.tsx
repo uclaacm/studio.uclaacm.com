@@ -30,8 +30,11 @@ import { useRouter } from "next/router";
 const DRAWER_ICON_WIDTH = 36;
 const DRAWER_ICON_WIDTH_PX = `${DRAWER_ICON_WIDTH}px`;
 const drawerIconPadding = theme => theme.spacing(1)
-const drawerWidthClosed = theme => `calc(2 * ${drawerIconPadding(theme)} + ${DRAWER_ICON_WIDTH_PX})`
+const drawerPadding = theme => theme.spacing(1)
+const drawerWidthClosed = theme => `calc(2 * ${drawerPadding(theme)} + 2 * ${drawerIconPadding(theme)} + ${DRAWER_ICON_WIDTH_PX})`
 const DRAWER_WIDTH_OPEN = "15rem";
+
+const drawerBorderRadius = theme => `${theme.shape.borderRadius * 4}px`
 
 // customize open behavior
 const Drawer = styled(MuiDrawer, {shouldForwardProp: prop => prop !== "open"})(({theme, open}) => ({
@@ -40,7 +43,9 @@ const Drawer = styled(MuiDrawer, {shouldForwardProp: prop => prop !== "open"})((
 		transition: theme.transitions.create("width", {
 			duration: theme.transitions.duration.shortest,
 			easing: theme.transitions.easing.easeOut
-		})
+		}),
+		overflowX: "clip",
+		borderRadius: `0 ${drawerBorderRadius(theme)} ${drawerBorderRadius(theme)} 0`
 	},
 }))
 
@@ -63,7 +68,7 @@ const DrawerListItem = React.forwardRef<HTMLLIElement, DrawerListItemProps>(({ch
 
 const ListItemIcon = styled(MuiListItemIcon)(({theme}) => ({
 	minWidth: "initial",
-	marginRight: theme.spacing(1),
+	marginRight: `calc(${theme.spacing(1)} + ${drawerPadding(theme)})`,
 }))
 
 
@@ -191,10 +196,10 @@ export default function NavBar(){
 				anchor="left"
 				open={open}
 				onClose={toggleOpen(false)}
-				sx={{position: "absolute",}}
+				sx={{position: "absolute" }}
 				onMouseLeave={toggleOpen(false)}
 			>
-				<List>
+				<List sx={theme => ({ p: drawerPadding(theme) })}>
 					{navBarContents.map(({icon, text, href}, i) => (
 						<DrawerListItem key={i} onMouseEnter={onMouseEnterListItem(i)} ref={buttonRefs[i]} href={href}>
 							<Box sx={theme => ({display: "flex", alignItems: "center", padding: `0 ${theme.spacing(1)}`})}>
