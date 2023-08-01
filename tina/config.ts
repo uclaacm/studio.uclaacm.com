@@ -154,7 +154,21 @@ const config = defineConfig({
         name: "showcase",
         path: `${root}showcase`,
         fields: [
-
+          {
+            type: "string",
+            label: "Title",
+            name: "title"
+          },
+          {
+            type: "string",
+            label: "Description",
+            name: "description",
+          },
+          {
+            type: "image",
+            label: "Image",
+            name: "image",
+          }
         ]
       }
     ],
