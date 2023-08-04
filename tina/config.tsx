@@ -40,21 +40,17 @@ const config = defineConfig({
     process.env.HEAD!, // Netlify branch env
   token: process.env.TINA_TOKEN! || "foo",
   media: {
-    tina: {
-      mediaRoot: "media",
-      publicFolder: "public",
-    },
-    // ...isLocal ? {
-    //   tina: {
-    //     mediaRoot: "media",
-    //     publicFolder: "public",
-    //   }
-    // } : {
-    //   loadCustomStore: async () => {
-    //     const pack = await import("next-tinacms-cloudinary");
-    //     return pack.TinaCloudCloudinaryMediaStore;
-    //   },
-    // }
+    ...isLocal ? {
+      tina: {
+        mediaRoot: "media",
+        publicFolder: "public",
+      }
+    } : {
+      loadCustomStore: async () => {
+        const pack = await import("next-tinacms-cloudinary");
+        return pack.TinaCloudCloudinaryMediaStore;
+      },
+    }
   },
   build: {
     publicFolder: "public", // The public asset folder for your framework
