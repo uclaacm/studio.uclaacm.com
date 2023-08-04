@@ -205,8 +205,7 @@ const config = defineConfig({
                         block text-base placeholder:text-gray-300
                         px-3 py-2 text-gray-600 w-full bg-white border border-gray-200 transition-all ease-out duration-150
                         focus:text-gray-900 rounded-md"
-                        id={input.name}
-                        {...input}/><br/>
+                        id="image_url" {...input}/><br/>
                     <span>{`Preview${imgSrc ? ': ' : ' Unavailable'}`}</span>
                     {imgSrc && <img src={imgSrc} style={{maxHeight: "500px"}}/>}
                   </div>

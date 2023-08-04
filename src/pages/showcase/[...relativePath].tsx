@@ -15,7 +15,6 @@ import { dbConnection } from "~/db/connection";
 
 export const getServerSideProps: GetServerSideProps<ShowcaseEntryProps> = async (ctx) => {
 	const relativePath = `${path.join(...ctx.params.relativePath as string[])}.md`
-	console.log(relativePath)
     const entry: ShowcaseEntry | null = await dbConnection.queries
 		.showcase({ relativePath })
 		.then(({ data: { showcase: { title, subtitle, description, body } }}) => ({
