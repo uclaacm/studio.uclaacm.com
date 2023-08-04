@@ -45,7 +45,6 @@ export const getServerSideProps: GetServerSideProps<ShowcaseProps> = async () =>
             }
         )
         ?? [];
-    console.log(items[0].src)
 
     return {
         props: {
