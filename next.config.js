@@ -1,5 +1,6 @@
 const path = require("node:path")
 
+/** @type {import('next').NextConfig} */
 module.exports = {
 	webpack: (config, options) => {
 		config.resolve.alias["~"] = path.resolve(__dirname, "src");
@@ -14,5 +15,5 @@ module.exports = {
 				permanent: true,
 			},
 		]
-	},
+	}
 }

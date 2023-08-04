@@ -220,7 +220,7 @@ export default function NavBar(){
 				</List>
 			</Drawer>
 			<Selection selectionRef={buttonRefs[selectedButtonIndex]} containerSelector=".MuiBox-root"/>
-			<Backdrop open={open}>
+			<Backdrop open={open} sx={theme => ({ zIndex: theme.zIndex.drawer - 1 })}>
 				<NavBarRadial open={open} offsetLeft={DRAWER_WIDTH_OPEN} contents={navBarContents} selected={selectedButtonIndex} setSelected={setSelectedButtonIndex}/>
 			</Backdrop>
 		</>

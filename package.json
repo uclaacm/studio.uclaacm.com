@@ -20,7 +20,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sass": "^1.62.1",
-    "tinacms": "^1.2.0"
+    "tinacms": "^1.5.17"
   },
   "scripts": {
     "dev:ssl": "run-script-os",

@@ -1,28 +1,31 @@
-import { defineConfig } from "tinacms";
+import * as React from "react";
+import { defineConfig, wrapFieldsWithMeta } from "tinacms";
+import TextField from "@mui/material/TextField"
 
-const host = process.env.URL || process.env.HOST || ""
+const host = process.env.NEXT_PUBLIC_URL || process.env.HOST || ""
 
 import { isLocal } from "./isLocal";
 
 const root = "content/"
 
 const config = defineConfig({
+
   contentApiUrlOverride: `${host}/api/gql`,
   admin: {
     auth: {
-      useLocalAuth: process.env.TINA_PUBLIC_IS_LOCAL === "true",
-
-      customAuth: true,
-      authenticate: async () => {
-        window.location.assign("/api/auth/login?returnTo=/admin/");
-      },
-      getUser: async () => {
-        return fetch("/api/auth/me").then(res => res.json())
-          .then(user => (user["https://studio.uclaacm.com/roles"] || []).includes("Admin") ? user : false)
-          .catch(e => false);
-      },
-      logout: async () => {
-        window.location.assign(`/api/auth/logout?returnTo=/admin/`);
+      ...isLocal ? { useLocalAuth: isLocal } : {
+        customAuth: true,
+        authenticate: async () => {
+          window.location.assign("/api/auth/login?returnTo=/admin/");
+        },
+        getUser: async () => {
+          return fetch("/api/auth/me").then(res => res.json())
+            .then(user => (user["https://studio.uclaacm.com/roles"] || []).includes("Admin") ? user : false)
+            .catch(e => false);
+        },
+        logout: async () => {
+          window.location.assign(`/api/auth/logout?returnTo=/admin/`);
+        },
       },
     },
   },
@@ -33,17 +36,21 @@ const config = defineConfig({
     process.env.HEAD!, // Netlify branch env
   token: process.env.TINA_TOKEN! || "foo",
   media: {
-    ...isLocal ? {
-      tina: {
-        mediaRoot: "media",
-        publicFolder: "public",
-      }
-    } : {
-      loadCustomStore: async () => {
-        const pack = await import("next-tinacms-cloudinary");
-        return pack.TinaCloudCloudinaryMediaStore;
-      },
-    }
+    tina: {
+      mediaRoot: "media",
+      publicFolder: "public",
+    },
+    // ...isLocal ? {
+    //   tina: {
+    //     mediaRoot: "media",
+    //     publicFolder: "public",
+    //   }
+    // } : {
+    //   loadCustomStore: async () => {
+    //     const pack = await import("next-tinacms-cloudinary");
+    //     return pack.TinaCloudCloudinaryMediaStore;
+    //   },
+    // }
   },
   build: {
     publicFolder: "public", // The public asset folder for your framework
@@ -157,7 +164,13 @@ const config = defineConfig({
           {
             type: "string",
             label: "Title",
-            name: "title"
+            name: "title",
+            required: true,
+          },
+          {
+            type: "string",
+            label: "Subtitle",
+            name: "subtitle"
           },
           {
             type: "string",
@@ -168,6 +181,47 @@ const config = defineConfig({
             type: "image",
             label: "Image",
             name: "image",
+          },
+          {
+            type: "string",
+            label: "External Image",
+            name: "image_url",
+            ui: {
+              component: wrapFieldsWithMeta(({ field, input, meta}) => {
+                const [imgSrc, setImgSrc] = React.useState<string | null>(null);
+                React.useEffect(() => {
+                  try {
+                    const url = new URL(input.value);
+                    setImgSrc(url.toString());
+                  } catch {};
+                }, [input.value])
+                return (
+                  <div>
+                    <input
+                      className="
+                        shadow-inner focus:shadow-outline
+                        focus:border-blue-500 focus:outline-none
+                        block text-base placeholder:text-gray-300
+                        px-3 py-2 text-gray-600 w-full bg-white border border-gray-200 transition-all ease-out duration-150
+                        focus:text-gray-900 rounded-md"
+                        name="image_url" id="image_url" type="text" {...input}/><br/>
+                    <span>{`Preview${imgSrc ? ': ' : ' Unavailable'}`}</span>
+                    {imgSrc && <img src={imgSrc} style={{maxHeight: "500px"}}/>}
+                  </div>
+                )
+              })
+            }
+          },
+          {
+            type: "string",
+            label: "Image Alt",
+            name: "alt"
+          },
+          {
+            isBody: true,
+            type: "rich-text",
+            label: "Body",
+            name: "body"
           }
         ]
       }

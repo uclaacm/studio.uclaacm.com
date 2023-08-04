@@ -3,23 +3,26 @@ import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import "@fontsource/poppins/800.css";
 import "@fontsource/poppins/400.css";
 import "@fontsource/poppins";
+import { PaletteOptions } from "@mui/material/styles";
 
 // https://design.uclaacm.com/committees/studio/
 
+const paletteOptions: PaletteOptions = {
+    primary: {
+        main: "#FB4469"
+    },
+    secondary: {
+        light: "#FF8C93",
+        main: "#E83D3D",
+        dark: "#4C1941",
+    },
+    background: {
+        default: "#FCFCFC"
+    }
+}
+
 export default responsiveFontSizes(createTheme({
-	palette: {
-        primary: {
-            main: "#FB4469",
-        },
-        secondary: {
-            light: "#FF8C93",
-            main: "#E83D3D",
-            dark: "#4C1941",
-        },
-		background: {
-			default: "#FCFCFC"
-		}
-	},
+    palette: paletteOptions,
     spacing: 8,
     typography: {
         fontFamily: [
@@ -79,4 +82,35 @@ export default responsiveFontSizes(createTheme({
             fontWeight: 700
         }
     },
+    components: {
+        MuiButtonBase: {
+            defaultProps: {
+                disableRipple: true,
+                disableTouchRipple: true,
+            },
+        },
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    borderRadius: "calc(40em/16)",
+                    padding: "0 calc(24em/16)",
+                    height: "calc(40em/16)",
+                },
+                startIcon: {
+                    marginLeft: "calc(-8em/16)",
+                },
+                outlined: {
+                    ":hover": {
+                        backgroundColor: `${paletteOptions.primary.main}14`,
+                    },
+                    ":focus": {
+                        backgroundColor: `${paletteOptions.primary.main}1E`,
+                    },
+                    ":active": {
+                        backgroundColor: `${paletteOptions.primary.main}1E`,
+                    }
+                }
+            }
+        }
+    }
 }))

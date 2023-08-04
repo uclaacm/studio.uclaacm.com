@@ -167,21 +167,28 @@ export default function NavBarRadial({open, offsetLeft, contents, buttonFrequenc
 			alignItems: "center",
 			justifyContent: "center",
 		})}>
-			<Box sx={{
+			<Box sx={theme => ({
 				height: "66%",
 				aspectRatio: "1",
 				position: "relative",
-			}}>
-				<Image src={CloseButtonIcon} alt="close" style={{
-					// @ts-ignore "style" doesn't allow css vars, but it works
+				zIndex: theme.zIndex.drawer,
+			})}>
+				<Box sx={{
 					"--width": "40%",
 					width: "var(--width)",
 					height: "auto",
-					aspectRatio: "1",
 					position: "absolute",
 					left: "calc((100% - var(--width))/2)",
 					top: "calc((100% - var(--width))/2)",
-				}}/>
+				}}>
+					<Image src={CloseButtonIcon} alt="close" style={{
+						// @ts-ignore "style" doesn't allow css vars, but it works
+						position: "relative",
+						aspectRatio: "1",
+						width: "100%",
+						height: "100%",
+					}}/>
+				</Box>
 				{buttonContents.map(([originalIndex, {icon, hideInRadial}], i) => (
 					hideInRadial || <NavBarRadialButton
 						key={i} uniqueKey={i.toString()}
