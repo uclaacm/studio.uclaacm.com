@@ -1,5 +1,4 @@
 import { TinaMarkdown, TinaMarkdownContent } from "tinacms/dist/rich-text"
-import client from "cms/client";
 import { ShowcaseQuery } from "cms/types";
 import { GetServerSideProps } from "next";
 import path from "path";
@@ -12,11 +11,11 @@ import Button from "@mui/material/Button"
 import BackIcon from "@mui/icons-material/ArrowBack"
 import Link from "~/components/Link";
 import { useRouter } from "next/router";
+import { dbConnection } from "~/db/connection";
 
 export const getServerSideProps: GetServerSideProps<ShowcaseEntryProps> = async (ctx) => {
 	const relativePath = `${path.join(...ctx.params.relativePath as string[])}.md`
-	console.log(relativePath)
-    const entry: ShowcaseEntry | null = await client.queries
+    const entry: ShowcaseEntry | null = await dbConnection.queries
 		.showcase({ relativePath })
 		.then(({ data: { showcase: { title, subtitle, description, body } }}) => ({
 			title, subtitle, description, body

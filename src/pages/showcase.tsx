@@ -21,13 +21,13 @@ import Container from "~/components/Container";
 import Link from "~/components/Link";
 import Title from "~/components/Title";
 import { GetServerSideProps } from "next";
-import client from "cms/client";
 import path from "path";
 import { useRouter } from "next/router";
+import { dbConnection } from "~/db/connection";
 // question: how do I use both imagelistitem AND accordion in an imagelist set to masonry? questions questions
 
 export const getServerSideProps: GetServerSideProps<ShowcaseProps> = async () => {
-    const { data } = await client.queries.showcaseConnection()
+    const { data } = await dbConnection.queries.showcaseConnection()
     const items: ShowcaseItem[] = data
         .showcaseConnection
         .edges
