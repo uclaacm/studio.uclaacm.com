@@ -19,6 +19,7 @@ import ItchIcon from "~/assets/images/icons/dev/itchio.svg"
 
 export const getServerSideProps: GetServerSideProps<ShowcaseEntryProps> = async (ctx) => {
 	const relativePath = `${path.join(...ctx.params.relativePath as string[])}.md`
+	dbConnection.queries.showcase
     const entry: ShowcaseEntry | null = await dbConnection.queries
 		.showcase({ relativePath })
 		.then(({ data: { showcase: { title, subtitle, description, body, links } }}): ShowcaseEntry => ({
@@ -81,7 +82,7 @@ export default function ShowcaseEntry({ entry: { title, subtitle, description, b
 		>
 			Back
 		</Button>
-		<Stack direction="row">
+		<Stack direction="row" sx={{ my: 2 }}>
 			<Typography variant="h1" sx={{ flexGrow: 1 }}>{title}</Typography>
 			<Stack direction="row" alignItems="center" sx={{ "& > * + *": {
 				marginLeft: 1

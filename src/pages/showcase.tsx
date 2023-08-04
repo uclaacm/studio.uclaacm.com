@@ -116,6 +116,8 @@ function ShowcaseItem({ item }: ShowcaseItemProps) {
                             }
                         } : {}
                 },
+
+                textDecoration: "none",
             })}
         >
 

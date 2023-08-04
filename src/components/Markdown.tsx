@@ -14,11 +14,11 @@ export default function Markdown({ content }: MarkdownProps) {
 		components={{
 			a: ({ url, children }) => <Link {...{href: url, children}}/>,
 			p: (props) => <Typography variant="body1" {...props}/>,
-			h1: (props) => <Typography variant="h1" {...props}/>,
-			h2: (props) => <Typography variant="h2" {...props}/>,
-			h3: (props) => <Typography variant="h3" {...props}/>,
-			h4: (props) => <Typography variant="h4" {...props}/>,
-			h5: (props) => <Typography variant="h5" {...props}/>,
+			h1: (props) => <Typography variant="h2" {...props}/>,
+			h2: (props) => <Typography variant="h3" {...props}/>,
+			h3: (props) => <Typography variant="h4" {...props}/>,
+			h4: (props) => <Typography variant="h5" {...props}/>,
+			h5: (props) => <Typography variant="h6" {...props}/>,
 			h6: (props) => <Typography variant="h6" {...props}/>,
 		}}
 	/>
