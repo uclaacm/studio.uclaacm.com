@@ -7,7 +7,7 @@ import { PaletteOptions } from "@mui/material/styles";
 
 // https://design.uclaacm.com/committees/studio/
 
-const paletteOptions: PaletteOptions = {
+const paletteOptions = {
     primary: {
         main: "#FB4469"
     },
@@ -89,9 +89,11 @@ export default responsiveFontSizes(createTheme({
                 disableTouchRipple: true,
             },
         },
-        MuiButton: {
-            styleOverrides: {
-            }
-        }
+        MuiIconButton: {
+            defaultProps: {
+                disableRipple: true,
+                disableTouchRipple: true,
+            },
+        },
     }
 }))

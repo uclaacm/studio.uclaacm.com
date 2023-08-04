@@ -166,6 +166,8 @@ const config = defineConfig({
             label: "Title",
             name: "title",
             required: true,
+            isTitle: true,
+            description: "The text to show for a link. If it is a supported icon, the icon will be shown instead. "
           },
           {
             type: "string",
@@ -176,6 +178,20 @@ const config = defineConfig({
             type: "string",
             label: "Description",
             name: "description",
+          },
+          {
+            type: "datetime",
+            label: "Year",
+            name: "year",
+            required: true,
+            ui: {
+              dateFormat: "YYYY",
+              validate: (v: string) => {
+                const date = new Date(v);
+                if(date.getFullYear() < 2019) return "Year must be after 2019. If this is a problem, contact web devs. ";
+                if(date.getFullYear() > new Date().getFullYear()) return "Year cannot be in future. If this is a problem, contact web devs. "
+              }
+            }
           },
           {
             type: "image",
@@ -223,6 +239,34 @@ const config = defineConfig({
             type: "rich-text",
             label: "Body",
             name: "body"
+          },
+          {
+            type: "object",
+            label: "Links",
+            name: "links",
+            list: true,
+            fields: [
+              {
+                type: "string",
+                label: "Link Type",
+                name: "type",
+              },
+              {
+                type: "string",
+                label: "URL",
+                name: "href",
+                ui: {
+                  validate: (v: string) => {
+                    try {
+                      new URL(v);
+                    }
+                    catch {
+                      return "Not a valid URL."
+                    }
+                  }
+                }
+              }
+            ]
           }
         ]
       }

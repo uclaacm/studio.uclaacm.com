@@ -28,27 +28,40 @@ import { dbConnection } from "~/db/connection";
 
 export const getServerSideProps: GetServerSideProps<ShowcaseProps> = async () => {
     const { data } = await dbConnection.queries.showcaseConnection()
-    const items: ShowcaseItem[] = data
+
+    const items: [number, ShowcaseItem][] = data
         .showcaseConnection
         .edges
         ?.map(
-            ({ node: { _sys, title, subtitle, description, alt, image, image_url } }) => {
+            ({ node: { _sys, title, year, subtitle, description, alt, image, image_url } }) => {
                 const { dir, name } = path.parse(_sys.relativePath);
-                return {
-                    title,
-                    subtitle,
-                    description,
-                    alt,
-                    src: image || image_url,
-                    href: `/showcase/${path.join(dir, name)}`
-                }
+                return [
+                    new Date(year).getFullYear(),
+                    {
+                        title,
+                        subtitle,
+                        description,
+                        alt,
+                        src: image || image_url,
+                        href: `/showcase/${path.join(dir, name)}`
+                    }
+                ]
             }
         )
         ?? [];
 
+    const years = Object.entries(items.reduce<{ [k: number]: ShowcaseItem[] }>((years, [year, item]) => ({
+        ...years,
+        [year]: [...(years[year] ?? []), item]
+    }), {})).map(([year, items]) => ({
+        year: parseInt(year), items
+    }));
+
+    years.sort(({year: yearA}, {year: yearB}) => (yearA < yearB ? 1 : -1));
+
     return {
         props: {
-            items
+            years
         }
     }
 }
@@ -61,48 +74,6 @@ type ShowcaseItem = {
     description?: string,
     href?: string,
 }
-
-const itemData: ShowcaseItem[] = [
-    {
-        src: "https://images.unsplash.com/photo-1623743993875-03d6a5c7c709?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=315&h=450&q=80",
-        alt: "Crash Bandicoot",
-        title: "Crash Bandicoot",
-        subtitle: "Crash Bandicoot",
-        description: "This is crash bandicoot lol.",
-        href: "/showcase/hello"
-    },
-    {
-        src: "https://images.unsplash.com/photo-1586182987320-4f376d39d787?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=315&h=654&q=80",
-        alt: "Controller",
-        title: "Controller",
-        description: "This is a cpntrller.",
-        subtitle: "Controller"
-    },
-    {
-        src: "https://images.unsplash.com/photo-1591976711776-4a91184e0bf7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=315&h=450&q=80",
-        alt: "Controller 2",
-        title: "Controller 2",
-        subtitle: "Controller 2"
-    },
-    {
-        src: "https://images.unsplash.com/photo-1580617971627-cffa74e39d1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=315&h=450&q=80",
-        alt: "Gamer lounge",
-        title: "Gamer lounge",
-        subtitle: "Gamer lounge"
-    },
-    {
-        src: "https://images.unsplash.com/photo-1543328011-1c0d628fae09?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=315&h=450&q=80",
-        alt: "PS4",
-        title: "PS4",
-        subtitle: "PS4"
-    },
-    {
-        src: "https://images.unsplash.com/photo-1580617971627-cffa74e39d1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=315&h=450&q=80",
-        alt: "Gamer lounge",
-        title: "Gamer lounge",
-        subtitle: "Gamer lounge"
-    },
-]
 
 type ShowcaseItemProps = {
     item: ShowcaseItem
@@ -145,6 +116,8 @@ function ShowcaseItem({ item }: ShowcaseItemProps) {
                             }
                         } : {}
                 },
+
+                textDecoration: "none",
             })}
         >
 
@@ -205,12 +178,17 @@ function ShowcaseItem({ item }: ShowcaseItemProps) {
     )
 }
 
+type ShowcaseYear = {
+    year: number,
+    items: ShowcaseItem[],
+}
+
 type ShowcaseProps = {
-    items: ShowcaseItem[]
+    years: ShowcaseYear[]
 };
 
 // need a lower zindex
-export default function Showcase({ items }: ShowcaseProps) {
+export default function Showcase({ years }: ShowcaseProps) {
     const theme = useTheme();
     return (
         <Container
@@ -223,13 +201,17 @@ export default function Showcase({ items }: ShowcaseProps) {
         >
             <Title>Showcase</Title>
             <Typography variant="h1">Showcase</Typography>
-            <Typography variant="h2">2023</Typography>
-            {items.length > 0 && <Masonry columns={3} spacing={2}>
-                {items.map((item, i) => (
-                    <ShowcaseItem item={item} key={i} />
-                ))}
-            </Masonry>}
-            {items.length === 0 && <Typography variant="body1">No content {`(\u25CF\u00B4\u2313\`\u25CF)`}</Typography>}
+            {
+                years.map(({ year, items }, i) => (
+                    <React.Fragment key={i}>
+                        <Typography variant="h2">{year}</Typography>
+                        <Masonry columns={3} spacing={2}>
+                            { items.map((item, j) => <ShowcaseItem item={item} key={j} />) }
+                        </Masonry>
+                    </React.Fragment>
+                ))
+            }
+            {years.length === 0 && <Typography variant="body1">No content {`(\u25CF\u00B4\u2313\`\u25CF)`}</Typography>}
         </Container>
     );
 }
