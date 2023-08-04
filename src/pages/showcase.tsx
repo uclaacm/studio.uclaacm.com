@@ -224,11 +224,12 @@ export default function Showcase({ items }: ShowcaseProps) {
             <Title>Showcase</Title>
             <Typography variant="h1">Showcase</Typography>
             <Typography variant="h2">2023</Typography>
-            <Masonry columns={3} spacing={2}>
+            {items.length > 0 && <Masonry columns={3} spacing={2}>
                 {items.map((item, i) => (
                     <ShowcaseItem item={item} key={i} />
                 ))}
-            </Masonry>
+            </Masonry>}
+            {items.length === 0 && <Typography variant="body1">No content {`(\u25CF\u00B4\u2313\`\u25CF)`}</Typography>}
         </Container>
     );
 }
