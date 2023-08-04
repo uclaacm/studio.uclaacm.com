@@ -24,42 +24,32 @@ import { GetServerSideProps } from "next";
 import client from "cms/client";
 import path from "path";
 import { useRouter } from "next/router";
+import { dbConnection } from "~/db/connection";
 // question: how do I use both imagelistitem AND accordion in an imagelist set to masonry? questions questions
 
 export const getServerSideProps: GetServerSideProps<ShowcaseProps> = async () => {
-    try {
-        const { data } = await client.queries.showcaseConnection()
-    }
-    catch(e){
-        console.error(e);
-    }
-    // const { data } = await client.queries.showcaseConnection()
-    // const items: ShowcaseItem[] = data
-    //     .showcaseConnection
-    //     .edges
-    //     ?.map(
-    //         ({ node: { _sys, title, subtitle, description, alt, image, image_url } }) => {
-    //             const { dir, name } = path.parse(_sys.relativePath);
-    //             return {
-    //                 title,
-    //                 subtitle,
-    //                 description,
-    //                 alt,
-    //                 src: image || image_url,
-    //                 href: `/showcase/${path.join(dir, name)}`
-    //             }
-    //         }
-    //     )
-    //     ?? [];
+    const { data } = await dbConnection.queries.showcaseConnection()
+    const items: ShowcaseItem[] = data
+        .showcaseConnection
+        .edges
+        ?.map(
+            ({ node: { _sys, title, subtitle, description, alt, image, image_url } }) => {
+                const { dir, name } = path.parse(_sys.relativePath);
+                return {
+                    title,
+                    subtitle,
+                    description,
+                    alt,
+                    src: image || image_url,
+                    href: `/showcase/${path.join(dir, name)}`
+                }
+            }
+        )
+        ?? [];
 
-    // return {
-    //     props: {
-    //         items
-    //     }
-    // }
     return {
         props: {
-            items: []
+            items
         }
     }
 }
