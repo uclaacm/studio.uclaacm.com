@@ -2,11 +2,15 @@ import * as React from "react";
 import { defineConfig, wrapFieldsWithMeta } from "tinacms";
 import TextField from "@mui/material/TextField"
 
+import { TinaField, UIField } from "@tinacms/schema-tools"
+
 const host = process.env.NEXT_PUBLIC_URL || process.env.HOST || ""
 
 import { isLocal } from "./isLocal";
 
 const root = "content/"
+
+type UIFiledProps<Type, List extends boolean> = Parameters<Exclude<UIField<Type, List>["component"], string>>[0]
 
 const config = defineConfig({
 
@@ -187,7 +191,7 @@ const config = defineConfig({
             label: "External Image",
             name: "image_url",
             ui: {
-              component: wrapFieldsWithMeta(({ field, input, meta, form }) => {
+              component: wrapFieldsWithMeta(({ field: TinaField, input, meta }: UIFiledProps<string, false>) => {
                 const [imgSrc, setImgSrc] = React.useState<string | null>(null);
                 React.useEffect(() => {
                   try {
@@ -196,7 +200,8 @@ const config = defineConfig({
                   } catch {};
                 }, [input.value])
                 return (
-                  <div>
+                  <div className="relative mb-5 last:mb-0">
+                    {/* <label className="block font-sans text-xs font-semibold text-gray-700 whitespace-normal mb-2" htmlFor="image_url"></label> */}
                     <input
                       className="
                         shadow-inner focus:shadow-outline
@@ -204,7 +209,8 @@ const config = defineConfig({
                         block text-base placeholder:text-gray-300
                         px-3 py-2 text-gray-600 w-full bg-white border border-gray-200 transition-all ease-out duration-150
                         focus:text-gray-900 rounded-md"
-                        name="image_url" id="image_url" type="text" {...input}/><br/>
+                        id="image_url"
+                        {...input}/><br/>
                     <span>{`Preview${imgSrc ? ': ' : ' Unavailable'}`}</span>
                     {imgSrc && <img src={imgSrc} style={{maxHeight: "500px"}}/>}
                   </div>
