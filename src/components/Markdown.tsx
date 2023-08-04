@@ -12,7 +12,7 @@ export default function Markdown({ content }: MarkdownProps) {
 	return <TinaMarkdown
 		content={content}
 		components={{
-			a: Link,
+			a: ({ url, children }) => <Link href={url} children={children}/>,
 			p: (props) => <Typography variant="body1" {...props}/>,
 			h1: (props) => <Typography variant="h1" {...props}/>,
 			h2: (props) => <Typography variant="h2" {...props}/>,
