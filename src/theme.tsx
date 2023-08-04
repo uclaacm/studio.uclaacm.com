@@ -91,25 +91,6 @@ export default responsiveFontSizes(createTheme({
         },
         MuiButton: {
             styleOverrides: {
-                root: {
-                    borderRadius: "calc(40em/16)",
-                    padding: "0 calc(24em/16)",
-                    height: "calc(40em/16)",
-                },
-                startIcon: {
-                    marginLeft: "calc(-8em/16)",
-                },
-                outlined: {
-                    ":hover": {
-                        backgroundColor: `${paletteOptions.primary.main}14`,
-                    },
-                    ":focus": {
-                        backgroundColor: `${paletteOptions.primary.main}1E`,
-                    },
-                    ":active": {
-                        backgroundColor: `${paletteOptions.primary.main}1E`,
-                    }
-                }
             }
         }
     }

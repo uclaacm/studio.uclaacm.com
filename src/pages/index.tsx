@@ -160,7 +160,8 @@ export default function Home({}: HomeProps){
                         // <HomeLink key={label} href={href} variant="h2" ref={buttonRefs[i]}>
                         //     {label}
                         // </HomeLink>
-                        <Button href={href} component={Link} ref={buttonRefs[i]} key={i}
+                        <Button ref={buttonRefs[i]} key={i}
+                            component={Link} href={href}
                             disableRipple disableTouchRipple disableElevation disableFocusRipple
                             onMouseEnter={() => setSelectedButtonIndex(i)}
                         >
