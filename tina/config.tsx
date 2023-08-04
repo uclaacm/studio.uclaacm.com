@@ -36,21 +36,17 @@ const config = defineConfig({
     process.env.HEAD!, // Netlify branch env
   token: process.env.TINA_TOKEN! || "foo",
   media: {
-    tina: {
-      mediaRoot: "media",
-      publicFolder: "public",
-    },
-    // ...isLocal ? {
-    //   tina: {
-    //     mediaRoot: "media",
-    //     publicFolder: "public",
-    //   }
-    // } : {
-    //   loadCustomStore: async () => {
-    //     const pack = await import("next-tinacms-cloudinary");
-    //     return pack.TinaCloudCloudinaryMediaStore;
-    //   },
-    // }
+    ...isLocal ? {
+      tina: {
+        mediaRoot: "media",
+        publicFolder: "public",
+      }
+    } : {
+      loadCustomStore: async () => {
+        const pack = await import("next-tinacms-cloudinary");
+        return pack.TinaCloudCloudinaryMediaStore;
+      },
+    }
   },
   build: {
     publicFolder: "public", // The public asset folder for your framework
@@ -203,7 +199,7 @@ const config = defineConfig({
             label: "External Image",
             name: "image_url",
             ui: {
-              component: wrapFieldsWithMeta(({ field, input, meta}) => {
+              component: ({ input }) => {
                 const [imgSrc, setImgSrc] = React.useState<string | null>(null);
                 React.useEffect(() => {
                   try {
@@ -220,12 +216,12 @@ const config = defineConfig({
                         block text-base placeholder:text-gray-300
                         px-3 py-2 text-gray-600 w-full bg-white border border-gray-200 transition-all ease-out duration-150
                         focus:text-gray-900 rounded-md"
-                        name="image_url" id="image_url" type="text" {...input}/><br/>
+                        id={input.name} {...input}/><br/>
                     <span>{`Preview${imgSrc ? ': ' : ' Unavailable'}`}</span>
                     {imgSrc && <img src={imgSrc} style={{maxHeight: "500px"}}/>}
                   </div>
                 )
-              })
+              }
             }
           },
           {
