@@ -187,7 +187,7 @@ const config = defineConfig({
             label: "External Image",
             name: "image_url",
             ui: {
-              component: wrapFieldsWithMeta(({ field, input, meta}) => {
+              component: wrapFieldsWithMeta(({ field, input, meta, form }) => {
                 const [imgSrc, setImgSrc] = React.useState<string | null>(null);
                 React.useEffect(() => {
                   try {
