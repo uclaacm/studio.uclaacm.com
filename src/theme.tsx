@@ -30,15 +30,15 @@ export default responsiveFontSizes(createTheme({
             "sans-serif"
         ].join(","),
         h1: {
-            fontSize: "2.5rem",
+            fontSize: "4rem",
             fontWeight: 700
         },
         h2: {
-            fontSize: "2rem",
+            fontSize: "3rem",
             fontWeight: 700
         },
         h3: {
-            fontSize: "1.5rem",
+            fontSize: "2rem",
             fontWeight: 700
         },
         h4: {
@@ -62,7 +62,7 @@ export default responsiveFontSizes(createTheme({
             fontWeight: 400
         },
         body1: {
-            fontSize: "1rem",
+            fontSize: "1.5rem",
             fontWeight: 400
         },
         body2: {
@@ -96,4 +96,6 @@ export default responsiveFontSizes(createTheme({
             },
         },
     }
-}))
+}), {
+    factor: 18,
+})

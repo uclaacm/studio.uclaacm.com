@@ -8,6 +8,30 @@ import { isLocal } from "./isLocal";
 
 const root = "content/"
 
+function ImageURL({ input }) {
+  const [imgSrc, setImgSrc] = React.useState<string | null>(null);
+  React.useEffect(() => {
+    try {
+      const url = new URL(input.value);
+      setImgSrc(url.toString());
+    } catch {};
+  }, [input.value])
+  return (
+    <div>
+      <input
+        className="
+          shadow-inner focus:shadow-outline
+          focus:border-blue-500 focus:outline-none
+          block text-base placeholder:text-gray-300
+          px-3 py-2 text-gray-600 w-full bg-white border border-gray-200 transition-all ease-out duration-150
+          focus:text-gray-900 rounded-md"
+          id={input.name} {...input}/><br/>
+      <span>{`Preview${imgSrc ? ': ' : ' Unavailable'}`}</span>
+      {imgSrc && <img src={imgSrc} style={{maxHeight: "500px"}}/>}
+    </div>
+  )
+}
+
 const config = defineConfig({
 
   contentApiUrlOverride: `${host}/api/gql`,
@@ -63,6 +87,19 @@ const config = defineConfig({
             type: "string",
             label: "string",
             name: "string"
+          }
+        ]
+      },
+      {
+        label: "Content",
+        name: "content",
+        path: `${root}content`,
+        fields: [
+          {
+            type: "rich-text",
+            label: "Body",
+            name: "body",
+            isBody: true,
           }
         ]
       },
@@ -199,29 +236,7 @@ const config = defineConfig({
             label: "External Image",
             name: "image_url",
             ui: {
-              component: ({ input }) => {
-                const [imgSrc, setImgSrc] = React.useState<string | null>(null);
-                React.useEffect(() => {
-                  try {
-                    const url = new URL(input.value);
-                    setImgSrc(url.toString());
-                  } catch {};
-                }, [input.value])
-                return (
-                  <div>
-                    <input
-                      className="
-                        shadow-inner focus:shadow-outline
-                        focus:border-blue-500 focus:outline-none
-                        block text-base placeholder:text-gray-300
-                        px-3 py-2 text-gray-600 w-full bg-white border border-gray-200 transition-all ease-out duration-150
-                        focus:text-gray-900 rounded-md"
-                        id={input.name} {...input}/><br/>
-                    <span>{`Preview${imgSrc ? ': ' : ' Unavailable'}`}</span>
-                    {imgSrc && <img src={imgSrc} style={{maxHeight: "500px"}}/>}
-                  </div>
-                )
-              }
+              component: ImageURL
             }
           },
           {
@@ -264,7 +279,74 @@ const config = defineConfig({
             ]
           }
         ]
-      }
+      },
+      {
+        label: "Officers",
+        name: "officers",
+        path: `${root}officers`,
+        fields: [
+          {
+            type: "string",
+            label: "Name",
+            name: "name",
+            required: true,
+          },
+          {
+            type: "image",
+            label: "Image",
+            name: "image",
+          },
+          {
+            type: "string",
+            label: "Image URL",
+            name: "image_url",
+            ui: {
+              component: ImageURL
+            }
+          },
+          {
+            type: "string",
+            label: "Description",
+            name: "description",
+            isBody: true,
+          },
+          {
+            type: "object",
+            label: "Links",
+            name: "links",
+            list: true,
+            fields: [
+              {
+                type: "string",
+                label: "Link Type",
+                name: "type",
+                required: true,
+              },
+              {
+                type: "string",
+                label: "URL",
+                name: "href",
+                required: true,
+                ui: {
+                  validate: (v: string) => {
+                    try {
+                      new URL(v);
+                    }
+                    catch {
+                      return "Not a valid URL."
+                    }
+                  }
+                }
+              }
+            ],
+            ui: {
+              itemProps: (item) => ({
+                label: item?.type
+              })
+            }
+          }
+        ]
+      },
     ],
   },
 });
