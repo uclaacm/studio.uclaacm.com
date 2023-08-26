@@ -41,7 +41,7 @@ type HomeButton = {
 
 const HomeButtons: HomeButton[] = [
     {
-        href: "/about-us",
+        href: "/about",
         label: "about us"
     },
     {

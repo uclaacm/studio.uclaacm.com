@@ -14,8 +14,8 @@ import BackIcon from "@mui/icons-material/ArrowBack"
 import Link from "~/components/Link";
 import { useRouter } from "next/router";
 import { dbConnection } from "~/db/connection";
+import { getIconFromType } from "~/util/getIconFromType";
 
-import ItchIcon from "~/assets/images/icons/dev/itchio.svg"
 
 export const getServerSideProps: GetServerSideProps<ShowcaseEntryProps> = async (ctx) => {
 	const relativePath = `${path.join(...ctx.params.relativePath as string[])}.md`
@@ -59,15 +59,6 @@ type ShowcaseEntryProps = {
 	entry: ShowcaseEntry
 }
 
-function getIconFromType(type: string): React.ReactNode | null {
-	type = type.toLowerCase().replaceAll(/\W+/g, "");
-	console.log(type);
-	if(["itch", "itchio"].includes(type)){
-		return <img src={ItchIcon.src} style={{ width: "1em", height: "1em" }}/>
-	}
-	return null;
-}
-
 export default function ShowcaseEntry({ entry: { title, subtitle, description, body, links } }: ShowcaseEntryProps){
 	const router = useRouter();
 	return <Container>
@@ -90,12 +81,12 @@ export default function ShowcaseEntry({ entry: { title, subtitle, description, b
 				{
 					links.map(({type, href}, i) => {
 						const icon = getIconFromType(type);
-						if(icon === null){
+						if(icon === null) {
 							return <Button variant="outlined" component={Link} href={href} target="_blank" key={i}>
 								{type}
 							</Button>
 						}
-						else{
+						else {
 							return <IconButton component={Link} href={href} target="_blank" key={i}>
 								{icon}
 							</IconButton>

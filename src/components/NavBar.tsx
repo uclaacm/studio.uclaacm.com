@@ -94,7 +94,7 @@ const navBarContents: NavBarContents[] = [
 	{
 		icon: InfoIcon,
 		text: "about",
-		href: "/about-us",
+		href: "/about",
 	},
 	{
 		icon: ControllerIcon,
