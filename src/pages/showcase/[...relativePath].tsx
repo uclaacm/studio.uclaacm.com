@@ -17,9 +17,8 @@ import { dbConnection } from "~/db/connection";
 import { getIconFromType } from "~/util/getIconFromType";
 
 
-export const getServerSideProps: GetServerSideProps<ShowcaseEntryProps> = async (ctx) => {
-	const relativePath = `${path.join(...ctx.params.relativePath as string[])}.md`
-	dbConnection.queries.showcase
+export const getServerSideProps: GetServerSideProps<ShowcaseEntryProps> = async ({ params }) => {
+	const relativePath = `${path.join(...params.relativePath as string[])}.md`
     const entry: ShowcaseEntry | null = await dbConnection.queries
 		.showcase({ relativePath })
 		.then(({ data: { showcase: { title, subtitle, description, body, links } }}): ShowcaseEntry => ({

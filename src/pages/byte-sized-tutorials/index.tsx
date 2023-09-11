@@ -1,60 +1,147 @@
 import * as React from "react";
-import { Test, Tutorial } from "cms/types";
+import { Test, Tutorial, PageInfo } from "cms/types";
 import { client } from "cms/client"
 
-import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
+import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Unstable_Grid2";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
+import Link from "~/components/Link";
+import { Divider } from "@mui/material";
+import path from "path";
+import Title from "~/components/Title";
+
+export const getServerSideProps: GetServerSideProps<ByteSizedTutorialsProps> = async ({ query }) => {
+	const take = 5
+	let cursor = query.cursor as string | undefined;
+	const forward = query.dir !== "backward"
+
+	const tutorialConnectionForward = (await client.queries.tutorialConnection({
+		sort: "date",
+		[forward ? "last" : "first"]: 2,
+		...cursor ? {
+			[forward ? "before" : "after"]: cursor,
+		} : {}
+	})).data.tutorialConnection;
+
+	const tutorialConnectionBackwards = (await client.queries.tutorialConnection({
+		sort: "date",
+		[forward ? "first" : "last"]: 1,
+		...cursor ? {
+			[forward ? "after" : "before"]: tutorialConnectionForward.pageInfo.endCursor,
+		} : {}
+	})).data.tutorialConnection;
+
+	const tutorials = tutorialConnectionForward.edges
+		.map(edge => edge.node as Tutorial)
+		.map(tutorial => {
+			const { dir, name } = path.parse(tutorial._sys.relativePath);
+			return {
+				...tutorial,
+				href: `/byte-sized-tutorials/${path.join(dir, name)}`
+			} as TutorialEntry
+		})
+	return {
+		props: {
+			tutorials: forward ? tutorials : tutorials.reverse(),
+			nextCursor: forward && tutorialConnectionForward.pageInfo.hasPreviousPage
+				? tutorialConnectionForward.pageInfo.endCursor
+				: !forward && tutorialConnectionBackwards.totalCount !== 0
+					? tutorialConnectionForward.pageInfo.startCursor
+					: null,
+			prevCursor: cursor
+				? forward && tutorialConnectionBackwards.totalCount !== 0
+					? tutorialConnectionForward.pageInfo.startCursor
+					: !forward && tutorialConnectionForward.pageInfo.hasNextPage
+						? tutorialConnectionForward.pageInfo.endCursor
+						: null
+				: null
+		}
+	}
+}
+
 
 type TutorialItemProps = {
-	tutorial: Tutorial
+	tutorial: TutorialEntry,
 }
-function TutorialItem({tutorial}: TutorialItemProps){
+function TutorialItem({ tutorial }: TutorialItemProps){
+	const imageUrl = tutorial.image || tutorial.image_url;
 	return (
-		<Grid xs={4}>
-			<Card>
-				<CardMedia
-					sx={theme => ({maxHeight: theme.breakpoints.values.lg / 3 * 9 / 16})}
-				/>
-				<CardContent>
-					<Typography variant="h2">
+		<>
+			<Box
+				display="grid"
+				gridTemplateColumns="1fr 2fr"
+				component={Link}
+				href={`${tutorial.href}`}
+				gap={2}
+				sx={theme => ({
+					height: theme.breakpoints.values.lg / 3 * 9 / 16,
+					textDecoration: "none",
+					color: "initial",
+					"&:hover .TutorialItem__LinkText": {
+						textDecoration: "underline",
+					}
+				})}
+			>
+				<Box sx={{
+					width: "100%",
+					padding: 2
+				}}>
+					<img src={imageUrl} alt="" style={{
+						minHeight: 0,
+						minWidth: 0,
+						width: "100%",
+						height: "100%",
+						objectFit: "contain"
+					}}></img>
+				</Box>
+				<Box>
+					{
+						tutorial.keywords?.at(0) && (
+							<Typography variant="subtitle2">
+								{tutorial.keywords[0]}
+							</Typography>
+						)
+					}
+					<Typography variant="h3" component="h2" mb={1} className="TutorialItem__LinkText">
 						{tutorial.title}
 					</Typography>
-				</CardContent>
-			</Card>
-		</Grid>
+					<Typography variant="subtitle1">
+						By {tutorial.author}
+					</Typography>
+				</Box>
+			</Box>
+			<Divider sx={{my: 2, "&:last-of-type": { display: "none" }}}/>
+		</>
 	)
 }
 
 export type ByteSizedTutorialsProps = {
-	tutorials: Tutorial[]
+	tutorials: TutorialEntry[],
+	nextCursor: string | null,
+	prevCursor: string | null,
 }
 
-export default function ByteSizedTutorials({tutorials}: ByteSizedTutorialsProps){
+type TutorialEntry = Tutorial & {
+	href: string,
+}
+
+export default function ByteSizedTutorials({ tutorials, prevCursor, nextCursor }: ByteSizedTutorialsProps){
 	return <Container maxWidth="lg" sx={{pt: 2}}>
+		<Title>Byte-Sized Tutorials</Title>
 		<Typography variant="h1" sx={{mb: 2}}>
-			Byte Sized Tutorials
+			Byte-Sized Tutorials
 		</Typography>
-		<Box>
-			<Grid container>
-				{tutorials.map(tutorial => <TutorialItem tutorial={tutorial} key={tutorial.id}/>)}
-			</Grid>
+		<Stack>
+			{tutorials.map((tutorial, i) => <TutorialItem tutorial={tutorial} key={i}/>)}
+		</Stack>
+		<Box display="flex">
+			{prevCursor && <Box><Link href={`?cursor=${prevCursor}&dir=backward`}>Previous Page</Link></Box>}
+			<Box flexGrow={1}></Box>
+			{nextCursor && <Box><Link href={`?cursor=${nextCursor}&dir=forward`}>Next Page</Link></Box>}
 		</Box>
 	</Container>
-}
-
-export async function getServerSideProps({}: GetServerSidePropsContext): Promise<GetServerSidePropsResult<ByteSizedTutorialsProps>> {
-	const tutorials = (await client.queries.tutorialConnection()).data.tutorialConnection.edges.map(edge => edge.node as Tutorial);
-	return {
-		props: {
-			tutorials: tutorials
-		}
-	}
 }

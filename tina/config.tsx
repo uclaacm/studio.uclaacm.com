@@ -115,6 +115,12 @@ const config = defineConfig({
             required: true,
           },
           {
+            type: "datetime",
+            label: "Date",
+            name: "date",
+            required: true,
+          },
+          {
             type: "string",
             label: "Author",
             name: "author",
@@ -140,7 +146,15 @@ const config = defineConfig({
             label: "Image",
             name: "image",
             description: `Image`,
-            required: true,
+          },
+          {
+            type: "string",
+            label: "External Image",
+            name: "image_url",
+            description: `Image`,
+            ui: {
+              component: ImageURL
+            }
           },
           {
             type: "string",
@@ -181,7 +195,7 @@ const config = defineConfig({
             ]
           },
           {
-            type: "string",
+            type: "rich-text",
             label: "Body",
             name: "body",
             isBody: true,
