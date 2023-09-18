@@ -199,12 +199,6 @@ export default function NavBar(){
 				onMouseLeave={toggleOpen(false)}
 				sx={{
 					position: "absolute",
-					overflowX: "visible",
-				}}
-				PaperProps={{
-					sx: {
-						overflowX: "visible"
-					}
 				}}
 			>
 				<List sx={theme => ({ p: drawerPadding(theme) })}>
