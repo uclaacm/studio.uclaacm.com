@@ -196,8 +196,16 @@ export default function NavBar(){
 				anchor="left"
 				open={open}
 				onClose={toggleOpen(false)}
-				sx={{position: "absolute" }}
 				onMouseLeave={toggleOpen(false)}
+				sx={{
+					position: "absolute",
+					overflowX: "visible",
+				}}
+				PaperProps={{
+					sx: {
+						overflowX: "visible"
+					}
+				}}
 			>
 				<List sx={theme => ({ p: drawerPadding(theme) })}>
 					{navBarContents.map(({icon, text, href}, i) => (
@@ -219,10 +227,10 @@ export default function NavBar(){
 					))}
 				</List>
 			</Drawer>
-			<Selection selectionRef={buttonRefs[selectedButtonIndex]} containerSelector=".MuiBox-root"/>
 			<Backdrop open={open} sx={theme => ({ zIndex: theme.zIndex.drawer - 1 })}>
 				<NavBarRadial open={open} offsetLeft={DRAWER_WIDTH_OPEN} contents={navBarContents} selected={selectedButtonIndex} setSelected={setSelectedButtonIndex}/>
 			</Backdrop>
+			<Selection selectionRef={buttonRefs[selectedButtonIndex]} containerSelector=".MuiBox-root" fixed/>
 		</>
 	)
 }
