@@ -20,19 +20,24 @@ import NextLink from "next/link";
 import NavBarRadial from "~/components/NavBarRadial";
 import Image, { StaticImageData } from "next/image";
 
+import LogoIcon from "~/assets/images/icons/logo.svg"
 import HomeIcon from "~/assets/images/icons/home.svg"
 import MenuIcon from "~/assets/images/icons/menu.svg"
 import InfoIcon from "~/assets/images/icons/info.svg"
+import DiscordIcon from "~/assets/images/icons/dev/DiscordLogo.svg"
+import FacebookIcon from "~/assets/images/icons/dev/facebook.svg"
+import InstagramIcon from "~/assets/images/icons/dev/instagram.svg"
 import ControllerIcon from "~/assets/images/icons/controller.svg"
 import { useInput } from "./Input";
 import { useRouter } from "next/router";
+import IsaxIcon from "./IsaxIcon";
 
 const DRAWER_ICON_WIDTH = 36;
 const DRAWER_ICON_WIDTH_PX = `${DRAWER_ICON_WIDTH}px`;
 const drawerIconPadding = theme => theme.spacing(1)
 const drawerPadding = theme => theme.spacing(1)
 const drawerWidthClosed = theme => `calc(2 * ${drawerPadding(theme)} + 2 * ${drawerIconPadding(theme)} + ${DRAWER_ICON_WIDTH_PX})`
-const DRAWER_WIDTH_OPEN = "15rem";
+const DRAWER_WIDTH_OPEN = "18rem";
 
 const drawerBorderRadius = theme => `${theme.shape.borderRadius * 4}px`
 
@@ -80,11 +85,13 @@ export type NavBarContents = {
 	hideInRadial?: boolean,
 }
 
+export type NavBarSocials = {
+	icon: typeof DiscordIcon,
+	text: string,
+	href: string,
+}
+
 const navBarContents: NavBarContents[] = [
-	{
-		icon: MenuIcon,
-		hideInRadial: true,
-	},
 	{
 		icon: HomeIcon,
 		text: "home",
@@ -98,8 +105,8 @@ const navBarContents: NavBarContents[] = [
 	},
 	{
 		icon: ControllerIcon,
-		text: "studios",
-		href: "/studios",
+		text: "showcase",
+		href: "/showcase",
 	},
 	{
 		icon: ControllerIcon,
@@ -108,13 +115,31 @@ const navBarContents: NavBarContents[] = [
 	},
 ]
 
+const navBarSocials: NavBarSocials[] = [
+	{
+		icon: InstagramIcon,
+		href: "https://www.instagram.com/acmstudio.ucla/",
+		text: "Instagram",
+	},
+	{
+		icon: FacebookIcon,
+		href: "https://www.facebook.com/groups/uclaacmstudio/",
+		text: "Facebook",
+	},
+	{
+		icon: DiscordIcon,
+		href: "https://discord.com/invite/bBk2Mcw",
+		text: "Discord",
+	}
+]
+
 export default function NavBar(){
 	const router = useRouter();
 
 	const [open, setOpen] = React.useState(false);
 	const toggleOpen = (v: boolean) => () => setOpen(v);
 
-	// refs for each navbar entry
+	// refs for each navbar entry + logo
 	const buttonRefs = Array.from({ length: navBarContents.length }).map(_ => React.useRef<HTMLLIElement>(null));
 
 	// index of current page in the navbar
@@ -199,9 +224,27 @@ export default function NavBar(){
 				onMouseLeave={toggleOpen(false)}
 				sx={{
 					position: "absolute",
+					display: "flex",
+					flexDirection: "column",
 				}}
 			>
-				<List sx={theme => ({ p: drawerPadding(theme) })}>
+				<List sx={theme => ({ p: drawerPadding(theme), flexGrow: 1 })}>
+					<ListItem disableGutters disablePadding sx={{ mb: 2, mt: 2 }}>
+						<Box sx={{ padding: `0 ${theme.spacing(1)}`, width: "100%" }}>
+							<Image
+								src={LogoIcon}
+								alt="ACM Studio Logo"
+								width={DRAWER_ICON_WIDTH * 2}
+								style={{
+									padding: theme.spacing(0.25),
+									maxWidth: "33%",
+									minWidth: DRAWER_ICON_WIDTH_PX,
+									objectFit: "contain",
+									objectPosition: "top 0 left 0"
+								}}
+							/>
+						</Box>
+					</ListItem>
 					{navBarContents.map(({icon, text, href}, i) => (
 						<DrawerListItem key={i} onMouseEnter={onMouseEnterListItem(i)} ref={buttonRefs[i]} href={href}>
 							<Box sx={theme => ({display: "flex", alignItems: "center", padding: `0 ${theme.spacing(1)}`})}>
@@ -220,6 +263,54 @@ export default function NavBar(){
 						</DrawerListItem>
 					))}
 				</List>
+				<Box display="flex" flexDirection="row" sx={{ width: DRAWER_WIDTH_OPEN }}>
+					<List sx={{
+						display: "flex", flexDirection: "column", alignItems: "center",
+						minWidth: drawerWidthClosed(theme),
+						transition: theme.transitions.create(["clip-path"], {
+							duration: theme.transitions.duration.shortest,
+							easing: theme.transitions.easing.easeOut,
+						}),
+						clipPath: `inset(${open ? "100%" : 0} 0 0 0)`
+					}}>
+						{navBarSocials.map(({ icon, href, text }, i) => (
+							<ListItem disableGutters disablePadding key={i} sx={{ width: DRAWER_ICON_WIDTH }}>
+								<ListItemButton disableGutters disableRipple disableTouchRipple component={NextLink} href={href} target="_blank">
+									<ListItemIcon>
+										<Box sx={theme => ({display: "flex", alignItems: "center" })}>
+											<Image src={icon} alt={text} width={DRAWER_ICON_WIDTH}/>
+										</Box>
+									</ListItemIcon>
+								</ListItemButton>
+							</ListItem>
+						))}
+					</List>
+					<List sx={{
+						flexGrow: 1,
+						display: "flex",
+						flexDirection: "row",
+						alignItems: "flex-end",
+						justifyContent: "space-around",
+						pr: drawerWidthClosed(theme),
+						transition: theme.transitions.create(["clip-path"], {
+							duration: theme.transitions.duration.shortest,
+							easing: theme.transitions.easing.easeOut,
+						}),
+						clipPath: `inset(0 ${open ? 0 : "100%"} 0 0)`
+					}}>
+						{navBarSocials.map(({ icon, href, text }, i) => (
+							<ListItem disableGutters disablePadding key={i} sx={{ width: DRAWER_ICON_WIDTH }}>
+								<ListItemButton disableGutters disableRipple disableTouchRipple component={NextLink} href={href} target="_blank">
+									<ListItemIcon>
+										<Box sx={ theme => ({display: "flex", alignItems: "center" })}>
+											<Image src={icon} alt={text} width={DRAWER_ICON_WIDTH} />
+										</Box>
+									</ListItemIcon>
+								</ListItemButton>
+							</ListItem>
+						))}
+					</List>
+				</Box>
 			</Drawer>
 			<Backdrop open={open} sx={theme => ({ zIndex: theme.zIndex.drawer - 1 })}>
 				<NavBarRadial open={open} offsetLeft={DRAWER_WIDTH_OPEN} contents={navBarContents} selected={selectedButtonIndex} setSelected={setSelectedButtonIndex}/>
