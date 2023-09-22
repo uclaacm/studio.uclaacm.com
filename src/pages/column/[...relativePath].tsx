@@ -6,7 +6,7 @@ import Article, { ArticleProps } from "~/components/ArticleFrontend";
 export const getServerSideProps: GetServerSideProps<ArticleProps> = async ({ params }) => {
 	const relativePath = `${path.join(...params.relativePath as string[])}.md`
 
-    return await getArticle({ relativePath, collection: "tutorial" })
+    return await getArticle({ relativePath, collection: "column" })
 }
 
 export default Article

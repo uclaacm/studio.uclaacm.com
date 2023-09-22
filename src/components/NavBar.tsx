@@ -28,9 +28,10 @@ import DiscordIcon from "~/assets/images/icons/dev/DiscordLogo.svg"
 import FacebookIcon from "~/assets/images/icons/dev/facebook.svg"
 import InstagramIcon from "~/assets/images/icons/dev/instagram.svg"
 import ControllerIcon from "~/assets/images/icons/controller.svg"
+import BookIcon from "~/assets/images/icons/archive-book.svg"
+import CalendarIcon from "~/assets/images/icons/calendar.svg"
 import { useInput } from "./Input";
 import { useRouter } from "next/router";
-import IsaxIcon from "./IsaxIcon";
 
 const DRAWER_ICON_WIDTH = 36;
 const DRAWER_ICON_WIDTH_PX = `${DRAWER_ICON_WIDTH}px`;
@@ -109,7 +110,12 @@ const navBarContents: NavBarContents[] = [
 		href: "/showcase",
 	},
 	{
-		icon: ControllerIcon,
+		icon: BookIcon,
+		text: "blog",
+		href: "/blog",
+	},
+	{
+		icon: CalendarIcon,
 		text: "events",
 		href: "/events",
 	},

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { defineConfig, wrapFieldsWithMeta } from "tinacms";
+import { TinaField, defineConfig, wrapFieldsWithMeta } from "tinacms";
 import TextField from "@mui/material/TextField"
 
 const host = process.env.NEXT_PUBLIC_URL || process.env.HOST || ""
@@ -7,6 +7,102 @@ const host = process.env.NEXT_PUBLIC_URL || process.env.HOST || ""
 import { isLocal } from "./isLocal";
 
 const root = "content/"
+
+const articleFields: Array<TinaField> = [
+  {
+    type: "string",
+    label: "Title",
+    name: "title",
+    required: true,
+  },
+  {
+    type: "datetime",
+    label: "Date",
+    name: "date",
+    required: true,
+  },
+  {
+    type: "string",
+    label: "Author",
+    name: "author",
+    description: `
+      Author metadata.
+      The name of the document's author.
+    `,
+    required: true,
+  },
+  {
+    type: "string",
+    label: "Description",
+    name: "description",
+    description: `
+      Description metadata.
+      A short and accurate summary of the content of the page.
+      Several browsers, like Firefox and Opera, use this as the default description of bookmarked pages.
+    `,
+    required: true,
+  },
+  {
+    type: "image",
+    label: "Image",
+    name: "image",
+    description: `Image`,
+  },
+  {
+    type: "string",
+    label: "External Image",
+    name: "image_url",
+    description: `Image`,
+    ui: {
+      component: ImageURL
+    }
+  },
+  {
+    type: "string",
+    label: "Keywords",
+    name: "keywords",
+    description: `
+      Keywords metadata.
+    `,
+    list: true,
+  },
+  {
+    type: "object",
+    label: "Open Graph Metadata",
+    name: "og",
+    description: `Metadata used by the OpenGraph protocol. See https://ogp.me/`,
+    fields: [
+      {
+        type: "string",
+        label: "Type",
+        name: "type",
+        description: `The type of your object, e.g., "video.movie". Depending on the type you specify, other properties may also be required.`,
+        options: [
+          {
+            value: "video.movie",
+            label: "Video",
+          },
+          {
+            value: "article",
+            label: "Article",
+          },
+          {
+            value: "website",
+            label: "Website"
+          }
+        ],
+        required: true,
+      },
+    ]
+  },
+  {
+    type: "rich-text",
+    label: "Body",
+    name: "body",
+    isBody: true,
+    required: true,
+  },
+]
 
 function ImageURL({ input }) {
   const [imgSrc, setImgSrc] = React.useState<string | null>(null);
@@ -107,101 +203,13 @@ const config = defineConfig({
         label: "Byte Sized Tutorials",
         name: "tutorial",
         path: `${root}tutorials`,
-        fields: [
-          {
-            type: "string",
-            label: "Title",
-            name: "title",
-            required: true,
-          },
-          {
-            type: "datetime",
-            label: "Date",
-            name: "date",
-            required: true,
-          },
-          {
-            type: "string",
-            label: "Author",
-            name: "author",
-            description: `
-              Author metadata.
-              The name of the document's author.
-            `,
-            required: true,
-          },
-          {
-            type: "string",
-            label: "Description",
-            name: "description",
-            description: `
-              Description metadata.
-              A short and accurate summary of the content of the page.
-              Several browsers, like Firefox and Opera, use this as the default description of bookmarked pages.
-            `,
-            required: true,
-          },
-          {
-            type: "image",
-            label: "Image",
-            name: "image",
-            description: `Image`,
-          },
-          {
-            type: "string",
-            label: "External Image",
-            name: "image_url",
-            description: `Image`,
-            ui: {
-              component: ImageURL
-            }
-          },
-          {
-            type: "string",
-            label: "Keywords",
-            name: "keywords",
-            description: `
-              Keywords metadata.
-            `,
-            list: true,
-          },
-          {
-            type: "object",
-            label: "Open Graph Metadata",
-            name: "og",
-            description: `Metadata used by the OpenGraph protocol. See https://ogp.me/`,
-            fields: [
-              {
-                type: "string",
-                label: "Type",
-                name: "type",
-                description: `The type of your object, e.g., "video.movie". Depending on the type you specify, other properties may also be required.`,
-                options: [
-                  {
-                    value: "video.movie",
-                    label: "Video",
-                  },
-                  {
-                    value: "article",
-                    label: "Article",
-                  },
-                  {
-                    value: "website",
-                    label: "Website"
-                  }
-                ],
-                required: true,
-              },
-            ]
-          },
-          {
-            type: "rich-text",
-            label: "Body",
-            name: "body",
-            isBody: true,
-            required: true,
-          },
-        ]
+        fields: articleFields
+      },
+      {
+        label: "Column",
+        name: "column",
+        path: `${root}column`,
+        fields: articleFields
       },
       {
         label: "Showcase",
