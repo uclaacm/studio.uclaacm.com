@@ -159,8 +159,6 @@ export default function Showcase() {
                 : -1
         ))
 
-    console.log(JSON.stringify(years))
-
     const theme = useTheme();
     return (
         <Container

@@ -11,7 +11,7 @@ export type MDXFile<FrontmatterT> = {
 const filenameMap = new Map(
 	Object.entries(content).map(([collectionName, files]) => [
 		collectionName,
-		new Map(files.map(v => [v.filename, v]))
+		new Map(files.map((v): [string, MDXFile<any>] => [v.filename, v]))
 	] as [string, Map<string, MDXFile<any>>])
 );
 
