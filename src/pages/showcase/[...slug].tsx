@@ -2,7 +2,6 @@ import Container from "~/components/Container";
 
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-import Markdown from "~/components/Markdown";
 
 import Button from "@mui/material/Button"
 import IconButton from "~/components/IconButton"

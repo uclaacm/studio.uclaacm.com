@@ -22,6 +22,7 @@ import Title from "~/components/Title";
 import content from "~/__generated__/content";
 import { ShowcaseSchema } from "~/Schema";
 import { MDXFile } from "~/content/contentProvider";
+import { mapGroupBy, objectGroupBy, toSorted } from "~/util/polyfills";
 // question: how do I use both imagelistitem AND accordion in an imagelist set to masonry? questions questions
 
 type ShowcaseItemProps = {
@@ -143,16 +144,16 @@ export default function Showcase() {
     );
 
     const categories = Object.entries(
-        Object.groupBy(showcase, (file) => file.default.frontmatter.category ?? "Other")
+        objectGroupBy(showcase, (file) => file.default.frontmatter.category ?? "Other")
     );
 
-    const years = Array.from(
-        Map.groupBy(categories, ([category, items]) => {
-            const time = newestEntryTime(items);
-            return isNaN(time) ? NaN : new Date(time).getFullYear();
-        }).entries()
-    )
-        .toSorted(([yearA], [yearB]) => (
+    const years = toSorted(
+        Array.from(
+            mapGroupBy(categories, ([category, items]) => {
+                const time = newestEntryTime(items);
+                return isNaN(time) ? NaN : new Date(time).getFullYear();
+            }).entries()
+        ), ([yearA], [yearB]) => (
             yearA < yearB
                 ? 1
                 : -1

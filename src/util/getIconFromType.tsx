@@ -4,7 +4,6 @@ import ItchIcon from "~/assets/images/icons/dev/itchio.svg"
 export function getIconFromType(type: string): React.ReactNode | null {
 	const theme = useTheme();
 	type = type.toLowerCase().replaceAll(/\W+/g, "");
-	console.log(type);
 	if(["itch", "itchio"].includes(type)){
 		return <img src={ItchIcon.src} style={{ width: "1em", height: "1em" }} alt="" />
 	}

@@ -2,11 +2,8 @@ import * as React from "react"
 
 import Container from "~/components/Container";
 import Typography from "@mui/material/Typography"
-import Markdown from "~/components/Markdown";
 
 import { ArticleSchema } from "~/Schema"
-import content from "~/__generated__/content";
-import { GetStaticProps } from "next";
 import { getFile } from "~/content/contentProvider";
 
 export type ArticleProps = {
