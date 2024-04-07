@@ -6,9 +6,11 @@ import Stack from "@mui/material/Stack";
 import Link from "~/components/Link";
 import { Button, Divider } from "@mui/material";
 import Title from "~/components/Title";
-import { ArticleSchema, MDXFile } from "~/Schema";
+import { ArticleSchema } from "~/Schema";
 import content from "~/__generated__/content";
-import { mdxSortByDate } from "~/util/mdxContentSortByDate";
+import { MDXFile, sortByDate } from "~/content/contentProvider";
+import "~/util/polyfills"
+import { toSorted } from "~/util/polyfills";
 
 type ArticleEntryProps = {
 	file: MDXFile<ArticleSchema>,
@@ -76,7 +78,10 @@ type CollectionArticleListParams = {
 }
 
 export default function CollectionArticleList({ collectionID , collectionName, articlesPerPage, baseUrl }: CollectionArticleListParams) {
-	const collection = (content[collectionID] as MDXFile<ArticleSchema>[]).toSorted(mdxSortByDate);
+	const collection = toSorted(
+		(content[collectionID] as MDXFile<ArticleSchema>[]),
+		sortByDate
+	);
 	articlesPerPage ??= 5;
 
 	return function(){

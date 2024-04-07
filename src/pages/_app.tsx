@@ -6,7 +6,7 @@ import theme from "~/theme";
 
 import { AppPropsWithLayout } from "~/@types";
 
-import "~/stylesheets/main.scss"
+import "~/stylesheets/main.css"
 import "~/stylesheets/iconsax.css"
 
 import Layout from "~/components/Layout";

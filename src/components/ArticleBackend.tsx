@@ -2,7 +2,8 @@ import { ArticleProps } from "~/components/ArticleFrontend";
 
 import content from "~/__generated__/content";
 import { GetStaticPaths, GetStaticProps } from "next";
-import { ArticleSchema, MDXFile } from "~/Schema";
+import { ArticleSchema } from "~/Schema";
+import { MDXFile } from "~/content/contentProvider";
 
 export function ArticleExports(collectionName: string) {
 	const collection = (content[collectionName] as MDXFile<ArticleSchema>[]);

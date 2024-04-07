@@ -2,8 +2,6 @@ import * as React from "react";
 
 import { GetServerSideProps } from "next";
 
-import { mdxSortByDate } from "~/util/mdxContentSortByDate";
-
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -13,7 +11,9 @@ import { Divider } from "@mui/material";
 import { useSprings, animated, useChain } from "@react-spring/web"
 import { useTheme } from "@mui/material/styles";
 import content from "~/__generated__/content";
-import { ColumnSchema, MDXFile, TutorialSchema } from "~/Schema";
+import { ColumnSchema, TutorialSchema } from "~/Schema";
+import { MDXFile, sortByDate } from "~/content/contentProvider";
+import { toSorted } from "~/util/polyfills";
 
 type TutorialItemProps = {
 	entry: MDXFile<TutorialSchema>,
@@ -72,7 +72,10 @@ function ArticleEntry({ entry, hrefBaseUrl }: TutorialItemProps){
 }
 
 export default function Blog(){
-	const tutorials = (content.tutorials as MDXFile<TutorialSchema>[]).toSorted(mdxSortByDate);
+	const tutorials = toSorted(
+		content.tutorials as MDXFile<TutorialSchema>[],
+		sortByDate
+	);
 	const columns = content.column as MDXFile<ColumnSchema>[];
 
 	const theme = useTheme();
