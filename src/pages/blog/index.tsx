@@ -13,7 +13,8 @@ import { Divider } from "@mui/material";
 import { useSprings, animated, useChain } from "@react-spring/web"
 import { useTheme } from "@mui/material/styles";
 import content from "~/__generated__/content";
-import { ColumnSchema, MDXFile, TutorialSchema } from "~/Schema";
+import { ColumnSchema, TutorialSchema } from "~/Schema";
+import { MDXFile } from "~/content/contentProvider";
 
 type TutorialItemProps = {
 	entry: MDXFile<TutorialSchema>,

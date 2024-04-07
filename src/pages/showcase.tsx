@@ -20,7 +20,8 @@ import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material"; /
 import Container from "~/components/Container";
 import Title from "~/components/Title";
 import content from "~/__generated__/content";
-import { MDXFile, ShowcaseSchema } from "~/Schema";
+import { ShowcaseSchema } from "~/Schema";
+import { MDXFile } from "~/content/contentProvider";
 // question: how do I use both imagelistitem AND accordion in an imagelist set to masonry? questions questions
 
 type ShowcaseItemProps = {

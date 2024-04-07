@@ -6,9 +6,10 @@ import Stack from "@mui/material/Stack";
 import Link from "~/components/Link";
 import { Button, Divider } from "@mui/material";
 import Title from "~/components/Title";
-import { ArticleSchema, MDXFile } from "~/Schema";
+import { ArticleSchema } from "~/Schema";
 import content from "~/__generated__/content";
 import { mdxSortByDate } from "~/util/mdxContentSortByDate";
+import { MDXFile } from "~/content/contentProvider";
 
 type ArticleEntryProps = {
 	file: MDXFile<ArticleSchema>,
