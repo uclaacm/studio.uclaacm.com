@@ -12,7 +12,7 @@ We recommend using a package manager (and a [version manager](https://github.com
 
 Otherwise, you can [install it manually](https://nodejs.org/en)
 
-Latest release should work.
+Latest release (v21) works, but requires some polyfills so be warned if using new JS APIs (see `src/util/polyfill.ts` for some polyfills already implemented).
 
 ### Yarn
 
@@ -28,30 +28,22 @@ Now open the repository in a terminal and install required packages using:
 
 ### Environment Variables
 
-A few environment variables are required for the backend to work. These can be specified using a [.env](https://www.npmjs.com/package/dotenv) file with the format:
+You can specify environment variables in a [.env](https://www.npmjs.com/package/dotenv) file in the root of the repo. Right now, there is only 1 environment needed for `events` (see branch `events-v2`):
 
 ```
-# Always required
-HOST=https://localhost:3000
-TINA_PUBLIC_IS_LOCAL=true # true: no auth, everything saved in filesystem. False: auth, saved in github + cloudinary
-
-# Only required when TINA_PUBLIC_IS_LOCAL == false
-NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=dinbkakti
-NEXT_PUBLIC_CLOUDINARY_API_KEY=815221835574889
-CLOUDINARY_API_SECRET=...
-GITHUB_OWNER=ketexon
-GITHUB_REPO=studio-cms
-GITHUB_PERSONAL_ACCESS_TOKEN=...
-GITHUB_BRANCH=main
-MONGODB_URI=...
+NEXT_PUBLIC_GCLOUD_API_KEY=...
 ```
+
+To access the API key, ask Aubrey or somebody with access to the GCloud console (though you can make your own key pretty easily, you only need calendar permissions)
 
 ### Running
 
-The scripts are visible in `package.json`, but `yarn dev`/`yarn run dev` runs the development server.
+The scripts are visible in `package.json`.
 
-#### SSL
+There are 2 important ones:
 
-For local SSL, you need to generate the certificates: `certificates/localhost.crt` and `certificates/localhost.key` and use `yarn dev:ssl`.
+- `dev` runs the NextJS development server
+- `index` indexes the content in the `content` folder
+- `index:watch` does the same thing but automatically reruns the script when something changes
 
-If you have OpenSSL installed (`choco install openssl`, `brew install openssl`, usually installed by default on linux), you can run `yarn gencerts` to automatically generate the certificates.
+If you modify any content in `content`, you need to rerun `index` (or have `index:watch` automatically rerun), so it is best to run `yarn dev` and `yarn index:watch` at the same time, either using 2 terminal instances or in parallel (`yarn dev & yarn index:watch` on Mac, Linux, and [MS Powershell 7](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.4#msi)).
