@@ -18,69 +18,19 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'; // expand icon
 import Paper from '@mui/material/Paper'; // paper
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material"; // maybe use accordions for each image? unfold when clicked for details
 import Container from "~/components/Container";
-import Link from "~/components/Link";
 import Title from "~/components/Title";
-import { GetServerSideProps } from "next";
-import path from "path";
-import { useRouter } from "next/router";
-import { dbConnection } from "~/db/connection";
+import content from "~/__generated__/content";
+import { MDXFile, ShowcaseSchema } from "~/Schema";
 // question: how do I use both imagelistitem AND accordion in an imagelist set to masonry? questions questions
 
-export const getServerSideProps: GetServerSideProps<ShowcaseProps> = async () => {
-    const { data } = await dbConnection.queries.showcaseConnection()
-
-    const items: [number, ShowcaseItem][] = data
-        .showcaseConnection
-        .edges
-        ?.map(
-            ({ node: { _sys, title, year, subtitle, description, alt, image, image_url } }) => {
-                const { dir, name } = path.parse(_sys.relativePath);
-                return [
-                    new Date(year).getFullYear(),
-                    {
-                        title,
-                        subtitle,
-                        description,
-                        alt,
-                        src: image || image_url,
-                        href: `/showcase/${path.join(dir, name)}`
-                    }
-                ]
-            }
-        )
-        ?? [];
-
-    const years = Object.entries(items.reduce<{ [k: number]: ShowcaseItem[] }>((years, [year, item]) => ({
-        ...years,
-        [year]: [...(years[year] ?? []), item]
-    }), {})).map(([year, items]) => ({
-        year: parseInt(year), items
-    }));
-
-    years.sort(({year: yearA}, {year: yearB}) => (yearA < yearB ? 1 : -1));
-
-    return {
-        props: {
-            years
-        }
-    }
-}
-
-type ShowcaseItem = {
-    src: string,
-    alt: string,
-    title: string,
-    subtitle: string,
-    description?: string,
-    href?: string,
-}
-
 type ShowcaseItemProps = {
-    item: ShowcaseItem
+    item: MDXFile<ShowcaseSchema>
 }
 
 function ShowcaseItem({ item }: ShowcaseItemProps) {
-    const { title, subtitle, src, alt, href: url, description } = item;
+    let { title, subtitle, img, url, description } = item.default.frontmatter;
+    let external = !!url;
+    url ??= `showcase/${item.filename}`
 
     const theme = useTheme();
     return (
@@ -88,7 +38,8 @@ function ShowcaseItem({ item }: ShowcaseItemProps) {
             {
                 ...url ? {
                     component: NextLink,
-                    href: url
+                    href: url,
+                    target: external ? "_blank" : "_self",
                 } : {}
             }
             sx={theme => ({
@@ -120,19 +71,22 @@ function ShowcaseItem({ item }: ShowcaseItemProps) {
                 textDecoration: "none",
             })}
         >
-
-            <img
-                src={`${src}`}
-                alt={alt}
-                loading="lazy"
-                style={{
-                    borderRadius: theme.shape.borderRadius * 4,
-                    objectFit: "cover",
-                    width: "100%",
-                    height: "100%",
-                    gridArea: "a",
-                }}
-            />
+            {
+                img?.src && (
+                    <img
+                        src={`${img.src}`}
+                        alt={img.alt}
+                        loading="lazy"
+                        style={{
+                            borderRadius: theme.shape.borderRadius * 4,
+                            objectFit: "cover",
+                            width: "100%",
+                            height: "100%",
+                            gridArea: "a",
+                        }}
+                    />
+                )
+            }
             <Box
                 sx={theme => ({
                     gridArea: "a",
@@ -178,17 +132,33 @@ function ShowcaseItem({ item }: ShowcaseItemProps) {
     )
 }
 
-type ShowcaseYear = {
-    year: number,
-    items: ShowcaseItem[],
-}
-
-type ShowcaseProps = {
-    years: ShowcaseYear[]
-};
-
 // need a lower zindex
-export default function Showcase({ years }: ShowcaseProps) {
+export default function Showcase() {
+    const showcase = content.showcase as MDXFile<ShowcaseSchema>[]
+
+    // return the maximum Date.parse value (ie. the newer entry) for the dates on the MDXfiles
+    const newestEntryTime = (files: MDXFile<ShowcaseSchema>[]) => (
+        Math.max(...files.map(v => Date.parse(v.default.frontmatter.date)).filter(n => !isNaN(n)))
+    );
+
+    const categories = Object.entries(
+        Object.groupBy(showcase, (file) => file.default.frontmatter.category ?? "Other")
+    );
+
+    const years = Array.from(
+        Map.groupBy(categories, ([category, items]) => {
+            const time = newestEntryTime(items);
+            return isNaN(time) ? NaN : new Date(time).getFullYear();
+        }).entries()
+    )
+        .toSorted(([yearA], [yearB]) => (
+            yearA < yearB
+                ? 1
+                : -1
+        ))
+
+    console.log(JSON.stringify(years))
+
     const theme = useTheme();
     return (
         <Container
@@ -201,17 +171,22 @@ export default function Showcase({ years }: ShowcaseProps) {
         >
             <Title>Showcase</Title>
             <Typography variant="h1">Showcase</Typography>
-            {
-                years.map(({ year, items }, i) => (
-                    <React.Fragment key={i}>
-                        <Typography variant="h2">{year}</Typography>
-                        <Masonry columns={3} spacing={2}>
-                            { items.map((item, j) => <ShowcaseItem item={item} key={j} />) }
-                        </Masonry>
-                    </React.Fragment>
-                ))
-            }
-            {years.length === 0 && <Typography variant="body1">No content {`(\u25CF\u00B4\u2313\`\u25CF)`}</Typography>}
+            {years.map(([year, categories]) => (
+                <React.Fragment key={year}>
+                    <Typography variant="h2">{year}</Typography>
+                    {categories.map(([category, items]) => (
+                        <React.Fragment key={category}>
+                            <Typography variant="h3">{category}</Typography>
+                            <Masonry columns={3} spacing={2}>
+                                { items.map(item => (
+                                    <ShowcaseItem item={item} key={item.default.frontmatter.title} />
+                                )) }
+                            </Masonry>
+                        </React.Fragment>
+                    ))}
+                </React.Fragment>
+            ))}
+            {Object.keys(years).length === 0 && <Typography variant="body1">No content {`(\u25CF\u00B4\u2313\`\u25CF)`}</Typography>}
         </Container>
     );
 }

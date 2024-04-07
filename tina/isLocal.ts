@@ -1,1 +1,0 @@
-export const isLocal = (process.env.TINA_PUBLIC_IS_LOCAL || "").trim() === "true";

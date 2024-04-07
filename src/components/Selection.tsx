@@ -22,14 +22,18 @@ export type SelectionProps = {
 	useClientHeight?: boolean,
 	offsetBorder?: boolean,
 	transitionMaxWidth?: boolean,
+	fixed?: boolean,
+	parent?: HTMLElement
 }
 
-export function Selection({selectionRef, containerSelector, boxSizing, useClientWidth, useClientHeight, offsetBorder, transitionMaxWidth}: SelectionProps){
+export function Selection({selectionRef, containerSelector, boxSizing, useClientWidth, useClientHeight, offsetBorder, transitionMaxWidth, fixed, parent}: SelectionProps){
 	const [rect, setRect] = React.useState<SelectionRect | null>(null);
 	useClientWidth ??= false;
 	useClientHeight ??= false;
 	offsetBorder ??= false;
 	transitionMaxWidth ??= false;
+	fixed ??= false;
+
 
 	const resizeObserver = new ResizeObserver((entries) => {
 		if(entries.length > 0){
@@ -69,7 +73,7 @@ export function Selection({selectionRef, containerSelector, boxSizing, useClient
 			borderColor: theme.palette.primary.main,
 			borderStyle: "solid",
 			borderRadius: theme.shape.borderRadius,
-			position: "absolute",
+			position: fixed ? "fixed" : "absolute",
 
 			top: offsetBorder ? `calc(${rect?.top}px - ${theme.spacing(1)})` : `${rect?.top}px`,
 			left: offsetBorder ? `calc(${rect?.left}px - ${theme.spacing(1)})` : `${rect?.left}px`,
