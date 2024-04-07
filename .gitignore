@@ -31,3 +31,5 @@ build/Release
 .node_repl_history
 
 node_modules
+
+__generated__
