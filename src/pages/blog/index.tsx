@@ -1,67 +1,31 @@
 import * as React from "react";
-import { Tutorial, Column } from "cms/types";
-import { client } from "cms/client"
 
 import { GetServerSideProps } from "next";
+
+import { mdxSortByDate } from "~/util/mdxContentSortByDate";
 
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Link from "~/components/Link";
 import { Divider } from "@mui/material";
-import path from "path";
 
 import { useSprings, animated, useChain } from "@react-spring/web"
 import { useTheme } from "@mui/material/styles";
-
-export type ArticleEntry = (Tutorial | Column) & { href: string }
-
-export const getServerSideProps: GetServerSideProps<BlogProps> = async (ctx) => {
-	const tutorials = (await client.queries.tutorialConnection({
-			sort: "date",
-		}))
-		.data.tutorialConnection.edges
-		.map(edge => edge.node as Tutorial)
-		.map(tutorial => {
-			const { dir, name } = path.parse(tutorial._sys.relativePath);
-			return {
-				...tutorial,
-				href: `/byte-sized-tutorials/${path.join(dir, name)}`
-			} as ArticleEntry
-		})
-
-	const columns = (await client.queries.columnConnection({ sort: "date" }))
-		.data.columnConnection.edges
-		.map(edge => edge.node as Column)
-		.map(column => {
-			const { dir, name } = path.parse(column._sys.relativePath);
-			return {
-				...column,
-				href: `/column/${path.join(dir, name)}`
-			} as ArticleEntry
-		})
-	return {
-		props: {
-			tutorials: tutorials.reverse().slice(0, 6),
-			columns: columns.reverse().slice(0, 6),
-		}
-	}
-}
-
-type BlogProps = {
-	tutorials: ArticleEntry[],
-	columns: ArticleEntry[],
-}
+import content from "~/__generated__/content";
+import { ColumnSchema, MDXFile, TutorialSchema } from "~/Schema";
 
 type TutorialItemProps = {
-	entry: ArticleEntry
+	entry: MDXFile<TutorialSchema>
 }
 
 function TutorialItem({ entry }: TutorialItemProps){
-	const imageUrl = entry.image || entry.image_url;
+	const tutorial = entry.default.frontmatter;
+	const { title, image_url: imageUrl } = tutorial;
+	const url = `byte-sized-tutorials/${entry.filename}`
 	return <Box
 		component={Link}
-		href={entry.href}
+		href={url}
 		display="flex" flexDirection="column" alignItems="stretch"
 		gap={1}
 		sx={{
@@ -84,10 +48,10 @@ function TutorialItem({ entry }: TutorialItemProps){
 		<Box>
 			<Box>
 				{
-					entry.keywords?.at(0) && (
+					tutorial.keywords?.at(0) && (
 						<>
 							<Typography variant="subtitle2" display="inline">
-								{entry.keywords[0]}
+								{tutorial.keywords[0]}
 							</Typography>
 							<Typography variant="subtitle2" display="inline" mx={1}>
 								{"\u2022"}
@@ -96,17 +60,20 @@ function TutorialItem({ entry }: TutorialItemProps){
 					)
 				}
 				<Typography variant="subtitle2" display="inline">
-					{entry.author}
+					{tutorial.author}
 				</Typography>
 			</Box>
 			<Typography variant="h4" component="h3" color="primary.main" className="TutorialItem__LinkText">
-				{ entry.title }
+				{ tutorial.title }
 			</Typography>
 		</Box>
 	</Box>
 }
 
-export default function Blog({ tutorials, columns }: BlogProps){
+export default function Blog(){
+	const tutorials = (content.tutorials as MDXFile<TutorialSchema>[]).toSorted(mdxSortByDate);
+	const columns = content.column as MDXFile<ColumnSchema>[];
+
 	const theme = useTheme();
 	const [tutorialsTrails, tutorialsApi] = useSprings(
 		tutorials.length,

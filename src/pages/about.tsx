@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import content from "~/__generated__/content";
+
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -13,40 +15,12 @@ import BackgroundImage from "~/assets/images/backgrounds/ps5.svg"
 import Logo from "~/assets/images/logo.png"
 
 import { useTheme } from "@mui/material";
-import { dbConnection } from "~/db/connection";
-import { GetServerSideProps } from "next";
-import Markdown from "~/components/Markdown";
-import { TinaMarkdownContent } from "tinacms/dist/rich-text";
 import { getIconFromType } from "~/util/getIconFromType";
 import Link from "~/components/Link";
 import IconButton from "~/components/IconButton";
+import { OfficerSchema } from "~/Schema";
 
-type AboutProps = {
-    officers: Array<{
-        name: string,
-        imageSrc: string,
-        description: string,
-        links: Array<{ type: string, href: string }>
-    }>,
-    blurb?: TinaMarkdownContent,
-};
-
-export const getServerSideProps: GetServerSideProps<AboutProps> = async () => {
-    const { data: officersData } = await dbConnection.queries.officersConnection();
-    const { data: blurbData } = await dbConnection.queries.content({ relativePath: "about.md" });
-    return {
-        props: {
-            officers: officersData.officersConnection.edges.map(({ node: { name, image, image_url, description, links } }) => ({
-                name,
-                imageSrc: image && image.length > 0 ? image : image_url,
-                description,
-                links: links ?? []
-            })),
-            blurb: blurbData?.content.body ?? null
-        }
-    }
-}
-export default function About({ officers, blurb }: AboutProps) {
+export default function About() {
     const theme = useTheme();
 
     return (
@@ -64,7 +38,7 @@ export default function About({ officers, blurb }: AboutProps) {
             <Typography mb={4} variant="h1" sx={{ lineHeight: 1 }}><i className="isax isax-info-circle5" style={{ color: theme.palette.primary.main }}></i> About acm.studio</Typography>
             <Box mb={4} display="grid" gridTemplateColumns="2fr 1fr" gap={2}>
                 <Box>
-                    <Markdown content={blurb}/>
+                    Hello
                 </Box>
                 <img src={Logo.src} alt="acm.studio Logo" />
             </Box>
@@ -72,8 +46,13 @@ export default function About({ officers, blurb }: AboutProps) {
                 <Typography variant="h2" color="primary.main" mb={4}>Officers</Typography>
                 <Stack spacing={2}>
                     {
-                        officers.map(({ name, imageSrc, description, links }) => (
-                            <Box display="grid" gridTemplateColumns="1fr 2fr" gridTemplateRows="1fr" gap={2} key={name}>
+                        content.officers.map((officer) => {
+                            const {
+                                name,
+                                image_url: imageSrc,
+                                links
+                            } = officer.default.frontmatter as OfficerSchema;
+                            return <Box display="grid" gridTemplateColumns="1fr 2fr" gridTemplateRows="1fr" gap={2} key={name}>
                                 <Box>
                                     <img
                                         src={imageSrc}
@@ -87,12 +66,10 @@ export default function About({ officers, blurb }: AboutProps) {
                                 <Stack spacing={2}>
                                     <Box flexGrow={0}>
                                         <Typography variant="h3">{name}</Typography>
-                                        <Typography variant="body1">
-                                            {description}
-                                        </Typography>
+                                        <officer.default.default/>
                                     </Box>
                                     <Stack direction="row" spacing={1}>
-                                        {links.map(({ type, href }, i) => {
+                                        {links?.map(({ type, href }, i) => {
                                             const icon = getIconFromType(type);
                                             if(icon === null){
                                                 return <Button variant="outlined" component={Link} href={href} target="_blank" key={i}>
@@ -108,7 +85,7 @@ export default function About({ officers, blurb }: AboutProps) {
                                     </Stack>
                                 </Stack>
                             </Box>
-                        ))
+                        })
                     }
                 </Stack>
             </Box>

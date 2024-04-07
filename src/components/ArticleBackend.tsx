@@ -1,42 +1,29 @@
-import { Column, Query, Tutorial } from "cms/types"
-import { dbConnection } from "~/db/connection";
 import { ArticleProps } from "~/components/ArticleFrontend";
 
-// this must be updated to give types for which tina collections are valid articles
-export type CollectionName = Extract<keyof Query, "tutorial" | "column">
-export type CollectionQuery = (typeof dbConnection)["queries"][CollectionName]
+import content from "~/__generated__/content";
+import { GetStaticPaths, GetStaticProps } from "next";
+import { ArticleSchema, MDXFile } from "~/Schema";
 
-export type CollectionConnectionName = `${CollectionName}Connection`
-export type CollectionConnectionQuery = (typeof dbConnection)["queries"][CollectionConnectionName]
-
-export type Article = Query[CollectionName]
-
-export type GetArticleParams = {
-	relativePath: string,
-	collection: CollectionName,
-}
-
-export type GetArticleResult = {
-	props: ArticleProps
-} | {
-	notFound: true,
-}
-
-export async function getArticle({ relativePath, collection }: GetArticleParams): Promise<GetArticleResult> {
-    const article: Article | null = await dbConnection
-		.queries[collection]({ relativePath })
-		.then(({ data }) => data[collection])
-		.catch(() => null)
-
-    return {
-        ...article
-			? {
+export function ArticleExports(collectionName: string) {
+	const collection = (content[collectionName] as MDXFile<ArticleSchema>[]);
+	return {
+		getStaticPaths: ((ctx) => {
+			return {
+				fallback: false,
+				paths: collection.map(({ filename }) => ({
+					params: {
+						slug: filename.split("/")
+					}
+				}))
+			}
+		}) as GetStaticPaths,
+		getStaticProps: (({ params }) => {
+			return {
 				props: {
-					article
+					collection: collectionName,
+					filename: (params.slug as string[]).join("/"),
 				}
 			}
-			: {
-				notFound: true
-			}
-    }
+		}) as GetStaticProps
+	}
 }

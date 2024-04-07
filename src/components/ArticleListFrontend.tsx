@@ -4,23 +4,27 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Link from "~/components/Link";
-import { Divider } from "@mui/material";
+import { Button, Divider } from "@mui/material";
 import Title from "~/components/Title";
-
-import { Article } from "~/components/ArticleBackend";
+import { ArticleSchema, MDXFile } from "~/Schema";
+import content from "~/__generated__/content";
+import { mdxSortByDate } from "~/util/mdxContentSortByDate";
 
 type ArticleEntryProps = {
-	article: Article & { href: string },
+	file: MDXFile<ArticleSchema>,
+	baseUrl: string,
 }
-function ArticleEntry({ article }: ArticleEntryProps){
-	const imageUrl = article.image || article.image_url;
+function ArticleEntry({ file, baseUrl }: ArticleEntryProps){
+	const article = file.default.frontmatter;
+	const href = `${baseUrl}/${file.filename}`;
+	const { title, author, description, date, image_url: imageUrl } = article;
 	return (
 		<>
 			<Box
 				display="grid"
 				gridTemplateColumns="1fr 2fr"
 				component={Link}
-				href={`${article.href}`}
+				href={`${href}`}
 				gap={2}
 				sx={theme => ({
 					height: theme.breakpoints.values.lg / 3 * 9 / 16,
@@ -64,25 +68,55 @@ function ArticleEntry({ article }: ArticleEntryProps){
 	)
 }
 
-export type ArticleListProps = {
-	articles: (Article & { href: string})[],
-	nextCursor: string | null,
-	prevCursor: string | null,
+type CollectionArticleListParams = {
+	collectionID: string,
+	collectionName: string,
+	baseUrl: string,
+	articlesPerPage?: number,
 }
 
-export default function ByteSizedTutorials({ articles, prevCursor, nextCursor }: ArticleListProps){
-	return <Container maxWidth="lg" sx={{py: 2}}>
-		<Title>Byte-Sized Tutorials</Title>
-		<Typography variant="h1" sx={{mb: 2}}>
-			Byte-Sized Tutorials
-		</Typography>
-		<Stack>
-			{articles.map((article, i) => <ArticleEntry article={article} key={i}/>)}
-		</Stack>
-		<Box display="flex">
-			{prevCursor && <Box><Link href={`?cursor=${prevCursor}&dir=backward`}>Previous Page</Link></Box>}
-			<Box flexGrow={1}></Box>
-			{nextCursor && <Box><Link href={`?cursor=${nextCursor}&dir=forward`}>Next Page</Link></Box>}
-		</Box>
-	</Container>
+export default function CollectionArticleList({ collectionID , collectionName, articlesPerPage, baseUrl }: CollectionArticleListParams) {
+	const collection = (content[collectionID] as MDXFile<ArticleSchema>[]).toSorted(mdxSortByDate);
+	articlesPerPage ??= 5;
+
+	console.log(collection.length)
+
+	return function(){
+		const [page, setPage] = React.useState(0);
+		const [firstIndex, lastIndex] = React.useMemo(() => [
+			page * articlesPerPage,
+			(page + 1) * articlesPerPage,
+		], [page]);
+		const [firstPage, lastPage] = React.useMemo(() => [
+			page === 0,
+			lastIndex > collection.length,
+		], [page]);
+
+		const incPage = () =>  setPage(p => Math.min(
+			p + 1,
+			Math.ceil(collection.length / articlesPerPage)
+		));
+		const decPage = () => setPage(p => Math.max(
+			p - 1,
+			0
+		));
+
+		return <Container maxWidth="lg" sx={{py: 2}}>
+			<Title>{ collectionName }</Title>
+			<Typography variant="h1" sx={{mb: 2}}>
+				Byte-Sized Tutorials
+			</Typography>
+			<Stack>
+				{collection.slice(
+					page * articlesPerPage,
+					(page + 1) * articlesPerPage
+				).map((article, i) => <ArticleEntry file={article} baseUrl={baseUrl} key={article.filename}/>)}
+			</Stack>
+			<Box display="flex">
+				{!firstPage && <Box><Button onClick={decPage}>Previous Page</Button></Box>}
+				<Box flexGrow={1}></Box>
+				{!lastPage && <Box><Button onClick={incPage}>Next Page</Button></Box>}
+			</Box>
+		</Container>
+	}
 }

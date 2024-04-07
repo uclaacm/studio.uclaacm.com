@@ -4,15 +4,23 @@ import Container from "~/components/Container";
 import Typography from "@mui/material/Typography"
 import Markdown from "~/components/Markdown";
 
-import { Article } from "~/components/ArticleBackend"
+import { ArticleSchema, MDXFile } from "~/Schema"
+import content from "~/__generated__/content";
+import { GetStaticProps } from "next";
 
 export type ArticleProps = {
-	article: Article
+	collection: string,
+	filename: string,
 }
-export default function({ article: { title, author, description, body } }: ArticleProps){
+
+export function ArticleRenderer({ collection, filename }: ArticleProps){
+	const article = (content[collection] as MDXFile<ArticleSchema>[])
+		.find(({ filename: f }) => f === filename);
+
+	const { author, title } = article.default.frontmatter;
 	return <Container>
 		<Typography variant="subtitle1">{author}</Typography>
 		<Typography variant="h1">{title}</Typography>
-		<Markdown content={body}/>
+		<article.default.default />
 	</Container>
 }
