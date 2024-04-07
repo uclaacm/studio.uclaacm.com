@@ -8,7 +8,7 @@ import { Button, Divider } from "@mui/material";
 import Title from "~/components/Title";
 import { ArticleSchema } from "~/Schema";
 import content from "~/__generated__/content";
-import { MDXFile, sortByDate } from "~/content/contentProvider";
+import { MDXFile, sortByModifiedDate, sortByPublishedDate } from "~/content/contentProvider";
 import "~/util/polyfills"
 import { toSorted } from "~/util/polyfills";
 
@@ -80,7 +80,7 @@ type CollectionArticleListParams = {
 export default function CollectionArticleList({ collectionID , collectionName, articlesPerPage, baseUrl }: CollectionArticleListParams) {
 	const collection = toSorted(
 		(content[collectionID] as MDXFile<ArticleSchema>[]),
-		sortByDate
+		sortByPublishedDate
 	);
 	articlesPerPage ??= 5;
 

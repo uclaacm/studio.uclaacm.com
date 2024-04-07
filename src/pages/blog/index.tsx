@@ -12,7 +12,7 @@ import { useSprings, animated, useChain } from "@react-spring/web"
 import { useTheme } from "@mui/material/styles";
 import content from "~/__generated__/content";
 import { ColumnSchema, TutorialSchema } from "~/Schema";
-import { MDXFile, sortByDate } from "~/content/contentProvider";
+import { MDXFile, sortByModifiedDate, sortByPublishedDate } from "~/content/contentProvider";
 import { toSorted } from "~/util/polyfills";
 
 type TutorialItemProps = {
@@ -74,9 +74,12 @@ function ArticleEntry({ entry, hrefBaseUrl }: TutorialItemProps){
 export default function Blog(){
 	const tutorials = toSorted(
 		content.tutorials as MDXFile<TutorialSchema>[],
-		sortByDate
+		sortByPublishedDate
 	);
-	const columns = content.column as MDXFile<ColumnSchema>[];
+	const columns = toSorted(
+		content.column as MDXFile<ColumnSchema>[],
+		sortByPublishedDate
+	);
 
 	const theme = useTheme();
 	const [tutorialsTrails, tutorialsApi] = useSprings(
@@ -116,8 +119,8 @@ export default function Blog(){
 				<Typography variant="h2" mb={2}>Byte-Sized Tutorials</Typography>
 				<Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap={2}>
 					{tutorials.map((entry, i) => (
-						<animated.div style={tutorialsTrails[i]}>
-							<ArticleEntry key={i} entry={entry} hrefBaseUrl="byte-sized-tutorials" />
+						<animated.div style={tutorialsTrails[i]} key={entry.filename}>
+							<ArticleEntry key={entry.filename} entry={entry} hrefBaseUrl="byte-sized-tutorials" />
 						</animated.div>
 					))}
 				</Box>
@@ -132,7 +135,7 @@ export default function Blog(){
 					<Typography variant="h2" mb={2}>Column</Typography>
 					<Box display="grid" gridAutoColumns="1fr" gap={2}>
 						{columns.map((entry, i) => (
-							<animated.div style={columnTrails[i]}>
+							<animated.div style={columnTrails[i]} key={entry.filename}>
 								<ArticleEntry key={i} entry={entry} hrefBaseUrl="column" />
 							</animated.div>
 						))}

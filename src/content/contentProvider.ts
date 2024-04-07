@@ -19,11 +19,20 @@ export function getFile<T>(collectionName: string, filename: string): MDXFile<T>
 	return filenameMap.get(collectionName)?.get(filename) as MDXFile<T>;
 }
 
-export function sortByDate<T>(
+export function sortByModifiedDate<T>(
 	{ modifiedDate: modifiedDateA }: MDXFile<T>,
 	{ modifiedDate: modifiedDateB }: MDXFile<T>
 ): number {
-	return modifiedDateA < modifiedDateB ? -1
-		: modifiedDateA > modifiedDateB ? 1
-		: 0;
+	return modifiedDateB.getTime() - modifiedDateA.getTime();
+}
+
+export function sortByPublishedDate<T extends { date?: string }>(
+	{ default: { frontmatter: { date: dateA }} }: MDXFile<T>,
+	{ default: { frontmatter: { date: dateB }} }: MDXFile<T>
+): number {
+	const dateAParsed = Date.parse(dateA);
+	const dateBParsed = Date.parse(dateB);
+	return isNaN(dateAParsed) ? 1
+			: isNaN(dateBParsed) ? -1
+			: dateBParsed - dateAParsed
 }
