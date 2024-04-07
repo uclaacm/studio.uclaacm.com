@@ -4,9 +4,10 @@ import Container from "~/components/Container";
 import Typography from "@mui/material/Typography"
 import Markdown from "~/components/Markdown";
 
-import { ArticleSchema, MDXFile } from "~/Schema"
+import { ArticleSchema } from "~/Schema"
 import content from "~/__generated__/content";
 import { GetStaticProps } from "next";
+import { getFile } from "~/content/contentProvider";
 
 export type ArticleProps = {
 	collection: string,
@@ -14,8 +15,7 @@ export type ArticleProps = {
 }
 
 export function ArticleRenderer({ collection, filename }: ArticleProps){
-	const article = (content[collection] as MDXFile<ArticleSchema>[])
-		.find(({ filename: f }) => f === filename);
+	const article = getFile<ArticleSchema>(collection, filename);
 
 	const { author, title } = article.default.frontmatter;
 	return <Container>

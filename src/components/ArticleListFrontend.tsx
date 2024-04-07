@@ -102,7 +102,7 @@ export default function CollectionArticleList({ collectionID , collectionName, a
 		return <Container maxWidth="lg" sx={{py: 2}}>
 			<Title>{ collectionName }</Title>
 			<Typography variant="h1" sx={{mb: 2}}>
-				Byte-Sized Tutorials
+				{ collectionName }
 			</Typography>
 			<Stack>
 				{collection.slice(

@@ -16,13 +16,14 @@ import content from "~/__generated__/content";
 import { ColumnSchema, MDXFile, TutorialSchema } from "~/Schema";
 
 type TutorialItemProps = {
-	entry: MDXFile<TutorialSchema>
+	entry: MDXFile<TutorialSchema>,
+	hrefBaseUrl: string,
 }
 
-function TutorialItem({ entry }: TutorialItemProps){
+function ArticleEntry({ entry, hrefBaseUrl }: TutorialItemProps){
 	const tutorial = entry.default.frontmatter;
 	const { title, image_url: imageUrl } = tutorial;
-	const url = `byte-sized-tutorials/${entry.filename}`
+	const url = `${hrefBaseUrl}/${entry.filename}`
 	return <Box
 		component={Link}
 		href={url}
@@ -113,7 +114,7 @@ export default function Blog(){
 				<Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap={2}>
 					{tutorials.map((entry, i) => (
 						<animated.div style={tutorialsTrails[i]}>
-							<TutorialItem key={i} entry={entry} />
+							<ArticleEntry key={i} entry={entry} hrefBaseUrl="byte-sized-tutorials" />
 						</animated.div>
 					))}
 				</Box>
@@ -129,7 +130,7 @@ export default function Blog(){
 					<Box display="grid" gridAutoColumns="1fr" gap={2}>
 						{columns.map((entry, i) => (
 							<animated.div style={columnTrails[i]}>
-								<TutorialItem key={i} entry={entry} />
+								<ArticleEntry key={i} entry={entry} hrefBaseUrl="column" />
 							</animated.div>
 						))}
 					</Box>

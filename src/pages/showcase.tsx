@@ -28,7 +28,9 @@ type ShowcaseItemProps = {
 }
 
 function ShowcaseItem({ item }: ShowcaseItemProps) {
-    const { title, subtitle, img, url, description } = item.default.frontmatter;
+    let { title, subtitle, img, url, description } = item.default.frontmatter;
+    let external = !!url;
+    url ??= `showcase/${item.filename}`
 
     const theme = useTheme();
     return (
@@ -37,7 +39,7 @@ function ShowcaseItem({ item }: ShowcaseItemProps) {
                 ...url ? {
                     component: NextLink,
                     href: url,
-                    target: "_blank",
+                    target: external ? "_blank" : "_self",
                 } : {}
             }
             sx={theme => ({

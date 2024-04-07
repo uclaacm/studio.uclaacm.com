@@ -9,6 +9,7 @@ export type ShowcaseSchema = {
 		alt?: string,
 	},
 	url: string,
+	links?: { type: string, href: string }[]
 };
 
 export type OfficerSchema = {
@@ -29,11 +30,3 @@ export type ArticleSchema = {
 export type TutorialSchema = ArticleSchema;
 
 export type ColumnSchema = ArticleSchema;
-
-export type MDXFile<FrontmatterT> = {
-	filename: string,
-	modifiedDate: Date,
-	default: Awaited<typeof import("*.mdx")> & {
-		frontmatter: FrontmatterT
-	}
-}
