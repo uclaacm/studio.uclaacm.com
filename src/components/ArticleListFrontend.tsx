@@ -79,8 +79,6 @@ export default function CollectionArticleList({ collectionID , collectionName, a
 	const collection = (content[collectionID] as MDXFile<ArticleSchema>[]).toSorted(mdxSortByDate);
 	articlesPerPage ??= 5;
 
-	console.log(collection.length)
-
 	return function(){
 		const [page, setPage] = React.useState(0);
 		const [firstIndex, lastIndex] = React.useMemo(() => [
