@@ -1,3 +1,15 @@
+/**
+ * Events page
+ * Layout is as follows:
+ *  Events: Header and month control
+ *      Calendar: calendar display
+ *          CalendarCell: single cell in calendar
+ *              CalendarEvent: single event in calendar cell
+ *                  EventCard: Popover for clicking on event in calendar cell
+ *      UpcomingEventsList: upcoming events
+ *          EventCard: single event in upcoming event list
+*/
+
 import * as React from "react";
 
 import Box from "@mui/material/Box";
@@ -5,11 +17,13 @@ import Typography from "@mui/material/Typography";
 import Container from "~/components/Container";
 import { IconButton as MUIIconButton, Button, Card, CardActions, CardContent, CardHeader, ClickAwayListener, Paper, Popper, Skeleton, Stack, useTheme, Divider } from "@mui/material";
 import { objectGroupBy } from "~/util/polyfills";
-import Link from "~/components/Link";
 import IconButton from "~/components/IconButton";
 import IsaxIcon from "~/components/IsaxIcon";
 
 import { ArrowLeft as ArrowLeftIcon, ArrowRight as ArrowRightIcon, Close as CloseIcon } from "@mui/icons-material";
+import Head from "next/head";
+import Title from "~/components/Title";
+import getRandomEmoticon from "~/util/getRandomEmoticon";
 
 type EventProps = {};
 
@@ -30,14 +44,14 @@ function getDayName(day: number) {
     date.setDate(date.getDate() - date.getDay() + day);
     return date.toLocaleString("default", {
         weekday: "short"
-    });
+    }).toLocaleLowerCase();
 }
 
 function getMonthYear(date: Date) {
     return date.toLocaleString("default", {
         month: "long",
         year: "numeric"
-    });
+    }).toLocaleLowerCase();
 }
 
 function normalizeDate(date: Date) {
@@ -118,7 +132,12 @@ function CalendarEvent({ event }: CalendarEventProps) {
                 evt.stopPropagation();
             }}
             onClick={(evt) => {
-                setAnchorEl(evt.currentTarget);
+                if(anchorEl === null) {
+                    setAnchorEl(evt.currentTarget);
+                }
+                else {
+                    setAnchorEl(null);
+                }
             }}
             sx={{
                 px: 1,
@@ -237,7 +256,7 @@ function Calendar({ data, monthStartDay, setMonthStartDay, eventsByStatus }: Cal
             gridTemplateColumns: "repeat(7, 1fr)",
         }}>
             {Array.from({ length: 7 }).map((_, i) => (
-                <SkeletonContainer><CalendarHeader weekday={getDayName(i)} key={i} /></SkeletonContainer>
+                <SkeletonContainer key={`loading${i}`}><CalendarHeader weekday={getDayName(i)} key={i} /></SkeletonContainer>
             ))}
         </Box>
         {/* Cells */}
@@ -266,35 +285,43 @@ function Calendar({ data, monthStartDay, setMonthStartDay, eventsByStatus }: Cal
     </Box>
 }
 
-type EventsListProps = {
+type UpcomingEventsListProps = {
     data?: EventsData,
     eventsByStatus?: Partial<Record<EventStatus, EventData[]>>,
     todaysDate?: Date,
 }
 
-function EventsList({ data, eventsByStatus, todaysDate }: EventsListProps){
+function UpcomingEventsList({ data, eventsByStatus, todaysDate }: UpcomingEventsListProps){
     const loading = React.useMemo(() => todaysDate === null || data === null, [todaysDate, data])
     const SkeletonContainer = loading ? Skeleton : React.Fragment;
+
+    const [sadEmoticon, setSadEmoticon] = React.useState("");
+
+    React.useEffect(() => {
+        setSadEmoticon(getRandomEmoticon({ emotion: "sad" }));
+    }, []);
 
     const thisMonthsEvents = React.useMemo(() => {
         return eventsByStatus?.confirmed?.filter(event => {
             const eventDateTime = new Date(event.start.dateTime);
             return eventDateTime.getTime() >= todaysDate.getTime();
         })
-    }, [todaysDate]);
+    }, [todaysDate, eventsByStatus]);
 
     return <Box sx={{ width: "180px" }}>
-        <Typography variant="h4" whiteSpace="nowrap" fontWeight="bold" gutterBottom>Upcoming Events</Typography>
+        <Typography variant="h4" whiteSpace="nowrap" fontWeight="bold" gutterBottom>upcoming</Typography>
         <Stack gap={1}>
             { loading && Array.from({ length: 4 }).map((_, i) => <Skeleton key={`loading${i}`} height="128px"></Skeleton>)}
             { !loading && thisMonthsEvents?.map((event) => <EventCard event={event} key={event.start.dateTime}/>)}
+            { thisMonthsEvents?.length === 0 && <Typography variant="body1">no upcoming events <pre>{sadEmoticon}</pre></Typography> }
         </Stack>
     </Box>
 }
 
 const GCLOUD_API_KEY = process.env.NEXT_PUBLIC_GCLOUD_API_KEY;
 const CALENDAR_ID = "c_729vu5u1obkg7nu762sh687bp8@group.calendar.google.com";
-const EVENTS_ENDPOINT = `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events?key=${GCLOUD_API_KEY}`;
+// const EVENTS_ENDPOINT = `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events?key=${GCLOUD_API_KEY}`;
+const EVENTS_ENDPOINT = `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events`;
 
 export default function Events({ }: EventProps) {
     const [eventsData, setEventsData] = React.useState<EventsData | null>(null);
@@ -302,9 +329,10 @@ export default function Events({ }: EventProps) {
     const [monthStartDay, setMonthStartDay] = React.useState<Date | null>(null);
 
     React.useEffect(() => {
+        setTodayDate(normalizeDate(new Date()));
+
         const today = new Date();
         today.setDate(1);
-        setTodayDate(today);
         setMonthStartDay(normalizeDate(today));
     }, [])
 
@@ -347,7 +375,8 @@ export default function Events({ }: EventProps) {
 
     return (
         <Container>
-            <Typography variant="h1">Our events!</Typography>
+            <Title>events</Title>
+            <Typography variant="h1">events</Typography>
             <SkeletonContainer>
                 <Stack direction="row">
                     <Stack justifyContent="center">
@@ -357,8 +386,10 @@ export default function Events({ }: EventProps) {
                             <ArrowLeftIcon />
                         </MUIIconButton>
                     </Stack>
-                    {/* Make sure september works */}
-                    <Box width="26rem"><Typography variant="h2" textAlign="center">{monthStartDay && getMonthYear(monthStartDay)}</Typography></Box>
+                    {/* width is set to be ~ the maximum width that any month will take up */}
+                    <Box width="26rem"><Typography variant="h2" textAlign="center">
+                        {monthStartDay && getMonthYear(monthStartDay)}
+                    </Typography></Box>
                     <Stack justifyContent="center">
                         <MUIIconButton color="primary" disableRipple={false} onClick={() => {
                             addMonth(1);
@@ -376,7 +407,7 @@ export default function Events({ }: EventProps) {
                     setMonthStartDay={setMonthStartDay}
                 />
                 <Divider orientation="vertical" flexItem />
-                <EventsList
+                <UpcomingEventsList
                     data={eventsData}
                     eventsByStatus={eventsByStatus}
                     todaysDate={todayDate}
