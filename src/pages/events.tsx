@@ -320,8 +320,8 @@ function UpcomingEventsList({ data, eventsByStatus, todaysDate }: UpcomingEvents
 
 const GCLOUD_API_KEY = process.env.NEXT_PUBLIC_GCLOUD_API_KEY;
 const CALENDAR_ID = "c_729vu5u1obkg7nu762sh687bp8@group.calendar.google.com";
-// const EVENTS_ENDPOINT = `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events?key=${GCLOUD_API_KEY}`;
-const EVENTS_ENDPOINT = `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events`;
+const EVENTS_ENDPOINT = `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events?key=${GCLOUD_API_KEY}`;
+// const EVENTS_ENDPOINT = `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events`;
 
 export default function Events({ }: EventProps) {
     const [eventsData, setEventsData] = React.useState<EventsData | null>(null);
