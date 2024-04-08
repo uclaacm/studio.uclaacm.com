@@ -44,14 +44,14 @@ function getDayName(day: number) {
     date.setDate(date.getDate() - date.getDay() + day);
     return date.toLocaleString("default", {
         weekday: "short"
-    }).toLocaleLowerCase();
+    });
 }
 
 function getMonthYear(date: Date) {
     return date.toLocaleString("default", {
         month: "long",
         year: "numeric"
-    }).toLocaleLowerCase();
+    });
 }
 
 function normalizeDate(date: Date) {
@@ -115,7 +115,7 @@ type CalendarHeaderProps = {
 }
 
 function CalendarHeader({ weekday }: CalendarHeaderProps) {
-    return <Typography variant="h3" align="center">{weekday}</Typography>
+    return <Typography variant="h3" align="center" textTransform="lowercase">{weekday}</Typography>
 }
 
 type CalendarEventProps = {
@@ -387,7 +387,7 @@ export default function Events({ }: EventProps) {
                         </MUIIconButton>
                     </Stack>
                     {/* width is set to be ~ the maximum width that any month will take up */}
-                    <Box width="26rem"><Typography variant="h2" textAlign="center">
+                    <Box width="26rem"><Typography variant="h2" textAlign="center" textTransform="lowercase">
                         {monthStartDay && getMonthYear(monthStartDay)}
                     </Typography></Box>
                     <Stack justifyContent="center">
