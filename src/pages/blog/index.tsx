@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { GetServerSideProps } from "next";
 
-import Container from "@mui/material/Container";
+import Container from "~/components/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Link from "~/components/Link";
@@ -106,7 +106,7 @@ export default function Blog(){
 		})
 	);
 
-	return <Container sx={{ pt: 2, minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+	return <Container>
 		<Typography variant="h1" mb={4}>Blog</Typography>
 		<Box
 			display="grid"
