@@ -15,7 +15,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "~/components/Container";
-import { IconButton as MUIIconButton, Button, Card, CardActions, CardContent, CardHeader, ClickAwayListener, Paper, Popper, Skeleton, Stack, useTheme, Divider } from "@mui/material";
+import { IconButton as MUIIconButton, Button, Card, CardActions, CardContent, CardHeader, ClickAwayListener, Paper, Popper, Skeleton, Stack, useTheme, Divider, Snackbar, Alert } from "@mui/material";
 import { objectGroupBy } from "~/util/polyfills";
 import IconButton from "~/components/IconButton";
 import IsaxIcon from "~/components/IsaxIcon";
@@ -321,12 +321,14 @@ function UpcomingEventsList({ data, eventsByStatus, todaysDate }: UpcomingEvents
 const GCLOUD_API_KEY = process.env.NEXT_PUBLIC_GCLOUD_API_KEY;
 const CALENDAR_ID = "c_729vu5u1obkg7nu762sh687bp8@group.calendar.google.com";
 const EVENTS_ENDPOINT = `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events?key=${GCLOUD_API_KEY}`;
-// const EVENTS_ENDPOINT = `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events`;
 
 export default function Events({ }: EventProps) {
     const [eventsData, setEventsData] = React.useState<EventsData | null>(null);
     const [todayDate, setTodayDate] = React.useState<Date | null>(null);
     const [monthStartDay, setMonthStartDay] = React.useState<Date | null>(null);
+
+    const [errorOpen, setErrorOpen] = React.useState(false);
+    const error = React.useRef<string | null>(null);
 
     React.useEffect(() => {
         setTodayDate(normalizeDate(new Date()));
@@ -352,14 +354,17 @@ export default function Events({ }: EventProps) {
             .then(v => {
                 if (v.status === 403) {
                     console.error("Google Calendar API error: Unauthorized. This is likely because the NEXT_PUBLIC_GCLOUD_API_KEY environment variable is unset.")
-                    throw null;
+                    throw new Error("Internal error");
                 }
                 else {
                     return v.json()
                 }
             })
             .then(json => setEventsData(json as EventsData))
-            .catch(e => { })
+            .catch((e: Error) => {
+                error.current = `${e.message} ${getRandomEmoticon({ emotion: "sad" })}`;
+                setErrorOpen(true);
+            })
     }, [])
 
     const loading = React.useMemo(() => monthStartDay === null || eventsData === null, [monthStartDay, eventsData])
@@ -375,6 +380,20 @@ export default function Events({ }: EventProps) {
 
     return (
         <Container>
+            <Snackbar
+                open={errorOpen}
+                autoHideDuration={10_000}
+                onClose={() => { setErrorOpen(false) }}
+            >
+                <Alert
+                    onClose={() => { setErrorOpen(false) }}
+                    severity="error"
+                    variant="filled"
+                >
+                    { error.current }
+                </Alert>
+            </Snackbar>
+
             <Title>events</Title>
             <Typography variant="h1">events</Typography>
             <SkeletonContainer>
