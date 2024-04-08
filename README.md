@@ -30,7 +30,7 @@ Now open the repository in a terminal and install required packages using:
 
 You can specify environment variables in a [.env](https://www.npmjs.com/package/dotenv) file in the root of the repo. Right now, there is only 1 environment needed for `events` (see branch `events-v2`):
 
-```
+```env
 NEXT_PUBLIC_GCLOUD_API_KEY=...
 ```
 
@@ -47,3 +47,9 @@ There are 2 important ones:
 - `index:watch` does the same thing but automatically reruns the script when something changes
 
 If you modify any content in `content`, you need to rerun `index` (or have `index:watch` automatically rerun), so it is best to run `yarn dev` and `yarn index:watch` at the same time, either using 2 terminal instances or in parallel (`yarn dev & yarn index:watch` on Mac, Linux, and [MS Powershell 7](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.4#msi)).
+
+### Deploying
+
+The branch `prod` is automatically deployed to the Netlify project `vermillion-hummingbird-d28997` accessible through [https://vermillion-hummingbird-d28997.netlify.app/].
+
+If you need access to the Netlify, ask Aubrey. Note that the main configuration needed for Netlify to work is to set up the environment variables [as shown above](#environment-variables)
