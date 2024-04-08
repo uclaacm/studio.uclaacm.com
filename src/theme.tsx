@@ -62,7 +62,7 @@ export default responsiveFontSizes(createTheme({
             fontWeight: 400
         },
         body1: {
-            fontSize: "1.5rem",
+            fontSize: "1rem",
             fontWeight: 400
         },
         body2: {
