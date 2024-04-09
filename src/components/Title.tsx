@@ -12,7 +12,7 @@ export default function Title({children}: TitleProps){
 	return <Head>
 		<title>{
 			// note: a template literal is required here because of a nextjs bug
-			`${children ? `${children} | ` : ""}acm.studio`
+			`${children ? `${children} | ` : ""}ACM Studio`
 		}</title>
 	</Head>
 }

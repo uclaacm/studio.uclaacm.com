@@ -14,6 +14,7 @@ import content from "~/__generated__/content";
 import { ColumnSchema, TutorialSchema } from "~/Schema";
 import { MDXFile, sortByModifiedDate, sortByPublishedDate } from "~/content/contentProvider";
 import { toSorted } from "~/util/polyfills";
+import Title from "~/components/Title";
 
 type TutorialItemProps = {
 	entry: MDXFile<TutorialSchema>,
@@ -24,7 +25,9 @@ function ArticleEntry({ entry, hrefBaseUrl }: TutorialItemProps){
 	const tutorial = entry.default.frontmatter;
 	const { title, image_url: imageUrl } = tutorial;
 	const url = `${hrefBaseUrl}/${entry.filename}`
-	return <Box
+	return <>
+	<Title>Blog</Title>
+	<Box
 		component={Link}
 		href={url}
 		display="flex" flexDirection="column" alignItems="stretch"
@@ -69,6 +72,7 @@ function ArticleEntry({ entry, hrefBaseUrl }: TutorialItemProps){
 			</Typography>
 		</Box>
 	</Box>
+	</>
 }
 
 export default function Blog(){

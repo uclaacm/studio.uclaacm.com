@@ -19,6 +19,8 @@ import { getIconFromType } from "~/util/getIconFromType";
 import Link from "~/components/Link";
 import IconButton from "~/components/IconButton";
 import { OfficerSchema } from "~/Schema";
+ 
+ 
 
 export default function About() {
     const theme = useTheme();

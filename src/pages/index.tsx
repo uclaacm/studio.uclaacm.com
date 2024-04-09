@@ -19,6 +19,9 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useInput } from "~/components/Input";
 import { GamepadButtonPressedEvent, GamepadButtonReleasedEvent, XBoxButton } from "~/util/gamepad";
+import Head from 'next/head';
+
+ 
 
 // client side, but use dynamic import
 const Selection = dynamic(() => import("~/components/Selection").then(mod => mod.Selection), { ssr: false });

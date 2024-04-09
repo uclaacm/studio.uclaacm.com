@@ -394,7 +394,7 @@ export default function Events({ }: EventProps) {
                 </Alert>
             </Snackbar>
 
-            <Title>events</Title>
+            <Title>Events</Title>
             <Typography variant="h1">events</Typography>
             <SkeletonContainer>
                 <Stack direction="row">
