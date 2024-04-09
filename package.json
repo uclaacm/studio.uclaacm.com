@@ -25,7 +25,8 @@
     "remark-mdx-frontmatter": "^4.0.0"
   },
   "scripts": {
-    "dev": "next dev",
+    "dev": "yarn index && yarn dev:next",
+    "dev:next": "next dev",
     "build:next": "next build",
     "build": "yarn index && yarn build:next",
     "start": "next start",
