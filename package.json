@@ -10,6 +10,7 @@
     "@mui/lab": "^5.0.0-alpha.136",
     "@mui/material": "^5.12.0",
     "@next/mdx": "^14.1.4",
+    "@notionhq/client": "^2.2.14",
     "@react-spring/web": "^9.7.3",
     "@types/gapi.calendar": "^3.0.11",
     "@types/mdx": "^2.0.12",

@@ -14,13 +14,76 @@ import BackgroundImage from "~/assets/images/backgrounds/ps5.svg"
 
 import Logo from "~/assets/images/logo.png"
 
-import { useTheme } from "@mui/material";
+import { Chip, useTheme } from "@mui/material";
 import { getIconFromType } from "~/util/getIconFromType";
 import Link from "~/components/Link";
 import IconButton from "~/components/IconButton";
-import { OfficerSchema } from "~/Schema";
+import { GetStaticPropsResult, GetStaticPropsContext } from "next";
 
-export default function About() {
+import notion, { getDatabaseProperties, getOfficers, getPagesInDatabase, NotionOfficerSchema } from "~/api/notion";
+import { PageObjectResponse, PartialPageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
+
+export async function getStaticProps(ctx: GetStaticPropsContext): Promise<GetStaticPropsResult<AboutProps>> {
+    const officers = await getOfficers();
+
+    return {
+        props: {
+            officers
+        }
+    }
+}
+
+type OfficerProps = {
+    officer: NotionOfficerSchema
+}
+
+function Officer({ officer }: OfficerProps) {
+    const { name, selfIntro } = officer;
+    return <Box display="grid" gridTemplateColumns="1fr 2fr" gridTemplateRows="1fr" gap={2}>
+        <Box>
+            {/* <img
+                src={imageSrc}
+                style={{
+                    aspectRatio: 1,
+                    objectFit: "cover",
+                    maxWidth: "100%"
+                }}
+            ></img> */}
+        </Box>
+        <Stack spacing={2}>
+            <Stack flexGrow={0} gap={1}>
+                <Typography variant="h3">{officer.name}</Typography>
+                <Stack direction="row" gap={1} flexWrap="wrap" mb={1}>
+                    {officer.roles?.map(role => (
+                        <Chip size="small" variant="outlined" label={role}/>
+                    ))}
+                </Stack>
+                <Typography variant="body1">{officer.selfIntro}</Typography>
+            </Stack>
+            <Stack direction="row" spacing={1}>
+                {/* {links?.map(({ type, href }, i) => {
+                    const icon = getIconFromType(type);
+                    if(icon === null){
+                        return <Button variant="outlined" component={Link} href={href} target="_blank" key={i}>
+                            {type}
+                        </Button>
+                    }
+                    else{
+                        return <IconButton component={Link} href={href} target="_blank" key={i}>
+                            {icon}
+                        </IconButton>
+                    }
+                })} */}
+            </Stack>
+        </Stack>
+    </Box>
+}
+
+type AboutProps = {
+    officers: NotionOfficerSchema[]
+}
+
+export default function About({ officers }: AboutProps) {
     const theme = useTheme();
 
     return (
@@ -46,46 +109,7 @@ export default function About() {
                 <Typography variant="h2" color="primary.main" mb={4}>Officers</Typography>
                 <Stack spacing={2}>
                     {
-                        content.officers.map((officer) => {
-                            const {
-                                name,
-                                image_url: imageSrc,
-                                links
-                            } = officer.default.frontmatter as OfficerSchema;
-                            return <Box display="grid" gridTemplateColumns="1fr 2fr" gridTemplateRows="1fr" gap={2} key={name}>
-                                <Box>
-                                    <img
-                                        src={imageSrc}
-                                        style={{
-                                            aspectRatio: 1,
-                                            objectFit: "cover",
-                                            maxWidth: "100%"
-                                        }}
-                                    ></img>
-                                </Box>
-                                <Stack spacing={2}>
-                                    <Box flexGrow={0}>
-                                        <Typography variant="h3">{name}</Typography>
-                                        <officer.default.default/>
-                                    </Box>
-                                    <Stack direction="row" spacing={1}>
-                                        {links?.map(({ type, href }, i) => {
-                                            const icon = getIconFromType(type);
-                                            if(icon === null){
-                                                return <Button variant="outlined" component={Link} href={href} target="_blank" key={i}>
-                                                    {type}
-                                                </Button>
-                                            }
-                                            else{
-                                                return <IconButton component={Link} href={href} target="_blank" key={i}>
-                                                    {icon}
-                                                </IconButton>
-                                            }
-                                        })}
-                                    </Stack>
-                                </Stack>
-                            </Box>
-                        })
+                        officers.map(officer => <Officer key={officer.name} officer={officer}/>)
                     }
                 </Stack>
             </Box>
