@@ -20,6 +20,9 @@ const officerSchemaTypes: Record<NotionOfficerSchemaKeys, { type: PropertyTypeNa
 }
 
 const secret = process.env.NOTION_SECRET;
+const databaseIDs = {
+	officers: process.env.NOTION_OFFICERS_DATABASE_ID
+};
 
 const client = new Client({
 	auth: secret,
@@ -144,7 +147,7 @@ export function parseOfficerPage({ page }: ParseOfficerPageParams): NotionOffice
 }
 
 export async function getOfficers(){
-	const pages = await getPagesInDatabase({ database_id: process.env.NOTION_DATABASE_ID, });
+	const pages = await getPagesInDatabase({ database_id: databaseIDs.officers, });
 	return pages.map(v => {
 		if(v.object === "page" && "properties" in v) {
 			return parseOfficerPage({ page: v });

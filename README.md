@@ -28,13 +28,32 @@ Now open the repository in a terminal and install required packages using:
 
 ### Environment Variables
 
-You can specify environment variables in a [.env](https://www.npmjs.com/package/dotenv) file in the root of the repo. Right now, there is only 1 environment needed for `events` (see branch `events-v2`):
+You can specify environment variables in a [.env](https://www.npmjs.com/package/dotenv) file in the root of the repo. Do not share or commit the API keys/secrets.
 
 ```env
 NEXT_PUBLIC_GCLOUD_API_KEY=...
+NOTION_SECRET=...
+NOTION_OFFICERS_DATABASE_ID=f82a1e06e36345088fa782632acf1dee
 ```
 
-To access the API key, ask Aubrey or somebody with access to the GCloud console (though you can make your own key pretty easily, you only need calendar permissions)
+#### Google API
+
+To access the Google API Key, go to [this link](https://console.cloud.google.com/apis/credentials?project=studio-uclaacm-com). If this doesn't work, make sure you have access to the Google Developer console. Otherwise, you can also go to the Google Developer Console, open the left-hand-side menu, and go to `APIs & Services/Credentials`. For development, use the development key, and for production, use the production key.
+
+#### Notion API
+
+To access the Notion API Key, make sure you have the Workspace Owner perm on the ACM Studio Notion, and navigate to [https://www.notion.so/my-integrations]. Find the `ACM Studio Website Scraper` integration, click on it, and go to the secrets tab, where you will find the secret. Please don't refresh it lol.
+
+The Notion API requires a database ID when querying the database. At the time of writing, the officers one is `f82a1e06e36345088fa782632acf1dee`. However, if it is even changed, [it can be found](https://developers.notion.com/reference/retrieve-a-database) by going to a database (the database will be in the dropdown under the page displaying the database), go to the top right three dots icon, click `Copy Link`, which will be of the form:
+
+```text
+https://www.notion.so/acmstudioucla/f82a1e06e36345088fa782632acf1dee?v=30c84e38ff814e36b6f2d3cde4befa41&pvs=4
+                                    ^                              ^
+                                    |______________________________|
+                                               Database ID
+```
+
+In addition, the integration to be [connected to the database](https://www.notion.so/help/add-and-manage-connections-with-the-api), which can be granted through the three dots again, then `connect to`, then find the integration.
 
 ### Running
 
