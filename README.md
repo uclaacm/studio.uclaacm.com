@@ -34,6 +34,7 @@ You can specify environment variables in a [.env](https://www.npmjs.com/package/
 NEXT_PUBLIC_GCLOUD_API_KEY=...
 NOTION_SECRET=...
 NOTION_OFFICERS_DATABASE_ID=f82a1e06e36345088fa782632acf1dee
+NOTION_OFFICER_SOCIAL_LINKS_DATABASE_ID=71a67370c416472096621cbb25335ae4
 ```
 
 #### Google API
@@ -53,7 +54,7 @@ https://www.notion.so/acmstudioucla/f82a1e06e36345088fa782632acf1dee?v=30c84e38f
                                                Database ID
 ```
 
-In addition, the integration to be [connected to the database](https://www.notion.so/help/add-and-manage-connections-with-the-api), which can be granted through the three dots again, then `connect to`, then find the integration.
+In addition, the integration to be [connected to the database](https://www.notion.so/help/add-and-manage-connections-with-the-api), which can be granted through the three dots again, then `connect to`, then find the integration. This must be done for any *related* databases to (eg. the Officer Social Links) database.
 
 ### Running
 

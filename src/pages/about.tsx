@@ -18,69 +18,104 @@ import { Chip, useTheme } from "@mui/material";
 import { getIconFromType } from "~/util/getIconFromType";
 import Link from "~/components/Link";
 import IconButton from "~/components/IconButton";
-import { GetStaticPropsResult, GetStaticPropsContext } from "next";
+import { GetStaticPropsResult, GetStaticPropsContext, GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 
-import notion, { getDatabaseProperties, getOfficers, getPagesInDatabase, NotionOfficerSchema } from "~/api/notion";
-import { PageObjectResponse, PartialPageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
+import { objectGroupBy } from "~/util/polyfills";
+import { getOfficers, getOfficerSocialLinks, NotionOfficerSchema, NotionSocialLinksSchema } from "~/api/notion/schema";
 
-export async function getStaticProps(ctx: GetStaticPropsContext): Promise<GetStaticPropsResult<AboutProps>> {
-    const officers = await getOfficers();
+type OfficerWithSocialLinks = NotionOfficerSchema & {
+    links?: NotionSocialLinksSchema[]
+};
+
+export async function getServerSideProps(ctx: GetServerSidePropsContext): Promise<GetServerSidePropsResult<AboutProps>> {
+    const socialLinks = await getOfficerSocialLinks();
+    const officers = (await getOfficers()).map((officer): OfficerWithSocialLinks => ({
+        ...officer,
+        links: socialLinks.filter(v => v.officer === officer.id)
+    }));
+
+    const { current, alumni } = objectGroupBy(officers, ({ boardStatus }) => (
+        boardStatus === "Alumni" ? "alumni" :
+        boardStatus === "Current" ? "current" :
+        undefined
+    ));
+
+    const { presidents, chairs, other } = objectGroupBy(current, ({ category }) => (
+        category === "President" ? "presidents" :
+        category === "Chair" ? "chairs" :
+        "other"
+    ));
+
+    current.sort((a, b) => a.category === "President" ? -1 : 1);
 
     return {
         props: {
-            officers
+            officers: {
+                alumni,
+                current: {
+                    presidents, chairs, other
+                },
+            }
         }
     }
 }
 
 type OfficerProps = {
-    officer: NotionOfficerSchema
+    officer: OfficerWithSocialLinks
 }
 
 function Officer({ officer }: OfficerProps) {
-    const { name, selfIntro } = officer;
+    const { name, selfIntro, image, links } = officer;
     return <Box display="grid" gridTemplateColumns="1fr 2fr" gridTemplateRows="1fr" gap={2}>
         <Box>
-            {/* <img
-                src={imageSrc}
+            <img
+                src={image}
                 style={{
                     aspectRatio: 1,
                     objectFit: "cover",
                     maxWidth: "100%"
                 }}
-            ></img> */}
+            ></img>
         </Box>
         <Stack spacing={2}>
             <Stack flexGrow={0} gap={1}>
                 <Typography variant="h3">{officer.name}</Typography>
+                {officer.title && <Box><Chip color="primary" variant="filled" label={officer.title} /></Box>}
                 <Stack direction="row" gap={1} flexWrap="wrap" mb={1}>
                     {officer.roles?.map(role => (
-                        <Chip size="small" variant="outlined" label={role}/>
+                        <Chip key={role} size="small" variant="outlined" label={role}/>
                     ))}
                 </Stack>
                 <Typography variant="body1">{officer.selfIntro}</Typography>
             </Stack>
             <Stack direction="row" spacing={1}>
-                {/* {links?.map(({ type, href }, i) => {
-                    const icon = getIconFromType(type);
+                {links?.map(({ social, url }, i) => {
+                    const icon = getIconFromType(social);
                     if(icon === null){
-                        return <Button variant="outlined" component={Link} href={href} target="_blank" key={i}>
-                            {type}
+                        return <Button variant="outlined" component={Link} href={url} target="_blank" key={i}>
+                            {social}
                         </Button>
                     }
                     else{
-                        return <IconButton component={Link} href={href} target="_blank" key={i}>
+                        return <IconButton component={Link} href={url} target="_blank" key={i}>
                             {icon}
                         </IconButton>
                     }
-                })} */}
+                })}
             </Stack>
         </Stack>
     </Box>
 }
 
 type AboutProps = {
-    officers: NotionOfficerSchema[]
+    officers: {
+        current: {
+            presidents: OfficerWithSocialLinks[],
+            chairs: OfficerWithSocialLinks[],
+            other: OfficerWithSocialLinks[],
+        },
+        alumni: OfficerWithSocialLinks[],
+    }
 }
 
 export default function About({ officers }: AboutProps) {
@@ -101,15 +136,24 @@ export default function About({ officers }: AboutProps) {
             <Typography mb={4} variant="h1" sx={{ lineHeight: 1 }}><i className="isax isax-info-circle5" style={{ color: theme.palette.primary.main }}></i> About acm.studio</Typography>
             <Box mb={4} display="grid" gridTemplateColumns="2fr 1fr" gap={2}>
                 <Box>
-                    Hello
                 </Box>
                 <img src={Logo.src} alt="acm.studio Logo" />
             </Box>
             <Box>
-                <Typography variant="h2" color="primary.main" mb={4}>Officers</Typography>
+                <Typography variant="h2" color="primary.main" mb={4}>meet the board</Typography>
                 <Stack spacing={2}>
                     {
-                        officers.map(officer => <Officer key={officer.name} officer={officer}/>)
+                        [
+                            ...officers.current.presidents,
+                            ...officers.current.chairs,
+                            ...officers.current.other,
+                        ].map(officer => <Officer key={officer.name} officer={officer}/>)
+                    }
+                </Stack>
+                <Typography variant="h2" color="primary.main" mb={4}>meet the alumni</Typography>
+                <Stack spacing={2}>
+                    {
+                        officers.alumni.map(officer => <Officer key={officer.name} officer={officer}/>)
                     }
                 </Stack>
             </Box>
