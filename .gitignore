@@ -33,3 +33,5 @@ build/Release
 node_modules
 
 __generated__
+yarn.lock
+.vscode
