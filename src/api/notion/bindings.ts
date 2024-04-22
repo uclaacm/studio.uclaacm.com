@@ -43,16 +43,23 @@ export type NotionSchemaBinding<T extends NotionSchema> = {
 	} & SchemaTypeBinding
 };
 
-export type PropertyTypeName<T = any> =
-	T extends string ? "string" | "image" | "url" :
-	T extends string[] ? "strings":
-	T extends number ? "number" :
-	never;
+type PropertyTypeNamesMap = {
+	string: string,
+	image: string,
+	url: string,
+	date: string,
+	strings: string[],
+	number: number
+}
+
+export type PropertyTypeName<T = any> = {
+	[P in keyof PropertyTypeNamesMap]: PropertyTypeNamesMap[P] extends T ? P : never
+}[keyof PropertyTypeNamesMap]
 
 export type SchemaTypeBinding = {
 	source: "property",
 	propertyName: string,
-	type: "string" | "strings" | "number" | "image" | "url",
+	type: "string" | "strings" | "number" | "image" | "url" | "date",
 	// Property name on the table this property refers to
 	relation?: {
 		propertyName: string,
@@ -62,13 +69,7 @@ export type SchemaTypeBinding = {
 	type: "string",
 };
 
-export type PropertyType<T extends PropertyTypeName> =
-	T extends "string" ? string :
-	T extends "strings" ? Array<string> :
-	T extends "number" ? number :
-	T extends "image" ? string :
-	T extends "url" ? string :
-	never;
+export type PropertyType<T extends PropertyTypeName> = PropertyTypeNamesMap[PropertyTypeName]
 
 export function richTextToString(richText: RichTextItemResponse[]){
 	return richText.reduce((acc, cur) => acc + cur.plain_text, "");
@@ -127,6 +128,14 @@ export function propertyTryGetImage(prop: PageObjectResponse["properties"][strin
 	return null;
 }
 
+export function propertyTryGetDate(prop: PageObjectResponse["properties"][string]): string | null {
+	if(prop.type === "date"){
+		const date = prop.date.start;
+		return date;
+	}
+	return null;
+}
+
 export async function propertyTryGet<T extends PropertyTypeName>(prop: PageObjectResponse["properties"][string], type: T): Promise<PropertyType<T> | null> {
 	if(!prop) return undefined;
 	if(type === "number"){
@@ -143,6 +152,9 @@ export async function propertyTryGet<T extends PropertyTypeName>(prop: PageObjec
 	}
 	else if (type === "image"){
 		return propertyTryGetImage(prop) as PropertyType<T>;
+	}
+	else if(type === "date"){
+		return propertyTryGetDate(prop) as PropertyType<T>;
 	}
 	return null;
 }
@@ -182,6 +194,25 @@ export async function querySchema<T extends NotionSchema>(
 		if(v.object === "page" && "properties" in v) {
 			// generic is required here since officerSchemaTypes only satisfies DatabaseTypes
 			return parsePage<T>({ page: v, schemaTypes: schemaTypes });
+		}
+		return null;
+	}));
+	return parsed;
+}
+
+export async function querySchemaWithID<T extends NotionSchema>(
+	schemaTypes: NotionSchemaBinding<T>,
+	options: GetPagesInDatabaseParams
+): Promise<(T & { notionID: string })[]> {
+	const pages = await getPagesInDatabase(options);
+
+	const parsed = await Promise.all(pages.map(async v => {
+		if(v.object === "page" && "properties" in v) {
+			// generic is required here since officerSchemaTypes only satisfies DatabaseTypes
+			return parsePage<T & { notionID: string }>({ page: v, schemaTypes: {
+				...schemaTypes,
+				notionID: { source: "id", type: "string" },
+			} as NotionSchemaBinding<T & { notionID: string }>});
 		}
 		return null;
 	}));

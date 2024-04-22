@@ -14,16 +14,36 @@ import content from "~/__generated__/content";
 import { ColumnSchema, TutorialSchema } from "~/Schema";
 import { MDXFile, sortByModifiedDate, sortByPublishedDate } from "~/content/contentProvider";
 import { toSorted } from "~/util/polyfills";
+import { getArticles, NotionArticleSchema } from "~/api/notion/schema";
+import { databaseIDs } from "~/api/notion/core";
+import { objectGroupBy } from "~/util/polyfills";
+import joinAuthorNames from "~/util/joinAuthorNames";
+
+export const getServerSideProps: GetServerSideProps<BlogProps> = async (ctx) => {
+	const articles = objectGroupBy(await getArticles(), v => v.category);
+
+	return {
+		props: {
+			articles
+		}
+	}
+}
+
+type BlogProps = {
+	articles: Partial<Record<string, NotionArticleSchema[]>>
+}
 
 type TutorialItemProps = {
-	entry: MDXFile<TutorialSchema>,
+	entry: NotionArticleSchema,
 	hrefBaseUrl: string,
 }
 
 function ArticleEntry({ entry, hrefBaseUrl }: TutorialItemProps){
-	const tutorial = entry.default.frontmatter;
-	const { title, image_url: imageUrl } = tutorial;
-	const url = `${hrefBaseUrl}/${entry.filename}`
+	const { title, authors, image: imageUrl, id, tags } = entry;
+
+	const authorString = React.useMemo(() => joinAuthorNames(authors), [authors]);
+
+	const url = `${hrefBaseUrl}/${id}`
 	return <Box
 		component={Link}
 		href={url}
@@ -48,34 +68,31 @@ function ArticleEntry({ entry, hrefBaseUrl }: TutorialItemProps){
 		</Box>
 		<Box>
 			<Box>
-				{
-					tutorial.keywords?.at(0) && (
-						<>
-							<Typography variant="subtitle2" display="inline">
-								{tutorial.keywords[0]}
-							</Typography>
-							<Typography variant="subtitle2" display="inline" mx={1}>
-								{"\u2022"}
-							</Typography>
-						</>
-					)
-				}
 				<Typography variant="subtitle2" display="inline">
-					{tutorial.author}
+					{ authorString }
 				</Typography>
 			</Box>
 			<Typography variant="h4" component="h3" color="primary.main" className="TutorialItem__LinkText">
-				{ tutorial.title }
+				{ title }
 			</Typography>
+			<Box>
+			{
+				tags.at(0) && (
+					<>
+						<Typography variant="subtitle2" display="inline">
+							{tags.join(" \u2022 ")}
+						</Typography>
+					</>
+				)
+			}
+			</Box>
 		</Box>
 	</Box>
 }
 
-export default function Blog(){
-	const tutorials = toSorted(
-		content.tutorials as MDXFile<TutorialSchema>[],
-		sortByPublishedDate
-	);
+export default function Blog({ articles }: BlogProps){
+	const tutorials = articles["Byte Sized Tutorials"] ?? [];
+	const scoop = articles["Studio Scoop"] ?? [];
 	const columns = toSorted(
 		content.column as MDXFile<ColumnSchema>[],
 		sortByPublishedDate
@@ -119,8 +136,8 @@ export default function Blog(){
 				<Typography variant="h2" mb={2}>Byte-Sized Tutorials</Typography>
 				<Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap={2}>
 					{tutorials.map((entry, i) => (
-						<animated.div style={tutorialsTrails[i]} key={entry.filename}>
-							<ArticleEntry key={entry.filename} entry={entry} hrefBaseUrl="byte-sized-tutorials" />
+						<animated.div style={tutorialsTrails[i]} key={entry.id}>
+							<ArticleEntry key={entry.id} entry={entry} hrefBaseUrl="byte-sized-tutorials" />
 						</animated.div>
 					))}
 				</Box>
@@ -134,8 +151,8 @@ export default function Blog(){
 				<Box position="sticky" top={0} height="min(100%, 100vh)">
 					<Typography variant="h2" mb={2}>Column</Typography>
 					<Box display="grid" gridAutoColumns="1fr" gap={2}>
-						{columns.map((entry, i) => (
-							<animated.div style={columnTrails[i]} key={entry.filename}>
+						{scoop.map((entry, i) => (
+							<animated.div style={columnTrails[i]} key={entry.id}>
 								<ArticleEntry key={i} entry={entry} hrefBaseUrl="column" />
 							</animated.div>
 						))}

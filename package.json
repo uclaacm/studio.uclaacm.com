@@ -16,11 +16,13 @@
     "@types/mdx": "^2.0.12",
     "dotenv": "^16.3.1",
     "fast-glob": "^3.3.2",
+    "highlight.js": "^11.9.0",
     "next": "^13.3.0",
     "nodemon": "^3.1.0",
     "prettier": "^3.2.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-katex": "^3.0.1",
     "remark-frontmatter": "^5.0.0",
     "remark-mdx-frontmatter": "^4.0.0"
   },
@@ -38,6 +40,7 @@
   "devDependencies": {
     "@types/node": "18.15.11",
     "@types/react": "18.0.35",
+    "@types/react-katex": "^3.0.4",
     "run-script-os": "^1.1.6",
     "supabase": "^1.74.0",
     "ts-node": "^10.9.1",

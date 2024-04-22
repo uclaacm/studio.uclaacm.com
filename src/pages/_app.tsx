@@ -7,7 +7,14 @@ import theme from "~/theme";
 import { AppPropsWithLayout } from "~/@types";
 
 import "~/stylesheets/main.css"
+import "~/stylesheets/highlight.css"
 import "~/stylesheets/iconsax.css"
+
+// syntax highlighting
+import "highlight.js/styles/atom-one-light.css"
+
+// katex
+import "katex/dist/katex.min.css"
 
 import Layout from "~/components/Layout";
 import { InputProvider } from "~/components/Input";
