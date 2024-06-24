@@ -136,6 +136,10 @@ export default function About({ officers }: AboutProps) {
             <Typography mb={4} variant="h1" sx={{ lineHeight: 1 }}><i className="isax isax-info-circle5" style={{ color: theme.palette.primary.main }}></i> About acm.studio</Typography>
             <Box mb={4} display="grid" gridTemplateColumns="2fr 1fr" gap={2}>
                 <Box>
+                Our mission is to teach skills revolving around
+                video game development such as computer science,
+                game design and art in order to help usher
+                students into the game development industry.
                 </Box>
                 <img src={Logo.src} alt="acm.studio Logo" />
             </Box>

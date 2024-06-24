@@ -11,7 +11,7 @@ import "~/stylesheets/highlight.css"
 import "~/stylesheets/iconsax.css"
 
 // syntax highlighting
-import "highlight.js/styles/atom-one-light.css"
+import "highlight.js/styles/github.min.css"
 
 // katex
 import "katex/dist/katex.min.css"
