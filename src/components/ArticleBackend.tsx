@@ -1,30 +1,24 @@
 import { ArticleProps } from "~/components/ArticleFrontend";
 
-import content from "~/__generated__/content";
-import { GetStaticPaths, GetStaticProps } from "next";
-import { ArticleSchema } from "~/Schema";
-import { MDXFile } from "~/content/contentProvider";
+import { GetServerSideProps } from "next";
+import { ArticleCategory, getArticle } from "~/api/notion/schema";
 
-export function ArticleExports(collectionName: string) {
-	const collection = (content[collectionName] as MDXFile<ArticleSchema>[]);
-	return {
-		getStaticPaths: ((ctx) => {
+export type CreateGetServerSidePropsParams = {
+	category?: ArticleCategory,
+}
+
+export function createGetServerSideProps({ category }: CreateGetServerSidePropsParams): GetServerSideProps<ArticleProps> {
+	return async (ctx) => {
+		const article = await getArticle({ id: ctx.params.slug as string, category })
+		if(article === null){
 			return {
-				fallback: false,
-				paths: collection.map(({ filename }) => ({
-					params: {
-						slug: filename.split("/")
-					}
-				}))
+				notFound: true,
 			}
-		}) as GetStaticPaths,
-		getStaticProps: (({ params }) => {
-			return {
-				props: {
-					collection: collectionName,
-					filename: (params.slug as string[]).join("/"),
-				}
+		}
+		return {
+			props: {
+				article
 			}
-		}) as GetStaticProps
+		}
 	}
 }

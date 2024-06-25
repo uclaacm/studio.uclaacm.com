@@ -21,9 +21,11 @@ const paletteOptions = {
     }
 }
 
+const SPACING = 8;
+
 export default responsiveFontSizes(createTheme({
     palette: paletteOptions,
-    spacing: 8,
+    spacing: SPACING,
     typography: {
         fontFamily: [
             "Poppins",
@@ -35,15 +37,15 @@ export default responsiveFontSizes(createTheme({
         },
         h2: {
             fontSize: "3rem",
-            fontWeight: 700
+            fontWeight: 700,
         },
         h3: {
             fontSize: "2rem",
-            fontWeight: 700
+            fontWeight: 700,
         },
         h4: {
             fontSize: "1.5rem",
-            fontWeight: 400
+            fontWeight: 400,
         },
         h5: {
             fontSize: "1.25rem",

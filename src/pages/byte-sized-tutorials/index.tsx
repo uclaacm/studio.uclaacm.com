@@ -1,7 +1,11 @@
-import CollectionArticleList from "~/components/ArticleListFrontend"
+import { createGetServerSideProps } from "~/components/ArticleListBackend";
+import ArticleList from "~/components/ArticleListFrontend"
 
-export default CollectionArticleList({
-	collectionID: "tutorials",
+export const getServerSideProps = createGetServerSideProps({
+	category: "byteSizedTutorials",
+});
+
+export default ArticleList({
 	collectionName: "Byte Sized Tutorials",
 	baseUrl: "byte-sized-tutorials",
 });

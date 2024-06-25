@@ -3,21 +3,21 @@ import * as React from "react"
 import Container from "~/components/Container";
 import Typography from "@mui/material/Typography"
 
-import { ArticleSchema } from "~/Schema"
-import { getFile } from "~/content/contentProvider";
+import { NotionArticleSchema, NotionSchemaWithBlocks } from "~/api/notion/schema";
+import joinAuthorNames from "~/util/joinAuthorNames";
+import NotionBlocksRenderer from "./NotionBlockRenderer";
 
 export type ArticleProps = {
-	collection: string,
-	filename: string,
+	article: NotionSchemaWithBlocks<NotionArticleSchema>
 }
 
-export function ArticleRenderer({ collection, filename }: ArticleProps){
-	const article = getFile<ArticleSchema>(collection, filename);
+export function ArticleRenderer({ article }: ArticleProps){
+	const { title, authors, blocks } = article;
 
-	const { author, title } = article.default.frontmatter;
+	const authorString = React.useMemo(() => joinAuthorNames(authors), [authors]);
 	return <Container>
-		<Typography variant="subtitle1">{author}</Typography>
+		<Typography variant="subtitle1">{authorString}</Typography>
 		<Typography variant="h1">{title}</Typography>
-		<article.default.default />
+		<NotionBlocksRenderer blocks={blocks}/>
 	</Container>
 }

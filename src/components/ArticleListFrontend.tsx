@@ -6,20 +6,21 @@ import Stack from "@mui/material/Stack";
 import Link from "~/components/Link";
 import { Button, Divider } from "@mui/material";
 import Title from "~/components/Title";
-import { ArticleSchema } from "~/Schema";
-import content from "~/__generated__/content";
-import { MDXFile, sortByModifiedDate, sortByPublishedDate } from "~/content/contentProvider";
 import "~/util/polyfills"
-import { toSorted } from "~/util/polyfills";
+import { NotionArticleSchema } from "~/api/notion/schema";
+import joinAuthorNames from "~/util/joinAuthorNames";
 
 type ArticleEntryProps = {
-	file: MDXFile<ArticleSchema>,
+	article: NotionArticleSchema,
 	baseUrl: string,
 }
-function ArticleEntry({ file, baseUrl }: ArticleEntryProps){
-	const article = file.default.frontmatter;
-	const href = `${baseUrl}/${file.filename}`;
-	const { title, author, description, date, image_url: imageUrl } = article;
+
+function ArticleEntry({ article, baseUrl }: ArticleEntryProps){
+	const href = `${baseUrl}/${article.id}`;
+	const { title, authors, description, date, image: imageUrl } = article;
+
+	const authorString = React.useMemo(() => joinAuthorNames(authors), [authors]);
+
 	return (
 		<>
 			<Box
@@ -50,19 +51,17 @@ function ArticleEntry({ file, baseUrl }: ArticleEntryProps){
 					}}></img>
 				</Box>
 				<Box>
-					{
-						article.keywords?.at(0) && (
-							<Typography variant="subtitle2">
-								{article.keywords[0]}
-							</Typography>
-						)
-					}
 					<Typography variant="h3" component="h2" mb={1} className="ArticleEntry__LinkText">
 						{article.title}
 					</Typography>
 					<Typography variant="subtitle1">
-						By {article.author}
+						By {authorString}
 					</Typography>
+					<Box>
+						<Typography variant="subtitle2">
+							{article.tags.join(" \u2022 ")}
+						</Typography>
+					</Box>
 				</Box>
 			</Box>
 			<Divider sx={{my: 2, "&:last-of-type": { display: "none" }}}/>
@@ -70,21 +69,20 @@ function ArticleEntry({ file, baseUrl }: ArticleEntryProps){
 	)
 }
 
-type CollectionArticleListParams = {
-	collectionID: string,
+type ArticleListParams = {
 	collectionName: string,
 	baseUrl: string,
 	articlesPerPage?: number,
 }
 
-export default function CollectionArticleList({ collectionID , collectionName, articlesPerPage, baseUrl }: CollectionArticleListParams) {
-	const collection = toSorted(
-		(content[collectionID] as MDXFile<ArticleSchema>[]),
-		sortByPublishedDate
-	);
+export type ArticleListProps = {
+	articles: NotionArticleSchema[],
+}
+
+export default function ArticleList({ collectionName, articlesPerPage, baseUrl }: ArticleListParams) {
 	articlesPerPage ??= 5;
 
-	return function(){
+	return function({ articles }: ArticleListProps){
 		const [page, setPage] = React.useState(0);
 		const [firstIndex, lastIndex] = React.useMemo(() => [
 			page * articlesPerPage,
@@ -92,12 +90,12 @@ export default function CollectionArticleList({ collectionID , collectionName, a
 		], [page]);
 		const [firstPage, lastPage] = React.useMemo(() => [
 			page === 0,
-			lastIndex > collection.length,
+			lastIndex > articles.length,
 		], [page]);
 
 		const incPage = () =>  setPage(p => Math.min(
 			p + 1,
-			Math.ceil(collection.length / articlesPerPage)
+			Math.ceil(articles.length / articlesPerPage)
 		));
 		const decPage = () => setPage(p => Math.max(
 			p - 1,
@@ -110,10 +108,10 @@ export default function CollectionArticleList({ collectionID , collectionName, a
 				{ collectionName }
 			</Typography>
 			<Stack>
-				{collection.slice(
+				{articles.slice(
 					page * articlesPerPage,
 					(page + 1) * articlesPerPage
-				).map((article, i) => <ArticleEntry file={article} baseUrl={baseUrl} key={article.filename}/>)}
+				).map((article, i) => <ArticleEntry article={article} baseUrl={baseUrl} key={article.id}/>)}
 			</Stack>
 			<Box display="flex">
 				{!firstPage && <Box><Button onClick={decPage}>Previous Page</Button></Box>}
