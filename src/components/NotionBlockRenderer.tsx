@@ -1,4 +1,4 @@
-import { Box, Divider, Typography } from "@mui/material"
+import { Box, Divider, SxProps, Typography, useTheme } from "@mui/material"
 import { RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints"
 import { Block, getPlainText } from "~/api/notion/blocks"
 import Highlight from "./Highlight"
@@ -53,6 +53,8 @@ type NotionBlockRendererProps = {
 }
 
 function NotionBlockRenderer({ block }: NotionBlockRendererProps){
+	const theme = useTheme();
+
 	const textTypeMap = {
 		paragraph: "body1",
 		heading_1: "h2",
@@ -60,10 +62,28 @@ function NotionBlockRenderer({ block }: NotionBlockRendererProps){
 		heading_3: "h4",
 	}
 
+	const textTypeStyle: { [k: string]: SxProps } = {
+		heading_1: {
+			marginTop: 4,
+			marginBottom: 2
+		},
+		heading_2: {
+			marginTop: 2,
+			marginBottom: 1
+		},
+		heading_3: {
+			marginTop: 1,
+			marginBottom: 1
+		},
+		paragraph: {
+			marginBottom: 1,
+		},
+	}
+
 	if(block.type in textTypeMap){
 		const rt = block[block.type].rich_text as (Block & { type: "paragraph" })["paragraph"]["rich_text"];
 
-		return <Typography variant={textTypeMap[block.type]}>
+		return <Typography variant={textTypeMap[block.type]} sx={textTypeStyle[block.type]}>
 			<NotionRichTextRenderer richText={rt} />
 		</Typography>
 	}
@@ -76,10 +96,27 @@ function NotionBlockRenderer({ block }: NotionBlockRendererProps){
 		return <BlockMath math={block.equation.expression}/>
 	}
 	else if(block.type === "image") {
-		const url = block.image.type === "external" ?
-			block.image.external.url :
-			block.image.file.url;
-		return <img src={url} alt={getPlainText(block.image.caption)}></img>
+		const url = block.image.type === "external"
+			? block.image.external.url
+			: block.image.file.url;
+
+		return <Box component="figure" sx={{
+			display: "block",
+			maxWidth: "75%",
+			margin: "auto",
+			marginBottom: theme.spacing(2)
+		}}>
+			<img src={url} alt={getPlainText(block.image.caption)} style={{
+				maxWidth: "100%",
+				display: "block",
+				margin: "auto",
+			}}></img>
+			<Typography variant="caption" textAlign="center" component="figcaption" sx={{
+				width: "100%",
+			}}>
+				<NotionRichTextRenderer richText={block.image.caption} />
+			</Typography>
+		</Box>
 	}
 	else if(block.type === "bulleted_list_item") {
 		return <li><NotionRichTextRenderer richText={block.bulleted_list_item.rich_text}/></li>
