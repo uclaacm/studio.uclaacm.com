@@ -269,7 +269,7 @@ function Calendar({ data, monthStartDay, setMonthStartDay, eventsByStatus }: Cal
             gap={0.25}
         >
             {
-                Array.from({ length: 35 }).map((_, i) => {
+                Array.from({ length: 42 }).map((_, i) => {
                     const cellDate = new Date(calendarStartDay);
                     cellDate.setDate(cellDate.getDate() + i);
                     return (

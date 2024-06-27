@@ -7,9 +7,10 @@ import { PaletteOptions } from "@mui/material/styles";
 
 // https://design.uclaacm.com/committees/studio/
 
-const paletteOptions = {
+const paletteOptions: PaletteOptions = {
     primary: {
-        main: "#FB4469"
+        main: "#FB4469",
+        contrastText: "#FFFFFF",
     },
     secondary: {
         light: "#FF8C93",
@@ -32,11 +33,11 @@ export default responsiveFontSizes(createTheme({
             "sans-serif"
         ].join(","),
         h1: {
-            fontSize: "4rem",
+            fontSize: "3rem",
             fontWeight: 700
         },
         h2: {
-            fontSize: "3rem",
+            fontSize: "2rem",
             fontWeight: 700,
         },
         h3: {
