@@ -21,7 +21,6 @@ import joinAuthorNames from "~/util/joinAuthorNames";
 
 export const getServerSideProps: GetServerSideProps<BlogProps> = async (ctx) => {
 	const articles = objectGroupBy(await getArticles(), v => v.category);
-
 	return {
 		props: {
 			articles

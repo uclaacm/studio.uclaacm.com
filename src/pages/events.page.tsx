@@ -105,7 +105,9 @@ function EventCard({ event, action }: EventCardProps){
             </CardContent>
         )}
         <CardActions>
-            <IconButton size="small" href={event.htmlLink} target="_blank" title="Google Calendar Event"><IsaxIcon name="isax-calendar-2" /></IconButton>
+            <IconButton size="small" href={event.htmlLink} target="_blank" title="Google Calendar Event">
+                <IsaxIcon name="isax-calendar-2" />
+            </IconButton>
         </CardActions>
     </Card>
 }

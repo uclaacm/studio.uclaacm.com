@@ -7,6 +7,7 @@ const dirname = path.dirname(url.fileURLToPath(import.meta.url))
 
 /** @type {import('next').NextConfig} */
 export default {
+	pageExtensions: ["page.tsx", "page.jsx"],
 	webpack: (config, options) => {
 		config.resolve.alias["~"] = path.resolve(dirname, "src");
 		config.resolve.alias["@"] = path.resolve(dirname, "content");
