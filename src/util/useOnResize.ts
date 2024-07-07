@@ -1,12 +1,5 @@
 import React from "react";
 
-/**
- * Scales the canvas's width and height fields
- * to match the inline and block size of the container.
- * Uses device pixels if they exist.
- * @param containerRef the container of the canvas
- * @param canvasRef the canvas
- */
 export function useOnResize(
 	containerRef: React.MutableRefObject<HTMLElement>,
 	callback: (size: ResizeObserverSize) => void,
@@ -15,7 +8,7 @@ export function useOnResize(
 ){
 	React.useEffect(() => {
         if(!containerRef) return;
-        const canvasContainer = containerRef.current;
+        const container = containerRef.current;
 
         const resizeObserver = new ResizeObserver(entries => {
             if (entries.length === 0) return;
@@ -26,10 +19,39 @@ export function useOnResize(
             callback(size);
         })
 
-        resizeObserver.observe(canvasContainer);
+        resizeObserver.observe(container);
 
         return () => {
-            resizeObserver.unobserve(canvasContainer);
+            resizeObserver.unobserve(container);
         }
     }, [containerRef, ...deps ?? []]);
+}
+
+export function useSize(
+	containerRef: React.MutableRefObject<HTMLElement>,
+    devicePixel: boolean = false,
+){
+    const [size, setSize] = React.useState<ResizeObserverSize>(null);
+
+	React.useEffect(() => {
+        if(!containerRef) return;
+        const container = containerRef.current;
+
+        const resizeObserver = new ResizeObserver(entries => {
+            if (entries.length === 0) return;
+            const entry = entries[0];
+            const newSize = devicePixel
+                ? (entry.devicePixelContentBoxSize ?? entry.contentBoxSize)[0]
+                : entry.contentBoxSize[0];
+            setSize(newSize);
+        })
+
+        resizeObserver.observe(container);
+
+        return () => {
+            resizeObserver.unobserve(container);
+        }
+    }, [containerRef, devicePixel]);
+
+    return size;
 }

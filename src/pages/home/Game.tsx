@@ -52,7 +52,7 @@ export default function HomeGame({ scrollContainerRef }: HomeGameProps){
         }),
     }
 
-    return (<Box ref={canvasContainerRef} sx={{
+    return (<Box ref={canvasContainerRef} id="game-showcase" sx={{
         width: "100%",
         height: "100vh",
         scrollSnapAlign: "center",

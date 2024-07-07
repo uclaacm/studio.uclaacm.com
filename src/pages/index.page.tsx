@@ -17,6 +17,8 @@ import { Button, Modal, Paper, Stack, Typography } from "@mui/material";
 import { useTheme } from "@mui/material";
 import HomeGame from "./home/Game";
 import Logline from "./home/Logline";
+import Mission from "./home/Mission";
+import Events from "./home/Events";
 
 
 type HomeProps = {}
@@ -36,7 +38,9 @@ export default function Home({}: HomeProps){
             scrollSnapStop: "always",
         }}>
             <HomeGame scrollContainerRef={scrollContainer}/>
-            <Logline/>
+            <Logline scrollContainerRef={scrollContainer}/>
+            <Mission/>
+            <Events/>
         </Box>
     </>
 }

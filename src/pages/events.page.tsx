@@ -311,7 +311,7 @@ function UpcomingEventsList({ data, eventsByStatus, todaysDate }: UpcomingEvents
     }, [todaysDate, eventsByStatus]);
 
     return <Box sx={{ width: "180px" }}>
-        <Typography variant="h4" whiteSpace="nowrap" fontWeight="bold" gutterBottom>upcoming</Typography>
+        <Typography variant="title1" whiteSpace="nowrap" fontWeight="bold" gutterBottom>upcoming</Typography>
         <Stack gap={1}>
             { loading && Array.from({ length: 4 }).map((_, i) => <Skeleton key={`loading${i}`} height="128px"></Skeleton>)}
             { !loading && thisMonthsEvents?.map((event) => <EventCard event={event} key={event.start.dateTime}/>)}

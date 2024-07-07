@@ -71,7 +71,7 @@ function ArticleEntry({ entry, hrefBaseUrl }: TutorialItemProps){
 					{ authorString }
 				</Typography>
 			</Box>
-			<Typography variant="h4" component="h3" color="primary.main" className="TutorialItem__LinkText">
+			<Typography variant="h3" component="h3" color="primary.main" className="TutorialItem__LinkText">
 				{ title }
 			</Typography>
 			<Box>
@@ -141,7 +141,7 @@ export default function Blog({ articles }: BlogProps){
 					))}
 				</Box>
 				<Box display="flex" justifyContent="end" mt={4}>
-					<Link href="/byte-sized-tutorials" variant="h5">See all</Link>
+					<Link href="/byte-sized-tutorials" variant="title1">See all</Link>
 				</Box>
 			</Box>
 			<Divider orientation="vertical"/>

@@ -1,15 +1,50 @@
 import { KeyboardArrowDown } from "@mui/icons-material"
-import { Box, Button, Stack, Typography } from "@mui/material"
+import { Box, Button, Stack, Typography, useTheme } from "@mui/material"
+import { motion, Transition, Variants } from "framer-motion"
 
 import Wordmark from "~/assets/images/wordmark_and_logo.svg"
+import MasonryCarousel from "~/components/MasonryCarousel"
+
+import UpcastBlue from "./LoglineImages/UpcastBlue.webp"
 
 export type LoglineProps = {
-
+	scrollContainerRef: React.MutableRefObject<HTMLElement>
 }
 
-export default function Logline({}: LoglineProps){
+export default function Logline({ scrollContainerRef }: LoglineProps){
+	const theme = useTheme();
+
+	const rootVariants: Variants = {
+		hidden: {},
+		visible: {
+			transition: {
+				staggerChildren: 0.1,
+			}
+		},
+	}
+
+	const itemVariants: Variants = {
+		hidden: {
+			opacity: 0, y: "-16px",
+		},
+		visible: {
+			opacity: 1, y: 0,
+		},
+	}
+
+	const transition: Transition = {
+		duration: theme.transitions.duration.short / 1000,
+		ease: "circOut",
+	}
+
+	const itemProps = {
+		component: motion.div,
+		variants: itemVariants,
+		transition: transition,
+	}
+
 	return (
-		<Box
+		<Box id="logline"
 			display="grid"
 			gridTemplateColumns="1fr 1fr"
 			sx={{
@@ -17,6 +52,13 @@ export default function Logline({}: LoglineProps){
 				height: "100vh",
 				scrollSnapAlign: "start",
 			}}
+
+			component={motion.div}
+			variants={rootVariants}
+			initial="hidden"
+			whileInView="visible"
+			viewport={{ once: true, margin: "-50px" }}
+			transition={transition}
 		>
 			<Stack
 				alignItems="center" justifyContent="center"
@@ -24,29 +66,53 @@ export default function Logline({}: LoglineProps){
 				<Stack gap={16} sx={{
 					width: "fit-content",
 				}}>
-					<Stack direction="row" sx={{ width: "100%" }}>
+					<Stack direction="row"
+						sx={{ width: "100%" }}
+						{...itemProps}
+					>
 						<img src={Wordmark.src} style={{
 							width: 0,
 							flexGrow: 1,
 						}}></img>
 					</Stack>
-					<Box>
+					<Box {...itemProps}>
 						<Typography variant="display2">Game development<br/>for everybody</Typography>
 						<Typography variant="title1" component="p">UCLA’s top game development club</Typography>
 					</Box>
 					<Stack direction="row" gap={3}>
-						<Button size="large" variant="contained" endIcon={<KeyboardArrowDown/>}>
+						<Button {...itemProps} size="large" variant="contained" endIcon={<KeyboardArrowDown/>} onClick={() => {
+							scrollContainerRef.current.scrollBy({ top: 1, behavior: "smooth" })
+						}}>
 							Learn more
 						</Button>
-						<Button size="large" variant="outlined">
+						<Button {...itemProps} size="large" variant="outlined" href="/events">
 							Get involved
 						</Button>
 					</Stack>
 				</Stack>
 			</Stack>
 			<Box flexGrow={1} sx={{
-				backgroundColor: "cyan"
+				position: "relative",
+				display: "grid",
+				gridTemplate: "1fr / 1fr",
+				overflow: "hidden",
+				"&::after": {
+					content: `""`,
+					position: "absolute",
+					left: 0, right: 0, top: 0, bottom: 0,
+					pointerEvents: "none",
+					boxShadow: "0 0 16px inset black",
+				}
 			}}>
+				<MasonryCarousel rows={[
+					[{ src: UpcastBlue.src, href: "https://ketexon.itch.io/upcast-blue" }],
+					[{ src: UpcastBlue.src, href: "https://ketexon.itch.io/upcast-blue" }],
+					[{ src: UpcastBlue.src, href: "https://ketexon.itch.io/upcast-blue" }],
+					[{ src: UpcastBlue.src, href: "https://ketexon.itch.io/upcast-blue" }],
+					[{ src: UpcastBlue.src, href: "https://ketexon.itch.io/upcast-blue" }],
+					[{ src: UpcastBlue.src, href: "https://ketexon.itch.io/upcast-blue" }],
+					[{ src: UpcastBlue.src, href: "https://ketexon.itch.io/upcast-blue" }],
+				]}/>
 			</Box>
 		</Box>
 	)

@@ -113,7 +113,7 @@ function ShowcaseItem({ item }: ShowcaseItemProps) {
                     <Typography variant="h3" color="white">
                         {title}
                     </Typography>
-                    <Typography variant="h4" color="white">
+                    <Typography variant="title1" color="white">
                         {subtitle}
                     </Typography>
                     { description && <Typography className="body" variant="body1" color="white" sx={theme => ({
