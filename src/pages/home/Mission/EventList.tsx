@@ -29,6 +29,17 @@ export default function EventList(){
 		}
 	);
 
+	const underlinePercents = links.map((_, i) => motionValue(i === 0 ? 1 : 0));
+	const underlinePercentSprings = underlinePercents.map(mv => useSpring(
+		mv,
+		{
+			duration: 300,
+			bounce: 0.1,
+		}
+	));
+
+	const selected = React.useRef(0);
+
 	return (
 		<Container id="event-list" maxWidth="lg" sx={{
 			scrollSnapAlign: "start",
@@ -41,6 +52,7 @@ export default function EventList(){
 				maxWidth: "66%"
 			}}>
 				<Typography component={motion.p} variant="display2"
+					pb={4}
 					variants={parentVariants} initial="initial" whileInView="inView"
 					transition={{ duration: theme.transitions.duration.short / 1000 }}
 					sx={{ display: "block"}}
@@ -64,11 +76,12 @@ export default function EventList(){
 					whileInView="inView"
 				>
 					{/* relative position here to use offsetTop relative to this stack */}
-					<Stack order={2} position="relative" alignItems="start">
+					<Stack order={2} position="relative" alignItems="start" gap={0.5}>
 						{links.map(({ name, anchor }, i) => (
 							<Typography key={name}
 								display="block"
 								variant="title1" color="primary"
+								sx={{ display: "block", textDecoration: "none", }}
 								href={anchor}
 								component={motion.a} layout
 								variants={{
@@ -76,9 +89,30 @@ export default function EventList(){
 									inView: { height: "auto", opacity: 1, y: 0 },
 								}}
 								onHoverStart={(ev) => {
-									arrowY.set((ev.target as HTMLAnchorElement).offsetTop)
+									arrowY.set((ev.target as HTMLAnchorElement).offsetTop);
+									underlinePercents[selected.current].set(0);
+									selected.current = i;
+									underlinePercents[selected.current].set(1);
 								}}
-							>{name}</Typography>
+							>
+								<Typography component={motion.span} variant="inherit"
+									style={{ ["--underline-percent" as any]: underlinePercentSprings[i], }}
+									sx={{
+										position: "relative",
+										"&::before": {
+											zIndex: -1,
+											content: "''",
+											position: "absolute",
+											bottom: 0, left: 0, width: "100%", height: "0.08em",
+											backgroundColor: theme.palette.primary.main,
+											transformOrigin: "center left",
+											transform: `scaleX(var(--underline-percent))`
+										}
+									}}
+								>
+									{name}
+								</Typography>
+							</Typography>
 						))}
 					</Stack>
 					{/* The arrow */}
