@@ -1,6 +1,8 @@
 import { Box, Container, Stack, Typography, Theme, useTheme } from "@mui/material";
 import { AnimatePresence, motion, stagger, useAnimate, useInView, Variants } from "framer-motion";
 import React from "react";
+import AnimatedUnderline from "~/components/AnimatedUnderline";
+import Timeline, { TimelineAnimationControls } from "./Timeline";
 
 const MotionTypography = motion(Typography);
 
@@ -32,6 +34,8 @@ export default function Events(){
 	const [scope, animate] = useAnimate();
 	const isInView = useInView(scope, { margin: "-32px" });
 
+	const timelineAnimateControls = React.useRef<TimelineAnimationControls>(null);
+
 	let cancellationToken = false;
 	let animationControls = []
 
@@ -42,7 +46,9 @@ export default function Events(){
 			y: "30vh",
 		}
 
-		animate(".workshop__title", initialTitleLayout );
+		animate(".workshop__title", initialTitleLayout);
+		animate(".workshop__labs", { opacity: 0, });
+		animate(".workshop__labs-underline", { ["--underline-percent" as any]: 0, });
 		await animate(
 			".workshop__title-segment",
 			{ y: [-16, 0], opacity: [0, 1], },
@@ -66,6 +72,27 @@ export default function Events(){
 				bounce: 0
 			}
 		)
+
+		await animate(
+			".workshop__labs",
+			{
+				opacity: [0, 1]
+			}
+		)
+
+		timelineAnimateControls.current.start();
+
+		// await new Promise((r) => setTimeout(r, 250));
+
+		await animate(
+			".workshop__labs-underline",
+			{ ["--underline-percent" as any]: 1 },
+			{
+				delay: theme.transitions.duration.complex / 1000,
+				duration: theme.transitions.duration.short / 1000,
+				ease: "circOut",
+			}
+		)
 	}
 
 	React.useEffect(() => {
@@ -73,6 +100,7 @@ export default function Events(){
 			animationSequence();
 			return () => {
 				cancellationToken = true;
+				timelineAnimateControls.current.reset();
 			}
 		}
 		else {
@@ -93,27 +121,31 @@ export default function Events(){
 			}}
 		>
 			<EventHeader>Workshops</EventHeader>
-			<Typography variant="display1"
+			<Typography component="div" variant="display1"
 				className="workshop__title"
 				display="grid"
 				gridTemplateColumns="1fr auto 1fr"
+				sx={{
+					mb: 4
+				}}
 			>
 				<Stack direction="row" gap={2} sx={{ gridColumn: 2, }}>
 					<Box component="span" display="block" className="workshop__title-segment">Learn</Box>
 					<Box component="span" display="block" className="workshop__title-segment">by doing</Box>
 				</Stack>
 			</Typography>
-			<Stack
-				justifyContent="center"
-				alignItems="center"
-				sx={theme => ({
-					width: "100%",
-					height: `calc(100vh - (${bodyOffset(theme)}))`,
-					pb: `calc(${bodyOffset(theme)})`,
-				})}
-			>
-
-			</Stack>
+			<Typography className="workshop__labs" variant="title1" sx={{ opacity: 0, mb: 8 }}>
+				Through weekly guided labs, make a{" "}
+				<AnimatedUnderline className="workshop__labs-underline" activeVariant="active">complete game</AnimatedUnderline>
+				{" "}in a quarter.
+			</Typography>
+			<Timeline controlsRef={timelineAnimateControls} tasks={[
+				"Add player movement",
+				"Add weapons",
+				"Add enemies and AI",
+				"Add procedural generation",
+				"Add a boss",
+			]}/>
 		</Container>
 	</Box>
 }
