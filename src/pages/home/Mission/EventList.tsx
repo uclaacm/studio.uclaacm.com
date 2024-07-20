@@ -83,7 +83,7 @@ export default function EventList(){
 								variant="title1" color="primary"
 								sx={{ display: "block", textDecoration: "none", }}
 								href={anchor}
-								component={motion.a} layout
+								component={motion.a}
 								variants={{
 									initial: { height: 0, opacity: 0, y: 16 },
 									inView: { height: "auto", opacity: 1, y: 0 },

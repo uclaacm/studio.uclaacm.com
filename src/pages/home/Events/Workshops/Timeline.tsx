@@ -134,7 +134,7 @@ export default function Timeline(props: TimelineProps) {
 		animate={animating ? "animate" : "initial"}
 	>
 		{ Array.from({ length: nWeeks }).map((_, i, arr) => (
-			<Week number={i + 1} task={tasks[i]} end={i === arr.length - 1 }/>
+			<Week key={i} number={i + 1} task={tasks[i]} end={i === arr.length - 1 }/>
 		))}
 
 		<g>
@@ -143,6 +143,7 @@ export default function Timeline(props: TimelineProps) {
 					? (
 						<motion.g
 							variants={scaleVariants}
+							key={i}
 						>
 							<circle key={i}
 								cx={lastRectX + 16 + 32 * i} cy="225" r="8" fill="#FF4466"
@@ -151,6 +152,7 @@ export default function Timeline(props: TimelineProps) {
 					)
 					: (
 						<motion.g
+							key={i}
 							variants={scaleVariants}
 						>
 							<path transform={`translate(${lastRectX + 16 + 32 * i - 8} ${228 - 16})`} key={i} d="M0 19.9237C0 23.2338 3.79117 25.1115 6.42417 23.1054L16.824 15.1817C18.9251 13.5809 18.9251 10.4191 16.824 8.81827L6.42417 0.894608C3.79117 -1.11149 0 0.766179 0 4.07634V19.9237Z" fill="#FF4466" />

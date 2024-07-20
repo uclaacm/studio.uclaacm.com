@@ -51,8 +51,6 @@ declare module '@mui/material/Typography' {
 		title1: true;
 		title2: true;
 
-		body2: false;
-
 		label: true;
 	}
 }

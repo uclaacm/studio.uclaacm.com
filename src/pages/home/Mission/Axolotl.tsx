@@ -44,7 +44,7 @@ export default function Axolotl(props: AxolotlProps) {
 				<g id="left leg">
 					<g id="Vector 1927">
 						<path d="M528.18 1337.36C518.035 1435.79 489.971 1529.32 478.402 1627.98C469.372 1704.99 451.494 1803.8 461.647 1904.76" stroke="#FFC2CE" strokeWidth="71.408" strokeLinecap="round" />
-						<path d="M528.18 1337.36C518.035 1435.79 489.971 1529.32 478.402 1627.98C469.372 1704.99 451.494 1803.8 461.647 1904.76" stroke="url(#paint5_linear_542_733)" stroke-opacity="0.2" strokeWidth="71.408" strokeLinecap="round" />
+						<path d="M528.18 1337.36C518.035 1435.79 489.971 1529.32 478.402 1627.98C469.372 1704.99 451.494 1803.8 461.647 1904.76" stroke="url(#paint5_linear_542_733)" strokeOpacity="0.2" strokeWidth="71.408" strokeLinecap="round" />
 					</g>
 					<path id="Vector 1924_3" d="M223.695 1893.77C225.572 1918.1 244.474 1932.6 261.759 1935.57C265.837 1936.28 271.355 1942.7 274.927 1944.54C287.072 1950.8 329.351 1949.39 373.654 1946.15C422.236 1942.6 474.256 1938.35 481.321 1924.19C481.715 1923.4 481.622 1922.51 481.257 1921.72L453.386 1861.35C444.303 1835.38 392.075 1835.22 356.718 1837.39C322.759 1839.47 283.759 1835.74 269.539 1857.87C268.493 1859.5 266.429 1860.48 264.344 1860.21C237.313 1856.66 221.463 1864.84 223.695 1893.77Z" fill="url(#paint6_linear_542_733)" stroke="#FFC2CE" strokeWidth="2.12306" />
 				</g>
@@ -87,7 +87,7 @@ export default function Axolotl(props: AxolotlProps) {
 			</g>
 			<defs>
 				<filter id="filter0_f_542_733" x="49.3719" y="1783.86" width="1410.62" height="385.62" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
-					<feFlood flood-opacity="0" result="BackgroundImageFix" />
+					<feFlood floodOpacity="0" result="BackgroundImageFix" />
 					<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
 					<feGaussianBlur stdDeviation="35.704" result="effect1_foregroundBlur_542_733" />
 				</filter>

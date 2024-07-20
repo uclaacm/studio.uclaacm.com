@@ -4,6 +4,7 @@ import "@fontsource/poppins/800.css";
 import "@fontsource/poppins/400.css";
 import "@fontsource/poppins";
 import { PaletteOptions } from "@mui/material/styles";
+import BasicLink from "./components/BasicLink";
 
 // https://design.uclaacm.com/committees/studio/
 
@@ -124,6 +125,7 @@ export default createTheme({
             defaultProps: {
                 disableRipple: true,
                 disableTouchRipple: true,
+                LinkComponent: BasicLink,
             },
         },
         MuiButton: {
@@ -133,6 +135,11 @@ export default createTheme({
             styleOverrides: {
                 sizeLarge: {
                     fontSize: "1.75rem",
+                    borderRadius: "0.625em",
+                    padding: "0.75em 1em",
+                },
+                sizeMedium: {
+                    fontSize: "1.33rem",
                     borderRadius: "0.625em",
                     padding: "0.75em 1em",
                 },
@@ -161,6 +168,9 @@ export default createTheme({
                     h1: "h1",
                     h2: "h2",
                     h3: "h3",
+
+                    body1: "p",
+                    body2: "p",
                 }
             }
         }
