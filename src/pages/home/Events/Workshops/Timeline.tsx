@@ -11,28 +11,25 @@ export type TimelineProps = {
 	nDots?: number,
 	controlsRef: React.MutableRefObject<TimelineAnimationControls>,
 	tasks: string[],
-}
+} & React.ComponentProps<typeof motion.svg>;
+
+const taskRectHeight = 112;
+const taskRectWidth = 176;
+
+const taskRectStrokeWidth = 16;
 
 const circleRadius = 42;
-const weekStartX = 133;
+const weekStartX = taskRectWidth/2 + taskRectStrokeWidth / 2;
 const weekStride = 164;
 const weekY = 223;
 
 const lineHeight = 39;
 
-const taskRectHeight = 112;
-const taskRectWidth = 176;
-
 const weekTypographyOffsetY = 3;
 
-const scaleXVariants = {
-	initial: { scaleX: 0 },
-	animate: { scaleX: 1 },
-}
-
 const scaleVariants = {
-	initial: { scale: 0 },
-	animate: { scale: 1 },
+	initial: { scale: 0, origin: "center", },
+	animate: { scale: 1, origin: "center", },
 }
 
 const WeekTypography = ({ children, x, y }: { children: string, x: number, y: number }) => (
@@ -85,7 +82,7 @@ function Week({ number, task, end }: { number: number, task: string, end?: boole
 			}}
 		/>
 		{/*  */}
-		<motion.rect x={rectX} y={rectY} width={taskRectWidth} height={taskRectHeight} rx="24" stroke="#FF4466" strokeWidth="16"
+		<motion.rect x={rectX} y={rectY} width={taskRectWidth} height={taskRectHeight} rx="24" stroke="#FF4466" strokeWidth={taskRectStrokeWidth}
 			variants={scaleVariants}
 		/>
 		{/* the text within the bubble */}
@@ -108,6 +105,7 @@ export default function Timeline(props: TimelineProps) {
 		nDots = 3,
 		controlsRef: animateRef,
 		tasks,
+		...rest
 	} = props;
 	const nWeeks = tasks.length;
 
@@ -120,9 +118,10 @@ export default function Timeline(props: TimelineProps) {
 	const lastWeekX = weekStartX + (nWeeks - 1) * weekStride;
 	const lastRectX = lastWeekX + 80 + circleRadius;
 
+	const svgWidth = lastRectX + 16 + 32 * nDots + 16
 
 	return <motion.svg
-		width="1408" height="445" viewBox="0 0 1408 445" fill="none" xmlns="http://www.w3.org/2000/svg"
+		width="1408" height="445" viewBox={`0 0 ${svgWidth} 445`} fill="none" xmlns="http://www.w3.org/2000/svg"
 		variants={{
 			initial: {},
 			animate: {
@@ -132,6 +131,7 @@ export default function Timeline(props: TimelineProps) {
 			},
 		}}
 		animate={animating ? "animate" : "initial"}
+		{...rest}
 	>
 		{ Array.from({ length: nWeeks }).map((_, i, arr) => (
 			<Week key={i} number={i + 1} task={tasks[i]} end={i === arr.length - 1 }/>

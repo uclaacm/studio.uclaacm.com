@@ -1,10 +1,6 @@
-import { Box, Container, Stack, Typography, useTheme } from "@mui/material"
-import { stagger, useAnimate, useInView } from "framer-motion";
+import {Container, Typography } from "@mui/material"
 import React from "react";
-import Timeline, { TimelineAnimationControls } from "./Timeline";
-import AnimatedUnderline from "~/components/AnimatedUnderline";
 import LearnByDoing from "./LearnByDoing";
-import { bodyOffset } from "..";
 import Resources from "./Resources";
 import CurrentSeries from "./CurrentSeries";
 

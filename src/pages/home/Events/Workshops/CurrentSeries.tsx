@@ -1,14 +1,12 @@
-import { AnimationControls, AnimationPlaybackControls, motion, stagger, useAnimate, useInView } from "framer-motion"
+import { AnimationPlaybackControls, motion, stagger, useAnimate, useInView } from "framer-motion"
 import { bodyOffset } from ".."
-import { Box, Button, Container, Stack, SxProps, Typography, useTheme } from "@mui/material"
+import { Box, Button, Stack, SxProps, Typography, useTheme } from "@mui/material"
 import { defaultParentVariants } from "~/util/framer/variants"
 import { workshopSeriesPoll } from "~/links"
 import React from "react"
 import sleep from "~/util/sleep"
 
-export type CurrentSeriesProps = {
-
-}
+export type CurrentSeriesProps = {}
 
 export default function CurrentSeries({}: CurrentSeriesProps) {
 	const theme = useTheme();
@@ -19,10 +17,7 @@ export default function CurrentSeries({}: CurrentSeriesProps) {
 	let currentAnimation: AnimationPlaybackControls = null;
 
 	async function animationSequence(){
-		await animate(".check-out__title", {
-			fontSize: theme.typography.display1.fontSize,
-			y: "16rem",
-		}, {
+		await animate(".check-out__title", { "--animation-percent": 0 }, {
 			duration: 0.000001
 		});
 
@@ -37,8 +32,7 @@ export default function CurrentSeries({}: CurrentSeriesProps) {
 		await sleep(1000);
 
 		currentAnimation = animate(".check-out__title", {
-			fontSize: theme.typography.display2.fontSize,
-			y: 0,
+			"--animation-percent": 1,
 		});
 		await Promise.race([currentAnimation, sleep(100)]);
 
@@ -87,16 +81,14 @@ export default function CurrentSeries({}: CurrentSeriesProps) {
 		})}
 	>
 		<Stack justifyContent="center" alignItems="center" sx={{ height: "100%" }}>
-			<Typography component={motion.p} variant="display2"
+			<Typography variant="display2"
 				className="check-out__title"
-				variants={{
-					initial: {
-						fontSize: theme.typography.display1.fontSize,
-						y: "6rem",
-					},
+				sx={{
+					mb: 4,
+					position: "relative",
+					scale: "calc(1 + (1 - var(--animation-percent)) * 0.5)",
+					top: "calc((1 - var(--animation-percent)) * 6em)"
 				}}
-				initial="initial"
-				sx={{ pb: 4 }}
 			>
 				Check out our Current Series
 			</Typography>
