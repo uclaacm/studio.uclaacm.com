@@ -1,10 +1,10 @@
 import React from "react";
-import { bodyOffset, headerTopPadding } from "..";
 import { stagger, useAnimate, useInView } from "framer-motion";
 import Timeline, { TimelineAnimationControls } from "./Timeline";
 import { Box, Container, Stack, Typography, useTheme } from "@mui/material";
 import AnimatedUnderline from "~/components/AnimatedUnderline";
 import { animationStyle } from "~/util/framer/animation";
+import { bodyOffset, headerTopPadding } from "../EventHeader";
 
 export type LearnByDoingProps = {
 
@@ -88,8 +88,11 @@ export default function LearnByDoing({}: LearnByDoingProps) {
 		id="workshops"
 		maxWidth="lg"
 		sx={theme => ({
+			display: "flex",
+			flexDirection: "column",
 			scrollSnapAlign: "start",
 			scrollMarginTop: `calc(${bodyOffset(theme)})`,
+			pb: `calc(${bodyOffset(theme)})`,
 			width: "100%",
 			height: `calc(100vh - ${theme.spacing(headerTopPadding)} - ${theme.typography.h1.lineHeight})`,
 		})}
@@ -112,16 +115,18 @@ export default function LearnByDoing({}: LearnByDoingProps) {
 			<AnimatedUnderline className="workshop__labs-underline" activeVariant="active">complete game</AnimatedUnderline>
 			{" "}in a quarter.
 		</Typography>
-		<Timeline
-			width="100%"
-			controlsRef={timelineAnimateControls}
-			tasks={[
-				"Add player movement",
-				"Add weapons",
-				"Add enemies and AI",
-				"Add procedural generation",
-				"Add a boss",
-			]}
-		/>
+		<Stack justifyContent="center" sx={{ flexGrow: 1 }}>
+			<Timeline
+				width="100%"
+				controlsRef={timelineAnimateControls}
+				tasks={[
+					"Add player movement",
+					"Add weapons",
+					"Add enemies and AI",
+					"Add procedural generation",
+					"Add a boss",
+				]}
+			/>
+		</Stack>
 	</Container>
 }

@@ -1,11 +1,11 @@
 import { Box, Container, Stack, Theme, Typography, useTheme } from "@mui/material"
-import { bodyOffset } from ".."
 import Link from "~/components/Link"
 import Image from "next/image"
 
 import PaletteAndBrush from "./Palette and Brush.svg"
 import { motion, Transition, Variants } from "framer-motion"
 import { defaultItemVariants, defaultParentVariants } from "~/util/framer/variants"
+import { bodyOffset } from "../EventHeader"
 
 export type ResourcesProps = {
 

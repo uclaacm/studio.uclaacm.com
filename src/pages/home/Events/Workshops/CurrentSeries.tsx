@@ -1,5 +1,5 @@
 import { AnimationPlaybackControls, motion, stagger, useAnimate, useInView } from "framer-motion"
-import { bodyOffset } from ".."
+import { bodyOffset } from "../EventHeader"
 import { Box, Button, Stack, SxProps, Typography, useTheme } from "@mui/material"
 import { defaultParentVariants } from "~/util/framer/variants"
 import { workshopSeriesPoll } from "~/links"
@@ -11,7 +11,7 @@ export type CurrentSeriesProps = {}
 export default function CurrentSeries({}: CurrentSeriesProps) {
 	const theme = useTheme();
 	const [scope, animate] = useAnimate();
-	const inView = useInView(scope);
+	const inView = useInView(scope, { margin: "-128px" });
 
 	let cancellationToken = false;
 	let currentAnimation: AnimationPlaybackControls = null;
@@ -52,7 +52,7 @@ export default function CurrentSeries({}: CurrentSeriesProps) {
 			animationSequence();
 			return () => {
 				cancellationToken = true;
-				currentAnimation.cancel();
+				currentAnimation?.cancel();
 			}
 		}
 	}, [inView])
