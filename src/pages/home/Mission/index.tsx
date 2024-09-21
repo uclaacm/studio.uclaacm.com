@@ -1,24 +1,36 @@
-import { ArrowRight, Forward, KeyboardArrowDown } from "@mui/icons-material"
-import { Box, Button, Container, Stack, Typography, useTheme } from "@mui/material"
-import { motion, Variants } from "framer-motion"
+import { Box, Container, Typography, useTheme } from "@mui/material"
+import { motion, useInView } from "framer-motion"
 
-import Wordmark from "~/assets/images/wordmark_and_logo.svg"
 
 import Axolotl from "./Axolotl"
-import { BoldTypographyItem, createBoldItemVariants, createParentVariants, createUnderlineItemVariants, UnderlineTypographyItem } from "./Animation"
+import { BoldTypographyItem, createParentVariants, UnderlineTypographyItem } from "./Animation"
 import EventList from "./EventList"
+import { HomeSectionProps } from "~/pages/index.page"
+import React from "react"
 
 export type MissionProps = {
 
-}
+} & HomeSectionProps;
 
-export default function Mission({}: MissionProps){
+export default function Mission(props: MissionProps){
+	const {
+		setActive,
+	} = props;
 	const theme = useTheme();
+
+	const root = React.useRef<HTMLDivElement>();
+
+	const inView = useInView(root, { margin: "-64px" });
+	React.useEffect(() => {
+			if(inView) {
+					setActive("#mission");
+			}
+	}, [inView]);
 
 	const parentVariants = createParentVariants(theme);
 
 	return (
-		<Box sx={{
+		<Box ref={root} sx={{
 			overflow: "clip",
 		}}>
 			{/* Background gradient and axolotl */}

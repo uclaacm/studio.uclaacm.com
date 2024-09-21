@@ -103,7 +103,7 @@ export default createTheme({
         },
 
         button: {
-            fontFamily: "sans-serif",
+            fontFamily: "Poppins",
             fontSize: "1rem",
             fontWeight: 400,
             textTransform: "none",
@@ -140,6 +140,11 @@ export default createTheme({
                 },
                 sizeMedium: {
                     fontSize: "1.33rem",
+                    borderRadius: "0.625em",
+                    padding: "0.75em 1em",
+                },
+                sizeSmall: {
+                    fontSize: "1rem",
                     borderRadius: "0.625em",
                     padding: "0.75em 1em",
                 },

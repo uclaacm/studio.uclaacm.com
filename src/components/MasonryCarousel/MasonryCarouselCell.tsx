@@ -1,4 +1,4 @@
-import { Box, Button, Stack, useTheme } from "@mui/material";
+import { Box, Button, Stack, Typography, useTheme } from "@mui/material";
 import { motion } from "framer-motion";
 import React from "react";
 import { MasonryCarouselCellData } from ".";
@@ -18,7 +18,7 @@ export default React.forwardRef<HTMLDivElement, MasonryCarouselCellProps>(
 		const theme = useTheme();
 
 		const { data, dragging } = props;
-		const { src, href } = data;
+		const { src, href, title } = data;
 
 		return <MotionStack
 			justifyContent="center" alignItems="center"
@@ -53,6 +53,20 @@ export default React.forwardRef<HTMLDivElement, MasonryCarouselCellProps>(
 					hover: { opacity: 1 },
 				}}
 			/>
+			{ title && <Box component={motion.div}
+					sx={{
+						zIndex: 1000,
+					}}
+					variants={{
+						default: { opacity: 0, y: 16 },
+						hover: { opacity: 1, y: 0 },
+					}}
+				>
+					<Typography display="block" variant="label" color="white" textAlign="center">
+						{title}
+					</Typography>
+			</Box>
+			}
 			<MotionButton variant="contained"
 				draggable="false"
 				variants={{

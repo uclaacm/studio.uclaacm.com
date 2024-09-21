@@ -92,7 +92,7 @@ function Officer({ officer }: OfficerProps) {
                 {links?.map(({ social, url }, i) => {
                     const icon = getIconFromType(social);
                     if(icon === null){
-                        return <Button variant="outlined" component={Link} href={url} target="_blank" key={i}>
+                        return <Button variant="outlined" size="small" component={Link} href={url} target="_blank" key={i}>
                             {social}
                         </Button>
                     }

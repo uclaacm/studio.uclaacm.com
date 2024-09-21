@@ -87,18 +87,20 @@ export default function CurrentSeries({}: CurrentSeriesProps) {
 					mb: 4,
 					position: "relative",
 					scale: "calc(1 + (1 - var(--animation-percent)) * 0.5)",
-					top: "calc((1 - var(--animation-percent)) * 6em)"
+					top: "calc((1 - var(--animation-percent)) * 3em)"
 				}}
 			>
-				Check out our Current Series
+				Check out our current series
 			</Typography>
 			<Box component="section" sx={{
 				display: "grid",
 				gridTemplateColumns: "1fr 1fr",
-				gap: 2,
 			}}>
 				<Box style={{ minWidth: 0 }} className="check-out__stagger-item" sx={theme => ({
-					borderRadius: `0 ${theme.spacing(theme.shape.borderRadius)} ${theme.spacing(theme.shape.borderRadius)} 0`,
+					ml: 8,
+					mr: 4,
+					// borderRadius: `0 ${theme.spacing(theme.shape.borderRadius)} ${theme.spacing(theme.shape.borderRadius)} 0`,
+					borderRadius: theme.spacing(theme.shape.borderRadius),
 					overflow: "clip",
 					opacity: `var(--animation-percent)`,
 					translate: `calc((var(--animation-percent) - 1) * 8rem) 0`

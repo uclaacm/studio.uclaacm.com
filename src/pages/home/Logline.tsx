@@ -1,18 +1,33 @@
 import { KeyboardArrowDown } from "@mui/icons-material"
 import { Box, Button, Stack, Typography, useTheme } from "@mui/material"
-import { motion, Transition, Variants } from "framer-motion"
+import { motion, Transition, useInView, Variants } from "framer-motion"
 
 import Wordmark from "~/assets/images/wordmark_and_logo.svg"
 import MasonryCarousel from "~/components/MasonryCarousel"
 
 import UpcastBlue from "./LoglineImages/UpcastBlue.webp"
+import { HomeSectionProps } from "../index.page"
+import React from "react"
 
 export type LoglineProps = {
 	scrollContainerRef: React.MutableRefObject<HTMLElement>
-}
+} & HomeSectionProps;
 
-export default function Logline({ scrollContainerRef }: LoglineProps){
+export default function Logline(props: LoglineProps){
+	const {
+		scrollContainerRef,
+		setActive,
+	} = props;
 	const theme = useTheme();
+
+	const root = React.useRef<HTMLDivElement>();
+  const inView = useInView(root, { margin: "-64px" });
+	React.useEffect(() => {
+		if(inView) {
+			console.log("LOGLINE");
+			setActive("#logline");
+		}
+	}, [inView]);
 
 	const rootVariants: Variants = {
 		hidden: {},
@@ -44,7 +59,7 @@ export default function Logline({ scrollContainerRef }: LoglineProps){
 	}
 
 	return (
-		<Box id="logline"
+		<Box id="logline" ref={root}
 			display="grid"
 			gridTemplateColumns="1fr 1fr"
 			sx={{

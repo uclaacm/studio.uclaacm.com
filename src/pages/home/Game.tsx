@@ -1,21 +1,34 @@
 import { Close, KeyboardArrowDown, QuestionMark } from "@mui/icons-material";
 import { Box, Stack, Typography, useTheme } from "@mui/material";
-import { AnimatePresence, motion, Variants } from "framer-motion";
+import { AnimatePresence, motion, useInView, Variants } from "framer-motion";
 import React from "react";
 import IconButton, { MotionIconButton } from "~/components/IconButton";
 import { drawRainbow } from "~/util/canvas/rainbow";
 import { useOnResize } from "~/util/useOnResize";
+import { HomeSectionProps } from "../index.page";
 
 export type HomeGameProps = {
     scrollContainerRef: React.MutableRefObject<HTMLElement>,
-}
+} & HomeSectionProps;
 
-export default function HomeGame({ scrollContainerRef }: HomeGameProps){
+export default function HomeGame(props: HomeGameProps){
+    const { 
+        scrollContainerRef,
+        setActive,
+    } = props;
+
     const theme = useTheme();
 
     const canvasContainerRef = React.useRef<HTMLDivElement>();
     const canvasRef = React.useRef<HTMLCanvasElement>();
     const ctxRef = React.useRef<CanvasRenderingContext2D>();
+
+    const inView = useInView(canvasContainerRef, { margin: "-64px" });
+    React.useEffect(() => {
+        if(inView) {
+            setActive("#game-showcase");
+        }
+    }, [inView]);
 
     const [modalOpen, setModalOpen] = React.useState(false);
 

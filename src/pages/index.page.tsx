@@ -19,17 +19,23 @@ import HomeGame from "./home/Game";
 import Logline from "./home/Logline";
 import Mission from "./home/Mission";
 import Events from "./home/Events";
+import HomeNavigation from "./home/HomeNavigation";
 
 
-type HomeProps = {}
+type HomeProps = {};
+
+export type HomeSectionProps = {
+    setActive: (section: string) => void,
+};
 
 export default function Home({}: HomeProps){
     const scrollContainer = React.useRef<HTMLElement>();
 
+    const [activeSection, setActiveSection] = React.useState("#game-showcase");
 
-
-	return <>
+    return <Box position="relative">
         <Title/>
+        <HomeNavigation active={activeSection}/>
         <Box ref={scrollContainer} sx={{
             width: "100%",
             height: "100vh",
@@ -38,10 +44,10 @@ export default function Home({}: HomeProps){
             scrollBehavior: "smooth",
             scrollSnapStop: "always",
         }}>
-            <HomeGame scrollContainerRef={scrollContainer}/>
-            <Logline scrollContainerRef={scrollContainer}/>
-            <Mission/>
-            <Events/>
+            <HomeGame scrollContainerRef={scrollContainer} setActive={setActiveSection}/>
+            <Logline scrollContainerRef={scrollContainer} setActive={setActiveSection}/>
+            <Mission setActive={setActiveSection}/>
+            <Events setActive={setActiveSection}/>
         </Box>
-    </>
+    </Box>
 }

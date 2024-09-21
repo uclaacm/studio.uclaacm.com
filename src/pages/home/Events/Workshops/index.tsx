@@ -4,13 +4,23 @@ import LearnByDoing from "./LearnByDoing";
 import Resources from "./Resources";
 import CurrentSeries from "./CurrentSeries";
 import EventHeader from "../EventHeader";
+import { HomeSectionProps } from "~/pages/index.page";
+import { useInView } from "framer-motion";
 
 export type WorkshopsProps = {
 
-}
+} & HomeSectionProps;
 
-export default function Workshops({}: WorkshopsProps) {
-	return <>
+export default function Workshops({setActive}: WorkshopsProps) {
+	const root = React.useRef<HTMLDivElement>();
+  const inView = useInView(root, { margin: "-64px" });
+	React.useEffect(() => {
+		if(inView) {
+			setActive("#workshops");
+		}
+	}, [inView]);
+
+	return <Box ref={root}>
 		{/*
 			note: eventheader is sticky, so
 			we want it to stop sticking *after* it gets
@@ -24,5 +34,5 @@ export default function Workshops({}: WorkshopsProps) {
 			<Resources/>
 		</Box>
 		<CurrentSeries/>
-	</>
+	</Box>
 }

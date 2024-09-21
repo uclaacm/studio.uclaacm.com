@@ -31,7 +31,11 @@ const IconButton = styled(MUIIconButton)<IconButtonProps>(({ theme, color, varia
 		"&:hover": {
 			borderColor: `${paletteColor.main}ff`,
 			backgroundColor: variant === "contained" ? paletteColor.dark : `${paletteColor.main}10`,
-		}
+		},
+		height: "2em",
+		width: "2em",
+		aspectRatio: 1,
+		lineHeight: 1,
 	})
 }) as ExtendButtonBase<IconButtonTypeMap<IconButtonProps>>;
 

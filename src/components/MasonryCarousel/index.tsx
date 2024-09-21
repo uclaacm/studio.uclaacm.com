@@ -7,6 +7,7 @@ import MasonryCarouselRow from "./MasonryCarouselRow";
 export type MasonryCarouselCellData = {
 	src?: string,
 	href?: string,
+	title?: React.ReactNode,
 }
 
 export type MasonryCarouselProps = {

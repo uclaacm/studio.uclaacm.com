@@ -117,7 +117,7 @@ export default function LearnByDoing({}: LearnByDoingProps) {
 		</Typography>
 		<Stack justifyContent="center" sx={{ flexGrow: 1 }}>
 			<Timeline
-				width="100%"
+				width="80%"
 				controlsRef={timelineAnimateControls}
 				tasks={[
 					"Add player movement",

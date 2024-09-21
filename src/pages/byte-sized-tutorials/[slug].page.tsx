@@ -6,4 +6,6 @@ export const getServerSideProps = createGetServerSideProps({
 	category: "byteSizedTutorials",
 })
 
-export default ArticleRenderer;
+export default ArticleRenderer({
+	baseUrl: "/byte-sized-tutorials"
+});
