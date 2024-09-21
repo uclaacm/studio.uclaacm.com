@@ -16,6 +16,7 @@ const IconButton = styled(MUIIconButton)<IconButtonProps>(({ theme, color, varia
 	const paletteColor = theme.palette[(color === undefined || color === "default" || color === "inherit")
 		? "primary"
 		: color];
+
 	return ({
 		borderRadius: "2em",
 		border: variant === "contained" ? "none" : "1px solid",

@@ -1,12 +1,23 @@
 import * as React from "react"
 
-import { useTheme } from "@mui/material/styles"
+import { SxProps, useTheme } from "@mui/material/styles"
+import { Box } from "@mui/material";
 
 export type IsaxIconProps = {
-	name: string
+	name: string,
+	sx?: SxProps
 }
 
-export default function IsaxIcon({ name }: IsaxIconProps){
+export default function IsaxIcon(props: IsaxIconProps){
+	const { 
+		name,
+		sx
+	} = props;
 	const theme = useTheme();
-	return <i className={`isax ${name}`} style={{ color: theme.palette.primary.main }}></i>
+	return <Box component="i" className={`isax ${name}`}
+		sx={[
+			{ color: theme.palette.primary.main },
+			...sx instanceof Array ? sx : [sx]
+		]}
+	/>
 }

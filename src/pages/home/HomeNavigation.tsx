@@ -6,7 +6,7 @@ type HomeNavigationEntryProps = {
     title: string,
     href: string,
     active?: boolean,
-    setOpen: (v: boolean) => void,
+    onClick?: React.MouseEventHandler<HTMLAnchorElement>,
 }
 
 function HomeNavigationEntry(props: HomeNavigationEntryProps){
@@ -14,7 +14,7 @@ function HomeNavigationEntry(props: HomeNavigationEntryProps){
         title,
         href,
         active = false,
-        setOpen,
+        onClick,
     } = props;
 
     const theme = useTheme();
@@ -36,7 +36,7 @@ function HomeNavigationEntry(props: HomeNavigationEntryProps){
                 easing: theme.transitions.easing.easeInOut,
             }),
         })}
-        onClick={() => setOpen(false)}
+        onClick={onClick}
     >
         <Stack direction="row" alignItems="center" gap={1}>
             <Box sx={{
@@ -61,7 +61,7 @@ export type HomeNavigationProps = {
     active: string,
 };
 
-const links: Omit<HomeNavigationEntryProps, "setOpen">[] = [
+const links: HomeNavigationEntryProps[] = [
     { title: "Game Showcase", href: "#game-showcase" },
     { title: "Logline", href: "#logline" },
     { title: "Mission", href: "#mission" },
@@ -88,23 +88,10 @@ export default function HomeNavigation(props: HomeNavigationProps){
                 position: "absolute",
                 left: theme.spacing(1),
                 top: theme.spacing(canHover ? 1 : 6), bottom: theme.spacing(1),
-                justifyContent: canHover ? "center" : "start",
+                justifyContent: "center",
                 alignItems: "center",
             })}
         >
-            { !canHover && <Button variant="contained" size="small"
-                sx={theme => ({ 
-                    padding: 0.25,
-                    minWidth: 0,
-                    zIndex: theme.zIndex.drawer - 1,
-                    color: theme.palette.primary.main,
-                    backgroundColor: theme.palette.background.paper,
-                    mb: 1,
-                })}
-                onClick={() => setOpen(v => !v)}
-            >
-                <IsaxIcon name={open ? "isax-close-circle" : "isax-menu-1"}/>
-            </Button> }
             <Backdrop
                 sx={theme => ({
                     zIndex: theme.zIndex.drawer - 2
@@ -131,7 +118,19 @@ export default function HomeNavigation(props: HomeNavigationProps){
                     zIndex: theme.zIndex.drawer - 1,
                 })}
             >
-                {links.map(p => <HomeNavigationEntry key={p.title} active={p.href === active} setOpen={setOpen} {...p}/>)}
+                {links.map(p => <HomeNavigationEntry key={p.title} active={p.href === active} onClick={
+                    canHover 
+                        ? () => setOpen(false)
+                        : (ev) => {
+                            if(open){
+                                setOpen(false);
+                            }
+                            else{
+                                setOpen(true);
+                                ev.preventDefault();
+                            }
+                        }
+                } {...p}/>)}
             </Stack>
         </Stack>
     </>

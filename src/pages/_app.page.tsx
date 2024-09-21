@@ -35,6 +35,7 @@ export default function App({Component, pageProps}: AppPropsWithLayout){
 			<meta name="application-name" content="acm.studio"/>
 			<meta name="msapplication-TileColor" content="#ff8c93"/>
 			<meta name="theme-color" content="#ffffff"/>
+			<meta name="viewport" content="initial-scale=1, maximum-scale=1"/>
 		</Head>
 		<ThemeProvider theme={theme}>
 			<InputProvider>

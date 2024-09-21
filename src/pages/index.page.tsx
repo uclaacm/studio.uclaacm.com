@@ -39,7 +39,7 @@ export default function Home({}: HomeProps){
         <Box ref={scrollContainer} sx={{
             width: "100%",
             height: "100dvh",
-            overflow: "auto",
+            overflowY: "auto",
             scrollSnapType: "y mandatory",
             scrollBehavior: "smooth",
             scrollSnapStop: "always",

@@ -62,13 +62,16 @@ export default function Logline(props: LoglineProps) {
 
     return (
         <Box id="logline" ref={root}
-            display="grid"
-            gridTemplateColumns="1fr 1fr"
-            sx={{
+            sx={theme => ({
                 width: "100%",
                 height: "100vh",
                 scrollSnapAlign: "start",
-            }}
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                [theme.breakpoints.down('md')]: {
+                    gridTemplateColumns: "unset",
+                },
+            })}
 
             component={motion.div}
             variants={rootVariants}
@@ -80,11 +83,12 @@ export default function Logline(props: LoglineProps) {
             <Stack
                 alignItems="center" justifyContent="center"
                 sx={{
+                    py: 4,
                     px: 4,
                 }}
             >
-                <Stack gap={16} sx={{
-                    width: "fit-content",
+                <Stack gap={medium ? 4 : 16} sx={{
+                    width: medium ? "100%" : "fit-content",
                 }}>
                     <Stack direction="row"
                         sx={{ width: "100%" }}
@@ -93,6 +97,9 @@ export default function Logline(props: LoglineProps) {
                         <img src={Wordmark.src} style={{
                             width: 0,
                             flexGrow: 1,
+                            minWidth: 0,
+                            minHeight: 0,
+                            flexBasis: 0,
                         }}></img>
                     </Stack>
                     <Box {...itemProps}>
