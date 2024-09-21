@@ -1,4 +1,4 @@
-import { Box, BoxProps, Stack } from "@mui/material"
+import { Box, BoxProps, Stack, useMediaQuery, useTheme } from "@mui/material"
 import React, { useImperativeHandle } from "react";
 import { useSize } from "~/util/useOnResize";
 import MasonryCarouselRow from "./MasonryCarouselRow";
@@ -40,6 +40,8 @@ export default React.forwardRef<HTMLDivElement, MasonryCarouselProps>(function M
 		sx,
 		...boxProps
 	} = props;
+
+	const canHover = useMediaQuery("(hover:hover)");
 
 	const containerRef = React.useRef<HTMLDivElement>(null);
 	const containerSize = useSize(containerRef, false);

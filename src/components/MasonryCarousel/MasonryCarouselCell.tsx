@@ -10,6 +10,7 @@ const MotionButton = motion(Button);
 
 export type MasonryCarouselCellProps = {
 	data: MasonryCarouselCellData,
+	canHover?: boolean,
 	dragging: React.RefObject<boolean>
 }
 
@@ -17,8 +18,10 @@ export default React.forwardRef<HTMLDivElement, MasonryCarouselCellProps>(
 	function MasonryCarouselCell(props: MasonryCarouselCellProps, ref){
 		const theme = useTheme();
 
-		const { data, dragging } = props;
+		const { data, dragging, canHover } = props;
 		const { src, href, title } = data;
+
+		const [hovering, setHovering] = React.useState(false);
 
 		return <MotionStack
 			justifyContent="center" alignItems="center"
@@ -38,8 +41,16 @@ export default React.forwardRef<HTMLDivElement, MasonryCarouselCellProps>(
 					}
 				}
 			}}
-			animate="default"
-			whileHover="hover"
+			animate={hovering ? "hover" : "default"}
+			onMouseEnter={() => setHovering(true)}
+			onMouseLeave={() => setHovering(false)}
+			{... !canHover
+				? {
+					onClick: () => { 
+						setHovering(v => !v);
+					}
+				} : {}
+			}
 		>
 			<Box component={motion.div}
 				sx={{
@@ -79,7 +90,7 @@ export default React.forwardRef<HTMLDivElement, MasonryCarouselCellProps>(
 				} : {}}
 				startIcon={<img src={ItchIcon.src} width="24px" height="24px"></img>}
 				onClick={(e) => {
-					if(dragging.current) {
+					if(dragging.current || !hovering) {
 						e.preventDefault();
 					}
 				}}

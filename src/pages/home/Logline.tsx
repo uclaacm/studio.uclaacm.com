@@ -69,6 +69,8 @@ export default function Logline(props: LoglineProps) {
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
                 [theme.breakpoints.down('md')]: {
+                    display: "flex",
+                    flexDirection: "column",
                     gridTemplateColumns: "unset",
                 },
             })}
@@ -77,14 +79,13 @@ export default function Logline(props: LoglineProps) {
             variants={rootVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
+            viewport={{ once: true, margin: "-64px" }}
             transition={transition}
         >
             <Stack
                 alignItems="center" justifyContent="center"
                 sx={{
-                    py: 4,
-                    px: 4,
+                    p: 4,
                 }}
             >
                 <Stack gap={medium ? 4 : 16} sx={{
@@ -106,7 +107,7 @@ export default function Logline(props: LoglineProps) {
                         <Typography variant="display2">Game development<br />for everybody</Typography>
                         <Typography variant="title1" component="p">UCLA’s top game development club</Typography>
                     </Box>
-                    <Stack direction="row" gap={3}>
+                    { !medium && <Stack direction="row" gap={3}>
                         <Button {...itemProps} size={buttonSize} variant="contained" endIcon={<KeyboardArrowDown />} onClick={() => {
                             scrollContainerRef.current.scrollBy({ top: 1, behavior: "smooth" })
                         }}>
@@ -115,7 +116,7 @@ export default function Logline(props: LoglineProps) {
                         <Button {...itemProps} size={buttonSize} variant="outlined" href="/events">
                             Get involved
                         </Button>
-                    </Stack>
+                    </Stack>}
                 </Stack>
             </Stack>
             <Box flexGrow={1} sx={{
@@ -141,6 +142,20 @@ export default function Logline(props: LoglineProps) {
                     [{ src: UpcastBlue.src, href: "https://ketexon.itch.io/upcast-blue" }],
                 ]} />
             </Box>
+            { medium && <Stack direction="row" gap={3}
+                    sx={{ 
+                        p: 4,
+                    }}
+                >
+                <Button {...itemProps} size={buttonSize} variant="contained" endIcon={<KeyboardArrowDown />} onClick={() => {
+                    scrollContainerRef.current.scrollBy({ top: 1, behavior: "smooth" })
+                }}>
+                    Learn more
+                </Button>
+                <Button {...itemProps} size={buttonSize} variant="outlined" href="/events">
+                    Get involved
+                </Button>
+            </Stack>}
         </Box>
     )
 }

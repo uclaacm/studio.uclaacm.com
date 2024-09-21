@@ -96,7 +96,8 @@ const theme = createTheme({
     }
 })
 
-const sm = theme.breakpoints.down('md');
+const md = theme.breakpoints.down('md');
+const sm = theme.breakpoints.down('sm');
 
 theme.typography = {
     ...theme.typography,
@@ -106,18 +107,24 @@ theme.typography = {
         lineHeight: 1.125,
         fontWeight: 700,
         fontFamily: "Poppins",
-        [sm]: {
+        [md]: {
             fontSize: "2.5rem",
-        }
+        },
+        [sm]: {
+            fontSize: "2rem",
+        },
     },
     display2: {
         fontSize: "3rem",
         lineHeight: 1.25,
         fontWeight: 700,
         fontFamily: "Poppins",
-        [sm]: {
+        [md]: {
             fontSize: "2.25rem",
-        }
+        },
+        [sm]: {
+            fontSize: "1.875rem",
+        },
     },
 
     h1: {
@@ -125,27 +132,33 @@ theme.typography = {
         lineHeight: 1.25,
         fontWeight: 400,
         fontFamily: "Poppins",
-        [sm]: {
+        [md]: {
             fontSize: "2rem",
-        }
+        },
+        [sm]: {
+            fontSize: "1.75rem",
+        },
     },
     h2: {
         fontSize: "2.33rem",
         lineHeight: 1.25,
         fontWeight: 400,
         fontFamily: "Poppins",
-        [sm]: {
+        [md]: {
             fontSize: "1.833rem",
-        }
+        },
+        [sm]: {
+            fontSize: "1.66rem",
+        },
     },
     h3: {
         fontSize: "2rem",
         lineHeight: 1.25,
         fontWeight: 400,
         fontFamily: "Poppins",
-        [sm]: {
+        [md]: {
             fontSize: "1.5rem",
-        }
+        },
     },
 
     title1: {
@@ -153,7 +166,7 @@ theme.typography = {
         lineHeight: 1.25,
         fontWeight: 400,
         fontFamily: "Poppins",
-        [sm]: {
+        [md]: {
             fontSize: "1.333rem",
         }
     },
@@ -162,7 +175,7 @@ theme.typography = {
         lineHeight: 1.5,
         fontWeight: 400,
         fontFamily: "Poppins",
-        [sm]: {
+        [md]: {
             fontSize: "1.25rem",
         }
     },
@@ -184,7 +197,7 @@ theme.typography = {
         lineHeight: 1.5,
         fontWeight: 400,
         fontFamily: "Poppins",
-        [sm]: {
+        [md]: {
             fontSize: "1rem",
         },
     },
@@ -193,7 +206,7 @@ theme.typography = {
         lineHeight: 1.33,
         fontWeight: 400,
         fontFamily: "Poppins",
-        [sm]: {
+        [md]: {
             fontSize: "0.875rem",
         },
     },

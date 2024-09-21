@@ -31,6 +31,12 @@ export type MasonryCarouselRowProps = {
 	 * If it is too small, there will be a gap at the end of the row.
 	 */
 	nVirtualizedCells?: number,
+
+	/**
+	 * if false, gives a more friendly interface to devices that
+	 * cannot hover. Ie. all hover states are triggered by onClick
+	 */
+	canHover?: boolean,
 }
 
 /**
@@ -48,6 +54,7 @@ export default React.forwardRef<HTMLDivElement, MasonryCarouselRowProps>(
 			gap,
 			cellWidth,
 			nVirtualizedCells = 5,
+			canHover,
 		} = props;
 
 		const containerRef = React.useRef<HTMLDivElement>();
@@ -186,7 +193,7 @@ export default React.forwardRef<HTMLDivElement, MasonryCarouselRowProps>(
 							translate: `calc(${virtualCellOffsets[i]} * (${nVirtualizedCells} * (${cellWidth}px + ${theme.spacing(gap)}))) 0`,
 
 						})}>
-							<MasonryCarouselCell data={cells[cellIndex]} dragging={dragging} />
+							<MasonryCarouselCell data={cells[cellIndex]} dragging={dragging} canHover={canHover} />
 						</Box>
 					)
 				})}

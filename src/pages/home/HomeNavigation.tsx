@@ -7,6 +7,7 @@ type HomeNavigationEntryProps = {
     href: string,
     active?: boolean,
     onClick?: React.MouseEventHandler<HTMLAnchorElement>,
+    canHover?: boolean,
 }
 
 function HomeNavigationEntry(props: HomeNavigationEntryProps){
@@ -15,12 +16,13 @@ function HomeNavigationEntry(props: HomeNavigationEntryProps){
         href,
         active = false,
         onClick,
+        canHover = true,
     } = props;
 
     const theme = useTheme();
 
     const opacity = active ? 1 : 0.4;
-    const hoverOpacity = active ? 1 : 0.8;
+    const hoverOpacity = active ? 1 : (canHover ? 0.8 : 0.4);
     const color = active ? theme.palette.primary.main : "black";
 
     return <Link href={href} underline="none"
@@ -118,19 +120,23 @@ export default function HomeNavigation(props: HomeNavigationProps){
                     zIndex: theme.zIndex.drawer - 1,
                 })}
             >
-                {links.map(p => <HomeNavigationEntry key={p.title} active={p.href === active} onClick={
-                    canHover 
-                        ? () => setOpen(false)
-                        : (ev) => {
-                            if(open){
-                                setOpen(false);
+                {links.map(p => <HomeNavigationEntry key={p.title} active={p.href === active}
+                    canHover={canHover}
+                    onClick={
+                        canHover 
+                            ? () => setOpen(false)
+                            : (ev) => {
+                                if(open){
+                                    setOpen(false);
+                                }
+                                else{
+                                    setOpen(true);
+                                    ev.preventDefault();
+                                }
                             }
-                            else{
-                                setOpen(true);
-                                ev.preventDefault();
-                            }
-                        }
-                } {...p}/>)}
+                    }
+                    {...p}
+                />)}
             </Stack>
         </Stack>
     </>
