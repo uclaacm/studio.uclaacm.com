@@ -38,7 +38,7 @@ export default function Home({}: HomeProps){
         <HomeNavigation active={activeSection}/>
         <Box ref={scrollContainer} sx={{
             width: "100%",
-            height: "100vh",
+            height: "100dvh",
             overflow: "auto",
             scrollSnapType: "y mandatory",
             scrollBehavior: "smooth",

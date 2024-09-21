@@ -1,5 +1,6 @@
 import { useTheme } from "@mui/material";
 import ItchIcon from "~/assets/images/icons/dev/itchio.svg"
+import GitHubIcon from "~/assets/images/icons/dev/GitHub.svg"
 
 export function getIconFromType(type: string): React.ReactNode | null {
 	const theme = useTheme();
@@ -12,6 +13,9 @@ export function getIconFromType(type: string): React.ReactNode | null {
 	}
 	else if(["website"].includes(type)){
 		return <i className="isax isax-global5" style={{ color: theme.palette.primary.main }}></i>
+	}
+	else if(["github"].includes(type)){
+		return <img src={GitHubIcon.src} style={{ width: "1em", height: "1em" }} alt="" />
 	}
 	return null;
 }

@@ -144,7 +144,7 @@ export default function Community(props: CommunityProps) {
 				<Box/>
 			</Box>
 			<Stack direction="row">
-				<Stack gap={4} sx={{ pt: 2 }}>
+				<Stack gap={4} sx={{ pt: 2, flexGrow: 1, flexBasis: 0, }}>
 					<Typography variant="h2" className="community__section" sx={animationStyle()}>
 						Whether interested in games or game dev, come join us and hang out!
 					</Typography>
@@ -161,6 +161,8 @@ export default function Community(props: CommunityProps) {
 					sx={[
 						{
 							flexBasis: 0,
+							minWidth: 0,
+							flexGrow: 1,
 							display: "grid",
 							gridTemplateRows: "1fr"
 						},
@@ -175,6 +177,7 @@ export default function Community(props: CommunityProps) {
 								gridColumnStart: "1",
 								zIndex: 100,
 								position: "relative",
+								width: "100%", height: "100%",
 							})}
 							initial={{ opacity: 0, y: 16 }}
 							animate={{ opacity: 1, y: 0 }}
@@ -183,6 +186,11 @@ export default function Community(props: CommunityProps) {
 							<Box component={Image}
 								sx={theme => ({
 									borderRadius: theme.shape.borderRadius,
+									minWidth: 0,
+									minHeight: 0,
+									width: "100%",
+									height: "100%",
+									objectFit: "cover",
 								})}
 								src={curImage.image} alt={curImage.alt}
 							/>
