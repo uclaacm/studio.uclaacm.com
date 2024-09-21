@@ -59,7 +59,7 @@ function NotionBlockRenderer({ block }: NotionBlockRendererProps){
 		paragraph: "body1",
 		heading_1: "h2",
 		heading_2: "h3",
-		heading_3: "h4",
+		heading_3: "title1",
 	}
 
 	const textTypeStyle: { [k: string]: SxProps } = {
