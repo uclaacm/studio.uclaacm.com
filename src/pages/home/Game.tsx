@@ -149,17 +149,9 @@ export default function HomeGame(props: HomeGameProps){
                     animate={modalOpen ? "modal" : "button"}
                     transition={{ duration: transitionDuration, ease: "circIn" }}
                 >
-                        <Typography variant="body1">
-                            <Typography component={motion.span} variant="body1" variants={typographyItem}>
-                                Hello
-                            </Typography>{" "}
-                            <Typography component={motion.span} variant="body1" variants={typographyItem}>
-                                friend
-                            </Typography>
-                        </Typography>
-                        <Typography component={motion.p} variant="body1" variants={typographyItem}>Game</Typography>
-                        <Typography component={motion.p} variant="body1" variants={typographyItem}>Game</Typography>
-                        <Typography component={motion.p} variant="body1" variants={typographyItem}>Game</Typography>
+                    <Typography component={motion.p} variant="body1" variants={typographyItem} color="white">
+                        Participate in our Website Game jam for your game to show up here!
+                    </Typography>
                 </Box>
                 <MotionIconButton
                     key={1}
