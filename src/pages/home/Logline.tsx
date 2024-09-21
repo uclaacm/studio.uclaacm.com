@@ -1,5 +1,5 @@
 import { KeyboardArrowDown } from "@mui/icons-material"
-import { Box, Button, Stack, Typography, useTheme } from "@mui/material"
+import { Box, Button, Stack, Typography, useMediaQuery, useTheme } from "@mui/material"
 import { motion, Transition, useInView, Variants } from "framer-motion"
 
 import Wordmark from "~/assets/images/wordmark_and_logo.svg"
@@ -19,6 +19,9 @@ export default function Logline(props: LoglineProps) {
         setActive,
     } = props;
     const theme = useTheme();
+
+    const medium = useMediaQuery(theme.breakpoints.down("md"));
+    const buttonSize = medium ? "medium" : "large";
 
     const root = React.useRef<HTMLDivElement>();
     const inView = useInView(root, { margin: "-64px" });
@@ -76,6 +79,9 @@ export default function Logline(props: LoglineProps) {
         >
             <Stack
                 alignItems="center" justifyContent="center"
+                sx={{
+                    px: 4,
+                }}
             >
                 <Stack gap={16} sx={{
                     width: "fit-content",
@@ -94,12 +100,12 @@ export default function Logline(props: LoglineProps) {
                         <Typography variant="title1" component="p">UCLA’s top game development club</Typography>
                     </Box>
                     <Stack direction="row" gap={3}>
-                        <Button {...itemProps} size="large" variant="contained" endIcon={<KeyboardArrowDown />} onClick={() => {
+                        <Button {...itemProps} size={buttonSize} variant="contained" endIcon={<KeyboardArrowDown />} onClick={() => {
                             scrollContainerRef.current.scrollBy({ top: 1, behavior: "smooth" })
                         }}>
                             Learn more
                         </Button>
-                        <Button {...itemProps} size="large" variant="outlined" href="/events">
+                        <Button {...itemProps} size={buttonSize} variant="outlined" href="/events">
                             Get involved
                         </Button>
                     </Stack>

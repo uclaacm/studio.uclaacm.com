@@ -1,4 +1,4 @@
-import { Box, Container, Paper, Stack, Theme, Typography, useTheme } from "@mui/material"
+import { Box, Container, Paper, Stack, Theme, Typography, useMediaQuery, useTheme } from "@mui/material"
 import Link from "~/components/Link"
 import Image from "next/image"
 
@@ -26,7 +26,7 @@ function ResourceCard({ topContent, children }: ResourceCardProps) {
 		variants={defaultItemVariants()}
 		transition={defaultTransition(theme)}
 		sx={theme => ({
-			border: "16px solid",
+			border: "8px solid",
 			borderColor: theme.palette.primary.main,
 			borderRadius: "24px"
 		})}
@@ -40,7 +40,7 @@ function ResourceCard({ topContent, children }: ResourceCardProps) {
 			{topContent}
 		</Stack>
 		<Box sx={{ px: 2, py: 2 }}>
-			<Typography variant="title1">
+			<Typography variant="title2">
 				{children}
 			</Typography>
 		</Box>
@@ -52,6 +52,7 @@ function Cards(){
 		flexGrow: 1,
 		display: "flex",
 		alignItems: "center",
+		pt: 2,
 		pb: `calc(${bodyOffset(theme)})`,
 	})}>
 		<Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 2 }}>

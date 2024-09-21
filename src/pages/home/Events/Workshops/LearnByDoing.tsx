@@ -115,9 +115,10 @@ export default function LearnByDoing({}: LearnByDoingProps) {
 			<AnimatedUnderline className="workshop__labs-underline" activeVariant="active">complete game</AnimatedUnderline>
 			{" "}in a quarter.
 		</Typography>
-		<Stack justifyContent="center" sx={{ flexGrow: 1 }}>
+		<Stack justifyContent="center" sx={{ flexGrow: 1, mb: 4 }}>
 			<Timeline
 				width="80%"
+				height="100%"
 				controlsRef={timelineAnimateControls}
 				tasks={[
 					"Add player movement",

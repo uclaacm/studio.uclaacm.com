@@ -1,6 +1,6 @@
 import { AnimationPlaybackControls, motion, stagger, useAnimate, useInView } from "framer-motion"
 import { bodyOffset } from "../EventHeader"
-import { Box, Button, Stack, SxProps, Typography, useTheme } from "@mui/material"
+import { Box, Button, Stack, SxProps, Typography, useMediaQuery, useTheme } from "@mui/material"
 import { defaultParentVariants } from "~/util/framer/variants"
 import { workshopSeriesPoll } from "~/links"
 import React from "react"
@@ -12,6 +12,8 @@ export default function CurrentSeries({}: CurrentSeriesProps) {
 	const theme = useTheme();
 	const [scope, animate] = useAnimate();
 	const inView = useInView(scope, { margin: "-128px" });
+
+	const medium = useMediaQuery(theme.breakpoints.down("lg"));
 
 	let cancellationToken = false;
 	let currentAnimation: AnimationPlaybackControls = null;
@@ -29,12 +31,24 @@ export default function CurrentSeries({}: CurrentSeriesProps) {
 
 		if(cancellationToken) return;
 
-		await sleep(1000);
+		if (medium){
+			currentAnimation = animate(".check-out__title", {
+				"--animation-percent": 1,
+			}, {
+					duration: 0.000001
+			});
+			await sleep(100);
+		}
+		else {
+			await sleep(500);
 
-		currentAnimation = animate(".check-out__title", {
-			"--animation-percent": 1,
-		});
-		await Promise.race([currentAnimation, sleep(100)]);
+			currentAnimation = animate(".check-out__title", {
+				"--animation-percent": 1,
+			}, {
+					duration: theme.transitions.duration.short / 1000
+			});
+			await Promise.race([currentAnimation, sleep(100)]);
+		}
 
 		if(cancellationToken) return;
 
@@ -76,11 +90,11 @@ export default function CurrentSeries({}: CurrentSeriesProps) {
 			scrollSnapAlign: "start",
 			scrollMarginTop: `calc(${bodyOffset(theme)})`,
 			width: "100%",
-			height: `calc(100vh - (${bodyOffset(theme)}))`,
+			minHeight: `calc(100vh - (${bodyOffset(theme)}))`,
 			pb: `calc(${bodyOffset(theme)})`
 		})}
 	>
-		<Stack justifyContent="center" alignItems="center" sx={{ height: "100%" }}>
+		<Stack justifyContent="center" alignItems="center" sx={{ height: "100%", px: 4 }}>
 			<Typography variant="display2"
 				className="check-out__title"
 				sx={{
@@ -95,22 +109,30 @@ export default function CurrentSeries({}: CurrentSeriesProps) {
 			<Box component="section" sx={{
 				display: "grid",
 				gridTemplateColumns: "1fr 1fr",
+				[theme.breakpoints.down(1650)]: {
+						gridTemplateColumns: "unset",
+						gridTemplateRows: "auto auto",
+				},
 			}}>
 				<Box style={{ minWidth: 0 }} className="check-out__stagger-item" sx={theme => ({
 					ml: 8,
 					mr: 4,
+					translate: `calc((var(--animation-percent) - 1) * 8rem) 0`,
+					[theme.breakpoints.down(1650)]: {
+						mx: 0,
+						translate: `0 calc((1 - var(--animation-percent)) * 16px)`,
+					},
 					// borderRadius: `0 ${theme.spacing(theme.shape.borderRadius)} ${theme.spacing(theme.shape.borderRadius)} 0`,
 					borderRadius: theme.spacing(theme.shape.borderRadius),
 					overflow: "clip",
 					opacity: `var(--animation-percent)`,
-					translate: `calc((var(--animation-percent) - 1) * 8rem) 0`
 				})}>
 					<img
 						src="https://images.gog-statics.com/e6cbc5d26564d089ed9f655ed5d374d2672c344a934ddb38b96aa7da52908870_product_card_v2_mobile_slider_639.jpg"
-						style={{ width: "100%", height: "100%", }}
+						style={{ width: "100%", height: "100%" }}
 					/>
 				</Box>
-				<Stack justifyContent="center" sx={{ pr: `calc(50vw - ${theme.breakpoints.values.lg / 2}px)` }}>
+				<Stack justifyContent="center" sx={{ pr: `calc(50vw - ${theme.breakpoints.values.lg / 2}px)`, mr: 4 }}>
 					<Typography variant="display1" className="check-out__stagger-item" sx={[staggerItemStyle]}>
 						Fall 2024
 					</Typography>
