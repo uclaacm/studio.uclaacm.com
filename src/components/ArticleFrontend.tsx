@@ -21,6 +21,9 @@ export type ArticleProps = {
 
 export function ArticleRenderer({ baseUrl }: ArticleParams){
 	return function({ article }: ArticleProps){
+		if(article === undefined){
+			return <></>
+		}
 		const { title, authors, tags, category, blocks } = article;
 
 		const authorString = React.useMemo(() => joinAuthorNames(authors), [authors]);

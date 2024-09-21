@@ -152,7 +152,6 @@ export default function NotionBlocksRenderer({ blocks }: NotionBlocksRendererPro
 			}
 			else{
 				const first = acc.at(-1)[0];
-				console.log(first);
 				if(
 					(
 						first.type === "bulleted_list_item" || first.type === "numbered_list_item" ||
