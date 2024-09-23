@@ -11,19 +11,19 @@ export type GameJamsProps = {
 } & HomeSectionProps;
 
 export default function GameJams(props: GameJamsProps) {
-	const { setActive } = props;
-	const root = React.useRef<HTMLDivElement>();
+  const { setActive } = props;
+  const root = React.useRef<HTMLDivElement>();
   const inView = useInView(root, { margin: "-64px" });
-	React.useEffect(() => {
-		if(inView) {
-			setActive("#game-jams");
-		}
-	}, [inView]);
-	return <Box ref={root}>
-		<Box>
-			<EventHeader>Game Jams</EventHeader>
-			<TryGameJams/>
-		</Box>
-		<StudioJams/>
-	</Box>
+  React.useEffect(() => {
+    if(inView) {
+      setActive();
+    }
+  }, [inView]);
+  return <Box ref={root}>
+    <Box>
+      <EventHeader>Game Jams</EventHeader>
+      <TryGameJams/>
+    </Box>
+      <StudioJams/>
+    </Box>
 }

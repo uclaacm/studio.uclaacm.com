@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { GetServerSideProps } from "next";
 
-import Container from "~/components/Container";
+import BackgroundContainer from "~/components/BackgroundContainer";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Link from "~/components/Link";
@@ -122,7 +122,7 @@ export default function Blog({ articles }: BlogProps){
 		})
 	);
 
-	return <Container>
+	return <BackgroundContainer>
 		<Typography variant="h1" mb={4}>Blog</Typography>
 		<Box
 			display="grid"
@@ -159,5 +159,5 @@ export default function Blog({ articles }: BlogProps){
 				</Box>
 			</Box>
 		</Box>
-	</Container>
+	</BackgroundContainer>
 }

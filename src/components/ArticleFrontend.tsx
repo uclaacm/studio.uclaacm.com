@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import Container from "~/components/Container";
+import BackgroundContainer from "~/components/BackgroundContainer";
 import Typography from "@mui/material/Typography"
 
 import { NotionArticleSchema, NotionSchemaWithBlocks } from "~/api/notion/schema";
@@ -27,7 +27,7 @@ export function ArticleRenderer({ baseUrl }: ArticleParams){
 		const { title, authors, tags, category, blocks } = article;
 
 		const authorString = React.useMemo(() => joinAuthorNames(authors), [authors]);
-		return <Container>
+		return <BackgroundContainer>
 			<Title>{title}</Title>
 			<Head>
 				<meta name="author" content={joinAuthorNames(authors)}/>
@@ -36,6 +36,6 @@ export function ArticleRenderer({ baseUrl }: ArticleParams){
 			<Typography variant="subtitle1"><Link href={baseUrl}>{category}</Link></Typography>
 			<Typography variant="h1">{title}</Typography>
 			<NotionBlocksRenderer blocks={blocks}/>
-		</Container>
+		</BackgroundContainer>
 	}
 }

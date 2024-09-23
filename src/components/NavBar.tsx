@@ -11,7 +11,7 @@ import Backdrop from '@mui/material/Backdrop';
 import ListItem, { ListItemProps } from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import MuiListItemIcon from '@mui/material/ListItemIcon';
-import { Fab, SwipeableDrawer, Theme, styled, useMediaQuery, useTheme } from "@mui/material";
+import { SwipeableDrawer, Theme, styled, useMediaQuery, useTheme } from "@mui/material";
 
 import NextLink from "next/link";
 import Image from "next/image";
@@ -26,7 +26,6 @@ import InstagramIcon from "~/assets/images/icons/dev/instagram.svg"
 import ControllerIcon from "~/assets/images/icons/controller.svg"
 import BookIcon from "~/assets/images/icons/archive-book.svg"
 import CalendarIcon from "~/assets/images/icons/calendar.svg"
-import { useInput } from "./Input";
 import { useRouter } from "next/router";
 import matchPath from "~/util/matchPath";
 import IsaxIcon from "./IsaxIcon";
@@ -39,7 +38,7 @@ const drawerPadding = (theme: Theme) => theme.spacing(1)
 const drawerWidthClosed = (theme: Theme) => `calc(2 * ${drawerPadding(theme)} + 2 * ${drawerIconPadding(theme)} + ${DRAWER_ICON_WIDTH_PX})`
 const DRAWER_WIDTH_OPEN = "18rem";
 
-const drawerBorderRadius = (theme: Theme) => `${theme.shape.borderRadius * 4}px`
+const drawerBorderRadius = (theme: Theme) => `${theme.shape.borderRadius}px`
 
 // customize open behavior
 const Drawer = styled(MuiDrawer, {shouldForwardProp: prop => prop !== "open"})(({theme, open}) => ({
@@ -103,11 +102,11 @@ const navBarContents: NavBarContents[] = [
 		text: "about",
 		href: "/about",
 	},
-	{
-		icon: ControllerIcon,
-		text: "showcase",
-		href: "/showcase",
-	},
+	// {
+	// 	icon: ControllerIcon,
+	// 	text: "showcase",
+	// 	href: "/showcase",
+	// },
 	{
 		icon: BookIcon,
 		text: "blog",
@@ -210,7 +209,10 @@ export default function NavBar(){
 							<Image src={icon} alt={text} width={DRAWER_ICON_WIDTH} style={{padding: theme.spacing(0.25)}}/>
 						</ListItemIcon>
 						{text && (
-							<Typography variant="h3" sx={theme => ({mr: theme.spacing(1)})}>
+							<Typography variant="display2" sx={theme => ({
+									mr: theme.spacing(1),
+									fontSize: "2rem",
+								})}>
 								{text}
 							</Typography>
 						)}

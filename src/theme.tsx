@@ -26,6 +26,9 @@ const paletteOptions: PaletteOptions = {
 const SPACING = 8;
 
 const theme = createTheme({
+    shape: {
+        borderRadius: 16,
+    },
     palette: paletteOptions,
     spacing: SPACING,
     typography: {
@@ -98,6 +101,32 @@ const theme = createTheme({
 
 const md = theme.breakpoints.down('md');
 const sm = theme.breakpoints.down('sm');
+
+theme.components.MuiContainer = {
+    styleOverrides: {
+        root: {
+            paddingLeft: `${SPACING*4}px`,
+            paddingRight: `${SPACING*4}px`,
+            [theme.breakpoints.up("sm")]: {
+                paddingLeft: `${SPACING*4}px`,
+                paddingRight: `${SPACING*4}px`,
+            },
+        }
+    }
+};
+
+theme.components.MuiCard = {
+    defaultProps: {
+        raised: false,
+        elevation: 0,
+    },
+    styleOverrides: {
+        root: {
+            border: `1px solid ${theme.palette.primary.main}`,
+            borderRadius: theme.shape.borderRadius
+        },
+    },
+};
 
 theme.typography = {
     ...theme.typography,

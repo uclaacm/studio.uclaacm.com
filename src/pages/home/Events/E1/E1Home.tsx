@@ -1,4 +1,4 @@
-import { Box, Button, Container, Stack, Typography, useTheme } from "@mui/material"
+import { Box, Button, Container, Stack, Typography, useMediaQuery, useTheme } from "@mui/material"
 import { bodyOffset, headerTopPadding } from "../EventHeader"
 import { AnimationPlaybackControls, Easing, stagger, useAnimate, useInView } from "framer-motion"
 import React from "react";
@@ -17,6 +17,9 @@ export default function E1Home(props: SpeakerEventHomeProps) {
 	const [scope, animate] = useAnimate();
 
 	const inView = useInView(scope);
+
+	const medium = useMediaQuery(theme.breakpoints.down("md"));
+	const buttonSize = medium ? "small" : "medium";
 
 	let cancellationToken = false;
 	let currentAnimation: AnimationPlaybackControls = null;
@@ -37,6 +40,19 @@ export default function E1Home(props: SpeakerEventHomeProps) {
 		}
 	}, [inView])
 
+	const buttons = <>
+		<Button variant="contained" size={buttonSize}
+			href={links.e1}
+			className="community__section"
+			sx={animationStyle()}
+		>View Course Listing</Button>
+		<Button variant="outlined" size={buttonSize}
+			href={links.e1StudentProjects}
+			className="community__section"
+			sx={animationStyle()}
+		>View past student work</Button>
+	</>
+
 	return <Box ref={scope}
 		id="engr1"
 		sx={theme => ({
@@ -51,23 +67,33 @@ export default function E1Home(props: SpeakerEventHomeProps) {
 			<Container maxWidth="lg">
 				<Typography variant="display2" component="span" className="community__header-section"
 					display="block"
-					sx={animationStyle()}
+					sx={[animationStyle(), { mb: 4 }]}
 				>
 					Want a more formal learning experience?
 				</Typography>
 			</Container>
 			<Box component="section"
-				sx={{
+				sx={theme => ({
 					display: "grid",
 					gridTemplateColumns: "1fr 1fr",
-					pt: 2,
-				}}
+					[theme.breakpoints.down("md")]: {
+						gridTemplateColumns: "unset",
+						gridTemplateRows: "auto auto auto",
+					},
+				})}
 			>
-				<Box sx={theme => ({
-					maxWidth: theme.breakpoints.values.lg / 2,
-					justifySelf: "end",
-					pl: 3,
-				})}>
+				<Box
+					sx={theme => ({
+						maxWidth: theme.breakpoints.values.lg / 2,
+						justifySelf: "end",
+						pl: 4,
+						[theme.breakpoints.down("md")]: {
+							maxWidth: "unset",
+							justifySelf: "start",
+							px: 4,
+						},
+					})}
+				>
 					<Stack gap={4}>
 						<Typography variant="h2" className="community__section" sx={animationStyle()}>
 							Get a comprehensive understanding of the Unity game engine in a classroom settings with zero experience needed.
@@ -75,17 +101,14 @@ export default function E1Home(props: SpeakerEventHomeProps) {
 						<Typography variant="h2" className="community__section" sx={animationStyle()}>
 							Work in small groups to create a game from design to production.
 						</Typography>
-						<Stack direction="row" gap={1}>
-							<Button variant="contained" size="medium"
-								href={links.e1}
-								className="community__section"
-								sx={animationStyle()}
-							>View Course Listing</Button>
-							<Button variant="outlined" size="medium"
-								href={links.e1StudentProjects}
-								className="community__section"
-								sx={animationStyle()}
-							>View past student work</Button>
+						<Stack direction="row" gap={1}
+							sx={theme => ({
+								[theme.breakpoints.down("md")]: {
+									display: "none",
+								},
+							})}
+						>
+							{buttons}
 						</Stack>
 					</Stack>
 				</Box>
@@ -101,12 +124,22 @@ export default function E1Home(props: SpeakerEventHomeProps) {
 						sx={theme => ({
 							height: "80%",
 							minWidth: 0, minHeight: 0,
-							borderRadius: theme.shape.borderRadius,
+							borderRadius: 1,
 							overflow: "clip",
 							objectFit: "cover",
 						})}>
 					</Box>
 				</Box>
+				<Stack direction="row" gap={1}
+					sx={theme => ({
+						px: 4,
+						[theme.breakpoints.up("md")]: {
+							display: "none",
+						},
+					})}
+				>
+					{buttons}
+				</Stack>
 			</Box>
 		</Box>
 		{/* <Box sx={{position: "absolute", bottom: "20vh"}}>

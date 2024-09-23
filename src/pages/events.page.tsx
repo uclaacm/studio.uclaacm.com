@@ -14,7 +14,7 @@ import * as React from "react";
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Container from "~/components/Container";
+import BackgroundContainer from "~/components/BackgroundContainer";
 import { IconButton as MUIIconButton, Button, Card, CardActions, CardContent, CardHeader, ClickAwayListener, Paper, Popper, Skeleton, Stack, useTheme, Divider, Snackbar, Alert } from "@mui/material";
 import { objectGroupBy } from "~/util/polyfills";
 import IconButton from "~/components/IconButton";
@@ -381,7 +381,7 @@ export default function Events({ }: EventProps) {
     }
 
     return (
-        <Container>
+        <BackgroundContainer>
             <Snackbar
                 open={errorOpen}
                 autoHideDuration={10_000}
@@ -434,6 +434,6 @@ export default function Events({ }: EventProps) {
                     todaysDate={todayDate}
                 />
             </Stack>
-        </Container>
+        </BackgroundContainer>
     );
 }

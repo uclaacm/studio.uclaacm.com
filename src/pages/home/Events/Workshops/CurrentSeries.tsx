@@ -1,10 +1,10 @@
 import { AnimationPlaybackControls, motion, stagger, useAnimate, useInView } from "framer-motion"
-import { bodyOffset } from "../EventHeader"
+import { bodyMinHeight, bodyOffset } from "../EventHeader"
 import { Box, Button, Stack, SxProps, Typography, useMediaQuery, useTheme } from "@mui/material"
 import { defaultParentVariants } from "~/util/framer/variants"
-import { workshopSeriesPoll } from "~/links"
 import React from "react"
 import sleep from "~/util/sleep"
+import { links } from "~/Strings"
 
 export type CurrentSeriesProps = {}
 
@@ -90,7 +90,7 @@ export default function CurrentSeries({}: CurrentSeriesProps) {
 			scrollSnapAlign: "start",
 			scrollMarginTop: `calc(${bodyOffset(theme)})`,
 			width: "100%",
-			minHeight: `calc(100vh - (${bodyOffset(theme)}))`,
+			minHeight: `calc(${bodyMinHeight(theme)})`,
 			pb: `calc(${bodyOffset(theme)})`
 		})}
 	>
@@ -112,6 +112,7 @@ export default function CurrentSeries({}: CurrentSeriesProps) {
 				[theme.breakpoints.down(1650)]: {
 						gridTemplateColumns: "unset",
 						gridTemplateRows: "auto auto",
+						width: "100%",
 				},
 			}}>
 				<Box style={{ minWidth: 0 }} className="check-out__stagger-item" sx={theme => ({
@@ -122,8 +123,6 @@ export default function CurrentSeries({}: CurrentSeriesProps) {
 						mx: 0,
 						translate: `0 calc((1 - var(--animation-percent)) * 16px)`,
 					},
-					// borderRadius: `0 ${theme.spacing(theme.shape.borderRadius)} ${theme.spacing(theme.shape.borderRadius)} 0`,
-					borderRadius: theme.spacing(theme.shape.borderRadius),
 					overflow: "clip",
 					opacity: `var(--animation-percent)`,
 				})}>
@@ -133,7 +132,16 @@ export default function CurrentSeries({}: CurrentSeriesProps) {
 					/>
 				</Box>
 				<Stack justifyContent="center" sx={{ pr: `calc(50vw - ${theme.breakpoints.values.lg / 2}px)`, mr: 4 }}>
-					<Typography variant="display1" className="check-out__stagger-item" sx={[staggerItemStyle]}>
+					<Typography variant="display1" className="check-out__stagger-item"
+						sx={[
+							staggerItemStyle,
+							theme => ({
+								[theme.breakpoints.down(1650)]: {
+									mt: 2,
+								},
+							})
+						]}
+					>
 						Fall 2024
 					</Typography>
 					<Typography variant="h1" mb={2} className="check-out__stagger-item" sx={[staggerItemStyle]}>
@@ -150,8 +158,8 @@ export default function CurrentSeries({}: CurrentSeriesProps) {
 						</Typography>
 					</Stack>
 					<Stack direction="row" gap={1}>
-						<Button href="/workshops" variant="contained" size="medium" className="check-out__stagger-item" sx={[staggerItemStyle]}>See schedule</Button>
-						<Button href={workshopSeriesPoll} variant="outlined" size="medium" className="check-out__stagger-item" sx={[staggerItemStyle]}>Vote for next series</Button>
+						<Button href="/workshops" variant="contained" size={medium ? "small" : "medium"} className="check-out__stagger-item" sx={[staggerItemStyle]}>See schedule</Button>
+						<Button href={links.workshopSeriesPoll} variant="outlined" size={medium ? "small" : "medium"} className="check-out__stagger-item" sx={[staggerItemStyle]}>Vote for next series</Button>
 					</Stack>
 				</Stack>
 			</Box>

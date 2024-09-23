@@ -5,7 +5,7 @@ import Image from "next/image"
 import PaletteAndBrush from "./Palette and Brush.svg"
 import { motion, Transition, Variants } from "framer-motion"
 import { defaultItemVariants, defaultParentVariants } from "~/util/framer/variants"
-import { bodyOffset } from "../EventHeader"
+import { bodyMinHeight, bodyOffset } from "../EventHeader"
 
 export type ResourcesProps = {
 
@@ -55,7 +55,17 @@ function Cards(){
 		pt: 2,
 		pb: `calc(${bodyOffset(theme)})`,
 	})}>
-		<Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 2 }}>
+		<Box
+			sx={theme => ({
+				display: "grid",
+				gridTemplateColumns: "1fr 1fr 1fr",
+				gap: 2,
+				[theme.breakpoints.down("md")]: {
+					gridTemplateColumns: "unset",
+					gridTemplateRows: "1fr 1fr 1fr",
+				},
+			})}
+		>
 			<ResourceCard topContent={
 				<Typography variant="h2" component="span">{"</>"}</Typography>
 			}>
@@ -97,7 +107,7 @@ export default function Resources({ }: ResourcesProps) {
 			scrollSnapAlign: "start",
 			scrollMarginTop: `calc(${bodyOffset(theme)})`,
 			width: "100%",
-			height: `calc(100vh - (${bodyOffset(theme)}))`,
+			minHeight: `calc(${bodyMinHeight(theme)})`,
 		})}
 	>
 		<Typography variant="display1"
@@ -115,35 +125,5 @@ export default function Resources({ }: ResourcesProps) {
 			We provide a collection of resources to help you.
 		</Typography>
 		<Cards/>
-		{/* <Box pt={4} display="flex" flexDirection="column" gap={4}>
-			<Box>
-				<Typography variant="display2">
-					Miss a week?
-				</Typography>
-				<Typography variant="title1">
-					Each week's workshop's code is available on{" "}
-					<Link href="https://github.com/uclaacm/studio-roguelike-workshop">GitHub</Link>.
-				</Typography>
-			</Box>
-			<Box>
-				<Typography variant="display2">
-					Not an artist?
-				</Typography>
-				<Typography variant="title1">
-					We supply default art for every assets you need, so you can focus on
-					your strengths!
-				</Typography>
-			</Box>
-			<Box>
-				<Typography variant="display2">
-					Want to learn more?
-				</Typography>
-				<Typography variant="title1">
-					Have a look at our{" "}
-					<Link href="/workshops">external resources</Link>
-					{" "}for every tool used in the workshop.
-				</Typography>
-			</Box>
-		</Box> */}
 	</Container>
 }

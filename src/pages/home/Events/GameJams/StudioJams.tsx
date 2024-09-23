@@ -1,5 +1,5 @@
-import { Box, Button, Container, Stack, Typography, useTheme } from "@mui/material"
-import { bodyOffset, headerTopPadding } from "../EventHeader"
+import { Box, Button, Container, Stack, Typography, useMediaQuery, useTheme } from "@mui/material"
+import { bodyMinHeight, bodyOffset, headerTopPadding } from "../EventHeader"
 import { AnimationPlaybackControls, Easing, stagger, useAnimate, useInView } from "framer-motion"
 import React from "react";
 import { animationStyle } from "~/util/framer/animation";
@@ -8,17 +8,8 @@ import HeroCarousel from "~/components/HeroCarousel";
 import MasonryCarousel, { MasonryCarouselCellData } from "~/components/MasonryCarousel";
 import { links } from "~/Strings";
 
+export type OurJamsProps = {}
 
-export type OurJamsProps = {
-
-}
-// const images = [
-// 	"https://placehold.co/600x400?text=2",
-// 	"https://placehold.co/600x400?text=3",
-// 	"https://placehold.co/600x400?text=4"
-// ]
-//
-//
 const entries: MasonryCarouselCellData[] = [
 	{ src: "https://img.itch.zone/aW1nLzEzNTg4NzYzLnBuZw==/315x250%23c/21lJqQ.png", href: "https://diplomaticdodo.itch.io/obby-had-a-farm", title: <>Obby had a farm<br/>LD54</> },
 ]
@@ -28,6 +19,8 @@ export default function StudioJams(props: OurJamsProps) {
 	const [scope, animate] = useAnimate();
 
 	const inView = useInView(scope);
+
+	const md = useMediaQuery(theme.breakpoints.down("md"));
 
 	let cancellationToken = false;
 	let currentAnimation: AnimationPlaybackControls = null;
@@ -59,13 +52,13 @@ export default function StudioJams(props: OurJamsProps) {
 			scrollSnapAlign: "start",
 			scrollMarginTop: `calc(${bodyOffset(theme)})`,
 			width: "100%",
-			height: `calc(100vh - ${theme.spacing(headerTopPadding)} - ${theme.typography.h1.lineHeight})`,
+			minHeight: `calc(${bodyMinHeight(theme)})`,
 		})}
 	>
 		<Stack sx={{ height: "100%" }}>
 			<Typography component="span" variant="display1" className="studio-jams__header"
 				display="block"
-				sx={animationStyle()}
+				sx={[animationStyle(), { mb: 4 }]}
 			>
 				Past Entries
 			</Typography>
@@ -75,18 +68,6 @@ export default function StudioJams(props: OurJamsProps) {
 			<Typography component="span" variant="title1">
 				Here are past entries from various teams!
 			</Typography>
-				{/*
-			<Box sx={{
-				flexGrow: 1,
-				position: "relative",
-				display: "flex",
-				justifyContent: "center",
-				alignItems: "center",
-				pb: `calc(${theme.spacing(headerTopPadding)} + ${theme.typography.h1.lineHeight})`
-			}}>
-					<HeroCarousel images={images}/>
-			</Box>
-			*/}
 			<Stack
 				sx={{
 					flexGrow: 1,
@@ -114,9 +95,12 @@ export default function StudioJams(props: OurJamsProps) {
 						background: "radial-gradient(farthest-side at right, rgba(0,0,0,0.5), rgba(0,0,0,0))",
 						pointerEvents: "none",
 					}}/>
-					<MasonryCarousel rows={[
+					<MasonryCarousel
+						rows={[
 							entries
-					]}/>
+						]}
+						cellWidthProportion={md ? 0.8 : undefined}
+					/>
 				</Box>
 				<Stack direction="row" justifyContent="end">
 					<Button variant="text" href={links.itch}>

@@ -72,7 +72,7 @@ export function Selection({selectionRef, containerSelector, boxSizing, useClient
 			borderWidth: theme.spacing(1),
 			borderColor: theme.palette.primary.main,
 			borderStyle: "solid",
-			borderRadius: theme.shape.borderRadius,
+			borderRadius: 1,
 			position: fixed ? "fixed" : "absolute",
 
 			top: offsetBorder ? `calc(${rect?.top}px - ${theme.spacing(1)})` : `${rect?.top}px`,

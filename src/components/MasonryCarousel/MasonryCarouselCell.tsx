@@ -31,7 +31,7 @@ export default React.forwardRef<HTMLDivElement, MasonryCarouselCellProps>(
 				backgroundImage: `url("${src}")`,
 				backgroundSize: "cover",
 				backgroundPosition: "center",
-				borderRadius: theme.shape.borderRadius,
+				borderRadius: 1,
 			})}
 			variants={{
 				default: {},
@@ -73,12 +73,13 @@ export default React.forwardRef<HTMLDivElement, MasonryCarouselCellProps>(
 						hover: { opacity: 1, y: 0 },
 					}}
 				>
-					<Typography display="block" variant="label" color="white" textAlign="center">
+					<Typography display="block" variant="caption" color="white" textAlign="center">
 						{title}
 					</Typography>
 			</Box>
 			}
 			<MotionButton variant="contained"
+				size="small"
 				draggable="false"
 				variants={{
 					default: { opacity: 0, y: 16 },

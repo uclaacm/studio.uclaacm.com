@@ -1,5 +1,5 @@
 import { Box, Container, Stack, Typography, useTheme } from "@mui/material"
-import { bodyOffset, headerTopPadding } from "../EventHeader"
+import { bodyMinHeight, bodyOffset, headerTopPadding } from "../EventHeader"
 import { AnimationPlaybackControls, Easing, stagger, useAnimate, useInView } from "framer-motion"
 import React from "react";
 import { animationStyle } from "~/util/framer/animation";
@@ -107,7 +107,7 @@ export default function TryGameJams(props: TryGameJamsProps) {
 			scrollSnapAlign: "start",
 			scrollMarginTop: `calc(${bodyOffset(theme)})`,
 			width: "100%",
-			minHeight: `calc(100vh - ${theme.spacing(headerTopPadding)} - ${theme.typography.h1.lineHeight})`,
+			minHeight: `calc(${bodyMinHeight(theme)})`,
 			pb: 2 * headerTopPadding,
 		})}
 	>
@@ -117,7 +117,7 @@ export default function TryGameJams(props: TryGameJamsProps) {
 					display: "grid",
 					width: "100%",
 					translate: `0 calc((1 - var(--animation-percent)) * 32vh)`,
-					mb: 0,
+					mb: 4,
 				}}
 			>
 				<Box/>
@@ -142,7 +142,7 @@ export default function TryGameJams(props: TryGameJamsProps) {
 				</Box>
 				<Box/>
 			</Box>
-			<Stack gap={4} sx={{ pt: 8 }} className="try-game-jams__bullets">
+			<Stack gap={4} className="try-game-jams__bullets">
 				<Stack direction="row" gap={2} style={animationStyle()} className="try-game-jams__bullet">
 					<Typography fontSize="4rem" lineHeight={1}>
 						🙃

@@ -17,7 +17,7 @@ import { styled } from '@mui/material/styles'; // for styling
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'; // expand icon
 import Paper from '@mui/material/Paper'; // paper
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material"; // maybe use accordions for each image? unfold when clicked for details
-import Container from "~/components/Container";
+import BackgroundContainer from "~/components/BackgroundContainer";
 import Title from "~/components/Title";
 import content from "~/__generated__/content";
 import { ShowcaseSchema } from "~/Schema";
@@ -80,7 +80,7 @@ function ShowcaseItem({ item }: ShowcaseItemProps) {
                         alt={img.alt}
                         loading="lazy"
                         style={{
-                            borderRadius: theme.shape.borderRadius * 4,
+                            borderRadius: 1,
                             objectFit: "cover",
                             width: "100%",
                             height: "100%",
@@ -161,7 +161,7 @@ export default function Showcase() {
 
     const theme = useTheme();
     return (
-        <Container
+        <BackgroundContainer
             background={<MUIContainer maxWidth="lg" sx={{
                 width: "100%", height: "100%",
                 display: "grid", gridTemplate: "1fr / 4fr 8fr",
@@ -187,6 +187,6 @@ export default function Showcase() {
                 </React.Fragment>
             ))}
             {Object.keys(years).length === 0 && <Typography variant="body1">No content {`(\u25CF\u00B4\u2313\`\u25CF)`}</Typography>}
-        </Container>
+        </BackgroundContainer>
     );
 }

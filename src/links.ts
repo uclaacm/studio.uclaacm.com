@@ -1,1 +1,0 @@
-export const workshopSeriesPoll = `https://forms.gle/k4DbvCFUjf7GPah96`;

@@ -11,7 +11,7 @@ export type ContainerProps = {
 	sx?: Exclude<SxProps<Theme>, ReadonlyArray<any>>
 }
 
-export default function Container({ children, background, rootSx, sx: containerSx }: ContainerProps){
+export default function BackgroundContainer({ children, background, rootSx, sx: containerSx }: ContainerProps){
 	return background ? (
 		<Box sx={[{
 			width: "100%",

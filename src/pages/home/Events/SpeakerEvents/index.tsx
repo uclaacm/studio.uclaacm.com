@@ -12,20 +12,20 @@ export type SpeakerEventsProps = {
 } & HomeSectionProps;
 
 export default function SpeakerEvents(props: SpeakerEventsProps) {
-	const { setActive } = props;
-	const root = React.useRef<HTMLDivElement>();
+  const { setActive } = props;
+  const root = React.useRef<HTMLDivElement>();
   const inView = useInView(root, { margin: "-64px" });
-	React.useEffect(() => {
-		if(inView) {
-			setActive("#speaker-events");
-		}
-	}, [inView]);
-	return <Box ref={root}>
-		<Box>
-			<EventHeader>Speaker Series</EventHeader>
-		</Box>
-		<SpeakerEventsHome/>
-		{/* <Community/>
-		<StudioSquads/> */}
-	</Box>
+  React.useEffect(() => {
+    if(inView) {
+      setActive();
+    }
+  }, [inView]);
+  return <Box ref={root}>
+    <Box>
+      <EventHeader>Speaker Series</EventHeader>
+    </Box>
+      <SpeakerEventsHome/>
+      {/* <Community/>
+                <StudioSquads/> */}
+    </Box>
 }

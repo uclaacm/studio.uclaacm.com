@@ -1,10 +1,10 @@
 import React from "react";
 import { stagger, useAnimate, useInView } from "framer-motion";
 import Timeline, { TimelineAnimationControls } from "./Timeline";
-import { Box, Container, Stack, Typography, useTheme } from "@mui/material";
+import { Box, Container, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 import AnimatedUnderline from "~/components/AnimatedUnderline";
 import { animationStyle } from "~/util/framer/animation";
-import { bodyOffset, headerTopPadding } from "../EventHeader";
+import { bodyMinHeight, bodyOffset, headerTopPadding } from "../EventHeader";
 
 export type LearnByDoingProps = {
 
@@ -18,6 +18,8 @@ export default function LearnByDoing({}: LearnByDoingProps) {
 	const timelineAnimateControls = React.useRef<TimelineAnimationControls>(null);
 
 	let cancellationToken = false;
+
+	const md = useMediaQuery(theme.breakpoints.down("md"));
 
 	async function animationSequence(){
 		animate(".workshop__title", { "--animation-percent": 0, gridTemplateColumns: "1fr auto 1fr" }, { duration: 0.000001 });
@@ -94,7 +96,7 @@ export default function LearnByDoing({}: LearnByDoingProps) {
 			scrollMarginTop: `calc(${bodyOffset(theme)})`,
 			pb: `calc(${bodyOffset(theme)})`,
 			width: "100%",
-			height: `calc(100vh - ${theme.spacing(headerTopPadding)} - ${theme.typography.h1.lineHeight})`,
+			height: `calc(${bodyMinHeight(theme)})`,
 		})}
 	>
 		<Typography component="div" variant="display1"
@@ -117,16 +119,24 @@ export default function LearnByDoing({}: LearnByDoingProps) {
 		</Typography>
 		<Stack justifyContent="center" sx={{ flexGrow: 1, mb: 4 }}>
 			<Timeline
-				width="80%"
+				width="100%"
 				height="100%"
 				controlsRef={timelineAnimateControls}
-				tasks={[
-					"Add player movement",
-					"Add weapons",
-					"Add enemies and AI",
-					"Add procedural generation",
-					"Add a boss",
-				]}
+				tasks={
+					md
+					? ([
+						"Add player movement",
+						"Add weapons",
+						"Add enemies and AI",
+					])
+					: ([
+						"Add player movement",
+						"Add weapons",
+						"Add enemies and AI",
+						"Add procedural generation",
+						"Add a boss",
+					])
+				}
 			/>
 		</Stack>
 	</Container>

@@ -3,19 +3,11 @@ import { motion, motionValue, useSpring } from "framer-motion";
 import { BoldTypographyItem, createParentVariants } from "./Animation";
 import { ArrowRight } from "@mui/icons-material";
 import React from "react";
+import { homeEventSections } from "~/pages/index.page";
 
 const MotionTypography = motion<TypographyProps & { component: string }>(Typography);
 
 export default function EventList(){
-	const links = [
-		{ name: "Workshops", anchor: "#workshops" },
-		{ name: "Game Jams", anchor: "#game-jams" },
-		{ name: "Socials", anchor: "#socials" },
-		{ name: "Industry Speakers", anchor: "#speakers" },
-		{ name: "Game Dev Course (ENGR 1GD)", anchor: "#engr1" },
-		{ name: "Students Run Studios", anchor: "#srs" },
-	]
-
 	const theme = useTheme();
 
 	const parentVariants = createParentVariants(theme);
@@ -29,7 +21,7 @@ export default function EventList(){
 		}
 	);
 
-	const underlinePercents = links.map((_, i) => motionValue(i === 0 ? 1 : 0));
+	const underlinePercents = homeEventSections.map((_, i) => motionValue(i === 0 ? 1 : 0));
 	const underlinePercentSprings = underlinePercents.map(mv => useSpring(
 		mv,
 		{
@@ -40,6 +32,10 @@ export default function EventList(){
 
 	const selected = React.useRef(0);
 
+	React.useEffect(() => {
+		console.log(arrowY);
+	}, [arrowY]);
+
 	return (
 		<Container id="event-list" maxWidth="lg" sx={{
 			scrollSnapAlign: "start",
@@ -48,12 +44,18 @@ export default function EventList(){
 			alignItems: "center",
 			gridRowStart: 1, gridColumnStart: 1,
 		}}>
-			<Box sx={{
-				maxWidth: "66%"
-			}}>
+			<Box
+				sx={{
+					maxWidth: "66%",
+					[theme.breakpoints.down("sm")]: {
+						maxWidth: "unset",
+					}
+				}}
+			>
 				<Typography component={motion.p} variant="display2"
 					pb={4}
 					variants={parentVariants} initial="initial" whileInView="inView"
+					viewport={{ once: true }}
 					transition={{ duration: theme.transitions.duration.short / 1000 }}
 					sx={{ display: "block"}}
 				>
@@ -74,11 +76,12 @@ export default function EventList(){
 					}}
 					initial="initial"
 					whileInView="inView"
+					viewport={{ once: true, margin: "-64px", }}
 				>
 					{/* relative position here to use offsetTop relative to this stack */}
 					<Stack order={2} position="relative" alignItems="start" gap={0.5}>
-						{links.map(({ name, anchor }, i) => (
-							<Typography key={name}
+						{homeEventSections.map(({ title, longTitle = title, props: { anchor } }, i) => (
+							<Typography key={title}
 								display="block"
 								variant="title1" color="primary"
 								sx={{ display: "block", textDecoration: "none", }}
@@ -90,6 +93,7 @@ export default function EventList(){
 								}}
 								onHoverStart={(ev) => {
 									arrowY.set((ev.target as HTMLAnchorElement).offsetTop);
+									console.log(arrowY.get());
 									underlinePercents[selected.current].set(0);
 									selected.current = i;
 									underlinePercents[selected.current].set(1);
@@ -110,7 +114,7 @@ export default function EventList(){
 										}
 									}}
 								>
-									{name}
+									{longTitle}
 								</Typography>
 							</Typography>
 						))}

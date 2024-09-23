@@ -22,9 +22,9 @@ export default function Mission(props: MissionProps){
 
 	const inView = useInView(root, { margin: "-64px" });
 	React.useEffect(() => {
-			if(inView) {
-					setActive("#mission");
-			}
+		if(inView) {
+			setActive();
+		}
 	}, [inView]);
 
 	const parentVariants = createParentVariants(theme);
@@ -33,57 +33,58 @@ export default function Mission(props: MissionProps){
 		<Box ref={root} sx={{
 			overflow: "clip",
 		}}>
-			{/* Background gradient and axolotl */}
-			<Box sx={{
-				position: "sticky",
-				height: 0,
-				top: 0,
-				overflow: "visible",
-				width: "100%",
-				pointerEvents: "none",
-			}}>
+				{/* Background gradient and axolotl */}
 				<Box sx={{
-					width: "100%", height: "100vh",
-					background: "linear-gradient(to bottom, #FFFFFF00 46%, #FFC2C261 100%)",
-					display: "grid", gridTemplateColumns: "2fr 1fr"
+					position: "sticky",
+					height: 0,
+					top: 0,
+					overflow: "visible",
+					width: "100%",
+					pointerEvents: "none",
 				}}>
 					<Box sx={{
-						gridColumnStart: 2,
-						display: "flex",
-						alignItems: "end",
-						p: 8,
+						width: "100%", height: "100vh",
+						background: "linear-gradient(to bottom, #FFFFFF00 46%, #FFC2C261 100%)",
+						display: "grid", gridTemplateColumns: "2fr minmax(4rem,1fr)"
 					}}>
-						<Axolotl/>
+						<Box sx={{
+							gridColumnStart: 2,
+							display: "flex",
+							alignItems: "end",
+							pr: 4,
+							pb: 4,
+						}}>
+							<Axolotl/>
+						</Box>
 					</Box>
 				</Box>
-			</Box>
 
-			<Container id="mission" maxWidth="lg" sx={{
-				scrollSnapAlign: "start",
-				height: "100vh",
-				display: "flex",
-				alignItems: "center",
-				gridRowStart: 1, gridColumnStart: 1,
-			}}>
-				<Box sx={{
-					maxWidth: "66%"
+				<Container id="mission" maxWidth="lg" sx={{
+					scrollSnapAlign: "start",
+					height: "100vh",
+					display: "flex",
+					alignItems: "center",
+					gridRowStart: 1, gridColumnStart: 1,
 				}}>
-					<Typography component={motion.p} variant="display2"
+					<Box sx={{
+						maxWidth: "66%"
+					}}>
+						<Typography component={motion.p} variant="display2"
 						variants={parentVariants} initial="initial" whileInView="inView"
 						transition={{ duration: theme.transitions.duration.short / 1000 }}
 						sx={{ display: "block"}}
 					>
 						Our mission is to create a community to{" "}
-						<BoldTypographyItem>teach</BoldTypographyItem>,{" "}
-						<BoldTypographyItem>encourage</BoldTypographyItem>, and{" "}
-						<BoldTypographyItem>support</BoldTypographyItem>{" "}
+							<BoldTypographyItem>teach</BoldTypographyItem>,{" "}
+							<BoldTypographyItem>encourage</BoldTypographyItem>, and{" "}
+							<BoldTypographyItem>support</BoldTypographyItem>{" "}
 						students interested in{" "}
-						<UnderlineTypographyItem>all aspects</UnderlineTypographyItem>{" "}
+							<UnderlineTypographyItem>all aspects</UnderlineTypographyItem>{" "}
 						of game development...
 					</Typography>
-				</Box>
-			</Container>
-			<EventList/>
-		</Box>
+					</Box>
+				</Container>
+				<EventList/>
+			</Box>
 	)
 }

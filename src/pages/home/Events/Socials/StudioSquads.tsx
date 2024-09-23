@@ -1,5 +1,5 @@
 import { Box, Button, Container, Stack, Typography, useTheme } from "@mui/material"
-import { bodyOffset, headerTopPadding } from "../EventHeader"
+import { bodyMinHeight, bodyOffset, headerTopPadding } from "../EventHeader"
 import { AnimationPlaybackControls, Easing, stagger, useAnimate, useInView } from "framer-motion"
 import React from "react";
 import { animationStyle } from "~/util/framer/animation";
@@ -83,7 +83,7 @@ export default function StudioSquads(props: StudioSquadsProps) {
 			scrollSnapAlign: "start",
 			scrollMarginTop: `calc(${bodyOffset(theme)})`,
 			width: "100%",
-			height: `calc(100vh - ${theme.spacing(headerTopPadding)} - ${theme.typography.h1.lineHeight})`,
+			minHeight: `calc(${bodyMinHeight(theme)})`,
 		})}
 	>
 		{/* Background */}
@@ -102,15 +102,21 @@ export default function StudioSquads(props: StudioSquadsProps) {
 			]}
 		>
 			<Box component="img" src={StudioSquadsImage.src} width="600"
-				sx={{
+				sx={theme => ({
 					width: "60%",
-				}}
+					[theme.breakpoints.down("md")]: {
+						width: "80%",
+					},
+				})}
 			/>
 		</Box>
 		<Box>
 			<Typography variant="display1" component="span" className="studio-squads__header"
 				display="block"
-				sx={animationStyle()}
+				sx={[
+					animationStyle(),
+					{ mb: 4 },
+				]}
 			>
 				Join a Studio Squad
 			</Typography>
@@ -132,15 +138,5 @@ export default function StudioSquads(props: StudioSquadsProps) {
 				</Stack>
 			</Stack>
 		</Box>
-		{/* <Box sx={{position: "absolute", bottom: "20vh"}}>
-			<Box sx={{  width: "50vw",
-				position: "relative",
-				display: "flex",
-				justifyContent: "center",
-				alignItems: "center"
-			}}>
-				<HeroCarousel images = {images}/>
-			</Box>
-		</Box> */}
 	</Container>
 }

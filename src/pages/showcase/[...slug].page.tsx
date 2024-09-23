@@ -2,7 +2,7 @@
 /// IT EXPECTS A FILE FROM content/showcase/...
 /// THOUGH WE SWITCHED TO RENDERING IN NOTION
 
-import Container from "~/components/Container";
+import BackgroundContainer from "~/components/BackgroundContainer";
 
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
@@ -22,7 +22,7 @@ export default function ShowcaseEntry({ article }: ArticleProps){
 	const { title, } = article;
 
 	const router = useRouter();
-	return <Container>
+	return <BackgroundContainer>
 		<Button
 			variant="text" size="small" startIcon={<BackIcon fontSize="inherit"/>}
 			component={Link}
@@ -38,5 +38,5 @@ export default function ShowcaseEntry({ article }: ArticleProps){
 			<Typography variant="h1" sx={{ flexGrow: 1 }}>{title}</Typography>
 		</Stack>
 		<NotionBlocksRenderer blocks={article.blocks}/>
-	</Container>
+	</BackgroundContainer>
 }

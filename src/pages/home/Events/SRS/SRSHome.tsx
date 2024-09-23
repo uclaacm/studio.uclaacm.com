@@ -1,5 +1,5 @@
 import { Box, Button, Container, Stack, Typography, useTheme } from "@mui/material"
-import { bodyOffset, headerTopPadding } from "../EventHeader"
+import { bodyMinHeight, bodyOffset, headerTopPadding } from "../EventHeader"
 import { AnimationPlaybackControls, Easing, stagger, useAnimate, useInView } from "framer-motion"
 import React from "react";
 import { animationStyle } from "~/util/framer/animation";
@@ -66,7 +66,7 @@ export default function SRSHome(props: SRSHomeProps) {
 			scrollSnapAlign: "start",
 			scrollMarginTop: `calc(${bodyOffset(theme)})`,
 			width: "100%",
-			height: `calc(100vh - ${theme.spacing(headerTopPadding)} - ${theme.typography.h1.lineHeight})`,
+			minHeight: `calc(${bodyMinHeight(theme)})`,
 		})}
 	>
 		<Typography variant="subtitle1" component="span" className="srs__header" display="block">

@@ -1,5 +1,5 @@
-import { Box, Button, Container, Stack, Typography, useTheme } from "@mui/material"
-import { bodyOffset, headerTopPadding } from "../EventHeader"
+import { Box, Button, Container, Stack, Typography, useMediaQuery, useTheme } from "@mui/material"
+import { bodyMinHeight, bodyOffset, headerTopPadding } from "../EventHeader"
 import { AnimatePresence, AnimationPlaybackControls, Easing, motion, stagger, useAnimate, useInView } from "framer-motion"
 import React from "react";
 import { animationStyle } from "~/util/framer/animation";
@@ -11,12 +11,8 @@ import TouchingGrass from "./Images/hike-touching-grass.webp"
 import ACMGenMeeting from "./Images/acm-gen-meeting.webp"
 import StudioGenMeeting from "./Images/studio-gen-meeting.webp"
 
+export type CommunityProps = {};
 
-export type CommunityProps = {
-
-}
-
-const MotionImage = motion(Image);
 
 const images = [
 	{ alt: "Touching grass on a hike!", image: TouchingGrass },
@@ -41,6 +37,9 @@ export default function Community(props: CommunityProps) {
 
 	const theme = useTheme();
 	const [scope, animate] = useAnimate();
+
+	const medium = useMediaQuery(theme.breakpoints.down("md"));
+	const buttonSize = medium ? "small" : "medium";
 
 	const inView = useInView(scope);
 
@@ -113,6 +112,20 @@ export default function Community(props: CommunityProps) {
 		}
 	}, [inView])
 
+
+	const buttons = <>
+		<Button variant="contained" size={buttonSize}
+			className="community__section"
+			sx={animationStyle()}
+			href="/get-involved"
+		>Get Connected</Button>
+		<Button variant="outlined" size={buttonSize}
+			className="community__section"
+			sx={animationStyle()}
+			href={links.insta}
+		>Instagram</Button>
+	</>
+
 	return <Container ref={scope}
 		id="socials"
 		maxWidth="lg"
@@ -120,7 +133,7 @@ export default function Community(props: CommunityProps) {
 			scrollSnapAlign: "start",
 			scrollMarginTop: `calc(${bodyOffset(theme)})`,
 			width: "100%",
-			height: `calc(100vh - ${theme.spacing(headerTopPadding)} - ${theme.typography.h1.lineHeight})`,
+			minHeight: `calc(${bodyMinHeight(theme)})`,
 		})}
 	>
 		<Box>
@@ -129,7 +142,7 @@ export default function Community(props: CommunityProps) {
 					display: "grid",
 					width: "100%",
 					translate: `0 calc((1 - var(--animation-percent)) * 32vh)`,
-					mb: 2,
+					mb: 4,
 				}}
 			>
 				<Box/>
@@ -143,17 +156,29 @@ export default function Community(props: CommunityProps) {
 				</Box>
 				<Box/>
 			</Box>
-			<Stack direction="row">
-				<Stack gap={4} sx={{ pt: 2, flexGrow: 1, flexBasis: 0, }}>
+			<Stack
+				sx={theme => ({
+					[theme.breakpoints.up("md")]: {
+						flexDirection: "row",
+					},
+					[theme.breakpoints.down("md")]: {
+						flexDirection: "column",
+						gap: 2,
+					},
+				})}
+			>
+				<Stack gap={4} sx={{ flexGrow: 1, flexBasis: 0, }}>
 					<Typography variant="h2" className="community__section" sx={animationStyle()}>
 						Whether interested in games or game dev, come join us and hang out!
 					</Typography>
-					<Stack direction="row">
-						<Button variant="contained" size="medium"
-							className="community__section"
-							sx={animationStyle()}
-							href={links.insta}
-						>Instagram</Button>
+					<Stack direction="row" gap={1}
+						sx={theme => ({
+							[theme.breakpoints.down("md")]: {
+								display: "none",
+							},
+						})}
+					>
+						{buttons}
 					</Stack>
 				</Stack>
 				<Box
@@ -185,7 +210,7 @@ export default function Community(props: CommunityProps) {
 						>
 							<Box component={Image}
 								sx={theme => ({
-									borderRadius: theme.shape.borderRadius,
+									borderRadius: 1,
 									minWidth: 0,
 									minHeight: 0,
 									width: "100%",
@@ -197,6 +222,15 @@ export default function Community(props: CommunityProps) {
 						</Box>
 					</AnimatePresence>
 				</Box>
+				<Stack direction="row" gap={1}
+					sx={theme => ({
+						[theme.breakpoints.up("md")]: {
+							display: "none",
+						},
+					})}
+				>
+					{buttons}
+				</Stack>
 			</Stack>
 		</Box>
 	</Container>

@@ -1,5 +1,5 @@
 import { Box, Button, Container, Stack, Typography, useTheme } from "@mui/material"
-import { bodyOffset, headerTopPadding } from "../EventHeader"
+import { bodyMinHeight, bodyOffset, headerTopPadding } from "../EventHeader"
 import { AnimationPlaybackControls, Easing, stagger, useAnimate, useInView } from "framer-motion"
 import React from "react";
 import { animationStyle } from "~/util/framer/animation";
@@ -41,17 +41,17 @@ export default function SpeakerEventsHome(props: SpeakerEventHomeProps) {
 			scrollSnapAlign: "start",
 			scrollMarginTop: `calc(${bodyOffset(theme)})`,
 			width: "100%",
-			height: `calc(100vh - ${theme.spacing(headerTopPadding)} - ${theme.typography.h1.lineHeight})`,
+			minHeight: `calc(${bodyMinHeight(theme)})`,
 		})}
 	>
 		<Box>
 			<Typography variant="display2" component="span" className="community__header-section"
 				display="block"
-				sx={animationStyle()}
+				sx={[animationStyle(), { pb: 4 }]}
 			>
 				Want to kickstart your career in the industry?
 			</Typography>
-			<Stack gap={4} sx={{ pt: 2 }}>
+			<Stack gap={4}>
 				<Typography variant="h2" className="community__section" sx={animationStyle()}>
 					Gain insight on the biggest hits of the decade, from indie games to triple A titles.
 				</Typography>

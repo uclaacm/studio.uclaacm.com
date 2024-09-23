@@ -1,24 +1,22 @@
 import * as React from "react";
 
-import content from "~/__generated__/content";
-
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import MUIContainer from "@mui/material/Container";
-import Container from "~/components/Container";
+import BackgroundContainer from "~/components/BackgroundContainer";
 import Title from "~/components/Title";
 
 import BackgroundImage from "~/assets/images/backgrounds/ps5.svg"
 
 import Logo from "~/assets/images/logo.png"
 
-import { Chip, useTheme } from "@mui/material";
+import { Card, Chip, styled, useMediaQuery, useTheme } from "@mui/material";
 import { getIconFromType } from "~/util/getIconFromType";
 import Link from "~/components/Link";
 import IconButton from "~/components/IconButton";
-import { GetStaticPropsResult, GetStaticPropsContext, GetServerSidePropsContext, GetServerSidePropsResult } from "next";
+import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 
 import { objectGroupBy } from "~/util/polyfills";
 import { getOfficers, getOfficerSocialLinks, NotionOfficerSchema, NotionSocialLinksSchema } from "~/api/notion/schema";
@@ -65,22 +63,73 @@ type OfficerProps = {
 }
 
 function Officer({ officer }: OfficerProps) {
-    const { name, selfIntro, image, links } = officer;
-    return <Box display="grid" gridTemplateColumns="1fr 2fr" gridTemplateRows="1fr" gap={2}>
-        <Box>
-            <img
+    const {
+        name,
+        selfIntro,
+        image,
+        links,
+        title,
+    } = officer;
+    return <Card sx={theme => ({
+        display: "grid",
+        gridTemplateColumns: "1fr 2fr",
+        gridTemplateRows: "1fr",
+        gap: 2,
+        width: "100%",
+        [theme.breakpoints.down("md")]: {
+            display: "block",
+        },
+    })}>
+        <Box sx={theme => ({
+            [theme.breakpoints.down('md')]: {
+                display: "none",
+            },
+        })}>
+            <Box component="img"
                 src={image}
-                style={{
+                sx={theme => ({
                     aspectRatio: 1,
                     objectFit: "cover",
-                    maxWidth: "100%"
-                }}
-            ></img>
+                    maxWidth: "100%",
+                    display: "block",
+                    borderRadius: 1,
+                })}
+            ></Box>
         </Box>
-        <Stack spacing={2}>
-            <Stack flexGrow={0} gap={1}>
-                <Typography variant="h3">{officer.name}</Typography>
-                {officer.title && <Box><Chip color="primary" variant="filled" label={officer.title} /></Box>}
+        <Stack spacing={2}
+            sx={theme => ({
+                py: 2,
+                [theme.breakpoints.down("md")]: {
+                    pt: 0,
+                },
+            })}
+        >
+            <Box
+                sx={theme => ({
+                    [theme.breakpoints.up("md")]: {
+                        display: "none",
+                    },
+                })}
+            >
+                <Box component="img"
+                    src={image}
+                    sx={theme => ({
+                        aspectRatio: 1,
+                        objectFit: "cover",
+                        maxWidth: "100%",
+                        borderRadius: 1,
+                    })}
+                />
+            </Box>
+            <Stack flexGrow={0} gap={1}
+                sx={theme => ({
+                    [theme.breakpoints.down("md")]: {
+                        px: 2,
+                    },
+                })}
+            >
+                <Typography variant="h3">{name}</Typography>
+                {title && <Box><Chip color="primary" variant="filled" label={title} /></Box>}
                 <Stack direction="row" gap={1} flexWrap="wrap" mb={1}>
                     {officer.roles?.map(role => (
                         <Chip key={role} size="small" variant="outlined" label={role}/>
@@ -88,7 +137,13 @@ function Officer({ officer }: OfficerProps) {
                 </Stack>
                 <Typography variant="body1">{officer.selfIntro}</Typography>
             </Stack>
-            <Stack direction="row" spacing={1}>
+            <Stack direction="row" spacing={1}
+                sx={theme => ({
+                    [theme.breakpoints.down("md")]: {
+                        px: 2,
+                    },
+                })}
+            >
                 {links?.map(({ social, url }, i) => {
                     const icon = getIconFromType(social);
                     if(icon === null){
@@ -104,7 +159,7 @@ function Officer({ officer }: OfficerProps) {
                 })}
             </Stack>
         </Stack>
-    </Box>
+    </Card>
 }
 
 type AboutProps = {
@@ -121,8 +176,27 @@ type AboutProps = {
 export default function About({ officers }: AboutProps) {
     const theme = useTheme();
 
+    const medium = useMediaQuery(theme.breakpoints.down("md"));
+    const buttonSize = medium ? "small" : "medium";
+
+    const OfficersContainer = styled(Box)(({ theme }) => ({
+        display: "flex",
+        flexDirection: "column",
+        gap: theme.spacing(1),
+        [theme.breakpoints.down("md")]: {
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gridAutoRows: "auto",
+        },
+        [theme.breakpoints.down("sm")]: {
+            display: "grid",
+            gridTemplateColumns: "1fr",
+            gridAutoRows: "auto",
+        },
+    }));
+
     return (
-        <Container
+        <BackgroundContainer
             background={
                 <MUIContainer maxWidth="lg" sx={{
                     width: "100%", height: "100%",
@@ -133,19 +207,37 @@ export default function About({ officers }: AboutProps) {
             }
         >
             <Title>About Us</Title>
-            <Typography mb={4} variant="h1" sx={{ lineHeight: 1 }}><i className="isax isax-info-circle5" style={{ color: theme.palette.primary.main }}></i> About acm.studio</Typography>
-            <Box mb={4} display="grid" gridTemplateColumns="2fr 1fr" gap={2}>
-                <Box>
-                Our mission is to teach skills revolving around
-                video game development such as computer science,
-                game design and art in order to help usher
-                students into the game development industry.
-                </Box>
-                <img src={Logo.src} alt="acm.studio Logo" />
+            <Typography mb={4} variant="display1" sx={{ lineHeight: 1 }}>About ACM Studio</Typography>
+            <Box mb={4}
+                sx={{
+                    display: "grid",
+                    gridTemplateColumns: "2fr 1fr",
+                    gap: 2,
+                    [theme.breakpoints.down("md")]: {
+                        display: "block",
+                    },
+                }}
+            >
+                <Stack gap={2} alignItems="start">
+                    <Typography variant="body1">
+                        Our mission is to teach skills revolving around
+                        video game development such as computer science,
+                        game design and art in order to help usher
+                        students into the game development industry.
+                    </Typography>
+                    <Button variant="contained" size={buttonSize} href="/get-involved">Get Involved</Button>
+                </Stack>
+                <Box component="img" src={Logo.src} alt="acm.studio Logo"
+                    sx={{
+                        [theme.breakpoints.down("md")]: {
+                            display: "none",
+                        },
+                    }}
+                />
             </Box>
             <Box>
-                <Typography variant="h2" color="primary.main" mb={4}>meet the board</Typography>
-                <Stack spacing={2}>
+                <Typography variant="h1" color="primary.main" mb={4}>Meet the board</Typography>
+                <OfficersContainer>
                     {
                         [
                             ...officers.current.presidents,
@@ -153,14 +245,14 @@ export default function About({ officers }: AboutProps) {
                             ...officers.current.other,
                         ].map(officer => <Officer key={officer.name} officer={officer}/>)
                     }
-                </Stack>
-                <Typography variant="h2" color="primary.main" mb={4}>meet the alumni</Typography>
-                <Stack spacing={2}>
+                </OfficersContainer>
+                <Typography variant="h2" color="primary.main" mb={4}>Meet the alumni</Typography>
+                <OfficersContainer>
                     {
                         officers.alumni.map(officer => <Officer key={officer.name} officer={officer}/>)
                     }
-                </Stack>
+                </OfficersContainer>
             </Box>
-        </Container>
+        </BackgroundContainer>
     );
 }

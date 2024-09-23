@@ -1,6 +1,7 @@
 import { Backdrop, Box, Button, Link, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 import React from "react";
 import IsaxIcon from "~/components/IsaxIcon";
+import { homeSections } from "../index.page";
 
 type HomeNavigationEntryProps = {
     title: string,
@@ -63,19 +64,6 @@ export type HomeNavigationProps = {
     active: string,
 };
 
-const links: HomeNavigationEntryProps[] = [
-    { title: "Game Showcase", href: "#game-showcase" },
-    { title: "Logline", href: "#logline" },
-    { title: "Mission", href: "#mission" },
-    { title: "Workshops", href: "#workshops" },
-    { title: "Game Jams", href: "#game-jams" },
-    { title: "Socials", href: "#socials" },
-    { title: "Speaker Series", href: "#speaker-events" },
-    { title: "ENGR1GD", href: "#engr1" },
-    { title: "Students Run Studios", href: "#srs" },
-];
-
-
 export default function HomeNavigation(props: HomeNavigationProps){
     const {
         active,
@@ -120,7 +108,9 @@ export default function HomeNavigation(props: HomeNavigationProps){
                     zIndex: theme.zIndex.drawer - 1,
                 })}
             >
-                {links.map(p => <HomeNavigationEntry key={p.title} active={p.href === active}
+                {homeSections.map(({ title, props: { anchor }}) => <HomeNavigationEntry key={title} active={anchor === active}
+                    title={title}
+                    href={anchor}
                     canHover={canHover}
                     onClick={
                         canHover 
@@ -135,7 +125,6 @@ export default function HomeNavigation(props: HomeNavigationProps){
                                 }
                             }
                     }
-                    {...p}
                 />)}
             </Stack>
         </Stack>
