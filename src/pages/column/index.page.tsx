@@ -1,11 +1,11 @@
 import { createGetServerSideProps } from "~/components/ArticleListBackend";
-import ArticleList from "~/components/ArticleListFrontend"
+import ArticleList from "~/components/ArticleListFrontend";
 
 export const getServerSideProps = createGetServerSideProps({
-	category: "scoop",
+  category: "scoop",
 });
 
 export default ArticleList({
-	collectionName: "Studio Scoop",
-	baseUrl: "column",
+  collectionName: "Studio Scoop",
+  baseUrl: "column",
 });

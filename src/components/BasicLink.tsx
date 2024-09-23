@@ -5,19 +5,22 @@ import * as React from "react";
 
 import NextLink, { LinkProps as NextLinkProps } from "next/link";
 
-export type	BasicLinkProps = {
-	external?: boolean,
+export type BasicLinkProps = {
+  external?: boolean;
 } & NextLinkProps;
 
-export default React.forwardRef(function BasicLink(props: BasicLinkProps, ref: React.ForwardedRef<HTMLAnchorElement>){
-	const {
-		external = props.href.toString().startsWith("http"),
-		...rest
-	} = props;
-	return <NextLink
-		target={external ? "_blank" : undefined}
-		rel={external ? "noreferrer" : undefined}
-		ref={ref}
-		{...rest}
-	/>
-})
+export default React.forwardRef(function BasicLink(
+  props: BasicLinkProps,
+  ref: React.ForwardedRef<HTMLAnchorElement>,
+) {
+  const { external = props.href.toString().startsWith("http"), ...rest } =
+    props;
+  return (
+    <NextLink
+      target={external ? "_blank" : undefined}
+      rel={external ? "noreferrer" : undefined}
+      ref={ref}
+      {...rest}
+    />
+  );
+});

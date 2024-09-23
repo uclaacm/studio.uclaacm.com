@@ -1,7 +1,8 @@
 @font-face {
-  font-family: 'iconsax';
-  src: url('fonts/iconsax.woff2') format('woff2'),
-      url('fonts/iconsax.woff') format('woff');
+  font-family: "iconsax";
+  src:
+    url("fonts/iconsax.woff2") format("woff2"),
+    url("fonts/iconsax.woff") format("woff");
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -9,7 +10,7 @@
 
 .isax {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'iconsax' !important;
+  font-family: "iconsax" !important;
   speak: never;
   font-style: normal;
   font-weight: normal;

@@ -34,6 +34,7 @@
     "build": "yarn index && yarn build:next",
     "start": "next start",
     "lint": "next lint",
+    "prettier": "prettier --write src/",
     "gencerts": "node genCerts.js",
     "index": "node src/content-indexer.mjs",
     "index:watch": "nodemon -w src/content-indexer.mjs -w content -e mjs,mdx src/content-indexer.mjs"

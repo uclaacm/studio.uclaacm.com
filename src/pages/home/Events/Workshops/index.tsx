@@ -1,4 +1,4 @@
-import {Box, Container, Typography } from "@mui/material"
+import { Box, Container, Typography } from "@mui/material";
 import React from "react";
 import LearnByDoing from "./LearnByDoing";
 import Resources from "./Resources";
@@ -7,25 +7,22 @@ import EventHeader from "../EventHeader";
 import { HomeSectionProps } from "~/pages/index.page";
 import { useInView } from "framer-motion";
 
-export type WorkshopsProps = {
-
-} & HomeSectionProps;
+export type WorkshopsProps = {} & HomeSectionProps;
 
 export default function Workshops(props: WorkshopsProps) {
-  const {
-    setActive,
-  } = props;
+  const { setActive } = props;
 
   const root = React.useRef<HTMLDivElement>();
   const inView = useInView(root, { margin: "-64px" });
   React.useEffect(() => {
-    if(inView) {
+    if (inView) {
       setActive();
     }
   }, [inView]);
 
-  return <Box ref={root}>
-    {/*
+  return (
+    <Box ref={root}>
+      {/*
     note: eventheader is sticky, so
     we want it to stop sticking *after* it gets
     to the last panel.
@@ -34,9 +31,10 @@ export default function Workshops(props: WorkshopsProps) {
     */}
       <Box>
         <EventHeader>Workshops</EventHeader>
-        <LearnByDoing {...props}/>
-        <Resources/>
+        <LearnByDoing {...props} />
+        <Resources />
       </Box>
-      <CurrentSeries/>
+      <CurrentSeries />
     </Box>
+  );
 }

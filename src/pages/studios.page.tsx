@@ -6,9 +6,9 @@ import Typography from "@mui/material/Typography";
 type StudioProps = {};
 
 export default function Studios({}: StudioProps) {
-    return (
-        <Box>
-            <Typography variant="h1">Our events! </Typography>
-        </Box>
-    );
+  return (
+    <Box>
+      <Typography variant="h1">Our events! </Typography>
+    </Box>
+  );
 }
