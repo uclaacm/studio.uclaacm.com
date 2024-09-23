@@ -78,3 +78,7 @@ The branch `prod` is automatically deployed to the Netlify project `vermillion-h
 Netlify uses a CI process, so unsuccessful builds will *not* break everything. However, unsuccessful builds happen a lot, even with type errors that you may not get on your machine. To test if the build *should* work on Netlify's servers, you can run `yarn build`. Depending on your version of `node`, you can also install the Netlify CLI and do a local build.
 
 If you need access to the Netlify, ask Aubrey. Note that the main configuration needed for Netlify to work is to set up the environment variables [as shown above](#environment-variables).
+
+### Contributing
+
+Please run `yarn prettier` before committing!!!! This is to make every file have normalized spacing and such. If needed, we can use a precommit hook, but I don't think it's that serious.
