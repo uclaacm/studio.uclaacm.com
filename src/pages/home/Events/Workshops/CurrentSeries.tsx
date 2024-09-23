@@ -1,5 +1,5 @@
 import { AnimationPlaybackControls, motion, stagger, useAnimate, useInView } from "framer-motion"
-import { bodyMinHeight, bodyOffset } from "../EventHeader"
+import { bodyMinHeight, bodyOffset, bodyPaddingBottom } from "../EventHeader"
 import { Box, Button, Stack, SxProps, Typography, useMediaQuery, useTheme } from "@mui/material"
 import { defaultParentVariants } from "~/util/framer/variants"
 import React from "react"
@@ -12,6 +12,7 @@ export default function CurrentSeries({}: CurrentSeriesProps) {
 	const theme = useTheme();
 	const [scope, animate] = useAnimate();
 	const inView = useInView(scope, { margin: "-128px" });
+	const [playedAnimation, setPlayedAnimation] = React.useState(false);
 
 	const medium = useMediaQuery(theme.breakpoints.down("lg"));
 
@@ -62,14 +63,11 @@ export default function CurrentSeries({}: CurrentSeriesProps) {
 	}
 
 	React.useEffect(() => {
-		if(inView){
+		if(inView && !playedAnimation){
 			animationSequence();
-			return () => {
-				cancellationToken = true;
-				currentAnimation?.cancel();
-			}
+			setPlayedAnimation(true);
 		}
-	}, [inView])
+	}, [inView, playedAnimation])
 
 	const staggerItemStyle: SxProps = {
 		translate: `0 calc((var(--animation-percent) - 1) * 16px)`,
@@ -83,7 +81,7 @@ export default function CurrentSeries({}: CurrentSeriesProps) {
 		variants={defaultParentVariants(theme)}
 		initial="initial"
 		whileInView={"inView"}
-		viewport={{ margin: "-100px", }}
+		viewport={{ margin: "-64px", once: true }}
 		sx={theme => ({
 			display: "flex",
 			flexDirection: "column",
@@ -91,7 +89,7 @@ export default function CurrentSeries({}: CurrentSeriesProps) {
 			scrollMarginTop: `calc(${bodyOffset(theme)})`,
 			width: "100%",
 			minHeight: `calc(${bodyMinHeight(theme)})`,
-			pb: `calc(${bodyOffset(theme)})`
+			pb: `calc(${bodyPaddingBottom(theme)})`,
 		})}
 	>
 		<Stack justifyContent="center" alignItems="center" sx={{ height: "100%", px: 4 }}>

@@ -24,7 +24,7 @@ export default function SpeakerEvents(props: SpeakerEventsProps) {
     <Box>
       <EventHeader>Speaker Series</EventHeader>
     </Box>
-      <SpeakerEventsHome/>
+      <SpeakerEventsHome {...props}/>
       {/* <Community/>
                 <StudioSquads/> */}
     </Box>

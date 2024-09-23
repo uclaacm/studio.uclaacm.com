@@ -22,7 +22,7 @@ export default function Socials(props: SocialsProps) {
   return <Box ref={root}>
     <Box>
       <EventHeader>Socials</EventHeader>
-      <Community/>
+      <Community {...props}/>
     </Box>
       <StudioSquads/>
     </Box>

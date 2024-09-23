@@ -11,6 +11,7 @@ export default function HomeGame(props: HomeSectionProps){
   const { 
     scrollContainerRef,
     setActive,
+    id,
   } = props;
 
   const theme = useTheme();
@@ -61,7 +62,7 @@ export default function HomeGame(props: HomeSectionProps){
     }),
   }
 
-  return (<Box ref={canvasContainerRef} id="game-showcase" sx={{
+  return (<Box ref={canvasContainerRef} id={id} sx={{
     width: "100%",
     height: "100vh",
     scrollSnapAlign: "center",

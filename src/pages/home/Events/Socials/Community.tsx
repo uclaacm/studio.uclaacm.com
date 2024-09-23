@@ -1,5 +1,5 @@
 import { Box, Button, Container, Stack, Typography, useMediaQuery, useTheme } from "@mui/material"
-import { bodyMinHeight, bodyOffset, headerTopPadding } from "../EventHeader"
+import { bodyMinHeight, bodyOffset, bodyPaddingBottom, headerTopPadding } from "../EventHeader"
 import { AnimatePresence, AnimationPlaybackControls, Easing, motion, stagger, useAnimate, useInView } from "framer-motion"
 import React from "react";
 import { animationStyle } from "~/util/framer/animation";
@@ -10,8 +10,9 @@ import Image from "next/image";
 import TouchingGrass from "./Images/hike-touching-grass.webp"
 import ACMGenMeeting from "./Images/acm-gen-meeting.webp"
 import StudioGenMeeting from "./Images/studio-gen-meeting.webp"
+import { HomeSectionProps } from "~/pages/index.page";
 
-export type CommunityProps = {};
+export type CommunityProps = {} & HomeSectionProps;
 
 
 const images = [
@@ -21,6 +22,10 @@ const images = [
 ]
 
 export default function Community(props: CommunityProps) {
+	const {
+		id,
+	} = props;
+
 	const [curImageIndex, setCurImageIndex] = React.useState(0);
 	const curImage = React.useMemo(() => (
 		images[curImageIndex]
@@ -42,6 +47,7 @@ export default function Community(props: CommunityProps) {
 	const buttonSize = medium ? "small" : "medium";
 
 	const inView = useInView(scope);
+	const [playedAnimation, setPlayedAnimation] = React.useState(false);
 
 	let cancellationToken = false;
 	let currentAnimation: AnimationPlaybackControls = null;
@@ -78,7 +84,6 @@ export default function Community(props: CommunityProps) {
 				{ startDelay: theme.transitions.duration.complex / 1000 }
 			)}
 		)
-		// await currentAnimation;
 		await sleep(theme.transitions.duration.complex)
 
 		animate(".community__header", {
@@ -103,14 +108,11 @@ export default function Community(props: CommunityProps) {
 	}
 
 	React.useEffect(() => {
-		if(inView){
+		if(inView && !playedAnimation){
 			animationSequence();
-			return () => {
-				cancellationToken = true;
-				currentAnimation?.cancel();
-			}
+			setPlayedAnimation(true);
 		}
-	}, [inView])
+	}, [inView, playedAnimation])
 
 
 	const buttons = <>
@@ -127,13 +129,14 @@ export default function Community(props: CommunityProps) {
 	</>
 
 	return <Container ref={scope}
-		id="socials"
+		id={id}
 		maxWidth="lg"
 		sx={theme => ({
 			scrollSnapAlign: "start",
 			scrollMarginTop: `calc(${bodyOffset(theme)})`,
 			width: "100%",
 			minHeight: `calc(${bodyMinHeight(theme)})`,
+			pb: `calc(${bodyPaddingBottom(theme)})`,
 		})}
 	>
 		<Box>
@@ -171,15 +174,9 @@ export default function Community(props: CommunityProps) {
 					<Typography variant="h2" className="community__section" sx={animationStyle()}>
 						Whether interested in games or game dev, come join us and hang out!
 					</Typography>
-					<Stack direction="row" gap={1}
-						sx={theme => ({
-							[theme.breakpoints.down("md")]: {
-								display: "none",
-							},
-						})}
-					>
+					{ !medium && <Stack direction="row" gap={1}>
 						{buttons}
-					</Stack>
+					</Stack> }
 				</Stack>
 				<Box
 					className="community__section"
@@ -222,15 +219,9 @@ export default function Community(props: CommunityProps) {
 						</Box>
 					</AnimatePresence>
 				</Box>
-				<Stack direction="row" gap={1}
-					sx={theme => ({
-						[theme.breakpoints.up("md")]: {
-							display: "none",
-						},
-					})}
-				>
+				{ medium && <Stack direction="row" gap={1}>
 					{buttons}
-				</Stack>
+				</Stack> }
 			</Stack>
 		</Box>
 	</Container>

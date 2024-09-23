@@ -4,16 +4,22 @@ import Timeline, { TimelineAnimationControls } from "./Timeline";
 import { Box, Container, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 import AnimatedUnderline from "~/components/AnimatedUnderline";
 import { animationStyle } from "~/util/framer/animation";
-import { bodyMinHeight, bodyOffset, headerTopPadding } from "../EventHeader";
+import { bodyMinHeight, bodyOffset, bodyPaddingBottom, headerTopPadding } from "../EventHeader";
+import { HomeSectionProps } from "~/pages/index.page";
 
 export type LearnByDoingProps = {
 
-}
+} & HomeSectionProps;
 
-export default function LearnByDoing({}: LearnByDoingProps) {
+export default function LearnByDoing(props: LearnByDoingProps) {
+	const {
+		id,
+	} = props;
+
 	const theme = useTheme();
 	const [scope, animate] = useAnimate();
-	const isInView = useInView(scope, { margin: "-32px" });
+	const isInView = useInView(scope, { margin: "-64px" });
+	const [playedAnimation, setPlayedAnimation] = React.useState(false);
 
 	const timelineAnimateControls = React.useRef<TimelineAnimationControls>(null);
 
@@ -73,30 +79,24 @@ export default function LearnByDoing({}: LearnByDoingProps) {
 	}
 
 	React.useEffect(() => {
-		if(isInView){
+		if(isInView && !playedAnimation){
 			animationSequence();
-			return () => {
-				cancellationToken = true;
-				timelineAnimateControls.current.reset();
-			}
+			setPlayedAnimation(true);
 		}
-		else {
-			scope.animations.forEach(animation => animation.cancel());
-		}
-	}, [isInView])
+	}, [isInView, playedAnimation])
 
 	return <Container
 		ref={scope}
-		id="workshops"
+		id={id}
 		maxWidth="lg"
 		sx={theme => ({
 			display: "flex",
 			flexDirection: "column",
 			scrollSnapAlign: "start",
 			scrollMarginTop: `calc(${bodyOffset(theme)})`,
-			pb: `calc(${bodyOffset(theme)})`,
 			width: "100%",
 			height: `calc(${bodyMinHeight(theme)})`,
+			pb: `calc(${bodyPaddingBottom(theme)})`,
 		})}
 	>
 		<Typography component="div" variant="display1"

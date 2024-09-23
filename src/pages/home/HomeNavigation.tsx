@@ -108,9 +108,9 @@ export default function HomeNavigation(props: HomeNavigationProps){
                     zIndex: theme.zIndex.drawer - 1,
                 })}
             >
-                {homeSections.map(({ title, props: { anchor }}) => <HomeNavigationEntry key={title} active={anchor === active}
+                {homeSections.map(({ title, props: { id }}) => <HomeNavigationEntry key={title} active={id === active}
                     title={title}
-                    href={anchor}
+                    href={`#${id}`}
                     canHover={canHover}
                     onClick={
                         canHover 

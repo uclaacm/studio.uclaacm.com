@@ -15,6 +15,7 @@ export type MissionProps = {
 export default function Mission(props: MissionProps){
 	const {
 		setActive,
+		id
 	} = props;
 	const theme = useTheme();
 
@@ -59,7 +60,7 @@ export default function Mission(props: MissionProps){
 					</Box>
 				</Box>
 
-				<Container id="mission" maxWidth="lg" sx={{
+				<Container id={id} maxWidth="lg" sx={{
 					scrollSnapAlign: "start",
 					height: "100vh",
 					display: "flex",
@@ -71,6 +72,7 @@ export default function Mission(props: MissionProps){
 					}}>
 						<Typography component={motion.p} variant="display2"
 						variants={parentVariants} initial="initial" whileInView="inView"
+						viewport={{ margin: "-64px", once: true }}
 						transition={{ duration: theme.transitions.duration.short / 1000 }}
 						sx={{ display: "block"}}
 					>

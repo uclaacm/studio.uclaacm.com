@@ -1,5 +1,5 @@
 import { Box, Button, Container, Stack, Typography, useMediaQuery, useTheme } from "@mui/material"
-import { bodyOffset, headerTopPadding } from "../EventHeader"
+import { bodyOffset, bodyPaddingBottom, headerTopPadding } from "../EventHeader"
 import { AnimationPlaybackControls, Easing, stagger, useAnimate, useInView } from "framer-motion"
 import React from "react";
 import { animationStyle } from "~/util/framer/animation";
@@ -7,16 +7,22 @@ import sleep from "~/util/sleep";
 import { links } from "~/Strings";
 import UnityGif from "./UnityGif.webp"
 import Image from "next/image";
+import { HomeSectionProps } from "~/pages/index.page";
 
 
 export type SpeakerEventHomeProps = {
 
-}
+} & HomeSectionProps;
 export default function E1Home(props: SpeakerEventHomeProps) {
+	const {
+		id,
+	} = props;
+
 	const theme = useTheme();
 	const [scope, animate] = useAnimate();
 
 	const inView = useInView(scope);
+	const [playedAnimation, setPlayedAnimation] = React.useState(false);
 
 	const medium = useMediaQuery(theme.breakpoints.down("md"));
 	const buttonSize = medium ? "small" : "medium";
@@ -31,14 +37,11 @@ export default function E1Home(props: SpeakerEventHomeProps) {
 	}
 
 	React.useEffect(() => {
-		if(inView){
+		if(inView && !playedAnimation){
 			animationSequence();
-			return () => {
-				cancellationToken = true;
-				currentAnimation?.cancel();
-			}
+			setPlayedAnimation(true);
 		}
-	}, [inView])
+	}, [inView, playedAnimation])
 
 	const buttons = <>
 		<Button variant="contained" size={buttonSize}
@@ -54,13 +57,13 @@ export default function E1Home(props: SpeakerEventHomeProps) {
 	</>
 
 	return <Box ref={scope}
-		id="engr1"
+		id={id}
 		sx={theme => ({
 			scrollSnapAlign: "start",
 			scrollMarginTop: `calc(${bodyOffset(theme)})`,
 			width: "100%",
 			minHeight: `calc(100vh - ${theme.spacing(headerTopPadding)} - ${theme.typography.h1.lineHeight})`,
-			pb: 2 * headerTopPadding
+			pb: `calc(${bodyPaddingBottom(theme)})`,
 		})}
 	>
 		<Box>

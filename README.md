@@ -1,5 +1,7 @@
 # studio.uclaacm.com
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/8dd726a7-23aa-4b82-ae3b-8c1c034a01d9/deploy-status)](https://app.netlify.com/sites/vermillion-hummingbird-d28997/deploys)
+
 ## Setup
 
 ### NodeJS

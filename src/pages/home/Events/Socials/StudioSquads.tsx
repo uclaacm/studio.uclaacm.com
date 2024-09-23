@@ -1,5 +1,5 @@
 import { Box, Button, Container, Stack, Typography, useTheme } from "@mui/material"
-import { bodyMinHeight, bodyOffset, headerTopPadding } from "../EventHeader"
+import { bodyMinHeight, bodyOffset, bodyPaddingBottom, headerTopPadding } from "../EventHeader"
 import { AnimationPlaybackControls, Easing, stagger, useAnimate, useInView } from "framer-motion"
 import React from "react";
 import { animationStyle } from "~/util/framer/animation";
@@ -16,6 +16,7 @@ export default function StudioSquads(props: StudioSquadsProps) {
 	const [scope, animate] = useAnimate();
 
 	const inView = useInView(scope);
+	const [playedAnimation, setPlayedAnimation] = React.useState(false);
 
 	let cancellationToken = false;
 	let currentAnimation: AnimationPlaybackControls = null;
@@ -67,14 +68,11 @@ export default function StudioSquads(props: StudioSquadsProps) {
 	}
 
 	React.useEffect(() => {
-		if(inView){
+		if(inView && !playedAnimation){
 			animationSequence();
-			return () => {
-				cancellationToken = true;
-				currentAnimation?.cancel();
-			}
+			setPlayedAnimation(true);
 		}
-	}, [inView])
+	}, [inView, playedAnimation])
 
 	return <Container ref={scope}
 		maxWidth="lg"
@@ -84,32 +82,9 @@ export default function StudioSquads(props: StudioSquadsProps) {
 			scrollMarginTop: `calc(${bodyOffset(theme)})`,
 			width: "100%",
 			minHeight: `calc(${bodyMinHeight(theme)})`,
+			pb: `calc(${bodyPaddingBottom(theme)})`,
 		})}
 	>
-		{/* Background */}
-		<Box
-			className="studio-squads__background"
-			sx={[
-				theme => ({
-					position: "absolute",
-					left: 0, right: theme.spacing(8), top: 0, bottom: theme.spacing(8),
-					pointerEvents: "none",
-					display: "flex",
-					justifyContent: "end",
-					alignItems: "end",
-				}),
-				animationStyle({ translateY: 16 })
-			]}
-		>
-			<Box component="img" src={StudioSquadsImage.src} width="600"
-				sx={theme => ({
-					width: "60%",
-					[theme.breakpoints.down("md")]: {
-						width: "80%",
-					},
-				})}
-			/>
-		</Box>
 		<Box>
 			<Typography variant="display1" component="span" className="studio-squads__header"
 				display="block"
@@ -137,6 +112,32 @@ export default function StudioSquads(props: StudioSquadsProps) {
 					>Find your squad</Button>
 				</Stack>
 			</Stack>
+			<Box
+				className="studio-squads__background"
+				sx={[
+					theme => ({
+						position: "absolute",
+						left: 0, right: theme.spacing(8), top: 0, bottom: theme.spacing(8),
+						[theme.breakpoints.down("md")]: {
+							position: "unset",
+						},
+						pointerEvents: "none",
+						display: "flex",
+						justifyContent: "end",
+						alignItems: "end",
+					}),
+					animationStyle({ translateY: 16 })
+				]}
+			>
+				<Box component="img" src={StudioSquadsImage.src} width="600"
+					sx={theme => ({
+						width: "60%",
+						[theme.breakpoints.down("md")]: {
+							width: "80%",
+						},
+					})}
+				/>
+			</Box>
 		</Box>
 	</Container>
 }

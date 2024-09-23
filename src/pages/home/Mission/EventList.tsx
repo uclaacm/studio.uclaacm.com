@@ -37,7 +37,7 @@ export default function EventList(){
 	}, [arrowY]);
 
 	return (
-		<Container id="event-list" maxWidth="lg" sx={{
+		<Container maxWidth="lg" sx={{
 			scrollSnapAlign: "start",
 			height: "100vh",
 			display: "flex",
@@ -80,12 +80,12 @@ export default function EventList(){
 				>
 					{/* relative position here to use offsetTop relative to this stack */}
 					<Stack order={2} position="relative" alignItems="start" gap={0.5}>
-						{homeEventSections.map(({ title, longTitle = title, props: { anchor } }, i) => (
+						{homeEventSections.map(({ title, longTitle = title, props: { id } }, i) => (
 							<Typography key={title}
 								display="block"
 								variant="title1" color="primary"
 								sx={{ display: "block", textDecoration: "none", }}
-								href={anchor}
+								href={`#${id}`}
 								component={motion.a}
 								variants={{
 									initial: { height: 0, opacity: 0, y: 16 },

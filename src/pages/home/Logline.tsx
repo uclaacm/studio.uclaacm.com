@@ -9,6 +9,7 @@ import UpcastBlue from "./LoglineImages/UpcastBlue.webp"
 import { HomeSectionProps } from "../index.page"
 import React from "react"
 import Link from "next/link"
+import { bodyPaddingBottom } from "./Events/EventHeader"
 
 const MotionLink = motion(Link);
 
@@ -20,6 +21,7 @@ export default function Logline(props: LoglineProps) {
   const {
     scrollContainerRef,
     setActive,
+    id,
   } = props;
   const theme = useTheme();
 
@@ -64,7 +66,7 @@ export default function Logline(props: LoglineProps) {
   }
 
   return (
-    <Box id="logline" ref={root}
+    <Box id={id} ref={root}
       sx={theme => ({
         width: "100%",
         height: "100vh",

@@ -6,6 +6,7 @@ import { animationStyle } from "~/util/framer/animation";
 import sleep from "~/util/sleep";
 import { links } from "~/Strings";
 import Image from "next/image";
+import { HomeSectionProps } from "~/pages/index.page";
 
 const flagEmoji = '\u{1F6A9}'
 
@@ -18,13 +19,18 @@ function Flag(){
 
 export type SRSHomeProps = {
 
-}
+} & HomeSectionProps;
 
 export default function SRSHome(props: SRSHomeProps) {
+	const {
+		id,
+	} = props;
+
 	const theme = useTheme();
 	const [scope, animate] = useAnimate();
 
 	const inView = useInView(scope);
+	const [playedAnimation, setPlayedAnimation] = React.useState(false);
 
 	let cancellationToken = false;
 	let currentAnimation: AnimationPlaybackControls = null;
@@ -50,18 +56,15 @@ export default function SRSHome(props: SRSHomeProps) {
 	}
 
 	React.useEffect(() => {
-		if(inView){
+		if(inView && !playedAnimation){
 			animationSequence();
-			return () => {
-				cancellationToken = true;
-				currentAnimation?.cancel();
-			}
+			setPlayedAnimation(true);
 		}
-	}, [inView])
+	}, [inView, playedAnimation])
 
 	return <Container ref={scope}
 		maxWidth="lg"
-		id="srs"
+		id={id}
 		sx={theme => ({
 			scrollSnapAlign: "start",
 			scrollMarginTop: `calc(${bodyOffset(theme)})`,

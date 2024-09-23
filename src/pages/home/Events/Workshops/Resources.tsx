@@ -5,7 +5,7 @@ import Image from "next/image"
 import PaletteAndBrush from "./Palette and Brush.svg"
 import { motion, Transition, Variants } from "framer-motion"
 import { defaultItemVariants, defaultParentVariants } from "~/util/framer/variants"
-import { bodyMinHeight, bodyOffset } from "../EventHeader"
+import { bodyMinHeight, bodyOffset, bodyPaddingBottom } from "../EventHeader"
 
 export type ResourcesProps = {
 
@@ -28,7 +28,7 @@ function ResourceCard({ topContent, children }: ResourceCardProps) {
 		sx={theme => ({
 			border: "8px solid",
 			borderColor: theme.palette.primary.main,
-			borderRadius: "24px"
+			borderRadius: "24px",
 		})}
 	>
 		<Stack direction="row" justifyContent="center" alignItems="center" sx={theme => ({
@@ -99,7 +99,7 @@ export default function Resources({ }: ResourcesProps) {
 		variants={parentVariants}
 		initial="initial"
 		whileInView={"inView"}
-		viewport={{ margin: "-100px", }}
+		viewport={{ margin: "-64px", once: true }}
 		maxWidth="lg"
 		sx={theme => ({
 			display: "flex",
@@ -108,6 +108,7 @@ export default function Resources({ }: ResourcesProps) {
 			scrollMarginTop: `calc(${bodyOffset(theme)})`,
 			width: "100%",
 			minHeight: `calc(${bodyMinHeight(theme)})`,
+			pb: `calc(${bodyPaddingBottom(theme)})`,
 		})}
 	>
 		<Typography variant="display1"

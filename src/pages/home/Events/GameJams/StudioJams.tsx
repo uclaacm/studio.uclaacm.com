@@ -1,5 +1,5 @@
 import { Box, Button, Container, Stack, Typography, useMediaQuery, useTheme } from "@mui/material"
-import { bodyMinHeight, bodyOffset, headerTopPadding } from "../EventHeader"
+import { bodyMinHeight, bodyOffset, bodyPaddingBottom, headerTopPadding } from "../EventHeader"
 import { AnimationPlaybackControls, Easing, stagger, useAnimate, useInView } from "framer-motion"
 import React from "react";
 import { animationStyle } from "~/util/framer/animation";
@@ -19,6 +19,7 @@ export default function StudioJams(props: OurJamsProps) {
 	const [scope, animate] = useAnimate();
 
 	const inView = useInView(scope);
+	const [playedAnimation, setPlayedAnimation] = React.useState(false);
 
 	const md = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -37,14 +38,11 @@ export default function StudioJams(props: OurJamsProps) {
 	}
 
 	React.useEffect(() => {
-		if(inView){
+		if(inView && !playedAnimation){
 			animationSequence();
-			return () => {
-				cancellationToken = true;
-				currentAnimation?.cancel();
-			}
+			setPlayedAnimation(true);
 		}
-	}, [inView])
+	}, [inView, playedAnimation])
 
 	return <Container ref={scope}
 		maxWidth="lg"
@@ -53,6 +51,7 @@ export default function StudioJams(props: OurJamsProps) {
 			scrollMarginTop: `calc(${bodyOffset(theme)})`,
 			width: "100%",
 			minHeight: `calc(${bodyMinHeight(theme)})`,
+			pb: `calc(${bodyPaddingBottom(theme)})`,
 		})}
 	>
 		<Stack sx={{ height: "100%" }}>

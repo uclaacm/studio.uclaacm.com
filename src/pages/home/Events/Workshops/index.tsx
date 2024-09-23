@@ -11,7 +11,11 @@ export type WorkshopsProps = {
 
 } & HomeSectionProps;
 
-export default function Workshops({setActive}: WorkshopsProps) {
+export default function Workshops(props: WorkshopsProps) {
+  const {
+    setActive,
+  } = props;
+
   const root = React.useRef<HTMLDivElement>();
   const inView = useInView(root, { margin: "-64px" });
   React.useEffect(() => {
@@ -30,7 +34,7 @@ export default function Workshops({setActive}: WorkshopsProps) {
     */}
       <Box>
         <EventHeader>Workshops</EventHeader>
-        <LearnByDoing/>
+        <LearnByDoing {...props}/>
         <Resources/>
       </Box>
       <CurrentSeries/>

@@ -22,7 +22,7 @@ export default function GameJams(props: GameJamsProps) {
   return <Box ref={root}>
     <Box>
       <EventHeader>Game Jams</EventHeader>
-      <TryGameJams/>
+      <TryGameJams {...props}/>
     </Box>
       <StudioJams/>
     </Box>

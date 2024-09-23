@@ -4,16 +4,23 @@ import { AnimationPlaybackControls, Easing, stagger, useAnimate, useInView } fro
 import React from "react";
 import { animationStyle } from "~/util/framer/animation";
 import sleep from "~/util/sleep";
+import { HomeSectionProps } from "~/pages/index.page";
 
 
 export type SpeakerEventHomeProps = {
 
-}
+} & HomeSectionProps;
+
 export default function SpeakerEventsHome(props: SpeakerEventHomeProps) {
+	const {
+		id,
+	} = props;
+
 	const theme = useTheme();
 	const [scope, animate] = useAnimate();
 
 	const inView = useInView(scope);
+	const [playedAnimation, setPlayedAnimation] = React.useState(false);
 
 	let cancellationToken = false;
 	let currentAnimation: AnimationPlaybackControls = null;
@@ -25,17 +32,14 @@ export default function SpeakerEventsHome(props: SpeakerEventHomeProps) {
 	}
 
 	React.useEffect(() => {
-		if(inView){
+		if(inView && !playedAnimation){
 			animationSequence();
-			return () => {
-				cancellationToken = true;
-				currentAnimation?.cancel();
-			}
+			setPlayedAnimation(true);
 		}
-	}, [inView])
+	}, [inView, playedAnimation])
 
 	return <Container ref={scope}
-		id="speaker-events"
+		id={id}
 		maxWidth="lg"
 		sx={theme => ({
 			scrollSnapAlign: "start",
@@ -47,15 +51,15 @@ export default function SpeakerEventsHome(props: SpeakerEventHomeProps) {
 		<Box>
 			<Typography variant="display2" component="span" className="community__header-section"
 				display="block"
-				sx={[animationStyle(), { pb: 4 }]}
+				sx={[animationStyle(), { mb: 4 }]}
 			>
 				Want to kickstart your career in the industry?
 			</Typography>
-			<Stack gap={4}>
+			<Stack gap={2}>
 				<Typography variant="h2" className="community__section" sx={animationStyle()}>
 					Gain insight on the biggest hits of the decade, from indie games to triple A titles.
 				</Typography>
-				<Typography variant="h2" className="community__section" sx={animationStyle()}>
+				<Typography variant="body1" className="community__section" sx={animationStyle()}>
 					Connect with leaders at top game companies, like Blizzard and Riot.
 				</Typography>
 				<Stack direction="row">

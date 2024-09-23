@@ -22,6 +22,6 @@ export default function E1(props: E1Props) {
     <Box>
       <EventHeader>Engr 1GD</EventHeader>
     </Box>
-      <E1Home/>
+      <E1Home {...props}/>
     </Box>
 }

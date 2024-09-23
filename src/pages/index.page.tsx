@@ -22,7 +22,7 @@ type CommonHomeSectionProps = {
 };
 
 type UniqueHomeSectionProps = {
-  anchor: string,
+  id: string,
 };
 
 export type HomeSectionProps = CommonHomeSectionProps & UniqueHomeSectionProps;
@@ -35,18 +35,18 @@ export type HomeSection = {
 };
 
 export const homeEventSections: HomeSection[] = [
-  { title: "Workshops", Render: Workshops, props: { anchor: "#workshops" }},
-  { title: "Game Jams", Render: GameJams, props: { anchor: "#game-jams" }},
-  { title: "Socials", Render: Socials, props: { anchor: "#socials" }},
-  { title: "Speaker Events", Render: SpeakerEvents, props: { anchor: "#speaker-events" }},
-  { title: "ENGR1GD", longTitle: "Game Dev Course (ENGR 1GD)", Render: E1, props: { anchor: "#engr1" }},
-  { title: "SRS", longTitle: "Students Run Studios", Render: SRS, props: { anchor: "#srs" }},
+  { title: "Workshops", Render: Workshops, props: { id: "workshops" }},
+  { title: "Game Jams", Render: GameJams, props: { id: "game-jams" }},
+  { title: "Socials", Render: Socials, props: { id: "socials" }},
+  { title: "Speaker Events", Render: SpeakerEvents, props: { id: "speaker-events" }},
+  { title: "ENGR1GD", longTitle: "Game Dev Course (ENGR 1GD)", Render: E1, props: { id: "engr1" }},
+  { title: "SRS", longTitle: "Students Run Studios", Render: SRS, props: { id: "srs" }},
 ];
 
 export const homeSections: HomeSection[] = [
-  { title: "Game Showcase", Render: HomeGame, props: { anchor: "#game-showcase" }},
-  { title: "Logline", Render: Logline, props: { anchor: "#logline" }},
-  { title: "Mission", Render: Mission, props: { anchor: "#mission" }},
+  { title: "Game Showcase", Render: HomeGame, props: { id: "game-showcase" }},
+  { title: "Logline", Render: Logline, props: { id: "logline" }},
+  { title: "Mission", Render: Mission, props: { id: "mission" }},
   ...homeEventSections
 ]
 
@@ -73,9 +73,9 @@ export default function Home({}: HomeProps){
     >
         {homeSections.map(({ Render, props }) => (
           <Render
-            key={props.anchor}
+            key={props.id}
             {...props}
-            setActive={() => {setActive(props.anchor)}}
+            setActive={() => {setActive(props.id)}}
             scrollContainerRef={scrollContainer}
           />
         ))};

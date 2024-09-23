@@ -22,7 +22,7 @@ export default function SRS(props: SRSProps) {
     <Box>
       <EventHeader>Students Run Studios</EventHeader>
     </Box>
-      <SRSHome/>
+      <SRSHome {...props}/>
       {/* <Community/>
                 <StudioSquads/> */}
     </Box>

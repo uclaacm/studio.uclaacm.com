@@ -1,22 +1,28 @@
 import { Box, Container, Stack, Typography, useTheme } from "@mui/material"
-import { bodyMinHeight, bodyOffset, headerTopPadding } from "../EventHeader"
+import { bodyMinHeight, bodyOffset, bodyPaddingBottom, headerTopPadding } from "../EventHeader"
 import { AnimationPlaybackControls, Easing, stagger, useAnimate, useInView } from "framer-motion"
 import React from "react";
 import { animationStyle } from "~/util/framer/animation";
 import HeroCarousel from "~/components/HeroCarousel";
 import sleep from "~/util/sleep";
+import { HomeSectionProps } from "~/pages/index.page";
 
 
 export type TryGameJamsProps = {
 
-}
+} & HomeSectionProps;
 const images: string[] = ["https://placehold.co/600x400?text=1", "https://placehold.co/600x400?text=2", "https://placehold.co/600x400?text=3", "https://placehold.co/600x400?text=4"]
 
 export default function TryGameJams(props: TryGameJamsProps) {
+	const {
+		id,
+	} = props;
+
 	const theme = useTheme();
 	const [scope, animate] = useAnimate();
 
 	const inView = useInView(scope);
+	const [playedAnimation, setPlayedAnimation] = React.useState(false);
 
 	let cancellationToken = false;
 	let currentAnimation: AnimationPlaybackControls = null;
@@ -91,24 +97,21 @@ export default function TryGameJams(props: TryGameJamsProps) {
 	}
 
 	React.useEffect(() => {
-		if(inView){
+		if(inView && !playedAnimation){
 			animationSequence();
-			return () => {
-				cancellationToken = true;
-				currentAnimation?.cancel();
-			}
+			setPlayedAnimation(true);
 		}
-	}, [inView])
+	}, [inView, playedAnimation])
 
 	return <Container ref={scope}
-		id="game-jams"
+		id={id}
 		maxWidth="lg"
 		sx={theme => ({
 			scrollSnapAlign: "start",
 			scrollMarginTop: `calc(${bodyOffset(theme)})`,
 			width: "100%",
 			minHeight: `calc(${bodyMinHeight(theme)})`,
-			pb: 2 * headerTopPadding,
+			pb: `calc(${bodyPaddingBottom(theme)})`,
 		})}
 	>
 		<Box>
