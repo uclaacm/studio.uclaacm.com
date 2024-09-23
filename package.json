@@ -27,7 +27,7 @@
     "remark-frontmatter": "^5.0.0",
     "remark-mdx-frontmatter": "^4.0.0",
     "prettier": "3.3.3",
-    "@next/bundle-analyzer": "^14.2.4"
+    "@next/bundle-analyzer": "^14.2.4",
     "typescript": "5.0.4",
     "@types/node": "18.15.11",
     "@types/react": "18.0.35",
