@@ -5,10 +5,10 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Link from "~/components/Link";
 import { Button, Divider } from "@mui/material";
-import Title from "~/components/Title";
 import "~/util/polyfills";
 import { NotionArticleSchema } from "~/api/notion/schema";
 import joinAuthorNames from "~/util/joinAuthorNames";
+import Metadata from "./Metadata";
 
 type ArticleEntryProps = {
   article: NotionArticleSchema;
@@ -114,8 +114,8 @@ export default function ArticleList({
 
     return (
       <Container maxWidth="lg" sx={{ py: 2 }}>
-        <Title>{collectionName}</Title>
-        <Typography variant="h1" sx={{ mb: 2 }}>
+        <Metadata title={collectionName}/>
+        <Typography variant="display1" sx={{ mb: 2 }}>
           {collectionName}
         </Typography>
         <Stack>

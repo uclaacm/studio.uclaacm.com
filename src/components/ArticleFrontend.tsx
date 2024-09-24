@@ -10,9 +10,11 @@ import {
 import joinAuthorNames from "~/util/joinAuthorNames";
 import NotionBlocksRenderer from "./NotionBlockRenderer";
 import Head from "next/head";
-import Title from "./Title";
-import { Chip, Stack } from "@mui/material";
+import { Box, Chip, Stack } from "@mui/material";
 import Link from "./Link";
+import IconButton from "./IconButton";
+import IsaxIcon from "./IsaxIcon";
+import Metadata from "./Metadata";
 
 export type ArticleParams = {
   baseUrl: string;
@@ -35,7 +37,21 @@ export function ArticleRenderer({ baseUrl }: ArticleParams) {
     );
     return (
       <BackgroundContainer>
-        <Title>{title}</Title>
+        <Metadata/>
+
+        <Box sx={{ position: "relative" }} >
+          <IconButton variant="contained" size="small"
+            sx={theme => ({
+              position: "absolute",
+              left: `calc(-2em - ${theme.spacing(1)})`,
+            })}
+            onClick={() => {
+              history.back();
+            }}
+          >
+            <IsaxIcon name="isax-arrow-left-24" color="inherit"/>
+          </IconButton>
+        </Box>
         <Head>
           <meta name="author" content={joinAuthorNames(authors)} />
         </Head>

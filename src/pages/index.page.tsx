@@ -2,7 +2,6 @@ import * as React from "react";
 
 import Box from "@mui/material/Box";
 
-import Title from "~/components/Title";
 import HomeGame from "./home/Game";
 import Logline from "./home/Logline";
 import Mission from "./home/Mission";
@@ -13,6 +12,7 @@ import Socials from "./home/Events/Socials";
 import SpeakerEvents from "./home/Events/SpeakerEvents";
 import E1 from "./home/Events/E1";
 import SRS from "./home/Events/SRS";
+import Metadata from "~/components/Metadata";
 
 type HomeProps = {};
 
@@ -71,7 +71,7 @@ export default function Home({}: HomeProps) {
 
   return (
     <Box position="relative">
-      <Title />
+      <Metadata/>
       <HomeNavigation active={activeSection} />
       <Box
         ref={scrollContainer}

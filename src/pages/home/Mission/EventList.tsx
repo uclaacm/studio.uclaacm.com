@@ -39,10 +39,6 @@ export default function EventList() {
 
   const selected = React.useRef(0);
 
-  React.useEffect(() => {
-    console.log(arrowY);
-  }, [arrowY]);
-
   return (
     <Container
       maxWidth="lg"
@@ -116,7 +112,6 @@ export default function EventList() {
                   }}
                   onHoverStart={(ev) => {
                     arrowY.set((ev.target as HTMLAnchorElement).offsetTop);
-                    console.log(arrowY.get());
                     underlinePercents[selected.current].set(0);
                     selected.current = i;
                     underlinePercents[selected.current].set(1);

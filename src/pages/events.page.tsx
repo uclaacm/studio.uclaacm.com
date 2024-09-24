@@ -41,9 +41,9 @@ import {
   ArrowRight as ArrowRightIcon,
   Close as CloseIcon,
 } from "@mui/icons-material";
-import Head from "next/head";
-import Title from "~/components/Title";
+
 import getRandomEmoticon from "~/util/getRandomEmoticon";
+import Metadata from "~/components/Metadata";
 
 type EventProps = {};
 
@@ -498,7 +498,7 @@ export default function Events({}: EventProps) {
         </Alert>
       </Snackbar>
 
-      <Title>events</Title>
+      <Metadata title="Events"/>
       <Typography variant="h1">events</Typography>
       <SkeletonContainer>
         <Stack direction="row">

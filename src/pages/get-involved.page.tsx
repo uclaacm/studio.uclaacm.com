@@ -13,9 +13,9 @@ import { links } from "~/Strings";
 import BackgroundContainer from "~/components/BackgroundContainer";
 import Icon from "~/components/Icon";
 import IsaxIcon from "~/components/IsaxIcon";
-import Title from "~/components/Title";
 
 import BackgroundImage from "~/assets/images/backgrounds/tac-2.svg";
+import Metadata from "~/components/Metadata";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   textAlign: "center",
@@ -59,7 +59,7 @@ export default function GetInvoled() {
         py: 4,
       }}
     >
-      <Title>Get Involved</Title>
+      <Metadata title="Get Involved"/>
       <Typography variant="display1" sx={{ mb: 4 }}>
         Get Involved
       </Typography>

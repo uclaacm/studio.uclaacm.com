@@ -19,15 +19,11 @@
  * 			NotionSchemaBinding
  */
 
-import { Client } from "@notionhq/client";
 import {
   PageObjectResponse,
-  QueryDatabaseParameters,
-  QueryDatabaseResponse,
   RichTextItemResponse,
 } from "@notionhq/client/build/src/api-endpoints";
 import {
-  databaseIDs,
   getPagesInDatabase,
   GetPagesInDatabaseParams,
 } from "./core";
@@ -59,6 +55,7 @@ type PropertyTypeNamesMap = {
   date: string;
   strings: string[];
   number: number;
+  checkbox: boolean,
 };
 
 export type PropertyTypeName<T = any> = {
@@ -71,7 +68,7 @@ export type SchemaTypeBinding =
   | {
       source: "property";
       propertyName: string;
-      type: "string" | "strings" | "number" | "image" | "url" | "date";
+      type: "string" | "strings" | "number" | "image" | "url" | "date" | "checkbox";
       // Property name on the table this property refers to
       relation?: {
         propertyName: string;
@@ -82,7 +79,7 @@ export type SchemaTypeBinding =
       type: "string";
     };
 
-export type PropertyType<T extends PropertyTypeName> =
+export type PropertyType =
   PropertyTypeNamesMap[PropertyTypeName];
 
 export function richTextToString(richText: RichTextItemResponse[]) {
@@ -157,23 +154,34 @@ export function propertyTryGetDate(
   return null;
 }
 
+export function propertyTryGetCheckbox(
+  prop: PageObjectResponse["properties"][string],
+): boolean | null {
+  if (prop.type === "checkbox"){
+    return prop.checkbox;
+  }
+  return null;
+}
+
 export async function propertyTryGet<T extends PropertyTypeName>(
   prop: PageObjectResponse["properties"][string],
   type: T,
-): Promise<PropertyType<T> | null> {
+): Promise<PropertyType | null> {
   if (!prop) return undefined;
   if (type === "number") {
-    return propertyTryGetNumber(prop) as PropertyType<T>;
+    return propertyTryGetNumber(prop) as PropertyType;
   } else if (type === "string") {
-    return propertyTryGetString(prop) as PropertyType<T>;
+    return propertyTryGetString(prop) as PropertyType;
   } else if (type === "strings") {
-    return propertyTryGetStrings(prop) as PropertyType<T>;
+    return propertyTryGetStrings(prop) as PropertyType;
   } else if (type === "url") {
-    return propertyTryGetUrl(prop) as PropertyType<T>;
+    return propertyTryGetUrl(prop) as PropertyType;
   } else if (type === "image") {
-    return propertyTryGetImage(prop) as PropertyType<T>;
+    return propertyTryGetImage(prop) as PropertyType;
   } else if (type === "date") {
-    return propertyTryGetDate(prop) as PropertyType<T>;
+    return propertyTryGetDate(prop) as PropertyType;
+  } else if (type === "checkbox") {
+    return propertyTryGetCheckbox(prop) as PropertyType;
   }
   return null;
 }

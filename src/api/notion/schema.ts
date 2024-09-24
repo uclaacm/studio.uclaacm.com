@@ -19,6 +19,7 @@
  * @see {getOfficers} for an example
  */
 
+import { PRODUCTION } from "~/Constants";
 import {
   NotionSchemaBinding,
   querySchema,
@@ -98,15 +99,16 @@ const socialLinksBinding: NotionSchemaBinding<NotionSocialLinksSchema> = {
 };
 
 export type NotionArticleSchema = {
-  notionID: string;
-  id: string;
-  date: string;
-  category: string;
-  image?: string;
-  title: string;
-  description: string;
-  authors: string[];
-  tags: string[];
+  notionID: string,
+  id: string,
+  date: string,
+  category: string,
+  image?: string,
+  title: string,
+  description: string,
+  authors: string[],
+  tags: string[],
+  published: boolean,
 };
 
 const articleBinding = {
@@ -123,6 +125,7 @@ const articleBinding = {
   },
   authors: { source: "property", propertyName: "Authors", type: "strings" },
   tags: { source: "property", propertyName: "Tags", type: "strings" },
+  published: { source: "property", propertyName: "Published", type: "checkbox" },
 } satisfies NotionSchemaBinding<NotionArticleSchema>;
 
 export async function getOfficers() {
@@ -161,6 +164,37 @@ export async function getArticles({
   category,
 }: GetArticlesOptions = {}) {
   databaseId ??= databaseIDs.debugArticles;
+
+  const publishedFilter: PropertyFilter = (
+    PRODUCTION
+    ? {
+      type: "checkbox",
+      property: articleBinding.published.propertyName,
+      checkbox: {
+        equals: true,
+      },
+    }
+    : undefined
+  );
+
+  const categoryFilter: PropertyFilter = (
+    category
+      ? {
+          type: "select",
+          property: articleBinding.category.propertyName,
+          select: {
+            equals: articleCategorySelectMap[category],
+          },
+        }
+      : undefined
+  );
+
+  const filter = (
+    publishedFilter && categoryFilter
+    ? { and: [publishedFilter, categoryFilter] }
+    : publishedFilter || categoryFilter
+  )
+
   return querySchema<NotionArticleSchema>(articleBinding, {
     database_id: databaseId,
     sorts: [
@@ -169,15 +203,7 @@ export async function getArticles({
         direction: "descending",
       },
     ],
-    filter: category
-      ? {
-          type: "select",
-          property: articleBinding.category.propertyName,
-          select: {
-            equals: articleCategorySelectMap[category],
-          },
-        }
-      : undefined,
+    filter,
   });
 }
 

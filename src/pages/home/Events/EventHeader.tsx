@@ -16,11 +16,13 @@ export default function EventHeader(props: EventHeaderProps) {
   return (
     <Container
       maxWidth="lg"
-      sx={{
+      sx={theme => ({
         position: "sticky",
         top: 0,
         pt: headerTopPadding,
-      }}
+        backgroundColor: theme.palette.background.default,
+        zIndex: 2,
+      })}
     >
       <Typography variant="h1">{children}</Typography>
     </Container>

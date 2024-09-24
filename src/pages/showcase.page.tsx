@@ -18,11 +18,11 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore"; // expand icon
 import Paper from "@mui/material/Paper"; // paper
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material"; // maybe use accordions for each image? unfold when clicked for details
 import BackgroundContainer from "~/components/BackgroundContainer";
-import Title from "~/components/Title";
 import content from "~/__generated__/content";
 import { ShowcaseSchema } from "~/Schema";
 import { MDXFile } from "~/content/contentProvider";
 import { mapGroupBy, objectGroupBy, toSorted } from "~/util/polyfills";
+import Metadata from "~/components/Metadata";
 // question: how do I use both imagelistitem AND accordion in an imagelist set to masonry? questions questions
 
 type ShowcaseItemProps = {
@@ -194,7 +194,7 @@ export default function Showcase() {
         </MUIContainer>
       }
     >
-      <Title>Showcase</Title>
+      <Metadata title="Showcase"/>
       <Typography variant="h1">Showcase</Typography>
       {years.map(([year, categories]) => (
         <React.Fragment key={year}>

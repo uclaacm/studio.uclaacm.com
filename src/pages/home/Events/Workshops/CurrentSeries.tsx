@@ -169,9 +169,13 @@ export default function CurrentSeries({}: CurrentSeriesProps) {
               opacity: `var(--animation-percent)`,
             })}
           >
-            <img
+            <Box component="img"
               src="https://images.gog-statics.com/e6cbc5d26564d089ed9f655ed5d374d2672c344a934ddb38b96aa7da52908870_product_card_v2_mobile_slider_639.jpg"
-              style={{ width: "100%", height: "100%" }}
+              sx={{
+                width: "100%",
+                height: "100%",
+                borderRadius: 1,
+              }}
             />
           </Box>
           <Stack
