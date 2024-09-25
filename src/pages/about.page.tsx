@@ -6,7 +6,6 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import MUIContainer from "@mui/material/Container";
 import BackgroundContainer from "~/components/BackgroundContainer";
-import Title from "~/components/Title";
 
 import BackgroundImage from "~/assets/images/backgrounds/ps5.svg";
 
@@ -25,6 +24,7 @@ import {
   NotionOfficerSchema,
   NotionSocialLinksSchema,
 } from "~/api/notion/schema";
+import Metadata from "~/components/Metadata";
 
 type OfficerWithSocialLinks = NotionOfficerSchema & {
   links?: NotionSocialLinksSchema[];
@@ -160,7 +160,7 @@ function Officer({ officer }: OfficerProps) {
               <Chip key={role} size="small" variant="outlined" label={role} />
             ))}
           </Stack>
-          <Typography variant="body1">{officer.selfIntro}</Typography>
+          <Typography variant="body1">{selfIntro}</Typography>
         </Stack>
         <Stack
           direction="row"
@@ -221,6 +221,7 @@ export default function About({ officers }: AboutProps) {
     display: "flex",
     flexDirection: "column",
     gap: theme.spacing(1),
+    marginBottom: theme.spacing(4),
     [theme.breakpoints.down("md")]: {
       display: "grid",
       gridTemplateColumns: "1fr 1fr",
@@ -253,7 +254,7 @@ export default function About({ officers }: AboutProps) {
         </MUIContainer>
       }
     >
-      <Title>About Us</Title>
+      <Metadata title="About Us"/>
       <Typography mb={4} variant="display1" sx={{ lineHeight: 1 }}>
         About ACM Studio
       </Typography>
@@ -290,7 +291,7 @@ export default function About({ officers }: AboutProps) {
         />
       </Box>
       <Box>
-        <Typography variant="h1" color="primary.main" mb={4}>
+        <Typography variant="h1" color="primary.main" mb={2}>
           Meet the board
         </Typography>
         <OfficersContainer>
@@ -302,7 +303,7 @@ export default function About({ officers }: AboutProps) {
             <Officer key={officer.name} officer={officer} />
           ))}
         </OfficersContainer>
-        <Typography variant="h2" color="primary.main" mb={4}>
+        <Typography variant="h2" color="primary.main" mb={2}>
           Meet the alumni
         </Typography>
         <OfficersContainer>

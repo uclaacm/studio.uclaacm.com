@@ -51,17 +51,27 @@ function HomeNavigationEntry(props: HomeNavigationEntryProps) {
         <Box
           sx={{
             minWidth: "6px",
-            minHeight: "6px",
+            minHeight: active ? "12px" : "6px",
             borderRadius: 99999,
             backgroundColor: color,
-            transition: theme.transitions.create(["background-color"], {
+            transition: theme.transitions.create(["background-color", "min-height"], {
               duration: theme.transitions.duration.shortest,
-              easing: theme.transitions.easing.easeInOut,
+              easing: "linear",
             }),
           }}
         />
         <Typography variant="subtitle2" lineHeight={1} mr={0.25}>
-          {title}
+          <Typography variant="inherit" component="span"
+            sx={theme => ({
+              fontSize: active ? "125%" : "100%",
+              transition: theme.transitions.create(['font-size'], {
+                duration: theme.transitions.duration.shortest,
+                easing: "linear",
+              }),
+            })}
+          >
+            {title}
+          </Typography>
         </Typography>
       </Stack>
     </Link>

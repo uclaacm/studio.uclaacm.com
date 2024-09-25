@@ -6,91 +6,114 @@ import BackgroundContainer from "~/components/BackgroundContainer";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Link from "~/components/Link";
-import { Divider } from "@mui/material";
+import { Card, Divider, Stack } from "@mui/material";
 
-import { useSprings, animated, useChain } from "@react-spring/web";
-import { useTheme } from "@mui/material/styles";
-import content from "~/__generated__/content";
-import { ColumnSchema, TutorialSchema } from "~/Schema";
-import {
-  MDXFile,
-  sortByModifiedDate,
-  sortByPublishedDate,
-} from "~/content/contentProvider";
-import { toSorted } from "~/util/polyfills";
+import { styled, useTheme } from "@mui/material/styles";
 import { getArticles, NotionArticleSchema } from "~/api/notion/schema";
-import { databaseIDs } from "~/api/notion/core";
 import { objectGroupBy } from "~/util/polyfills";
 import joinAuthorNames from "~/util/joinAuthorNames";
+import formatDate from "~/util/formatDate";
+import Metadata from "~/components/Metadata";
 
 export const getServerSideProps: GetServerSideProps<BlogProps> = async (
   ctx,
 ) => {
-  const articles = objectGroupBy(await getArticles(), (v) => v.category);
+  const articles = await getArticles();
+  const articleCategories = objectGroupBy(articles, (v) => v.category);
   return {
     props: {
       articles,
+      articleCategories,
     },
   };
 };
 
 type BlogProps = {
-  articles: Partial<Record<string, NotionArticleSchema[]>>;
+  articleCategories: Partial<Record<string, NotionArticleSchema[]>>,
+  articles: NotionArticleSchema[],
 };
 
 type TutorialItemProps = {
-  entry: NotionArticleSchema;
-  hrefBaseUrl: string;
+  entry: NotionArticleSchema,
+  hrefBaseUrl?: string,
 };
 
-function ArticleEntry({ entry, hrefBaseUrl }: TutorialItemProps) {
-  const { title, authors, image: imageUrl, id, tags } = entry;
+export const categoryBaseUrlMap = {
+  "Byte Sized Tutorials": "byte-sized-tutorials",
+  "Studio Scoop": "studio-scoop",
+  "Miscellanious": "miscellanious",
+};
+
+function ArticleEntry(props: TutorialItemProps) {
+  const {
+    entry,
+    hrefBaseUrl = categoryBaseUrlMap[entry.category]
+  } = props;
+  const { title, category, authors, image: imageUrl, id, tags, description, date } = entry;
 
   const authorString = React.useMemo(() => joinAuthorNames(authors), [authors]);
 
   const url = `${hrefBaseUrl}/${id}`;
   return (
-    <Box
-      component={Link}
-      href={url}
-      display="flex"
-      flexDirection="column"
-      alignItems="stretch"
-      gap={1}
+    <Card
       sx={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "stretch",
         textDecoration: "none",
         color: "black",
-        "&:hover .TutorialItem__LinkText": {
-          textDecoration: "underline",
-        },
       }}
     >
-      <Box sx={{ aspectRatio: "16/9" }}>
-        <img
+      <Link href={url}>
+        <Box component="img"
           src={imageUrl}
           alt=""
-          style={{
-            minHeight: 0,
-            minWidth: 0,
+          sx={{
             width: "100%",
-            height: "100%",
             objectFit: "contain",
+            aspectRatio: "16/9",
+            borderRadius: 1,
+            overflow: "clip",
+            display: "block",
           }}
-        ></img>
-      </Box>
-      <Box>
-        <Box>
-          <Typography variant="subtitle2" display="inline">
+        />
+      </Link>
+      <Stack sx={{
+        p: 2,
+        height: "100%",
+      }}>
+        <Box sx={{
+          display: "flex",
+            gap: 1
+        }}>
+          <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
             {authorString}
           </Typography>
+          <Typography variant="subtitle2" sx={{ minWidth: "max-content" }} >
+            {formatDate(date)}
+          </Typography>
         </Box>
-        <Typography
-          variant="h3"
-          component="h3"
-          color="primary.main"
-          className="TutorialItem__LinkText"
+        <Link href={hrefBaseUrl}>
+          <Typography variant="subtitle2">
+            {category}
+          </Typography>
+        </Link>
+        <Link href={url}>
+          <Typography
+            variant="h3"
+            component="h3"
+            color="primary.main"
+          >
+            {title}
+          </Typography>
+        </Link>
+        <Typography variant="body2"
+          sx={{
+            flexGrow: 1,
+          }}
         >
-          {title}
+          {description}
         </Typography>
         <Box>
           {tags.at(0) && (
@@ -101,90 +124,85 @@ function ArticleEntry({ entry, hrefBaseUrl }: TutorialItemProps) {
             </>
           )}
         </Box>
-      </Box>
-    </Box>
+      </Stack>
+    </Card>
   );
 }
 
-export default function Blog({ articles }: BlogProps) {
-  const tutorials = articles["Byte Sized Tutorials"] ?? [];
-  const scoop = articles["Studio Scoop"] ?? [];
-  const columns = toSorted(
-    content.column as MDXFile<ColumnSchema>[],
-    sortByPublishedDate,
-  );
+export default function Blog(props: BlogProps) {
+  const { articles, articleCategories } = props;
+  const tutorials = articleCategories["Byte Sized Tutorials"] ?? [];
+  const scoop = articleCategories["Studio Scoop"] ?? [];
+  const miscellanious = articleCategories["Miscellanious"] ?? [];
+
+  const highlight: (NotionArticleSchema | undefined)[] = [
+    tutorials.at(0),
+    scoop.at(0),
+    miscellanious.at(0),
+  ];
+
+  const highlightIds = new Set(highlight.filter(x => x !== undefined).map(({ id }) => id))
+
+  const nonHighlightArticles = articles.filter(({ id }) => !highlightIds.has(id));
 
   const theme = useTheme();
-  const [tutorialsTrails, tutorialsApi] = useSprings(
-    tutorials.length,
-    (index) => ({
-      from: { opacity: 0, y: "1rem" },
-      to: { opacity: 1, y: "0" },
-      delay: 50 * index,
-      config: {
-        duration: theme.transitions.duration.enteringScreen,
-      },
-    }),
-  );
 
-  const [columnTrails, columnApi] = useSprings(columns.length, (index) => ({
-    from: { opacity: 0, y: "1rem" },
-    to: { opacity: 1, y: "0" },
-    delay: 50 * index,
-    config: {
-      duration: theme.transitions.duration.enteringScreen,
+  const ArticlesContainer = styled(Box)(({ theme }) => ({
+    display: "grid",
+    gridTemplateColumns: "repeat(3, 1fr)",
+    gridAutoRows: "1fr",
+    rowGap: theme.spacing(2),
+    columnGap: theme.spacing(2),
+    [theme.breakpoints.down("md")]: {
+      gridTemplateColumns: "repeat(2, 1fr)",
+    },
+    [theme.breakpoints.down("sm")]: {
+      gridTemplateColumns: "1fr",
     },
   }));
 
   return (
     <BackgroundContainer>
+      <Metadata title="Blog"/>
       <Typography variant="h1" mb={4}>
         Blog
       </Typography>
-      <Box
-        display="grid"
-        gridTemplateColumns="3fr 1px 1fr"
-        columnGap={2}
-        flexGrow={1}
-      >
-        {/* BYTE SIZED TUTORIALS and articles */}
-        <Box>
-          <Typography variant="h2" mb={2}>
-            Byte-Sized Tutorials
-          </Typography>
-          <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap={2}>
-            {tutorials.map((entry, i) => (
-              <animated.div style={tutorialsTrails[i]} key={entry.id}>
-                <ArticleEntry
-                  key={entry.id}
-                  entry={entry}
-                  hrefBaseUrl="byte-sized-tutorials"
-                />
-              </animated.div>
-            ))}
-          </Box>
-          <Box display="flex" justifyContent="end" mt={4}>
-            <Link href="/byte-sized-tutorials" variant="title1">
-              See all
-            </Link>
-          </Box>
-        </Box>
-        <Divider orientation="vertical" />
-        {/* COLUMN */}
-        <Box height="100%">
-          <Box position="sticky" top={0} height="min(100%, 100vh)">
-            <Typography variant="h2" mb={2}>
-              Column
-            </Typography>
-            <Box display="grid" gridAutoColumns="1fr" gap={2}>
-              {scoop.map((entry, i) => (
-                <animated.div style={columnTrails[i]} key={entry.id}>
-                  <ArticleEntry key={i} entry={entry} hrefBaseUrl="column" />
-                </animated.div>
-              ))}
-            </Box>
-          </Box>
-        </Box>
+      <Typography variant="h2" mb={2}>
+        Highlight
+      </Typography>
+      <Box sx={{ mb: 4 }}>
+        <ArticlesContainer>
+          {highlight.map((entry, i) => (
+            entry
+              ? (
+                <Stack key={entry.id} sx={{ gap: 1 }}>
+                  <ArticleEntry
+                    entry={entry}
+                    hrefBaseUrl="byte-sized-tutorials"
+                  />
+                  <Box display="flex" justifyContent="end" key={entry.id}>
+                    <Link href="/byte-sized-tutorials" variant="body1">
+                      All of {entry.category}
+                    </Link>
+                  </Box>
+                </Stack>
+              )
+              : <Box key={i}/>
+          ))}
+        </ArticlesContainer>
+      </Box>
+      <Typography variant="h2" mb={2}>
+        All Articles
+      </Typography>
+      <Box>
+        <ArticlesContainer>
+          {nonHighlightArticles.map((entry, i) => (
+              <ArticleEntry key={entry.id}
+                entry={entry}
+                hrefBaseUrl="byte-sized-tutorials"
+              />
+          ))}
+        </ArticlesContainer>
       </Box>
     </BackgroundContainer>
   );
