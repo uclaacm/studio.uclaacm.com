@@ -15,7 +15,12 @@ import { Card, Chip, styled, useMediaQuery, useTheme } from "@mui/material";
 import { getIconFromType } from "~/util/getIconFromType";
 import Link from "~/components/Link";
 import IconButton from "~/components/IconButton";
-import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
+import {
+  GetServerSidePropsContext,
+  GetServerSidePropsResult,
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+} from "next";
 
 import { objectGroupBy } from "~/util/polyfills";
 import {
@@ -25,14 +30,15 @@ import {
   NotionSocialLinksSchema,
 } from "~/api/notion/schema";
 import Metadata from "~/components/Metadata";
+import { REVALIDATE_INTERVAL } from "~/Constants";
 
 type OfficerWithSocialLinks = NotionOfficerSchema & {
   links?: NotionSocialLinksSchema[];
 };
 
-export async function getServerSideProps(
-  ctx: GetServerSidePropsContext,
-): Promise<GetServerSidePropsResult<AboutProps>> {
+export async function getStaticProps(
+  ctx: GetStaticPropsContext,
+): Promise<GetStaticPropsResult<AboutProps>> {
   const socialLinks = await getOfficerSocialLinks();
   const officers = (await getOfficers()).map(
     (officer): OfficerWithSocialLinks => ({
@@ -72,6 +78,7 @@ export async function getServerSideProps(
         },
       },
     },
+    revalidate: REVALIDATE_INTERVAL,
   };
 }
 
