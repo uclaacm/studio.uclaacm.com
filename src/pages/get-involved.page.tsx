@@ -59,7 +59,7 @@ export default function GetInvoled() {
         py: 4,
       }}
     >
-      <Metadata title="Get Involved"/>
+      <Metadata title="Get Involved" />
       <Typography variant="display1" sx={{ mb: 4 }}>
         Get Involved
       </Typography>

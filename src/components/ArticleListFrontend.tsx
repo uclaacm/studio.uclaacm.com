@@ -114,7 +114,7 @@ export default function ArticleList({
 
     return (
       <Container maxWidth="lg" sx={{ py: 2 }}>
-        <Metadata title={collectionName}/>
+        <Metadata title={collectionName} />
         <Typography variant="display1" sx={{ mb: 2 }}>
           {collectionName}
         </Typography>

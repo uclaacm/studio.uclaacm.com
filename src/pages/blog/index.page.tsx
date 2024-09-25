@@ -29,27 +29,33 @@ export const getServerSideProps: GetServerSideProps<BlogProps> = async (
 };
 
 type BlogProps = {
-  articleCategories: Partial<Record<string, NotionArticleSchema[]>>,
-  articles: NotionArticleSchema[],
+  articleCategories: Partial<Record<string, NotionArticleSchema[]>>;
+  articles: NotionArticleSchema[];
 };
 
 type TutorialItemProps = {
-  entry: NotionArticleSchema,
-  hrefBaseUrl?: string,
+  entry: NotionArticleSchema;
+  hrefBaseUrl?: string;
 };
 
 export const categoryBaseUrlMap = {
   "Byte Sized Tutorials": "byte-sized-tutorials",
   "Studio Scoop": "studio-scoop",
-  "Miscellanious": "miscellanious",
+  Miscellanious: "miscellanious",
 };
 
 function ArticleEntry(props: TutorialItemProps) {
+  const { entry, hrefBaseUrl = categoryBaseUrlMap[entry.category] } = props;
   const {
-    entry,
-    hrefBaseUrl = categoryBaseUrlMap[entry.category]
-  } = props;
-  const { title, category, authors, image: imageUrl, id, tags, description, date } = entry;
+    title,
+    category,
+    authors,
+    image: imageUrl,
+    id,
+    tags,
+    description,
+    date,
+  } = entry;
 
   const authorString = React.useMemo(() => joinAuthorNames(authors), [authors]);
 
@@ -66,7 +72,8 @@ function ArticleEntry(props: TutorialItemProps) {
       }}
     >
       <Link href={url}>
-        <Box component="img"
+        <Box
+          component="img"
           src={imageUrl}
           alt=""
           sx={{
@@ -79,36 +86,35 @@ function ArticleEntry(props: TutorialItemProps) {
           }}
         />
       </Link>
-      <Stack sx={{
-        p: 2,
-        height: "100%",
-      }}>
-        <Box sx={{
-          display: "flex",
-            gap: 1
-        }}>
+      <Stack
+        sx={{
+          p: 2,
+          height: "100%",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            gap: 1,
+          }}
+        >
           <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
             {authorString}
           </Typography>
-          <Typography variant="subtitle2" sx={{ minWidth: "max-content" }} >
+          <Typography variant="subtitle2" sx={{ minWidth: "max-content" }}>
             {formatDate(date)}
           </Typography>
         </Box>
         <Link href={hrefBaseUrl}>
-          <Typography variant="subtitle2">
-            {category}
-          </Typography>
+          <Typography variant="subtitle2">{category}</Typography>
         </Link>
         <Link href={url}>
-          <Typography
-            variant="h3"
-            component="h3"
-            color="primary.main"
-          >
+          <Typography variant="h3" component="h3" color="primary.main">
             {title}
           </Typography>
         </Link>
-        <Typography variant="body2"
+        <Typography
+          variant="body2"
           sx={{
             flexGrow: 1,
           }}
@@ -141,9 +147,13 @@ export default function Blog(props: BlogProps) {
     miscellanious.at(0),
   ];
 
-  const highlightIds = new Set(highlight.filter(x => x !== undefined).map(({ id }) => id))
+  const highlightIds = new Set(
+    highlight.filter((x) => x !== undefined).map(({ id }) => id),
+  );
 
-  const nonHighlightArticles = articles.filter(({ id }) => !highlightIds.has(id));
+  const nonHighlightArticles = articles.filter(
+    ({ id }) => !highlightIds.has(id),
+  );
 
   const theme = useTheme();
 
@@ -163,7 +173,7 @@ export default function Blog(props: BlogProps) {
 
   return (
     <BackgroundContainer>
-      <Metadata title="Blog"/>
+      <Metadata title="Blog" />
       <Typography variant="h1" mb={4}>
         Blog
       </Typography>
@@ -172,23 +182,23 @@ export default function Blog(props: BlogProps) {
       </Typography>
       <Box sx={{ mb: 4 }}>
         <ArticlesContainer>
-          {highlight.map((entry, i) => (
-            entry
-              ? (
-                <Stack key={entry.id} sx={{ gap: 1 }}>
-                  <ArticleEntry
-                    entry={entry}
-                    hrefBaseUrl="byte-sized-tutorials"
-                  />
-                  <Box display="flex" justifyContent="end" key={entry.id}>
-                    <Link href="/byte-sized-tutorials" variant="body1">
-                      All of {entry.category}
-                    </Link>
-                  </Box>
-                </Stack>
-              )
-              : <Box key={i}/>
-          ))}
+          {highlight.map((entry, i) =>
+            entry ? (
+              <Stack key={entry.id} sx={{ gap: 1 }}>
+                <ArticleEntry
+                  entry={entry}
+                  hrefBaseUrl="byte-sized-tutorials"
+                />
+                <Box display="flex" justifyContent="end" key={entry.id}>
+                  <Link href="/byte-sized-tutorials" variant="body1">
+                    All of {entry.category}
+                  </Link>
+                </Box>
+              </Stack>
+            ) : (
+              <Box key={i} />
+            ),
+          )}
         </ArticlesContainer>
       </Box>
       <Typography variant="h2" mb={2}>
@@ -197,10 +207,11 @@ export default function Blog(props: BlogProps) {
       <Box>
         <ArticlesContainer>
           {nonHighlightArticles.map((entry, i) => (
-              <ArticleEntry key={entry.id}
-                entry={entry}
-                hrefBaseUrl="byte-sized-tutorials"
-              />
+            <ArticleEntry
+              key={entry.id}
+              entry={entry}
+              hrefBaseUrl="byte-sized-tutorials"
+            />
           ))}
         </ArticlesContainer>
       </Box>

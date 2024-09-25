@@ -23,10 +23,7 @@ import {
   PageObjectResponse,
   RichTextItemResponse,
 } from "@notionhq/client/build/src/api-endpoints";
-import {
-  getPagesInDatabase,
-  GetPagesInDatabaseParams,
-} from "./core";
+import { getPagesInDatabase, GetPagesInDatabaseParams } from "./core";
 
 export type NotionSchema = Record<any, any>;
 
@@ -55,7 +52,7 @@ type PropertyTypeNamesMap = {
   date: string;
   strings: string[];
   number: number;
-  checkbox: boolean,
+  checkbox: boolean;
 };
 
 export type PropertyTypeName<T = any> = {
@@ -68,7 +65,14 @@ export type SchemaTypeBinding =
   | {
       source: "property";
       propertyName: string;
-      type: "string" | "strings" | "number" | "image" | "url" | "date" | "checkbox";
+      type:
+        | "string"
+        | "strings"
+        | "number"
+        | "image"
+        | "url"
+        | "date"
+        | "checkbox";
       // Property name on the table this property refers to
       relation?: {
         propertyName: string;
@@ -79,8 +83,7 @@ export type SchemaTypeBinding =
       type: "string";
     };
 
-export type PropertyType =
-  PropertyTypeNamesMap[PropertyTypeName];
+export type PropertyType = PropertyTypeNamesMap[PropertyTypeName];
 
 export function richTextToString(richText: RichTextItemResponse[]) {
   return richText.reduce((acc, cur) => acc + cur.plain_text, "");
@@ -157,7 +160,7 @@ export function propertyTryGetDate(
 export function propertyTryGetCheckbox(
   prop: PageObjectResponse["properties"][string],
 ): boolean | null {
-  if (prop.type === "checkbox"){
+  if (prop.type === "checkbox") {
     return prop.checkbox;
   }
   return null;

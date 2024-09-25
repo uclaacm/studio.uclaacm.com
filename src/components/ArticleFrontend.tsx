@@ -37,11 +37,13 @@ export function ArticleRenderer({ baseUrl }: ArticleParams) {
     );
     return (
       <BackgroundContainer>
-        <Metadata/>
+        <Metadata />
 
-        <Box sx={{ position: "relative" }} >
-          <IconButton variant="contained" size="small"
-            sx={theme => ({
+        <Box sx={{ position: "relative" }}>
+          <IconButton
+            variant="contained"
+            size="small"
+            sx={(theme) => ({
               position: "absolute",
               left: `calc(-2em - ${theme.spacing(1)})`,
             })}
@@ -49,7 +51,7 @@ export function ArticleRenderer({ baseUrl }: ArticleParams) {
               history.back();
             }}
           >
-            <IsaxIcon name="isax-arrow-left-24" color="inherit"/>
+            <IsaxIcon name="isax-arrow-left-24" color="inherit" />
           </IconButton>
         </Box>
         <Head>

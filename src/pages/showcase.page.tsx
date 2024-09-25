@@ -194,7 +194,7 @@ export default function Showcase() {
         </MUIContainer>
       }
     >
-      <Metadata title="Showcase"/>
+      <Metadata title="Showcase" />
       <Typography variant="h1">Showcase</Typography>
       {years.map(([year, categories]) => (
         <React.Fragment key={year}>

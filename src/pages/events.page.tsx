@@ -498,7 +498,7 @@ export default function Events({}: EventProps) {
         </Alert>
       </Snackbar>
 
-      <Metadata title="Events"/>
+      <Metadata title="Events" />
       <Typography variant="h1">events</Typography>
       <SkeletonContainer>
         <Stack direction="row">

@@ -16,7 +16,7 @@ export default function EventHeader(props: EventHeaderProps) {
   return (
     <Container
       maxWidth="lg"
-      sx={theme => ({
+      sx={(theme) => ({
         position: "sticky",
         top: 0,
         pt: headerTopPadding,

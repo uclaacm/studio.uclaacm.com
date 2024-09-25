@@ -99,16 +99,16 @@ const socialLinksBinding: NotionSchemaBinding<NotionSocialLinksSchema> = {
 };
 
 export type NotionArticleSchema = {
-  notionID: string,
-  id: string,
-  date: string,
-  category: string,
-  image?: string,
-  title: string,
-  description: string,
-  authors: string[],
-  tags: string[],
-  published: boolean,
+  notionID: string;
+  id: string;
+  date: string;
+  category: string;
+  image?: string;
+  title: string;
+  description: string;
+  authors: string[];
+  tags: string[];
+  published: boolean;
 };
 
 const articleBinding = {
@@ -125,7 +125,11 @@ const articleBinding = {
   },
   authors: { source: "property", propertyName: "Authors", type: "strings" },
   tags: { source: "property", propertyName: "Tags", type: "strings" },
-  published: { source: "property", propertyName: "Published", type: "checkbox" },
+  published: {
+    source: "property",
+    propertyName: "Published",
+    type: "checkbox",
+  },
 } satisfies NotionSchemaBinding<NotionArticleSchema>;
 
 export async function getOfficers() {
@@ -165,35 +169,30 @@ export async function getArticles({
 }: GetArticlesOptions = {}) {
   databaseId ??= databaseIDs.debugArticles;
 
-  const publishedFilter: PropertyFilter = (
-    PRODUCTION
+  const publishedFilter: PropertyFilter = PRODUCTION
     ? {
-      type: "checkbox",
-      property: articleBinding.published.propertyName,
-      checkbox: {
-        equals: true,
-      },
-    }
-    : undefined
-  );
+        type: "checkbox",
+        property: articleBinding.published.propertyName,
+        checkbox: {
+          equals: true,
+        },
+      }
+    : undefined;
 
-  const categoryFilter: PropertyFilter = (
-    category
-      ? {
-          type: "select",
-          property: articleBinding.category.propertyName,
-          select: {
-            equals: articleCategorySelectMap[category],
-          },
-        }
-      : undefined
-  );
+  const categoryFilter: PropertyFilter = category
+    ? {
+        type: "select",
+        property: articleBinding.category.propertyName,
+        select: {
+          equals: articleCategorySelectMap[category],
+        },
+      }
+    : undefined;
 
-  const filter = (
+  const filter =
     publishedFilter && categoryFilter
-    ? { and: [publishedFilter, categoryFilter] }
-    : publishedFilter || categoryFilter
-  )
+      ? { and: [publishedFilter, categoryFilter] }
+      : publishedFilter || categoryFilter;
 
   return querySchema<NotionArticleSchema>(articleBinding, {
     database_id: databaseId,

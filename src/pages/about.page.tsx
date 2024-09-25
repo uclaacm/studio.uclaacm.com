@@ -254,7 +254,7 @@ export default function About({ officers }: AboutProps) {
         </MUIContainer>
       }
     >
-      <Metadata title="About Us"/>
+      <Metadata title="About Us" />
       <Typography mb={4} variant="display1" sx={{ lineHeight: 1 }}>
         About ACM Studio
       </Typography>

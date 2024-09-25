@@ -71,7 +71,7 @@ export default function Home({}: HomeProps) {
 
   return (
     <Box position="relative">
-      <Metadata/>
+      <Metadata />
       <HomeNavigation active={activeSection} />
       <Box
         ref={scrollContainer}
