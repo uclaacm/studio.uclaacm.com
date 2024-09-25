@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetStaticProps } from "next";
 
 import BackgroundContainer from "~/components/BackgroundContainer";
 import Typography from "@mui/material/Typography";
@@ -14,10 +14,9 @@ import { objectGroupBy } from "~/util/polyfills";
 import joinAuthorNames from "~/util/joinAuthorNames";
 import formatDate from "~/util/formatDate";
 import Metadata from "~/components/Metadata";
+import { REVALIDATE_INTERVAL } from "~/Constants";
 
-export const getServerSideProps: GetServerSideProps<BlogProps> = async (
-  ctx,
-) => {
+export const getStaticProps: GetStaticProps<BlogProps> = async (ctx) => {
   const articles = await getArticles();
   const articleCategories = objectGroupBy(articles, (v) => v.category);
   return {
@@ -25,6 +24,7 @@ export const getServerSideProps: GetServerSideProps<BlogProps> = async (
       articles,
       articleCategories,
     },
+    revalidate: REVALIDATE_INTERVAL,
   };
 };
 
