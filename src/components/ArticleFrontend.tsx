@@ -16,6 +16,13 @@ import IconButton from "./IconButton";
 import IsaxIcon from "./IsaxIcon";
 import Metadata from "./Metadata";
 
+// syntax highlighting
+import "~/stylesheets/highlight.css";
+import "highlight.js/styles/github.min.css";
+
+// katex
+import "katex/dist/katex.min.css";
+
 export type ArticleParams = {
   baseUrl: string;
 };
