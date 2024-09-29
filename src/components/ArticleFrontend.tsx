@@ -17,7 +17,6 @@ import IsaxIcon from "./IsaxIcon";
 import Metadata from "./Metadata";
 
 // syntax highlighting
-import "~/stylesheets/highlight.css";
 import "highlight.js/styles/github.min.css";
 
 // katex

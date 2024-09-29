@@ -3,6 +3,7 @@ import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import "@fontsource/poppins/800.css";
 import "@fontsource/poppins/400.css";
 import "@fontsource/poppins";
+import "@fontsource/noto-color-emoji";
 import { PaletteOptions } from "@mui/material/styles";
 import BasicLink from "./components/BasicLink";
 
@@ -32,7 +33,7 @@ const theme = createTheme({
   palette: paletteOptions,
   spacing: SPACING,
   typography: {
-    fontFamily: ["Poppins", "sans-serif"].join(","),
+    fontFamily: ["Poppins", "Noto Color Emoji", "sans-serif"].join(","),
   },
   components: {
     MuiButtonBase: {
@@ -125,6 +126,8 @@ theme.components.MuiCard = {
   },
 };
 
+const fontFamily = theme.typography.fontFamily;
+
 theme.typography = {
   ...theme.typography,
 
@@ -132,7 +135,7 @@ theme.typography = {
     fontSize: "4.75rem",
     lineHeight: 1.125,
     fontWeight: 700,
-    fontFamily: "Poppins",
+    fontFamily,
     [md]: {
       fontSize: "2.5rem",
     },
@@ -144,7 +147,7 @@ theme.typography = {
     fontSize: "3rem",
     lineHeight: 1.25,
     fontWeight: 700,
-    fontFamily: "Poppins",
+    fontFamily,
     [md]: {
       fontSize: "2.25rem",
     },
@@ -157,7 +160,7 @@ theme.typography = {
     fontSize: "2.66rem",
     lineHeight: 1.25,
     fontWeight: 400,
-    fontFamily: "Poppins",
+    fontFamily,
     [md]: {
       fontSize: "2rem",
     },
@@ -169,7 +172,7 @@ theme.typography = {
     fontSize: "2.33rem",
     lineHeight: 1.25,
     fontWeight: 400,
-    fontFamily: "Poppins",
+    fontFamily,
     [md]: {
       fontSize: "1.833rem",
     },
@@ -181,7 +184,7 @@ theme.typography = {
     fontSize: "2rem",
     lineHeight: 1.25,
     fontWeight: 400,
-    fontFamily: "Poppins",
+    fontFamily,
     [md]: {
       fontSize: "1.5rem",
     },
@@ -191,7 +194,7 @@ theme.typography = {
     fontSize: "1.833rem",
     lineHeight: 1.25,
     fontWeight: 400,
-    fontFamily: "Poppins",
+    fontFamily,
     [md]: {
       fontSize: "1.333rem",
     },
@@ -200,7 +203,7 @@ theme.typography = {
     fontSize: "1.33rem",
     lineHeight: 1.5,
     fontWeight: 400,
-    fontFamily: "Poppins",
+    fontFamily,
     [md]: {
       fontSize: "1.25rem",
     },
@@ -209,19 +212,19 @@ theme.typography = {
   subtitle1: {
     fontSize: "1rem",
     fontWeight: 400,
-    fontFamily: "Poppins",
+    fontFamily,
   },
   subtitle2: {
     fontSize: "0.875rem",
     fontWeight: 400,
-    fontFamily: "Poppins",
+    fontFamily,
   },
 
   body1: {
     fontSize: "1.33rem",
     lineHeight: 1.5,
     fontWeight: 400,
-    fontFamily: "Poppins",
+    fontFamily: theme.typography.fontFamily,
     [md]: {
       fontSize: "1rem",
     },
@@ -230,14 +233,14 @@ theme.typography = {
     fontSize: "1rem",
     lineHeight: 1.33,
     fontWeight: 400,
-    fontFamily: "Poppins",
+    fontFamily,
     [md]: {
       fontSize: "0.875rem",
     },
   },
 
   button: {
-    fontFamily: "Poppins",
+    fontFamily,
     fontSize: "1rem",
     fontWeight: 400,
     textTransform: "none",
@@ -247,13 +250,13 @@ theme.typography = {
   caption: {
     fontSize: "0.75rem",
     fontWeight: 400,
-    fontFamily: "Poppins",
+    fontFamily,
   },
 
   overline: {
     fontSize: "0.75rem",
     fontWeight: 700,
-    fontFamily: "Poppins",
+    fontFamily,
   },
 };
 

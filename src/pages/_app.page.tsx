@@ -8,6 +8,7 @@ import { AppPropsWithLayout } from "~/@types";
 
 import "~/stylesheets/main.css";
 import "~/stylesheets/iconsax.css";
+import "~/stylesheets/highlight.css";
 
 import Layout from "~/components/Layout";
 import { InputProvider } from "~/components/Input";

@@ -132,7 +132,7 @@ export default function StudioSquads(props: StudioSquadsProps) {
             <Typography
               variant="title1"
               className="studio-squads__section"
-              sx={animationStyle()}
+              sx={[animationStyle(), { zIndex: 5 }]}
             >
               Come join a fam led by two of our officers, where you can take
               part in a variety of activities and form meaningful relationships{" "}
@@ -151,6 +151,7 @@ export default function StudioSquads(props: StudioSquadsProps) {
             </Button>
           </Stack>
         </Stack>
+      </Box>
         <Box
           className="studio-squads__background"
           sx={[
@@ -167,6 +168,7 @@ export default function StudioSquads(props: StudioSquadsProps) {
               display: "flex",
               justifyContent: "end",
               alignItems: "end",
+              zIndex: -1, 
             }),
             animationStyle({ translateY: 16 }),
           ]}
@@ -176,14 +178,13 @@ export default function StudioSquads(props: StudioSquadsProps) {
             src={StudioSquadsImage.src}
             width="600"
             sx={(theme) => ({
-              width: "60%",
-              [theme.breakpoints.down("md")]: {
+              width: "40%",
+              [theme.breakpoints.down("sm")]: {
                 width: "80%",
               },
             })}
           />
         </Box>
-      </Box>
     </Container>
   );
 }
