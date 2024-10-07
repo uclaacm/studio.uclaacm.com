@@ -8,3 +8,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext): Promis
     }
   }
 }
+
+export default function(){
+  return <div></div>
+}
