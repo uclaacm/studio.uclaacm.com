@@ -115,6 +115,13 @@ export default function SRSHome(props: SRSHomeProps) {
           sx={animationStyle()}
         >
           Interested in joining something bigger?
+          <Button
+            variant = "contained"
+            href = "/srs-info"
+          
+          >
+            Learn more about SRS here!
+          </Button>
         </Typography>
       </Stack>
     </Container>
