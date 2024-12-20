@@ -8,6 +8,7 @@ import {
   useTheme,
 } from "@mui/material";
 import {
+  bodyMinHeight,
   bodyOffset,
   bodyPaddingBottom,
   headerTopPadding,
@@ -87,7 +88,7 @@ export default function E1Home(props: SpeakerEventHomeProps) {
         scrollSnapAlign: "start",
         scrollMarginTop: `calc(${bodyOffset(theme)})`,
         width: "100%",
-        minHeight: `calc(100vh - ${theme.spacing(headerTopPadding)} - ${theme.typography.h1.lineHeight})`,
+        minHeight: `calc(${bodyMinHeight(theme)})`,
         pb: `calc(${bodyPaddingBottom(theme)})`,
       })}
     >
