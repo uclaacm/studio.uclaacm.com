@@ -92,7 +92,7 @@ function Officer({ officer }: OfficerProps) {
     <Card
       sx={(theme) => ({
         display: "grid",
-        gridTemplateColumns: "1fr 2fr",
+        gridTemplateColumns: "1fr 3fr",
         gridTemplateRows: "1fr",
         gap: 2,
         width: "100%",
@@ -106,6 +106,8 @@ function Officer({ officer }: OfficerProps) {
           [theme.breakpoints.down("md")]: {
             display: "none",
           },
+          p: 2,
+          alignSelf: "center",
         })}
       >
         <Box
@@ -134,6 +136,8 @@ function Officer({ officer }: OfficerProps) {
             [theme.breakpoints.up("md")]: {
               display: "none",
             },
+            p: 2,
+            alignSelf: "center",
           })}
         >
           <Box
