@@ -19,6 +19,7 @@
     "@types/node": "18.15.11",
     "@types/react": "18.0.35",
     "@types/react-katex": "^3.0.4",
+    "@types/seedrandom": "^3.0.8",
     "dotenv": "^16.3.1",
     "fast-glob": "^3.3.2",
     "framer-motion": "^11.2.11",
@@ -32,9 +33,12 @@
     "react-window": "^1.8.10",
     "remark-frontmatter": "^5.0.0",
     "remark-mdx-frontmatter": "^4.0.0",
+    "seedrandom": "^3.0.5",
     "typescript": "5.0.4"
   },
   "devDependencies": {
+    "@types/jsdom": "^21.1.7",
+    "jsdom": "^25.0.1",
     "run-script-os": "^1.1.6",
     "supabase": "^1.74.0",
     "ts-node": "^10.9.1"
