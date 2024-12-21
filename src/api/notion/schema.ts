@@ -44,7 +44,8 @@ export type NotionOfficerSchema = {
   id: string;
   name: string;
   boardStatus: string;
-  majorsMinors: string[] | null;
+  majors: string[] | null;
+  minors: string[] | null;
   roles: string[] | null;
   selfIntro: string | null;
   gradYear: number | null;
@@ -52,6 +53,7 @@ export type NotionOfficerSchema = {
   image: string | null;
   category: string | null;
   title: string | null;
+  favoriteGame: string | null;
 };
 
 const officerSchemaBinding = {
@@ -62,10 +64,15 @@ const officerSchemaBinding = {
     type: "string",
     propertyName: "Board Status",
   },
-  majorsMinors: {
+  majors: {
     source: "property",
     type: "strings",
-    propertyName: "Majors / Minors",
+    propertyName: "Majors",
+  },
+  minors: {
+    source: "property",
+    type: "strings",
+    propertyName: "Minors",
   },
   roles: { source: "property", type: "strings", propertyName: "Roles" },
   selfIntro: { source: "property", type: "string", propertyName: "Self intro" },
@@ -82,6 +89,11 @@ const officerSchemaBinding = {
     propertyName: "Website Category",
   },
   title: { source: "property", type: "string", propertyName: "Website Title" },
+  favoriteGame: {
+    source: "property",
+    type: "string",
+    propertyName: "Favorite Game",
+  },
   // note: we use satisfies to be able to still use static type information not encoded by DatabaseTypes
   // eg. so we can do officerSchemaTypes.name.propertyName instead of having to cast
 } satisfies NotionSchemaBinding<NotionOfficerSchema>;

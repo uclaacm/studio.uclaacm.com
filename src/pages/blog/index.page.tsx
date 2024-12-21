@@ -6,7 +6,8 @@ import BackgroundContainer from "~/components/BackgroundContainer";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Link from "~/components/Link";
-import { Card, Divider, Stack } from "@mui/material";
+import { Divider, Stack } from "@mui/material";
+import { Card } from "~/components/Card";
 
 import { styled, useTheme } from "@mui/material/styles";
 import { getArticles, NotionArticleSchema } from "~/api/notion/schema";

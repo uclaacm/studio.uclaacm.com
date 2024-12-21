@@ -18,7 +18,6 @@ import BackgroundContainer from "~/components/BackgroundContainer";
 import {
   IconButton as MUIIconButton,
   Button,
-  Card,
   CardActions,
   CardContent,
   CardHeader,
@@ -45,6 +44,7 @@ import {
 
 import getRandomEmoticon from "~/util/getRandomEmoticon";
 import Metadata from "~/components/Metadata";
+import { Card } from "~/components/Card";
 
 type EventProps = {};
 
@@ -108,7 +108,7 @@ type EventCardProps = {
 
 function EventCard({ event, action }: EventCardProps) {
   return (
-    <Card elevation={1} sx={{ maxWidth: "360px" }}>
+    <Card elevation={1} sx={{ maxWidth: "360px" }} opaque>
       <CardHeader
         title={event.summary}
         action={action}

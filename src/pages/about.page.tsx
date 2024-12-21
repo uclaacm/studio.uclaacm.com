@@ -11,7 +11,7 @@ import BackgroundImage from "~/assets/images/backgrounds/ps5.svg";
 
 import Logo from "~/assets/images/logo.png";
 
-import { Card, Chip, styled, useMediaQuery, useTheme } from "@mui/material";
+import { Chip, styled, useMediaQuery, useTheme } from "@mui/material";
 import { getIconFromType } from "~/util/getIconFromType";
 import Link from "~/components/Link";
 import IconButton from "~/components/IconButton";
@@ -31,6 +31,7 @@ import {
 } from "~/api/notion/schema";
 import Metadata from "~/components/Metadata";
 import { REVALIDATE_INTERVAL } from "~/Env";
+import { Card } from "~/components/Card";
 
 type OfficerWithSocialLinks = NotionOfficerSchema & {
   links?: NotionSocialLinksSchema[];
@@ -51,20 +52,23 @@ export async function getStaticProps(
     boardStatus === "Alumni"
       ? "alumni"
       : boardStatus === "Current"
-        ? "current"
-        : undefined,
+      ? "current"
+      : undefined,
   );
 
-  const { presidents, chairs, other } = objectGroupBy(
+  const { presidents, chairs, interns, other } = objectGroupBy(
     current,
     ({ category }) =>
       category === "President"
-        ? "presidents"
-        : category === "Chair"
-          ? "chairs"
-          : "other",
+      ? "presidents"
+      : category === "Chair"
+      ? "chairs"
+      : category === "Intern"
+      ? "interns"
+      : "other",
   );
 
+  alumni.sort((a, b) => b.gradYear - a.gradYear);
   current.sort((a, b) => (a.category === "President" ? -1 : 1));
 
   return {
@@ -75,6 +79,7 @@ export async function getStaticProps(
           presidents,
           chairs,
           other,
+          interns,
         },
       },
     },
@@ -83,142 +88,254 @@ export async function getStaticProps(
 }
 
 type OfficerProps = {
-  officer: OfficerWithSocialLinks;
+  officer: OfficerWithSocialLinks,
+  showImage?: boolean,
+  showBody?: boolean,
 };
 
-function Officer({ officer }: OfficerProps) {
-  const { name, selfIntro, image, links, title } = officer;
-  return (
-    <Card
-      sx={(theme) => ({
-        display: "grid",
-        gridTemplateColumns: "1fr 3fr",
-        gridTemplateRows: "1fr",
-        gap: 2,
-        width: "100%",
-        [theme.breakpoints.down("md")]: {
-          display: "block",
-        },
-      })}
-    >
+function Officer(props: OfficerProps) {
+  const {
+    officer,
+    showImage = true,
+    showBody = false
+  } = props;
+
+  const {
+    name,
+    selfIntro,
+    image,
+    links,
+    title,
+    roles,
+    majors,
+    minors,
+    gradYear,
+    favoriteGame,
+  } = officer;
+
+  const [open, setOpen] = React.useState(false);
+
+  const cardContent = <>
+    {showImage &&
       <Box
+        component="img"
+        src={image}
         sx={(theme) => ({
-          [theme.breakpoints.down("md")]: {
-            display: "none",
-          },
-          p: 2,
-          alignSelf: "center",
+          aspectRatio: 1,
+          objectFit: "cover",
+          maxWidth: "100%",
+          display: "block",
+          borderRadius: 1,
+          mb: 2
         })}
+      ></Box>
+    }
+    <Box
+      sx={{
+        mb: 1,
+      }}
+    >
+      <Typography
+        variant="label"
+        lineHeight={1}
+        component="h3"
+        textAlign="center"
+        fontWeight="inherit"
+        sx={{
+          mb: 1
+        }}
       >
-        <Box
-          component="img"
-          src={image}
-          sx={(theme) => ({
-            aspectRatio: 1,
-            objectFit: "cover",
-            maxWidth: "100%",
-            display: "block",
-            borderRadius: 1,
-          })}
-        ></Box>
-      </Box>
+          {name}
+      </Typography>
+      {title && (
+        <Typography
+          variant="subtitle1"
+          lineHeight={1}
+          component="p"
+          textAlign="center"
+        >
+            {title}
+        </Typography>
+      )}
+    </Box>
+    <Stack direction="row" gap={0.5} flexWrap="wrap" mb={1} justifyContent="center">
+      {roles?.map((role) => (
+        <Chip
+          key={role}
+          size="small"
+          variant="outlined"
+          label={role}
+          sx={{ fontSize: "0.6rem"}}
+        />
+      ))}
+    </Stack>
+  </>;
+
+  const cardBody = <Stack gap={2}>
+    <Stack>
+      { majors?.length > 0 && (
+        <Typography variant="body2">
+          Major: {majors.join(", ")}
+        </Typography>
+      )}
+      { minors?.length > 0 && (
+        <Typography variant="body2">
+          Minors: {minors.join(", ")}
+        </Typography>
+      )}
+      { gradYear && (
+        <Typography variant="body2">
+          Year: {gradYear}
+        </Typography>
+      )}
+      { favoriteGame && (
+        <Typography variant="body2">
+          Favorite Game: {favoriteGame}
+        </Typography>
+      )}
+    </Stack>
+    { selfIntro && (
+      <Typography variant="body2">
+        {selfIntro}
+      </Typography>
+    )}
+    {links?.length > 0 &&
       <Stack
-        spacing={2}
+        direction="row"
+        spacing={1}
+      >
+        {links.map(({ social, url }, i) => {
+          const icon = getIconFromType(social);
+          if (icon === null) {
+            return (
+              <Button
+                variant="outlined"
+                size="small"
+                component={Link}
+                href={url}
+                target="_blank"
+                key={i}
+              >
+                {social}
+              </Button>
+            );
+          } else {
+            return (
+              <IconButton
+                component={Link}
+                href={url}
+                target="_blank"
+                key={i}
+                sx={(theme) => ({ fontSize: theme.typography.body1.fontSize })}
+              >
+                {icon}
+              </IconButton>
+            );
+          }
+        })}
+      </Stack>
+    }
+  </Stack>;
+
+  return <Card elevation={0}
+      sx={{
+        position: "relative",
+        overflow: "visible"
+      }}
+    >
+    { showBody ||
+      <Card elevation={2}
+        opaque
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={(e) => {
+          setOpen(false);
+          e.currentTarget.scroll({
+            top: 0,
+            behavior: "smooth",
+          })
+        }}
         sx={(theme) => ({
-          py: 2,
-          [theme.breakpoints.down("md")]: {
-            pt: 0,
-          },
+          position: "absolute",
+          left: "-2px", right: "-2px",
+          top: "-2px",
+          bottom: "-2px",
+          opacity: 0,
+          zIndex: 100,
+          transition: theme.transitions.create(["opacity", "bottom"], {
+            duration: theme.transitions.duration.shortest,
+          }),
+          overflow: "scroll",
+          ...open && {
+            opacity: 1,
+            bottom: "-96px",
+            zIndex: 101,
+          } || {},
+          "@media (hover: none)": {
+            display: "none",
+          }
         })}
       >
-        <Box
-          sx={(theme) => ({
-            [theme.breakpoints.up("md")]: {
-              display: "none",
-            },
-            p: 2,
-            alignSelf: "center",
-          })}
-        >
-          <Box
-            component="img"
-            src={image}
-            sx={(theme) => ({
-              aspectRatio: 1,
-              objectFit: "cover",
-              maxWidth: "100%",
-              borderRadius: 1,
-            })}
-          />
+        <Box>
+          {cardContent}
         </Box>
-        <Stack
-          flexGrow={0}
-          gap={1}
-          sx={(theme) => ({
-            [theme.breakpoints.down("md")]: {
-              px: 2,
-            },
-          })}
-        >
-          <Typography variant="h3">{name}</Typography>
-          {title && (
-            <Box>
-              <Chip color="primary" variant="filled" label={title} />
-            </Box>
-          )}
-          <Stack direction="row" gap={1} flexWrap="wrap" mb={1}>
-            {officer.roles?.map((role) => (
-              <Chip key={role} size="small" variant="outlined" label={role} />
-            ))}
-          </Stack>
-          <Typography variant="body1">{selfIntro}</Typography>
-        </Stack>
-        <Stack
-          direction="row"
-          spacing={1}
-          sx={(theme) => ({
-            [theme.breakpoints.down("md")]: {
-              px: 2,
-            },
-          })}
-        >
-          {links?.map(({ social, url }, i) => {
-            const icon = getIconFromType(social);
-            if (icon === null) {
-              return (
-                <Button
-                  variant="outlined"
-                  size="small"
-                  component={Link}
-                  href={url}
-                  target="_blank"
-                  key={i}
-                >
-                  {social}
-                </Button>
-              );
-            } else {
-              return (
-                <IconButton component={Link} href={url} target="_blank" key={i}>
-                  {icon}
-                </IconButton>
-              );
+        <Box>
+          {cardBody}
+        </Box>
+      </Card>
+    }
+    {cardContent}
+    <Box
+      sx={{
+        ...showBody
+          ? {}
+          : {
+            "@media (hover: hover)": {
+              display: "none",
             }
-          })}
-        </Stack>
-      </Stack>
-    </Card>
-  );
+          }
+      }}
+    >
+      {cardBody}
+    </Box>
+  </Card>
+}
+
+type AlumnusProps = {
+  alumnus: OfficerWithSocialLinks;
+};
+
+function Alumnus(props: AlumnusProps){
+  const { alumnus } = props;
+
+  const {
+    name,
+    selfIntro,
+    image,
+    links,
+    title,
+    roles,
+    majors,
+    minors,
+    gradYear,
+    favoriteGame,
+  } = alumnus;
+
+  return <Box>
+    <Typography variant="label" component="h3" fontWeight="inherit">
+      {name} {title && ` | ${title}`} | {gradYear}
+    </Typography>
+  </Box>
 }
 
 type AboutProps = {
   officers: {
     current: {
-      presidents: OfficerWithSocialLinks[];
-      chairs: OfficerWithSocialLinks[];
-      other: OfficerWithSocialLinks[];
+      presidents: OfficerWithSocialLinks[],
+      chairs: OfficerWithSocialLinks[],
+      interns: OfficerWithSocialLinks[],
+      other: OfficerWithSocialLinks[],
     };
-    alumni: OfficerWithSocialLinks[];
+    alumni: OfficerWithSocialLinks[],
   };
 };
 
@@ -229,10 +346,15 @@ export default function About({ officers }: AboutProps) {
   const buttonSize = medium ? "small" : "medium";
 
   const OfficersContainer = styled(Box)(({ theme }) => ({
-    display: "flex",
-    flexDirection: "column",
-    gap: theme.spacing(1),
+    display: "grid",
+    gridTemplateColumns: "repeat(4, 1fr)",
+    gap: theme.spacing(2),
     marginBottom: theme.spacing(4),
+    [theme.breakpoints.down("lg")]: {
+      display: "grid",
+      gridTemplateColumns: "repeat(3, 1fr)",
+      gridAutoRows: "auto",
+    },
     [theme.breakpoints.down("md")]: {
       display: "grid",
       gridTemplateColumns: "1fr 1fr",
@@ -314,14 +436,35 @@ export default function About({ officers }: AboutProps) {
             <Officer key={officer.name} officer={officer} />
           ))}
         </OfficersContainer>
+        { officers.current.interns.length > 0 && <>
+          <Typography variant="h2" color="primary.main" mb={2}>
+            Meet the interns
+          </Typography>
+          <OfficersContainer>
+            {[
+              ...officers.current.interns,
+            ].map((intern) => (
+              <Officer key={intern.name} officer={intern} showBody />
+            ))}
+          </OfficersContainer>
+        </>}
         <Typography variant="h2" color="primary.main" mb={2}>
-          Meet the alumni
+          Alumni
         </Typography>
-        <OfficersContainer>
-          {officers.alumni.map((officer) => (
-            <Officer key={officer.name} officer={officer} />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 0,
+          }}
+        >
+          {officers.alumni.map((alumnus) => (
+            <Alumnus
+              key={alumnus.name}
+              alumnus={alumnus}
+            />
           ))}
-        </OfficersContainer>
+        </Box>
       </Box>
     </BackgroundContainer>
   );
