@@ -18,6 +18,7 @@ import {
   defaultParentVariants,
 } from "~/util/framer/variants";
 import { bodyMinHeight, bodyOffset, bodyPaddingBottom } from "../EventHeader";
+import { Card } from "~/components/Card";
 
 export type ResourcesProps = {};
 
@@ -25,6 +26,8 @@ type ResourceCardProps = {
   topContent: React.ReactNode;
   children: React.ReactNode;
 };
+
+const MotionCard = motion.create(Card);
 
 const defaultTransition = (theme: Theme): Transition => ({
   duration: theme.transitions.duration.shortest / 1000,
@@ -34,15 +37,9 @@ function ResourceCard({ topContent, children }: ResourceCardProps) {
   const theme = useTheme();
 
   return (
-    <Box
-      component={motion.section}
+    <MotionCard
       variants={defaultItemVariants()}
       transition={defaultTransition(theme)}
-      sx={(theme) => ({
-        border: "8px solid",
-        borderColor: theme.palette.primary.main,
-        borderRadius: "24px",
-      })}
     >
       <Stack
         direction="row"
@@ -60,7 +57,7 @@ function ResourceCard({ topContent, children }: ResourceCardProps) {
       <Box sx={{ px: 2, py: 2 }}>
         <Typography variant="title2">{children}</Typography>
       </Box>
-    </Box>
+    </MotionCard>
   );
 }
 

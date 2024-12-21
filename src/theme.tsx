@@ -27,6 +27,7 @@ const paletteOptions: PaletteOptions = {
 const SPACING = 8;
 
 const theme = createTheme({
+  cssVariables: true,
   shape: {
     borderRadius: 16,
   },
@@ -42,6 +43,24 @@ const theme = createTheme({
         disableTouchRipple: true,
         LinkComponent: BasicLink,
       },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          borderRadius: theme.shape.borderRadius,
+        }),
+      }
+    },
+    MuiCard: {
+      defaultProps: {
+        raised: true,
+        elevation: 1,
+      },
+      styleOverrides: {
+        root: ({ theme }) => ({
+          padding: theme.spacing(2),
+        }),
+      }
     },
     MuiButton: {
       defaultProps: {
@@ -109,19 +128,6 @@ theme.components.MuiContainer = {
         paddingLeft: `${SPACING * 4}px`,
         paddingRight: `${SPACING * 4}px`,
       },
-    },
-  },
-};
-
-theme.components.MuiCard = {
-  defaultProps: {
-    raised: false,
-    elevation: 0,
-  },
-  styleOverrides: {
-    root: {
-      border: `1px solid ${theme.palette.primary.main}`,
-      borderRadius: theme.shape.borderRadius,
     },
   },
 };

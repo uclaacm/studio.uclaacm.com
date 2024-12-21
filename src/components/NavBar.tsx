@@ -353,7 +353,11 @@ export default function NavBar() {
         <>
           {/* This drawer is to act like the hitbox for the drawer for flexbox calculations, since the
 				actual drawer is absolutely positioned */}
-          <Drawer variant="permanent" open={false} sx={{ zIndex: 0 }}></Drawer>
+          <Drawer
+            variant="permanent"
+            open={false}
+            sx={{ visibility: "hidden" }}
+          />
           <Drawer
             variant="permanent"
             anchor="left"
@@ -364,6 +368,11 @@ export default function NavBar() {
               position: "absolute",
               display: "flex",
               flexDirection: "column",
+            }}
+            PaperProps={{
+              sx: {
+                backgroundColor: "white",
+              },
             }}
           >
             {drawerContents}
@@ -376,6 +385,12 @@ export default function NavBar() {
             onOpen={() => setOpen(true)}
             onClose={() => setOpen(false)}
             open={open}
+            PaperProps={{
+              sx: {
+                borderRadius: `0 ${drawerBorderRadius(theme)} ${drawerBorderRadius(theme)} 0`,
+                backgroundColor: "white",
+              }
+            }}
           >
             {drawerContents}
           </SwipeableDrawer>

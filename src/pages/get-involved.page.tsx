@@ -1,13 +1,13 @@
 import {
   Box,
   Button,
-  Card as MuiCard,
   Container,
   Stack,
   Typography,
   styled,
   useTheme,
 } from "@mui/material";
+import { Card as CardBase } from "~/components/Card"
 import React from "react";
 import { links } from "~/Strings";
 import BackgroundContainer from "~/components/BackgroundContainer";
@@ -17,15 +17,13 @@ import IsaxIcon from "~/components/IsaxIcon";
 import BackgroundImage from "~/assets/images/backgrounds/tac-2.svg";
 import Metadata from "~/components/Metadata";
 
-const Card = styled(MuiCard)(({ theme }) => ({
+const Card = styled(CardBase)(({ theme }) => ({
   textAlign: "center",
-  padding: theme.spacing(2),
-  paddingBottom: theme.spacing(4),
   display: "flex",
   flexDirection: "column",
-  backgroundColor: "rgba(255, 255, 255, 0.5)",
   zIndex: 2,
-})) as typeof MuiCard;
+  paddingBottom: theme.spacing(4),
+})) as typeof CardBase;
 
 export default function GetInvoled() {
   const theme = useTheme();
