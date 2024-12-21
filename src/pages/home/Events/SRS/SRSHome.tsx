@@ -63,13 +63,12 @@ export default function SRSHome(props: SRSHomeProps) {
           className="community__section"
           sx={animationStyle()}
         >
-          Interested in joining something bigger?
-          <Button
-            variant = "contained"
-            href = "/srs-info"
-          >
-            Learn more about SRS here!
-          </Button>
+          ACM Studio's Flagship Program
+        </Typography>
+        <Typography
+          variant = "display1
+          "
+        >Over 2 quarters, work with a small student-run studio to create a game from <u>prototype</u> to <u> production</u>
         </Typography>
       </Stack>
     </Container>
