@@ -19,6 +19,7 @@
     "@types/node": "22.10.2",
     "@types/react": "19.0.2",
     "@types/react-katex": "^3.0.4",
+    "@types/seedrandom": "^3.0.8",
     "fast-glob": "^3.3.2",
     "framer-motion": "^11.2.11",
     "highlight.js": "^11.9.0",
@@ -30,6 +31,7 @@
     "react-katex": "^3.0.1",
     "remark-frontmatter": "^5.0.0",
     "remark-mdx-frontmatter": "^5.0.0",
+    "seedrandom": "^3.0.5",
     "typescript": "5.7.2"
   },
   "devDependencies": {},

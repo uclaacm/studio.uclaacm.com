@@ -28,22 +28,18 @@ import MasonryCarousel, {
   MasonryCarouselCellData,
 } from "~/components/MasonryCarousel";
 import { links } from "~/Strings";
+import { getRandomGameJamGames } from "~/data/itch";
 
 export type OurJamsProps = {};
 
-const entries: MasonryCarouselCellData[] = [
-  {
-    src: "https://img.itch.zone/aW1nLzEzNTg4NzYzLnBuZw==/315x250%23c/21lJqQ.png",
-    href: "https://diplomaticdodo.itch.io/obby-had-a-farm",
-    title: (
-      <>
-        Obby had a farm
-        <br />
-        LD54
-      </>
-    ),
-  },
-];
+const entries: MasonryCarouselCellData[] = getRandomGameJamGames(8).map((game) => ({
+  title: <>
+    {game.title}<br/>
+    {game.collection}
+  </>,
+  src: game.img,
+  href: game.href,
+}));
 
 export default function StudioJams(props: OurJamsProps) {
   const theme = useTheme();

@@ -10,19 +10,36 @@ import {
 import { motion, Transition, useInView, Variants } from "framer-motion";
 
 import Wordmark from "~/assets/images/wordmark_and_logo.svg";
-import MasonryCarousel from "~/components/MasonryCarousel";
+import MasonryCarousel, { MasonryCarouselCellData } from "~/components/MasonryCarousel";
 
-import UpcastBlue from "./LoglineImages/UpcastBlue.webp";
 import { HomeSectionProps } from "../index.page";
 import React from "react";
 import Link from "next/link";
-import { bodyPaddingBottom } from "./Events/EventHeader";
+import { getRandomGames } from "~/data/itch";
 
 const MotionLink = motion.create(Link);
 
 export type LoglineProps = {
   scrollContainerRef: React.MutableRefObject<HTMLElement>;
 } & HomeSectionProps;
+
+const carouselNRows = 4;
+const carouselItemsPerRow = 4;
+const carouselItems = getRandomGames(carouselNRows * carouselItemsPerRow)
+  .map((game): MasonryCarouselCellData => ({
+    title: <>
+      {game.title}<br/>
+      {game.collection}
+    </>,
+    src: game.img,
+    href: game.href,
+  }));
+const carouselRows = Array.from({ length: carouselNRows }, (_, i) => (
+  carouselItems.slice(
+    i * carouselItemsPerRow,
+    (i + 1) * carouselItemsPerRow
+  )
+));
 
 export default function Logline(props: LoglineProps) {
   const { scrollContainerRef, setActive, id } = props;
@@ -183,50 +200,7 @@ export default function Logline(props: LoglineProps) {
         }}
       >
         <MasonryCarousel
-          rows={[
-            [
-              {
-                src: UpcastBlue.src,
-                href: "https://ketexon.itch.io/upcast-blue",
-              },
-            ],
-            [
-              {
-                src: UpcastBlue.src,
-                href: "https://ketexon.itch.io/upcast-blue",
-              },
-            ],
-            [
-              {
-                src: UpcastBlue.src,
-                href: "https://ketexon.itch.io/upcast-blue",
-              },
-            ],
-            [
-              {
-                src: UpcastBlue.src,
-                href: "https://ketexon.itch.io/upcast-blue",
-              },
-            ],
-            [
-              {
-                src: UpcastBlue.src,
-                href: "https://ketexon.itch.io/upcast-blue",
-              },
-            ],
-            [
-              {
-                src: UpcastBlue.src,
-                href: "https://ketexon.itch.io/upcast-blue",
-              },
-            ],
-            [
-              {
-                src: UpcastBlue.src,
-                href: "https://ketexon.itch.io/upcast-blue",
-              },
-            ],
-          ]}
+          rows={carouselRows}
           cellWidthProportion={medium ? 0.7 : undefined}
         />
       </Box>
