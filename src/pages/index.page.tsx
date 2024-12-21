@@ -65,7 +65,7 @@ export const homeSections: HomeSection[] = [
 ];
 
 export default function Home({}: HomeProps) {
-  const scrollContainer = React.useRef<HTMLElement>();
+  const scrollContainer = React.useRef<HTMLElement>(undefined);
 
   const [activeSection, setActive] = React.useState("#game-showcase");
 

@@ -17,7 +17,7 @@ export default function Mission(props: MissionProps) {
   const { setActive, id } = props;
   const theme = useTheme();
 
-  const root = React.useRef<HTMLDivElement>();
+  const root = React.useRef<HTMLDivElement>(undefined);
 
   const inView = useInView(root, { margin: "-64px" });
   React.useEffect(() => {

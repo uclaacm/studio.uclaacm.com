@@ -106,9 +106,8 @@ export async function getPageBlocks({
         last_edited_by,
         has_children,
         archived,
-        in_trash,
         ...rest
-      } = v as BlockObjectResponse & { in_trash: boolean };
+      } = v as BlockObjectResponse;
       return rest;
     })
     .filter((v) => v !== null);

@@ -36,6 +36,7 @@ import { objectGroupBy } from "~/util/polyfills";
 import IconButton from "~/components/IconButton";
 import IsaxIcon from "~/components/IsaxIcon";
 
+
 import {
   ArrowLeft as ArrowLeftIcon,
   ArrowRight as ArrowRightIcon,
@@ -406,7 +407,7 @@ function UpcomingEventsList({
           ))}
         {thisMonthsEvents?.length === 0 && (
           <Typography variant="body1">
-            no upcoming events <pre>{sadEmoticon}</pre>
+            no upcoming events <code>{sadEmoticon}</code>
           </Typography>
         )}
       </Stack>

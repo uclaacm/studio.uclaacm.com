@@ -19,7 +19,7 @@
  * @see {getOfficers} for an example
  */
 
-import { PRODUCTION } from "~/Constants";
+import { PRODUCTION } from "~/Env";
 import {
   NotionSchemaBinding,
   querySchema,

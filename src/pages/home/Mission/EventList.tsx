@@ -6,29 +6,25 @@ import {
   TypographyProps,
   useTheme,
 } from "@mui/material";
-import { motion, motionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import { BoldTypographyItem, createParentVariants } from "./Animation";
 import { ArrowRight } from "@mui/icons-material";
 import React from "react";
 import { homeEventSections } from "~/pages/index.page";
-
-const MotionTypography = motion<TypographyProps & { component: string }>(
-  Typography,
-);
 
 export default function EventList() {
   const theme = useTheme();
 
   const parentVariants = createParentVariants(theme);
 
-  const arrowY = motionValue(0);
+  const arrowY = useMotionValue(0);
   const arrowYSpring = useSpring(arrowY, {
     duration: 200,
     bounce: 0.3,
   });
 
   const underlinePercents = homeEventSections.map((_, i) =>
-    motionValue(i === 0 ? 1 : 0),
+    useMotionValue(i === 0 ? 1 : 0),
   );
   const underlinePercentSprings = underlinePercents.map((mv) =>
     useSpring(mv, {
@@ -111,10 +107,11 @@ export default function EventList() {
                     inView: { height: "auto", opacity: 1, y: 0 },
                   }}
                   onHoverStart={(ev) => {
-                    arrowY.set((ev.target as HTMLAnchorElement).offsetTop);
                     underlinePercents[selected.current].set(0);
                     selected.current = i;
                     underlinePercents[selected.current].set(1);
+                    arrowY.set((ev.target as HTMLAnchorElement).offsetTop);
+                    console.log(arrowY);
                   }}
                 >
                   <Typography
@@ -148,14 +145,7 @@ export default function EventList() {
           </Stack>
           {/* The arrow */}
           <Box order={1}>
-            <MotionTypography
-              variant="title1"
-              color="primary"
-              component="span"
-              sx={{
-                display: "block",
-                pt: "0.1em",
-              }}
+            <motion.div
               variants={{
                 initial: { height: 0, opacity: 0 },
                 inView: { height: "auto", opacity: 1 },
@@ -163,8 +153,18 @@ export default function EventList() {
               style={{ y: arrowYSpring }}
               transition={{ duration: 0.1 }}
             >
-              <ArrowRight fontSize="inherit" sx={{ display: "block" }} />
-            </MotionTypography>
+              <Typography
+                variant="title1"
+                color="primary"
+                component="span"
+                sx={{
+                  display: "block",
+                  pt: "0.1em",
+                }}
+              >
+                <ArrowRight fontSize="inherit" sx={{ display: "block" }} />
+              </Typography>
+            </motion.div>
           </Box>
         </Stack>
       </Box>

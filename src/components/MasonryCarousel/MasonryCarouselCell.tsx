@@ -5,8 +5,8 @@ import { MasonryCarouselCellData } from ".";
 
 import ItchIcon from "~/assets/images/icons/dev/itchio-textless-white.svg";
 
-const MotionStack = motion(Stack);
-const MotionButton = motion(Button);
+const MotionStack = motion.create(Stack);
+const MotionButton = motion.create(Button);
 
 export type MasonryCarouselCellProps = {
   data: MasonryCarouselCellData;

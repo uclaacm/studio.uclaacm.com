@@ -30,7 +30,7 @@ import {
   NotionSocialLinksSchema,
 } from "~/api/notion/schema";
 import Metadata from "~/components/Metadata";
-import { REVALIDATE_INTERVAL } from "~/Constants";
+import { REVALIDATE_INTERVAL } from "~/Env";
 
 type OfficerWithSocialLinks = NotionOfficerSchema & {
   links?: NotionSocialLinksSchema[];

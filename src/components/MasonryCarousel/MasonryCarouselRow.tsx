@@ -11,7 +11,7 @@ import {
 import { Box, Stack } from "@mui/material";
 import MasonryCarouselCell from "./MasonryCarouselCell";
 
-const MotionStack = motion(Stack);
+const MotionStack = motion.create(Stack);
 
 export type MasonryCarouselRowProps = {
   cells: MasonryCarouselCellData[];
@@ -64,14 +64,14 @@ export default React.forwardRef<HTMLDivElement, MasonryCarouselRowProps>(
       canHover,
     } = props;
 
-    const containerRef = React.useRef<HTMLDivElement>();
+    const containerRef = React.useRef<HTMLDivElement>(undefined);
     // used to "copy" our ref to the forwarded ref
     useImperativeHandle(ref, () => containerRef.current);
 
     const nCells = React.useMemo(() => cells.length, [cells]);
 
     const virtualCellRefs = Array.from({ length: nVirtualizedCells }).map(() =>
-      React.useRef<HTMLDivElement>(),
+      React.useRef<HTMLDivElement>(undefined),
     );
     const virtualCellInViews = virtualCellRefs.map((ref) =>
       useInView(ref, { root: viewport }),

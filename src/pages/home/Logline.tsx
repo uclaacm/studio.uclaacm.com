@@ -18,7 +18,7 @@ import React from "react";
 import Link from "next/link";
 import { bodyPaddingBottom } from "./Events/EventHeader";
 
-const MotionLink = motion(Link);
+const MotionLink = motion.create(Link);
 
 export type LoglineProps = {
   scrollContainerRef: React.MutableRefObject<HTMLElement>;
@@ -31,7 +31,7 @@ export default function Logline(props: LoglineProps) {
   const medium = useMediaQuery(theme.breakpoints.down("md"));
   const buttonSize = medium ? "medium" : "large";
 
-  const root = React.useRef<HTMLDivElement>();
+  const root = React.useRef<HTMLDivElement>(undefined);
   const inView = useInView(root, { margin: "-64px" });
   React.useEffect(() => {
     if (inView) {
@@ -253,6 +253,7 @@ export default function Logline(props: LoglineProps) {
         </Button>
         <Button
           {...itemProps}
+          component={MotionLink}
           size={buttonSize}
           variant="outlined"
           href="/events"

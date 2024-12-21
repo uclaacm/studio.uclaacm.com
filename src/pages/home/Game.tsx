@@ -12,9 +12,9 @@ export default function HomeGame(props: HomeSectionProps) {
 
   const theme = useTheme();
 
-  const canvasContainerRef = React.useRef<HTMLDivElement>();
-  const canvasRef = React.useRef<HTMLCanvasElement>();
-  const ctxRef = React.useRef<CanvasRenderingContext2D>();
+  const canvasContainerRef = React.useRef<HTMLDivElement>(undefined);
+  const canvasRef = React.useRef<HTMLCanvasElement>(undefined);
+  const ctxRef = React.useRef<CanvasRenderingContext2D>(undefined);
 
   const inView = useInView(canvasContainerRef, { margin: "-64px" });
   React.useEffect(() => {

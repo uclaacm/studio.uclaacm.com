@@ -15,6 +15,8 @@ export default React.forwardRef(function BasicLink(
 ) {
   const { external = props.href.toString().startsWith("http"), ...rest } =
     props;
+  if(props.href === ""){
+  }
   return (
     <NextLink
       target={external ? "_blank" : undefined}

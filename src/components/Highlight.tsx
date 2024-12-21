@@ -66,10 +66,10 @@ export default function Highlight({
   block,
 }: HighlightProps) {
   block ??= false;
-  const codeRef = React.useRef<HTMLElement>();
+  const codeRef = React.useRef<HTMLElement>(undefined);
 
   React.useEffect(() => {
-    if (codeRef.current) {
+    if (codeRef.current && !codeRef.current.classList.contains("hljs")) {
       hljs.highlightElement(codeRef.current);
     }
   }, [codeRef]);

@@ -14,7 +14,7 @@ import { objectGroupBy } from "~/util/polyfills";
 import joinAuthorNames from "~/util/joinAuthorNames";
 import formatDate from "~/util/formatDate";
 import Metadata from "~/components/Metadata";
-import { REVALIDATE_INTERVAL } from "~/Constants";
+import { REVALIDATE_INTERVAL } from "~/Env";
 
 export const getStaticProps: GetStaticProps<BlogProps> = async (ctx) => {
   const articles = await getArticles();

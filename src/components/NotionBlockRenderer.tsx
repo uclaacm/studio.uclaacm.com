@@ -111,8 +111,12 @@ function NotionBlockRenderer({ block }: NotionBlockRendererProps) {
     );
   } else if (block.type === "code") {
     return (
+      /** NOTE: IDEALLY we'd use richtext in the code
+       * but Highlight completely clears the HTML and
+       * recreates it (and throws a warning)
+       */
       <Highlight language={block.code.language} block>
-        <NotionRichTextRenderer richText={block.code.rich_text} />
+        {getPlainText(block.code.rich_text)}
       </Highlight>
     );
   } else if (block.type === "equation") {

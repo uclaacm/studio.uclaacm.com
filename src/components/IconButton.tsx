@@ -65,5 +65,5 @@ const IconButton = styled(MUIIconButton)<IconButtonProps>(
   },
 ) as ExtendButtonBase<IconButtonTypeMap<IconButtonProps>>;
 
-export const MotionIconButton = motion(IconButton);
+export const MotionIconButton = motion.create(IconButton);
 export default IconButton;

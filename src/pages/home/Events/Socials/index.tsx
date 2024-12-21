@@ -10,7 +10,7 @@ export type SocialsProps = {} & HomeSectionProps;
 
 export default function Socials(props: SocialsProps) {
   const { setActive } = props;
-  const root = React.useRef<HTMLDivElement>();
+  const root = React.useRef<HTMLDivElement>(undefined);
   const inView = useInView(root, { margin: "-64px" });
   React.useEffect(() => {
     if (inView) {

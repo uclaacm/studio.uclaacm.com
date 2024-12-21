@@ -12,7 +12,7 @@ export type WorkshopsProps = {} & HomeSectionProps;
 export default function Workshops(props: WorkshopsProps) {
   const { setActive } = props;
 
-  const root = React.useRef<HTMLDivElement>();
+  const root = React.useRef<HTMLDivElement>(undefined);
   const inView = useInView(root, { margin: "-64px" });
   React.useEffect(() => {
     if (inView) {
