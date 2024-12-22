@@ -402,7 +402,7 @@ import {
             <Typography variant="body1">{team.description}</Typography>
 
             <Box
-                onClick={handleNext}
+                // onClick={handleNext}
                 sx={{
                   position: "absolute", 
                   top: "50%", 
@@ -422,9 +422,10 @@ import {
                
                 sx={{
                   opacity: 1,
-                  width: "400px",
-                  height: "400px",
-                  backgroundColor: "rgba(0,0,0,0)",
+                  width: "500px",
+                  height: "500px",
+                  color: "white",
+                  backgroundColor: "rgba(255, 255, 255, 0)",
                 }}
                 
                 onClick={() => {
