@@ -81,7 +81,7 @@ export default function GetInvoled() {
         <Card
           component="section"
           sx={(theme) => ({
-            gridColumn: "1 / 3",
+            gridColumn: "1 / span 2",
             [theme.breakpoints.down("md")]: {
               gridColumn: "unset",
             },
@@ -91,7 +91,6 @@ export default function GetInvoled() {
           <Typography variant="body1" sx={{ mb: 2, flexGrow: 1 }}>
             The best way to get involved with ACM Studio is to attend our
             events!
-            <br />
           </Typography>
           <Stack
             direction="row"
