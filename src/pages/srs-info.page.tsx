@@ -374,7 +374,7 @@ import {
               border: "1px solid pink",
               gap: 2,
               overflow: "hidden", 
-              backgroundColor: "rgba(255, 255, 255, 0.5)",
+              backgroundColor: "rgba(255, 248, 248, 0.5)",
               transition: "all 0.3s ease-in-out", 
               "&:hover": {
                 backgroundColor: "rgba(0, 0, 0, 0.5)", 
@@ -402,6 +402,7 @@ import {
             <Typography variant="body1">{team.description}</Typography>
 
             <Box
+                onClick={handleNext}
                 sx={{
                   position: "absolute", 
                   top: "50%", 
@@ -418,9 +419,12 @@ import {
 
             >
               <Button
-                variant="contained"
+               
                 sx={{
                   opacity: 1,
+                  width: "400px",
+                  height: "400px",
+                  backgroundColor: "rgba(0,0,0,0)",
                 }}
                 
                 onClick={() => {
