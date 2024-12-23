@@ -16,6 +16,7 @@ import IsaxIcon from "~/components/IsaxIcon";
 
 import BackgroundImage from "~/assets/images/backgrounds/tac-2.svg";
 import Metadata from "~/components/Metadata";
+import Image from "next/image";
 
 const Card = styled(CardBase)(({ theme }) => ({
   textAlign: "center",
@@ -39,18 +40,20 @@ export default function GetInvoled() {
             display: "grid",
             gridTemplate: "1fr / 4fr 4fr",
             opacity: 0.2,
+            pointerEvents: "none"
           }}
         >
-          <img
+          <Box 
             alt=""
-            src={BackgroundImage.src}
+            component={Image}
+            src={BackgroundImage}
             style={{
               gridColumnStart: 2,
               width: "100%",
               position: "relative",
               top: "-32px",
             }}
-          ></img>
+          ></Box>
         </Container>
       }
       sx={{
@@ -78,7 +81,7 @@ export default function GetInvoled() {
         <Card
           component="section"
           sx={(theme) => ({
-            gridColumn: "1 / 3",
+            gridColumn: "1 / span 2",
             [theme.breakpoints.down("md")]: {
               gridColumn: "unset",
             },
@@ -88,7 +91,6 @@ export default function GetInvoled() {
           <Typography variant="body1" sx={{ mb: 2, flexGrow: 1 }}>
             The best way to get involved with ACM Studio is to attend our
             events!
-            <br />
           </Typography>
           <Stack
             direction="row"
