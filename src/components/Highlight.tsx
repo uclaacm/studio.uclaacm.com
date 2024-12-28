@@ -102,6 +102,7 @@ export default function Highlight({
         />
       )}
       <Typography
+        variant="body2"
         component="code"
         ref={codeRef}
         className={language ? `language-${language}` : ""}
