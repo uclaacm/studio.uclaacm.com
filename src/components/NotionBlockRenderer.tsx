@@ -65,7 +65,8 @@ export function NotionRichTextRenderer({
 }
 
 export type NotionBlockRenderOptions = {
-  lineSpacing: number,
+  lineHeight?: string,
+  textIndent?: string,
 };
 
 type NotionBlockRendererProps = {
@@ -76,7 +77,10 @@ type NotionBlockRendererProps = {
 function NotionBlockRenderer(props: NotionBlockRendererProps) {
   const {
     block,
-    renderOptions = {}
+    renderOptions = {
+      lineHeight: "1.5",
+      textIndent: "0",
+    }
   } = props;
   const theme = useTheme();
 
@@ -102,9 +106,12 @@ function NotionBlockRenderer(props: NotionBlockRendererProps) {
     },
     paragraph: {
       marginBottom: 1,
+      lineHeight: renderOptions.lineHeight,
+      textIndent: renderOptions.textIndent,
     },
   };
 
+  // typography blocks
   if (block.type in textTypeMap) {
     const rt = block[block.type].rich_text as (Block & {
       type: "paragraph";
@@ -113,7 +120,9 @@ function NotionBlockRenderer(props: NotionBlockRendererProps) {
     return (
       <Typography
         variant={textTypeMap[block.type]}
-        sx={textTypeStyle[block.type]}
+        sx={{
+          ...textTypeStyle[block.type]
+        }}
       >
         <NotionRichTextRenderer richText={rt} />
       </Typography>
