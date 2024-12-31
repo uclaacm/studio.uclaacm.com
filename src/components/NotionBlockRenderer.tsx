@@ -64,11 +64,20 @@ export function NotionRichTextRenderer({
   );
 }
 
-type NotionBlockRendererProps = {
-  block: Block;
+export type NotionBlockRenderOptions = {
+  lineSpacing: number,
 };
 
-function NotionBlockRenderer({ block }: NotionBlockRendererProps) {
+type NotionBlockRendererProps = {
+  block: Block,
+  renderOptions?: NotionBlockRenderOptions,
+};
+
+function NotionBlockRenderer(props: NotionBlockRendererProps) {
+  const {
+    block,
+    renderOptions = {}
+  } = props;
   const theme = useTheme();
 
   const textTypeMap = {
@@ -189,11 +198,13 @@ function NotionBlockRenderer({ block }: NotionBlockRendererProps) {
 }
 
 export type NotionBlocksRendererProps = {
-  blocks: Block[];
+  blocks: Block[],
+  renderOptions?: NotionBlockRenderOptions
 };
 
 export default function NotionBlocksRenderer({
   blocks,
+  renderOptions,
 }: NotionBlocksRendererProps) {
   // notion returns each bulleted item individually
   // so the parent must add the <ul> (or <ol>)
@@ -233,7 +244,7 @@ export default function NotionBlocksRenderer({
         return (
           <Container key={blocks.at(0).id}>
             {blocks.map((block) => (
-              <NotionBlockRenderer key={block.id} block={block} />
+              <NotionBlockRenderer key={block.id} block={block} renderOptions={renderOptions} />
             ))}
           </Container>
         );

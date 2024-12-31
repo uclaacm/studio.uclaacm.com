@@ -166,6 +166,7 @@ const articleCategorySelectMap = {
   byteSizedTutorials: "Byte Sized Tutorials",
   scoop: "Studio Scoop",
   showcase: "Showcase",
+  miscellaneous: "Miscellaneous",
 } as const;
 
 export type ArticleCategory = keyof typeof articleCategorySelectMap;

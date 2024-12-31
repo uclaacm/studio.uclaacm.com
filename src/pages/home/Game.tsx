@@ -1,5 +1,5 @@
 import { Close, KeyboardArrowDown, QuestionMark } from "@mui/icons-material";
-import { Box, Stack, Typography, useTheme } from "@mui/material";
+import { Box, Button, Stack, Typography, useTheme } from "@mui/material";
 import { AnimatePresence, motion, useInView, Variants } from "framer-motion";
 import React from "react";
 import IconButton, { MotionIconButton } from "~/components/IconButton";
@@ -8,6 +8,8 @@ import { useOnResize } from "~/util/useOnResize";
 import { HomeSectionProps } from "../index.page";
 
 export default function HomeGame(props: HomeSectionProps) {
+  const [loaded, setLoaded] = React.useState(false);
+
   const { scrollContainerRef, setActive, id } = props;
 
   const theme = useTheme();
@@ -24,29 +26,6 @@ export default function HomeGame(props: HomeSectionProps) {
   }, [inView]);
 
   const [modalOpen, setModalOpen] = React.useState(false);
-
-  React.useEffect(() => {
-    ctxRef.current = canvasRef.current?.getContext("2d");
-  }, [canvasRef]);
-
-  function render() {
-    const canvas = canvasRef.current;
-    const ctx = ctxRef.current;
-    if (!canvas || !ctx) return;
-
-    drawRainbow(canvas, ctx);
-  }
-
-  useOnResize(
-    canvasContainerRef,
-    (size) => {
-      if (!canvasRef.current) return;
-      canvasRef.current.width = size.inlineSize;
-      canvasRef.current.height = size.blockSize;
-      render();
-    },
-    [canvasRef],
-  );
 
   const transitionDuration = theme.transitions.duration.shortest / 1000;
   const easing = "circOut";
@@ -73,15 +52,19 @@ export default function HomeGame(props: HomeSectionProps) {
         position: "relative",
       }}
     >
-      <canvas
-        ref={canvasRef}
-        width="512"
-        height="512"
-        style={{
+      {loaded || (
+        <Button
+          onClick={() => setLoaded(true)}
+        >Play game</Button>
+      )}
+      {loaded && <Box
+        component="iframe"
+        src={"/game-jam-winners/dbtb/index.html"}
+        sx={{
           width: "100%",
           height: "100%",
         }}
-      ></canvas>
+      />}
 
       <Stack
         direction="row"

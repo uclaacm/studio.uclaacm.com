@@ -8,7 +8,7 @@ import {
   NotionSchemaWithBlocks,
 } from "~/api/notion/schema";
 import joinAuthorNames from "~/util/joinAuthorNames";
-import NotionBlocksRenderer from "./NotionBlockRenderer";
+import NotionBlocksRenderer, { NotionBlockRenderOptions } from "./NotionBlockRenderer";
 import Head from "next/head";
 import { Box, Chip, Stack } from "@mui/material";
 import Link from "./Link";
@@ -23,14 +23,15 @@ import "highlight.js/styles/github.min.css";
 import "katex/dist/katex.min.css";
 
 export type ArticleParams = {
-  baseUrl: string;
+  baseUrl: string,
+  renderOptions?: NotionBlockRenderOptions,
 };
 
 export type ArticleProps = {
   article: NotionSchemaWithBlocks<NotionArticleSchema>;
 };
 
-export function ArticleRenderer({ baseUrl }: ArticleParams) {
+export function ArticleRenderer({ baseUrl, renderOptions }: ArticleParams) {
   return function ({ article }: ArticleProps) {
     if (article === undefined) {
       return <></>;
@@ -68,7 +69,7 @@ export function ArticleRenderer({ baseUrl }: ArticleParams) {
           <Link href={baseUrl}>{category}</Link>
         </Typography>
         <Typography variant="h1">{title}</Typography>
-        <NotionBlocksRenderer blocks={blocks} />
+        <NotionBlocksRenderer blocks={blocks} renderOptions={renderOptions} />
       </BackgroundContainer>
     );
   };
