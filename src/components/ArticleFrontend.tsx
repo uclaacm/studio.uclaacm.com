@@ -36,7 +36,7 @@ export function ArticleRenderer({ baseUrl, renderOptions }: ArticleParams) {
     if (article === undefined) {
       return <></>;
     }
-    const { title, authors, tags, category, blocks } = article;
+    const { title, authors, description, tags, category, blocks } = article;
 
     const authorString = React.useMemo(
       () => joinAuthorNames(authors),
@@ -44,7 +44,12 @@ export function ArticleRenderer({ baseUrl, renderOptions }: ArticleParams) {
     );
     return (
       <BackgroundContainer>
-        <Metadata />
+        <Metadata
+          title={title}
+          author={authorString}
+          description={description}
+          keywords={tags}
+        />
 
         <Box sx={{ position: "relative" }}>
           <IconButton

@@ -15,7 +15,7 @@ export const getStaticPaths = createGetStaticPaths({
 export default ArticleRenderer({
   baseUrl: "/articles",
   renderOptions: {
-    lineHeight: "1.5",
+    lineHeight: "2",
     textIndent: "2em",
   }
 });
