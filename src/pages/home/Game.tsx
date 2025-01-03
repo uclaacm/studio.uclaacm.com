@@ -1,4 +1,4 @@
-import { Close, KeyboardArrowDown, QuestionMark } from "@mui/icons-material";
+import { Close, KeyboardArrowDown, QuestionMark, VolumeOff, VolumeUp } from "@mui/icons-material";
 import { Box, Button, Stack, Typography, useTheme } from "@mui/material";
 import { AnimatePresence, motion, useInView, Variants } from "framer-motion";
 import React from "react";
@@ -20,10 +20,10 @@ export default function HomeGame(props: HomeSectionProps) {
   const { scrollContainerRef, setActive, id } = props;
 
   const theme = useTheme();
+  const [canvas, setCanvas] = React.useState<HTMLCanvasElement>(undefined);
+  const [iframe, setIframe] = React.useState<HTMLIFrameElement>(undefined);
 
   const canvasContainerRef = React.useRef<HTMLDivElement>(undefined);
-  const canvasRef = React.useRef<HTMLCanvasElement>(undefined);
-  const ctxRef = React.useRef<CanvasRenderingContext2D>(undefined);
 
   const inView = useInView(canvasContainerRef, { margin: "-64px" });
   React.useEffect(() => {
@@ -31,6 +31,36 @@ export default function HomeGame(props: HomeSectionProps) {
       setActive();
     }
   }, [inView]);
+
+  const [muted, setMuted] = React.useState(false);
+
+  React.useEffect(() => {
+    if(!iframe) return;
+    console.log("HI");
+    if(iframe.contentDocument.readyState === "complete"){
+      setCanvas(iframe.contentDocument.querySelector("canvas"));
+    }
+    else {
+      const onLoad = () => {
+        setCanvas(iframe.contentDocument.querySelector("canvas"));
+      }
+      iframe.addEventListener("load", onLoad);
+      return () => {
+        iframe.removeEventListener("load", onLoad);
+      }
+    }
+  }, [iframe])
+
+  React.useEffect(() => {
+    if(!canvas) return;
+    console.log(`SETTING CANVAS MUTE: ${muted}`);
+    if(muted){
+      canvas.dataset.muted = "";
+    }
+    else {
+      delete canvas.dataset.muted;
+    }
+  }, [canvas, muted]);
 
   const [modalOpen, setModalOpen] = React.useState(false);
 
@@ -107,6 +137,7 @@ export default function HomeGame(props: HomeSectionProps) {
     >
       {loaded || preloadContent}
       {loaded && <Box
+        ref={setIframe}
         component="iframe"
         src={"/game-jam-winners/dbtb/index.html"}
         sx={{
@@ -129,6 +160,25 @@ export default function HomeGame(props: HomeSectionProps) {
         })}
       >
         <IconButton
+          variant="contained"
+          sx={{
+            fontSize: "inherit",
+            width: "1em",
+            height: "1em",
+          }}
+          onClick={(e) => {
+            setMuted(x => !x);
+          }}
+          // prevent losing focus of game when clicking
+          onMouseDown={e => e.preventDefault()}
+        >
+          {muted
+            ? <VolumeOff color="inherit" style={{ fontSize: "inherit" }} />
+            : <VolumeUp color="inherit" style={{ fontSize: "inherit" }} />
+          }
+        </IconButton>
+        <IconButton
+          variant="contained"
           sx={{
             fontSize: "inherit",
             width: "1em",
@@ -150,7 +200,7 @@ export default function HomeGame(props: HomeSectionProps) {
             overflow: "hidden",
             fontSize: "3rem",
             border: `1px solid ${theme.palette.primary.main}`,
-            backgroundColor: "white",
+            backgroundColor: modalOpen ? "white" : theme.palette.primary.main,
           })}
           variants={{
             button: {
