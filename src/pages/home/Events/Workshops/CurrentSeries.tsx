@@ -9,6 +9,7 @@ import { bodyMinHeight, bodyOffset, bodyPaddingBottom } from "../EventHeader";
 import {
   Box,
   Button,
+  Container,
   Stack,
   SxProps,
   Typography,
@@ -19,6 +20,28 @@ import { defaultParentVariants } from "~/util/framer/variants";
 import React from "react";
 import sleep from "~/util/sleep";
 import { links } from "~/Strings";
+
+
+type SeriesItemProps = {
+  title: string,
+  description: React.ReactNode,
+}
+
+function SeriesItem(props: SeriesItemProps) {
+  const {
+    title,
+    description,
+  } = props;
+  return <Box component="section" className="check-out__stagger-item"
+    sx={{
+      transform: "translateY(calc((1 - var(--animation-percent)) * 16px))",
+      opacity: "var(--animation-percent)",
+    }}
+  >
+    <Typography variant="h1">{title}</Typography>
+    {description}
+  </Box>
+}
 
 export type CurrentSeriesProps = {};
 
@@ -103,7 +126,7 @@ export default function CurrentSeries({}: CurrentSeriesProps) {
   }, [inView, playedAnimation]);
 
   const staggerItemStyle: SxProps = {
-    translate: `0 calc((var(--animation-percent) - 1) * 16px)`,
+    translate: `0 calc((1 - var(--animation-percent)) * 16px)`,
     opacity: `var(--animation-percent)`,
   };
 
@@ -142,112 +165,33 @@ export default function CurrentSeries({}: CurrentSeriesProps) {
         >
           Check out our current series
         </Typography>
-        <Box
-          component="section"
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            [theme.breakpoints.down(1650)]: {
-              gridTemplateColumns: "unset",
-              gridTemplateRows: "auto auto",
-              width: "100%",
-            },
-          }}
-        >
-          <Box
-            style={{ minWidth: 0 }}
-            className="check-out__stagger-item"
-            sx={(theme) => ({
-              ml: 8,
-              mr: 4,
-              translate: `calc((var(--animation-percent) - 1) * 8rem) 0`,
-              [theme.breakpoints.down(1650)]: {
-                mx: 0,
-                translate: `0 calc((1 - var(--animation-percent)) * 16px)`,
-              },
-              overflow: "clip",
-              opacity: `var(--animation-percent)`,
-            })}
-          >
-            <Box
-              component="img"
-              src="https://images.gog-statics.com/e6cbc5d26564d089ed9f655ed5d374d2672c344a934ddb38b96aa7da52908870_product_card_v2_mobile_slider_639.jpg"
-              sx={{
-                width: "100%",
-                height: "100%",
-                borderRadius: 1,
-              }}
+        <Container maxWidth="lg">
+          <Stack>
+            <SeriesItem
+              title="From Zero to Hero"
+              description={<>
+                <Typography variant="body1">
+                  Learn to make a game-ready character from scratch with our
+                  series of workshops. Start with the basics of character design
+                  and modeling, and finish with a fully rigged and animated
+                  character!
+                </Typography>
+              </>}
             />
-          </Box>
-          <Stack
-            justifyContent="center"
-            sx={{
-              pr: `calc(50vw - ${theme.breakpoints.values.lg / 2}px)`,
-              mr: 4,
-            }}
-          >
-            <Typography
-              variant="display1"
-              className="check-out__stagger-item"
-              sx={[
-                staggerItemStyle,
-                (theme) => ({
-                  [theme.breakpoints.down(1650)]: {
-                    mt: 2,
-                  },
-                }),
-              ]}
-            >
-              Fall 2024
-            </Typography>
-            <Typography
-              variant="h1"
-              mb={2}
+          </Stack>
+          <Stack direction="row" gap={1} sx={{
+            mt: 4
+          }}>
+            <Button
+              variant="contained"
+              href="/workshops"
               className="check-out__stagger-item"
               sx={[staggerItemStyle]}
             >
-              Roguelike Workshop Series
-            </Typography>
-            <Stack mb={2} gap={1}>
-              <Typography
-                variant="body1"
-                className="check-out__stagger-item"
-                sx={[staggerItemStyle]}
-              >
-                Come make a shooter roguelike, similar to Hades, Risk of Rain,
-                or the Binding of Isaac.
-              </Typography>
-              <Typography
-                variant="body1"
-                className="check-out__stagger-item"
-                sx={[staggerItemStyle]}
-              >
-                Learn to create players and enemies, weapons, and procedural
-                generation.
-              </Typography>
-            </Stack>
-            <Stack direction="row" gap={1}>
-              <Button
-                href="/workshops"
-                variant="contained"
-                size={medium ? "small" : "medium"}
-                className="check-out__stagger-item"
-                sx={[staggerItemStyle]}
-              >
-                See schedule
-              </Button>
-              <Button
-                href={links.workshopSeriesPoll}
-                variant="outlined"
-                size={medium ? "small" : "medium"}
-                className="check-out__stagger-item"
-                sx={[staggerItemStyle]}
-              >
-                Vote for next series
-              </Button>
-            </Stack>
+              See full schedule
+            </Button>
           </Stack>
-        </Box>
+        </Container>
       </Stack>
     </Box>
   );

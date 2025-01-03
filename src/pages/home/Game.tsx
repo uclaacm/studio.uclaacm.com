@@ -9,7 +9,7 @@ import { HomeSectionProps } from "../index.page";
 import Link from "~/components/Link";
 import Image from "next/image";
 
-import GameLogo from "./Game/dbtb.png"
+import GameLogo from "./Game/dbtb.webp"
 
 const itchUrl = `https://dubiousduck.itch.io/dont-break-the-bicycle`;
 const jamUrl = `https://itch.io/jam/studio-jam-2024`;

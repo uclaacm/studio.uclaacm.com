@@ -87,12 +87,12 @@ export default function SRSHome(props: SRSHomeProps) {
 						<Button
 							variant="contained"
 							sx={{ mr: 2 }}
-							href="/srs-info"
+							href="/students-run-studios"
 						>
 							Learn more!
 						</Button>
 						<Button
-							href = "/srs-team-info"
+							href = "/students-run-studios"
 							variant="outlined"
 							size={buttonSize}
 

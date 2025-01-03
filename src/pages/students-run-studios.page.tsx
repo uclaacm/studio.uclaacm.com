@@ -212,6 +212,12 @@ export default function SRSInfo(props: TeamBoxProps) {
       : 3
   ), [md, sm])
 
+  React.useEffect(() => {
+    setCurrentIndex((prevIndex) =>
+      Math.min(cards.length - visibleCount, prevIndex)
+    );
+  }, [visibleCount])
+
   const cardGap = 4;
 
   return (
@@ -296,6 +302,7 @@ export default function SRSInfo(props: TeamBoxProps) {
             >
               {cards.map((card, i) => (
                 <Card
+                  key={`${card.title}${card.date}`}
                   elevation={i < firstCardActive ? 0 : 1}
                   sx={{
                     overflow: "visible",
@@ -396,6 +403,7 @@ export default function SRSInfo(props: TeamBoxProps) {
           <Typography
             component="h2"
             variant="h1"
+            mb={2}
           >
             Join a Team
           </Typography>
@@ -418,15 +426,18 @@ export default function SRSInfo(props: TeamBoxProps) {
             </Typography>
           </Stack>
         </Box>
-        <Typography
-          component="h2"
-          variant="h1"
-        >
-          Current Cycle (2025)
-        </Typography>
-        <Typography variant="body1">
-          Meet our teams this year!
-        </Typography>
+        <Box>
+          <Typography
+            component="h2"
+            variant="h1"
+            mb={2}
+          >
+            Current Cycle (2025)
+          </Typography>
+          <Typography variant="body1">
+            Meet our teams this year!
+          </Typography>
+        </Box>
         <Box
           sx={{
             display: "grid",
@@ -526,6 +537,7 @@ export default function SRSInfo(props: TeamBoxProps) {
           <Typography
             component="h2"
             variant="h1"
+            mb={2}
           >
             Interested in Leading a Team?
           </Typography>

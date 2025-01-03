@@ -12,6 +12,7 @@ import ListItem, { ListItemProps } from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import MuiListItemIcon from "@mui/material/ListItemIcon";
 import {
+  Collapse,
   SwipeableDrawer,
   Theme,
   styled,
@@ -29,7 +30,6 @@ import InfoIcon from "~/assets/images/icons/info.svg";
 import DiscordIcon from "~/assets/images/icons/dev/DiscordLogo.svg";
 import FacebookIcon from "~/assets/images/icons/dev/facebook.svg";
 import InstagramIcon from "~/assets/images/icons/dev/instagram.svg";
-import ControllerIcon from "~/assets/images/icons/controller.svg";
 import BookIcon from "~/assets/images/icons/archive-book.svg";
 import CalendarIcon from "~/assets/images/icons/calendar.svg";
 import { useRouter } from "next/router";
@@ -68,23 +68,49 @@ const Selection = dynamic(
 );
 
 type DrawerListItemProps = {
-  children?: React.ReactNode;
-  href?: string;
+  children?: React.ReactNode,
+  href?: string,
+  subitems?: {
+    children?: React.ReactNode,
+    href?: string,
+  }[],
+  icon?: typeof MenuIcon,
 } & Omit<ListItemProps, "children">;
 
 const DrawerListItem = React.forwardRef<HTMLLIElement, DrawerListItemProps>(
-  ({ children, href, ...rest }: DrawerListItemProps, ref) => (
-    <ListItem disableGutters disablePadding ref={ref} {...rest}>
-      <ListItemButton
-        disableGutters
-        disableRipple
-        disableTouchRipple
-        {...(href ? { href, component: NextLink } : {})}
+  ({ children, href, subitems, ...rest }: DrawerListItemProps, ref) => {
+    const [open, setOpen] = React.useState(false);
+    return <>
+      <ListItem disableGutters disablePadding ref={ref} {...rest}>
+        <ListItemButton
+          disableGutters
+          disableRipple
+          disableTouchRipple
+          {...(href ? { href, component: NextLink } : {})}
+          onMouseEnter={() => setOpen(true)}
+          onMouseLeave={() => setOpen(false)}
+          onClick={() => setOpen(!open)}
+        >
+          {children}
+        </ListItemButton>
+      </ListItem>
+      { subitems && <Collapse in={open} timeout="auto"
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)}
       >
-        {children}
-      </ListItemButton>
-    </ListItem>
-  ),
+        <List component="div" disablePadding>
+          { subitems.map(({ children, href }, i) => (
+            <DrawerListItem key={href}
+              href={href}
+            >
+              { children }
+            </DrawerListItem>
+          ))}
+        </List>
+      </Collapse>
+      }
+    </>
+  },
 );
 
 const ListItemIcon = styled(MuiListItemIcon)(({ theme }) => ({
@@ -92,13 +118,20 @@ const ListItemIcon = styled(MuiListItemIcon)(({ theme }) => ({
   marginRight: `calc(${theme.spacing(1)} + ${drawerPadding(theme)})`,
 }));
 
-export type NavBarContents = {
-  icon: typeof MenuIcon;
-  text?: string;
-  href?: string;
-  hrefIsEnd?: boolean;
-  hideInRadial?: boolean;
-};
+export type FlatNavBarContents = {
+  icon: typeof MenuIcon,
+  text?: string,
+  hrefIsEnd?: boolean,
+  href: string,
+}
+
+export type NestedNavBarContents = {
+  icon: typeof MenuIcon,
+  text?: string,
+  subitems: Omit<FlatNavBarContents, "icon">[],
+}
+
+export type NavBarContents = FlatNavBarContents | NestedNavBarContents;
 
 export type NavBarSocials = {
   icon: typeof DiscordIcon;
@@ -109,29 +142,37 @@ export type NavBarSocials = {
 const navBarContents: NavBarContents[] = [
   {
     icon: HomeIcon,
-    text: "home",
+    text: "Home",
     href: "/",
     hrefIsEnd: true,
   },
   {
     icon: InfoIcon,
-    text: "about",
+    text: "About",
     href: "/about",
   },
-  // {
-  // 	icon: ControllerIcon,
-  // 	text: "showcase",
-  // 	href: "/showcase",
-  // },
   {
     icon: BookIcon,
-    text: "blog",
+    text: "Blog",
     href: "/blog",
   },
   {
     icon: CalendarIcon,
-    text: "events",
-    href: "/events",
+    text: "Events",
+    subitems: [
+      {
+        text: "SRS",
+        href: "/students-run-studios",
+      },
+      {
+        text: "Workshops",
+        href: "/workshops",
+      },
+      {
+        text: "Calendar",
+        href: "/events",
+      }
+    ]
   },
 ];
 
@@ -164,19 +205,22 @@ export default function NavBar() {
     React.useRef<HTMLLIElement>(null),
   );
 
+  const getCurrentNavBarIndex = () => (
+    navBarContents.findIndex((contents) =>
+      "href" in contents
+        ? matchPath(router.asPath, contents.href, { end: contents.hrefIsEnd })
+        : contents.subitems.some(({ href }) =>
+            matchPath(router.asPath, href, { end: true })
+          ),
+    ) ?? 0
+  )
+
   // index of current page in the navbar
   const [currentPageButtonIndex, setCurrentPageButtonIndex] =
-    React.useState<number>(
-      navBarContents.findIndex(({ href, hrefIsEnd }) =>
-        matchPath(router.asPath, href, { end: hrefIsEnd }),
-      ) ?? 0,
-    );
+    React.useState<number>(getCurrentNavBarIndex());
   // update current nav bar page on route change
   React.useEffect(() => {
-    const newPageButtonIndex =
-      navBarContents.findIndex(({ href, hrefIsEnd }) =>
-        matchPath(router.asPath, href, { end: hrefIsEnd }),
-      ) ?? 0;
+    const newPageButtonIndex = getCurrentNavBarIndex();
     if (currentPageButtonIndex !== newPageButtonIndex)
       setCurrentPageButtonIndex(newPageButtonIndex);
   }, [router.asPath]);
@@ -201,6 +245,10 @@ export default function NavBar() {
 
   const md = useMediaQuery(theme.breakpoints.down("md"));
 
+  const SubList = (entry: Omit<NavBarContents, "href">) => {
+
+  }
+
   const drawerContents = (
     <>
       <List sx={(theme) => ({ p: drawerPadding(theme), flexGrow: 1 })}>
@@ -220,17 +268,39 @@ export default function NavBar() {
             />
           </Box>
         </ListItem>
-        {navBarContents.map(({ icon, text, href }, i) => (
+        {navBarContents.map(({text, icon, ...contents}, i) => (
           <DrawerListItem
             key={i}
             onMouseEnter={onMouseEnterListItem(i)}
             ref={buttonRefs[i]}
-            href={href}
-            {...(md
+            {...{
+              ..."href" in contents && {
+                href: contents.href,
+              },
+              ..."subitems" in contents && {
+                subitems: contents.subitems.map(({ text, ...subitem }) => ({
+                  ...subitem,
+                  children: <>
+                    <ListItemIcon/>
+                    <Typography
+                      variant="h1"
+                      sx={(theme) => ({
+                        ml: `calc(var(--mui-spacing)*1.5 + ${DRAWER_ICON_WIDTH}px)`,
+                        mr: theme.spacing(1),
+                        fontSize: "1rem",
+                      })}
+                    >
+                      {text}
+                    </Typography>
+                  </>,
+                })),
+              },
+              ...(md && "href" in contents
               ? {
                   onClick: () => setOpen(false),
                 }
-              : {})}
+              : {})
+            }}
           >
             <Box
               sx={(theme) => ({

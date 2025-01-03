@@ -35,6 +35,12 @@ export type HomeSection = {
 };
 
 export const homeEventSections: HomeSection[] = [
+  {
+    title: "SRS",
+    longTitle: "Students Run Studios",
+    Render: SRS,
+    props: { id: "srs" },
+  },
   { title: "Workshops", Render: Workshops, props: { id: "workshops" } },
   { title: "Game Jams", Render: GameJams, props: { id: "game-jams" } },
   { title: "Socials", Render: Socials, props: { id: "socials" } },
@@ -48,12 +54,6 @@ export const homeEventSections: HomeSection[] = [
     longTitle: "Game Dev Course (ENGR 1GD)",
     Render: E1,
     props: { id: "engr1" },
-  },
-  {
-    title: "SRS",
-    longTitle: "Students Run Studios",
-    Render: SRS,
-    props: { id: "srs" },
   },
 ];
 
