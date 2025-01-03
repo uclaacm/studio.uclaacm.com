@@ -6,6 +6,13 @@ import IconButton, { MotionIconButton } from "~/components/IconButton";
 import { drawRainbow } from "~/util/canvas/rainbow";
 import { useOnResize } from "~/util/useOnResize";
 import { HomeSectionProps } from "../index.page";
+import Link from "~/components/Link";
+import Image from "next/image";
+
+import GameLogo from "./Game/dbtb.png"
+
+const itchUrl = `https://dubiousduck.itch.io/dont-break-the-bicycle`;
+const jamUrl = `https://itch.io/jam/studio-jam-2024`;
 
 export default function HomeGame(props: HomeSectionProps) {
   const [loaded, setLoaded] = React.useState(false);
@@ -41,6 +48,52 @@ export default function HomeGame(props: HomeSectionProps) {
     }),
   };
 
+  const preloadContent = <Stack
+    sx={{
+      height: "100%",
+      alignItems: "center",
+      pt: 16,
+      p: 4,
+      gap: 2,
+      mx: "auto",
+      maxWidth: theme.breakpoints.values.md,
+    }}
+  >
+    <Stack>
+      <Typography variant="display2" textAlign="center">
+        Studio Jam 2024 Winner!
+      </Typography>
+      <Typography variant="caption" textAlign="center">
+        Theme: Break the Cycle
+      </Typography>
+    </Stack>
+    <Box sx={{
+      display: "grid",
+      grid: "1fr / 1fr",
+      borderRadius: 1,
+      overflow: "clip",
+    }}>
+      <Box component={Image} src={GameLogo} alt="Don't Break the Bicycle"
+        sx={{
+          height: "auto",
+          maxWidth: "100%",
+          gridRow: "1 / 1",
+          gridColumn: "1 / 1",
+        }}
+      />
+      <Button
+        variant="contained"
+        onClick={() => setLoaded(true)}
+        sx={{
+          alignSelf: "center",
+          justifySelf: "center",
+          gridRow: "1 / 1",
+          gridColumn: "1 / 1",
+        }}
+      >Play game</Button>
+    </Box>
+  </Stack>
+
   return (
     <Box
       ref={canvasContainerRef}
@@ -52,11 +105,7 @@ export default function HomeGame(props: HomeSectionProps) {
         position: "relative",
       }}
     >
-      {loaded || (
-        <Button
-          onClick={() => setLoaded(true)}
-        >Play game</Button>
-      )}
+      {loaded || preloadContent}
       {loaded && <Box
         component="iframe"
         src={"/game-jam-winners/dbtb/index.html"}
@@ -74,7 +123,7 @@ export default function HomeGame(props: HomeSectionProps) {
         sx={(theme) => ({
           fontSize: "3rem",
           position: "absolute",
-          bottom: theme.spacing(8),
+          bottom: theme.spacing(2),
           left: 0,
           right: 0,
         })}
@@ -100,7 +149,8 @@ export default function HomeGame(props: HomeSectionProps) {
             borderRadius: "0.5em",
             overflow: "hidden",
             fontSize: "3rem",
-            backgroundColor: theme.palette.primary.main,
+            border: `1px solid ${theme.palette.primary.main}`,
+            backgroundColor: "white",
           })}
           variants={{
             button: {
@@ -108,8 +158,8 @@ export default function HomeGame(props: HomeSectionProps) {
               height: "1em",
             },
             modal: {
-              width: "10em",
-              height: "4em",
+              width: "6em",
+              height: "3.75em",
               transition: {
                 duration: transitionDuration,
                 ease: easing,
@@ -146,11 +196,14 @@ export default function HomeGame(props: HomeSectionProps) {
           >
             <Typography
               component={motion.p}
-              variant="body1"
+              variant="subtitle2"
               variants={typographyItem}
-              color="white"
+              sx={{ p: 1, }}
             >
-              Participate in our Website Game jam for your game to show up here!
+              <Link href={itchUrl}><em>Don't Break the Bicycle</em></Link> is
+              the winner to ACM Studio's first <Link href={jamUrl}><em>Studio Jam!</em></Link>
+              {" "}Participate in future Studio Jams for a chance
+              to win prizes and have your game featured on our website!
             </Typography>
           </Box>
           <MotionIconButton
