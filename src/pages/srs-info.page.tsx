@@ -277,7 +277,7 @@ import {
               <Typography variant="body2" color="text.secondary">
                 {card.date}
               </Typography>
-              <Typography variant="h6" fontWeight="bold">
+              <Typography fontWeight="bold">
                 {card.title}
               </Typography>
               <Typography variant="body2">{card.description}</Typography>
@@ -393,7 +393,7 @@ import {
               borderRadius: '10%' 
           
               }} />
-            <Typography variant="h6" fontWeight="bold">
+            <Typography fontWeight="bold">
               {team.name}
             </Typography>
             <Typography variant="body2" color="text.secondary">
