@@ -8,13 +8,41 @@ const requiredKeys = [
 	"q","w","e","s"," ",
 ]
 
+let focusMuted = false;
+let manualMuted = false;
+
+const datasetObserver = new MutationObserver((mutations) => {
+	mutations.forEach((mutation) => {
+		if(
+			mutation.type === "attributes"
+			&& mutation.attributeName === "data-muted"
+		){
+			manualMuted = "muted" in canvas.dataset;
+			updateMuted();
+		}
+	});
+});
+
+datasetObserver.observe(canvas, {
+	attributes: true,
+	attributeFilter: ["data-muted"],
+});
+
 canvas.addEventListener("focusout", () => {
-	GodotAudio.buses[0].mute(true);
-})
+	if(!GodotAudio.buses) return;
+	focusMuted = true;
+	updateMuted();
+});
 
 canvas.addEventListener("focusin", () => {
-	GodotAudio.buses[0].mute(false);
-})
+	if(!GodotAudio.buses) return;
+	focusMuted = false;
+	updateMuted();
+});
+
+function updateMuted(){
+	GodotAudio.buses[0].mute(focusMuted || manualMuted);
+}
 
 var GodotAudio;
 
