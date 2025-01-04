@@ -18,7 +18,8 @@ import { Card } from "~/components/Card";
 import IconButton from "~/components/IconButton";
 import { East, West } from "@mui/icons-material";
 import { getSRSTeams, NotionSRSTeamSchema } from "~/api/notion/schema/SRS";
-import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult } from "next";
+import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult, GetStaticProps } from "next";
+import { REVALIDATE_INTERVAL } from "~/Env";
 
 export type SRSProps = {
   teams: NotionSRSTeamSchema[];
@@ -106,14 +107,15 @@ const cards: CardData[] = [
 ];
 
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getStaticProps: GetStaticProps<SRSProps> = async (ctx) => {
   const teams = await getSRSTeams()
     .then(teams => teams.sort((a, b) => a.name.localeCompare(b.name)));
 
   return {
     props: {
       teams,
-    }
+    },
+    revalidate: REVALIDATE_INTERVAL,
   }
 }
 
