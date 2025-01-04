@@ -144,6 +144,22 @@ const articleBinding = {
   },
 } satisfies NotionSchemaBinding<NotionArticleSchema>;
 
+export type NotionEventSchema = {
+  name: string,
+  date: string,
+  category: string,
+  subcategory: string,
+  description: string,
+};
+
+const eventSchemaBinding = {
+  name: { source: "property", propertyName: "Name", type: "string" },
+  date: { source: "property", propertyName: "Date", type: "date" },
+  category: { source: "property", propertyName: "Category", type: "string" },
+  subcategory: { source: "property", propertyName: "Subcategory", type: "string" },
+  description: { source: "property", propertyName: "Description", type: "string" },
+} satisfies NotionSchemaBinding<NotionEventSchema>;
+
 export async function getOfficers() {
   return querySchema<NotionOfficerSchema>(officerSchemaBinding, {
     database_id: databaseIDs.officers,
@@ -276,4 +292,53 @@ export async function getArticle({
     ...article,
     blocks,
   };
+}
+
+export type GetEventsOptions = {
+  databaseId?: string,
+  category?: string,
+  after?: Date,
+};
+
+export async function getEvents(options: GetEventsOptions = {}) {
+  const {
+    databaseId = databaseIDs.events,
+    category = undefined,
+    after = undefined,
+  } = options;
+
+  const filters: PropertyFilter[] = [];
+
+  if(category) {
+    filters.push({
+      type: "select",
+      property: eventSchemaBinding.category.propertyName,
+      select: {
+        equals: category,
+      }
+    });
+  }
+
+  if(after){
+    filters.push({
+      type: "date",
+      property: eventSchemaBinding.date.propertyName,
+      date: {
+        after: after.toISOString(),
+      }
+    });
+  }
+
+  return querySchema<NotionEventSchema>(eventSchemaBinding, {
+    database_id: databaseId,
+    sorts: [
+      {
+        property: eventSchemaBinding.date.propertyName,
+        direction: "ascending",
+      },
+    ],
+    filter: {
+      and: filters,
+    }
+  });
 }
