@@ -17,73 +17,12 @@ import Image, { StaticImageData } from "next/image";
 import { Card } from "~/components/Card";
 import IconButton from "~/components/IconButton";
 import { East, West } from "@mui/icons-material";
+import { getSRSTeams, NotionSRSTeamSchema } from "~/api/notion/schema/SRS";
+import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 
-export type SRSHomeProps = {};
-
-export type TeamBoxProps = {
-  name: string,
-  description: string,
-  image: string,
-  link: string,
-  path: string,
+export type SRSProps = {
+  teams: NotionSRSTeamSchema[];
 };
-
-type Team = {
-  link?: string,
-  path?: string,
-  image?: StaticImageData,
-  name: string,
-  members: string[],
-  description: string,
-}
-
-const teams: Team[] = [
-  {
-    name: "Psychosis",
-    members: ["Aubrey Clark", "Harry Hinmann", "Rachel Jin"],
-    description: "Psychosis is a shooter hitman game where you a random civilian taking hits seen from advertisements on social media, where you go through levels under the influence of game changing drugs and use the money you get from hits to buy stranger drugs and better equipment"
-  },
-  {
-    name: "Team Human Resources",
-    members: ["Oscar", "Branden", "Lea"],
-    description: "Genre: turn-based strategy RPG, Theme: Commentary of the modern world that expects everyone to fit in, Gameplay: turn-based strategy combat focusing on character synnergies and action commands",
-  },
-  {
-    name: "Memento mori",
-    members: ["Lea"],
-    description: "Themed around agents/spies as you take the position as a former top agent turned handler/mission control of a squad of 4 spies! It's main focus will be on choices and puzzles that determine mission success with a good amount of attention given to the 4 main interests and their story/romance routes over a series of missions. I'm also learning the basics to make it a chatsim / like those discord sim games!",
-  },
-  {
-    name: "Team M&M",
-    members: ["Marissa", "Miles"],
-    description: "Faithless is a 3D FPS and/or 2.5D fighting game about bounty hunters from different factions that are commissioned to fight mobs on an abandoned continent, where you, the clairvoyant MC, discover your abilities, befriend and fight members of factions on the urban continent (2.5D), and attack and shoot mobs on the abandoned continent (3D)",
-  },
-  {
-    name: "Novel Normal",
-    members: ["Rajana", "Alani"],
-    description: "Novel Normal is a top-down, 2D RPG game where you play as an adolescent teenager trapped in a time loop of a scene from their favorite novel written by a mysterious author who passed away before finishing the final manuscript—one where the main character reconnects with their estranged father. Collect pages to progress the author’s untold story, bear the woes of being a father’s daughter, and escape the loop before you become mere ink on printed paper.",
-  },
-  {
-    name: "The Leviathan's Cradle",
-    members: ["Rajana", "Alani"],
-    description: "The Leviathan's Cradle is a time and turn based Japanese-styled RPG about the titular leviathan, last of her kind, trying to learn more about the extinction event through archaeology or mystical means, where you can play as the leviathan or her many friends and allies on their individual turns to combat and gain the initiative over the fielded enemy who use separate turn systems ",
-  },
-  {
-    name: "Couch vs Multiplayer game",
-    members: ["Rahul", "Josh"],
-    description: "My game is a couch vs multiplayer game, taking inspiration from games like Mario Kart and Overcooked to amp up the yelling-at-your-friends experience to 11, with gameplay like towerfall and super smash bros but much more chaotic.",
-  },
-  {
-    name: "Crybaby",
-    members: ["Rajana", "Alani"],
-    description: "Crybaby is a rhythm game about the ups and down of life and the tears we shed at our saddest and happiest moments. Your goal as the player is to try and stop the tears from overflowing while learning that maybe its okay to let it all out.",
-  },
-  {
-    name: "Team Novel Normal",
-    members: ["Aderyn", "Woyu"],
-    description: "Crybaby is a rhythm game about the ups and down of life and the tears we shed at our saddest and happiest moments. Your goal as the player is to try and stop the tears from overflowing while learning that maybe its okay to let it all out.",
-  },
-].sort((a, b) => a.name.localeCompare(b.name));
 
 type CardData = {
   quarter: "Fall" | "Winter" | "Spring",
@@ -166,9 +105,23 @@ const cards: CardData[] = [
   },
 ];
 
-const pitchEvent = cards.find((card) => card.title.toLowerCase() === "pitch event");
 
-export default function SRSInfo(props: TeamBoxProps) {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const teams = await getSRSTeams()
+    .then(teams => teams.sort((a, b) => a.name.localeCompare(b.name)));
+
+  return {
+    props: {
+      teams,
+    }
+  }
+}
+
+export default function SRSInfo(props: SRSProps) {
+  const {
+    teams,
+  } = props;
+
   const theme = useTheme();
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [firstCardActive, setFirstCardActive] = React.useState(cards.length);
@@ -462,7 +415,7 @@ export default function SRSInfo(props: TeamBoxProps) {
                   duration: theme.transitions.duration.short,
                 }),
                 textAlign: "center",
-                ...(team.link || team.path) && {
+                ...team.link && {
                   "&:hover": {
                     backgroundColor: "rgba(0, 0, 0, 0.5)",
                     transform: "scale(1.01)",
@@ -492,14 +445,14 @@ export default function SRSInfo(props: TeamBoxProps) {
                     {team.name}
                   </Typography>
                   <Typography variant="subtitle1" color="text.secondary">
-                    Members: {team.members.join(", ")}
+                    Leads: {team.leads.join(", ")}
                   </Typography>
                 </Box>
                 <Typography variant="body1"
                   textAlign="start"
                 >{team.description}</Typography>
 
-                {(team.link || team.path) &&
+                {team.link &&
                   <Box
                     sx={{
                       position: "absolute",
@@ -523,7 +476,7 @@ export default function SRSInfo(props: TeamBoxProps) {
                         color: "white",
                         backgroundColor: "rgba(255, 255, 255, 0)",
                       }}
-                      href={team.link || team.path}
+                      href={team.link}
                     >
                       See Team
                     </Button>

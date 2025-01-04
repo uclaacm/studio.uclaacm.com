@@ -21,7 +21,8 @@ export const databaseIDs = {
   socialLinks: process.env.NOTION_OFFICER_SOCIAL_LINKS_DATABASE_ID,
   debugArticles: process.env.NOTION_DEBUG_ARTICLES_DATABASE_ID,
   // database IDs are not private don't worry
-  events: "14559cee2cd3803a88a9ef31032830a1"
+  events: "14559cee2cd3803a88a9ef31032830a1",
+  srsTeams: "17159cee2cd38045a00dccee1e3fa398",
 };
 
 const client = new Client({
