@@ -70,6 +70,8 @@ function ArticleEntry(props: TutorialItemProps) {
         alignItems: "stretch",
         textDecoration: "none",
         color: "black",
+        p: 0,
+        pb: 2,
       }}
     >
       <Link href={url}>
@@ -79,7 +81,7 @@ function ArticleEntry(props: TutorialItemProps) {
           alt=""
           sx={{
             width: "100%",
-            objectFit: "contain",
+            objectFit: "cover",
             aspectRatio: "16/9",
             borderRadius: 1,
             overflow: "clip",

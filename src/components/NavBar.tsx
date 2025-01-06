@@ -36,6 +36,7 @@ import { useRouter } from "next/router";
 import matchPath from "~/util/matchPath";
 import IsaxIcon from "./IsaxIcon";
 import IconButton from "./IconButton";
+import { ArrowDropDown } from "@mui/icons-material";
 
 const DRAWER_ICON_WIDTH = 36;
 const DRAWER_ICON_WIDTH_PX = `${DRAWER_ICON_WIDTH}px`;
@@ -75,11 +76,13 @@ type DrawerListItemProps = {
     href?: string,
   }[],
   icon?: typeof MenuIcon,
+  selected?: boolean,
 } & Omit<ListItemProps, "children">;
 
 const DrawerListItem = React.forwardRef<HTMLLIElement, DrawerListItemProps>(
   ({ children, href, subitems, ...rest }: DrawerListItemProps, ref) => {
     const [open, setOpen] = React.useState(false);
+    const supportsHover = useMediaQuery("(hover: hover)");
     return <>
       <ListItem disableGutters disablePadding ref={ref} {...rest}>
         <ListItemButton
@@ -87,11 +90,26 @@ const DrawerListItem = React.forwardRef<HTMLLIElement, DrawerListItemProps>(
           disableRipple
           disableTouchRipple
           {...(href ? { href, component: NextLink } : {})}
-          onMouseEnter={() => setOpen(true)}
-          onMouseLeave={() => setOpen(false)}
-          onClick={() => setOpen(!open)}
+          {...{
+            ...supportsHover ? {
+                onMouseEnter: () => setOpen(true),
+                onMouseLeave: () => setOpen(false),
+              }
+              : {
+                onClick: () => setOpen(!open)
+              },
+          }}
         >
           {children}
+          { subitems && <ArrowDropDown
+            sx={theme => ({
+              transform: `rotate(${open ? 180 : 0}deg)`,
+              transition: theme.transitions.create("transform", {
+                duration: theme.transitions.duration.shortest,
+                easing: theme.transitions.easing.easeOut,
+              }),
+            })}
+          /> }
         </ListItemButton>
       </ListItem>
       { subitems && <Collapse in={open} timeout="auto"
@@ -200,11 +218,6 @@ export default function NavBar() {
   const [open, setOpen] = React.useState(false);
   const toggleOpen = (v: boolean) => () => setOpen(v);
 
-  // refs for each navbar entry + logo
-  const buttonRefs = Array.from({ length: navBarContents.length }).map((_) =>
-    React.useRef<HTMLLIElement>(null),
-  );
-
   const getCurrentNavBarIndex = () => (
     navBarContents.findIndex((contents) =>
       "href" in contents
@@ -230,24 +243,13 @@ export default function NavBar() {
     currentPageButtonIndex,
   );
 
-  // reset selected page to the current page when close menu
-  React.useEffect(() => {
-    if (open === false && selectedButtonIndex !== currentPageButtonIndex)
-      setSelectedButtonIndex(currentPageButtonIndex);
-  }, [open]);
-
   const onMouseEnterListItem = (i: number) => () => {
     setOpen(true);
-    setSelectedButtonIndex(i);
   };
 
   const theme = useTheme();
 
   const md = useMediaQuery(theme.breakpoints.down("md"));
-
-  const SubList = (entry: Omit<NavBarContents, "href">) => {
-
-  }
 
   const drawerContents = (
     <>
@@ -272,7 +274,6 @@ export default function NavBar() {
           <DrawerListItem
             key={i}
             onMouseEnter={onMouseEnterListItem(i)}
-            ref={buttonRefs[i]}
             {...{
               ..."href" in contents && {
                 href: contents.href,
@@ -325,6 +326,7 @@ export default function NavBar() {
                 <Typography
                   variant="display2"
                   sx={(theme) => ({
+                    flexGrow: 1,
                     mr: theme.spacing(1),
                     fontSize: "2rem",
                   })}
@@ -484,13 +486,6 @@ export default function NavBar() {
         open={open}
         sx={(theme) => ({ zIndex: theme.zIndex.drawer - 1 })}
       />
-      {!md && (
-        <Selection
-          selectionRef={buttonRefs[selectedButtonIndex]}
-          containerSelector=".MuiBox-root"
-          fixed
-        />
-      )}
     </>
   );
 }

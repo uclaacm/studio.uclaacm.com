@@ -67,6 +67,8 @@ export function NotionRichTextRenderer({
 export type NotionBlockRenderOptions = {
   lineHeight?: string,
   textIndent?: string,
+  imageMargin?: number,
+  codeMarginBottom?: number,
 };
 
 type NotionBlockRendererProps = {
@@ -80,6 +82,8 @@ function NotionBlockRenderer(props: NotionBlockRendererProps) {
     renderOptions = {
       lineHeight: "1.5",
       textIndent: "0",
+      imageMargin: 2,
+      codeMarginBottom: 4,
     }
   } = props;
   const theme = useTheme();
@@ -97,12 +101,12 @@ function NotionBlockRenderer(props: NotionBlockRendererProps) {
       marginBottom: 2,
     },
     heading_2: {
-      marginTop: 2,
-      marginBottom: 1,
+      marginTop: 4,
+      marginBottom: 2,
     },
     heading_3: {
-      marginTop: 1,
-      marginBottom: 1,
+      marginTop: 4,
+      marginBottom: 2,
     },
     paragraph: {
       marginBottom: 1,
@@ -133,9 +137,16 @@ function NotionBlockRenderer(props: NotionBlockRendererProps) {
        * but Highlight completely clears the HTML and
        * recreates it (and throws a warning)
        */
-      <Highlight language={block.code.language} block>
-        {getPlainText(block.code.rich_text)}
-      </Highlight>
+      <Box sx={{
+        marginBottom: renderOptions.codeMarginBottom,
+      }}>
+        <Highlight
+          language={block.code.language}
+          block
+        >
+          {getPlainText(block.code.rich_text)}
+        </Highlight>
+      </Box>
     );
   } else if (block.type === "equation") {
     return <BlockMath math={block.equation.expression} />;
@@ -152,7 +163,7 @@ function NotionBlockRenderer(props: NotionBlockRendererProps) {
           display: "block",
           maxWidth: "75%",
           margin: "auto",
-          marginBottom: theme.spacing(2),
+          my: theme.spacing(renderOptions.imageMargin),
         }}
       >
         <img

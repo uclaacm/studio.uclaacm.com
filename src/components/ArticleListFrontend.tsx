@@ -52,7 +52,7 @@ function ArticleEntry({ article, baseUrl }: ArticleEntryProps) {
               minWidth: 0,
               width: "100%",
               height: "100%",
-              objectFit: "contain",
+              objectFit: "cover",
             }}
           ></img>
         </Box>

@@ -63,6 +63,7 @@ export default function Workshops(props: WorkshopsProps) {
   const {
     workshopsByWeekDay,
   } = props;
+  const weeks = Object.keys(workshopsByWeekDay ?? {}).map(Number);
   const workshops = Object.entries(workshopsByWeekDay ?? {}).flatMap(
     ([week, byDay]) => Object.entries(byDay ?? {}).flatMap(
       ([day, workshop]) => ({
@@ -133,7 +134,7 @@ export default function Workshops(props: WorkshopsProps) {
             return <Card component="section" key={workshop.name}
               sx={{
                 gridColumnStart: dayIndex + 2,
-                gridRowStart: week + 1,
+                gridRowStart: weeks.indexOf(week) + 2,
                 mb: 1,
               }}
             >
@@ -142,7 +143,7 @@ export default function Workshops(props: WorkshopsProps) {
               <Typography variant="body2">{workshop.description}</Typography>
             </Card>
           })}
-          {Array.from({ length: 10 }).map((_, i) => (
+          {weeks.map((week, i) => (
             <Typography key={i} variant="subtitle1" textAlign="center"
               alignSelf="center"
               sx={{
@@ -150,7 +151,7 @@ export default function Workshops(props: WorkshopsProps) {
                 gridRowStart: i + 2,
               }}
             >
-              {i + 1}
+              {week}
             </Typography>
           ))}
         </Box>
