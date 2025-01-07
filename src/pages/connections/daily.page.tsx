@@ -1,9 +1,10 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
+import { connections } from "./connections";
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext): Promise<GetServerSidePropsResult<{}>> {
   return {
     redirect: {
-      destination: "https://connections.swellgarfo.com/game/-O9B_LMWRWaoEDF4BlZs",
+      destination: connections[0].url,
       permanent: true
     }
   }
