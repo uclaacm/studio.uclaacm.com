@@ -1,11 +1,14 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
-import { connections } from "./connections";
+import { games } from "./games";
+import formatDate from "~/util/formatDate";
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext): Promise<GetServerSidePropsResult<{}>> {
+  const latestGame = games[0];
+
   return {
     redirect: {
-      destination: connections[0].url,
-      permanent: true
+      destination: "url" in latestGame ? latestGame.url : `/games/connections/${formatDate(latestGame.date, "url")}`,
+      permanent: false,
     }
   }
 }

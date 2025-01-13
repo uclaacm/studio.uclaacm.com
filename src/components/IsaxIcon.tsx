@@ -5,7 +5,7 @@ import { Box, ButtonProps } from "@mui/material";
 
 export type IsaxIconProps = {
   name: string;
-  color?: ButtonProps["color"];
+  color?: ButtonProps["color"] | string;
   sx?: SxProps;
 };
 

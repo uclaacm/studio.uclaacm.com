@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import MUIContainer from "@mui/material/Container";
 import BackgroundContainer from "~/components/BackgroundContainer";
+import OfficerMask from "./OfficerMask.svg";
 
 import BackgroundImage from "~/assets/images/backgrounds/ps5.svg";
 
@@ -120,14 +121,15 @@ function Officer(props: OfficerProps) {
       <Box
         component="img"
         src={image}
-        sx={(theme) => ({
+        sx={{
           aspectRatio: 1,
           objectFit: "cover",
           maxWidth: "100%",
           display: "block",
           borderRadius: 1,
-          mb: 2
-        })}
+          mb: 2,
+          mask: `url(${OfficerMask.src}) no-repeat center / contain`,
+        }}
       ></Box>
     }
     <Box
@@ -379,11 +381,14 @@ export default function About({ officers }: AboutProps) {
             gridTemplate: "1fr / 4fr 8fr",
           }}
         >
-          <img
+          <Box component="img"
             alt=""
             src={BackgroundImage.src}
-            style={{ gridColumnStart: 2, width: "100%" }}
-          ></img>
+            sx={{
+              gridColumnStart: 2,
+              width: "100%",
+            }}
+          />
         </MUIContainer>
       }
     >
