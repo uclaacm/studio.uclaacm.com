@@ -231,8 +231,8 @@ export default function NavBar() {
     navBarContents.findIndex((contents) =>
       "href" in contents
         ? matchPath(router.asPath, contents.href, { end: contents.hrefIsEnd })
-        : contents.subitems.some(({ href }) =>
-            matchPath(router.asPath, href, { end: true })
+        : contents.subitems.some(subitem =>
+            matchPath(router.asPath, subitem.href, { end: subitem.hrefIsEnd })
           ),
     ) ?? 0
   )

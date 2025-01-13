@@ -3,12 +3,17 @@ import { games } from "./games";
 import Link from "~/components/Link";
 import formatDate from "~/util/formatDate";
 import { Launch } from "@mui/icons-material";
+import Metadata from "~/components/Metadata";
 
 export default function ConnectionsIndexPage() {
 	return <Container
 		maxWidth="lg"
 		sx={{ pt: 4 }}
 	>
+		<Metadata
+			title="Connections"
+			description="Check out the past connections that ACM studio has created!"
+		/>
 		<Typography variant="display1" sx={{ mb: 2 }}>
 			Connections
 		</Typography>
