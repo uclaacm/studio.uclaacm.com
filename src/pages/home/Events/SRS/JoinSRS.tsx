@@ -1,5 +1,4 @@
 import {
-	Box,
 	Button,
 	Container,
 	Stack,
@@ -9,17 +8,8 @@ import {
 } from "@mui/material";
 
 import {
-	AnimationPlaybackControls,
-	Easing,
-	stagger,
-	useAnimate,
-	useInView,
-} from "framer-motion";
-import {
 	bodyMinHeight,
 	bodyOffset,
-	bodyPaddingBottom,
-	headerTopPadding,
 } from "../EventHeader";
 import React from "react";
 import { animationStyle } from "~/util/framer/animation";

@@ -1,25 +1,18 @@
 import {
-  Box,
-  Button,
   Container,
   Stack,
   Typography,
   useTheme,
 } from "@mui/material";
-import { bodyMinHeight, bodyOffset, headerTopPadding } from "../EventHeader";
+import { bodyMinHeight, bodyOffset } from "../EventHeader";
 import {
   AnimationPlaybackControls,
-  Easing,
   motion,
-  stagger,
   useAnimate,
   useInView,
 } from "framer-motion";
 import React from "react";
 import { animationStyle } from "~/util/framer/animation";
-import sleep from "~/util/sleep";
-import { links } from "~/Strings";
-import Image from "next/image";
 import { HomeSectionProps } from "~/pages/index.page";
 import { UnderlineTypographyItem } from "../../Mission/Animation";
 
