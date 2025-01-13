@@ -12,14 +12,14 @@ export type ConnectionsRendererProps = {
 	game: InternalGame
 }
 
-const categoryColorMap = {
+const difficultyColorMap = {
 	1: "warning",
 	2: "success",
 	3: "info",
 	4: "primary",
 } as const;
 
-const categoryCharMap = {
+const difficultyCharMap = {
 	1: "\u{1f7e1}", // yellow circle
 	2: "\u{1f7e2}", // green circle
 	3: "\u{1f535}", // blue circle
@@ -154,7 +154,7 @@ export default function ConnectionsRenderer(props: ConnectionsRendererProps){
 	const copyToClipboard = () => {
 		const text = history.current
 			.map(entries => entries
-				.map(entry => categoryCharMap[entryCategoryMap[entry].difficulty])
+				.map(entry => difficultyCharMap[entryCategoryMap[entry].difficulty])
 				.join("")
 			)
 			.join("\n");
@@ -255,11 +255,13 @@ export default function ConnectionsRenderer(props: ConnectionsRendererProps){
 				<Stack key={category.name} sx={theme => ({
 					gridColumn: "span 4",
 					justifyContent: "center",
+					textAlign: "center",
 					alignItems: "center",
-					backgroundColor: theme.palette[categoryColorMap[category.difficulty]].main,
-					color: theme.palette[categoryColorMap[category.difficulty]].contrastText,
+					backgroundColor: theme.palette[difficultyColorMap[category.difficulty]].main,
+					color: theme.palette[difficultyColorMap[category.difficulty]].contrastText,
 					borderRadius: `var(--mui-shape-borderRadius)`,
 					py: 4,
+					px: 2,
 				})}>
 					<Typography variant="h3" fontWeight="bold" component="p">{category.name}</Typography>
 					<Typography variant="label">{category.entries.join(", ")}</Typography>
@@ -331,7 +333,7 @@ export default function ConnectionsRenderer(props: ConnectionsRendererProps){
 						{history.current.map((entries, i) =>
 							<Box key={i}>
 								<Typography variant="label">{
-									entries.map(entry => categoryCharMap[
+									entries.map(entry => difficultyCharMap[
 										entryCategoryMap[entry].difficulty
 									]).join("")
 								}</Typography>
