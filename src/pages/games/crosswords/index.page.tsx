@@ -1,5 +1,5 @@
 import { Box, Container, Stack, Typography } from "@mui/material";
-import { games } from "./games";
+import { crosswords } from "./crosswords";
 import Link from "~/components/Link";
 import formatDate from "~/util/formatDate";
 import { Launch } from "@mui/icons-material";
@@ -11,27 +11,28 @@ export default function ConnectionsIndexPage() {
 		sx={{ pt: 4 }}
 	>
 		<Metadata
-			title="Connections"
-			description="Check out the past connections that ACM studio has created!"
+			title="Crosswords"
+			description="Check out the past crosswords that ACM studio has created!"
 		/>
 		<Typography variant="display1" sx={{ mb: 2 }}>
-			Connections
+			Crosswords
 		</Typography>
 		<Typography variant="body1" sx={{ mb: 4 }}>
-			Check out the past connections that ACM studio has created!
+			Check out the past crosswords that ACM studio has created!
 		</Typography>
 		<Stack spacing={1} sx={{ alignItems: "start" }}>
-			{games.map((game, i) => (
+			{crosswords.map((game, i) => (
 				<Box key={i}>
-					<Link href={"url" in game ? game.url : `/games/connections/${formatDate(game.date, 'url')}`}>
+					<Link href={game.url}>
 						<Typography variant="title1">
-							{formatDate(game.date, 'long')}
-							{game.name && <> -<em> {game.name}</em></>}
-							{" "}
+							{game.name
+								? `${formatDate(game.date, 'long')} - ${game.name} `
+								: `${formatDate(game.date, 'long')} `
+							}
 							<Typography component="span">
 								by {game.author}
 							</Typography>
-							{ "url" in game && <sup><Launch/></sup>}
+							<sup><Launch /></sup>
 						</Typography>
 					</Link>
 				</Box>

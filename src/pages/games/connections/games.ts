@@ -5,16 +5,17 @@ export type Category = {
 }
 
 export type InternalGame = {
-	name: string,
 	date: string,
 	author: string,
+	name: string,
 	categories: [Category,Category,Category,Category]
 }
 
 export type ExternalGame = {
 	date: string,
-	url: string,
+	author: string,
 	name?: string,
+	url: string,
 }
 
 export type Game = InternalGame | ExternalGame;
@@ -49,14 +50,17 @@ const gamesUnsorted: Game[] = [
 	},
 	{
 		date: "6 Oct 2024",
+		author: "Aubrey Clark",
 		url: "https://connections.swellgarfo.com/game/-O8ZLpB3IL75tYy4QSLq",
 	},
 	{
 		date: "14 Oct 2024",
+		author: "Aubrey Clark",
 		url: "https://connections.swellgarfo.com/game/-O9B_LMWRWaoEDF4BlZs",
 	},
 	{
 		date: "7 Jan 2025",
+		author: "Aubrey Clark",
 		url: "https://connections.swellgarfo.com/game/-OG0so5fqpM1En-I9SUi",
 	},
 ];

@@ -1,12 +1,14 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
+import { crosswords } from "./crosswords";
 
-const url = `https://forms.gle/HhQSGitE65vyjQKr8`
 export async function getServerSideProps(ctx: GetServerSidePropsContext): Promise<GetServerSidePropsResult<{}>> {
+  const latestGame = crosswords[0];
+
   return {
-    redirect: {
-      destination: url,
-      permanent: true
-    }
+	redirect: {
+	  destination: latestGame.url,
+	  permanent: false,
+	}
   }
 }
 

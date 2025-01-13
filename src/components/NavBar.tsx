@@ -75,6 +75,10 @@ const navBarContents: NavBarContents[] = [
         text: "Connections",
         href: "/games/connections",
       },
+      {
+        text: "Crosswords",
+        href: "/games/crosswords",
+      },
     ],
   }
 ];

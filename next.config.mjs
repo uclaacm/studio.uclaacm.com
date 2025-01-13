@@ -12,6 +12,30 @@ const withBundleAnalyzer = bundleAnalyzer({
 
 /** @type {import('next').NextConfig} */
 export default withBundleAnalyzer({
+	async redirects() {
+		return [
+			{
+				source: "/workshops/:slug*",
+				destination: "/events/workshops/:slug*",
+				permanent: true,
+			},
+			{
+				source: "/connections/:slug*",
+				destination: "/games/connections/:slug*",
+				permanent: true,
+			},
+			{
+				source: "/crosswords/:slug*",
+				destination: "/games/crosswords/:slug*",
+				permanent: true,
+			},
+			{
+				source: "/feedback",
+				destination: "https://forms.gle/HhQSGitE65vyjQKr8",
+				permanent: false,
+			}
+		]
+	},
 	pageExtensions: ["page.tsx", "page.jsx"],
 	webpack: (config, options) => {
 		config.resolve.alias["~"] = path.resolve(dirname, "src");
