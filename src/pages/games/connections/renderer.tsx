@@ -152,14 +152,16 @@ export default function ConnectionsRenderer(props: ConnectionsRendererProps){
 	}, [solvedCategories])
 
 	const copyToClipboard = () => {
-		const text = history.current
+		const results = history.current
 			.map(entries => entries
 				.map(entry => difficultyCharMap[entryCategoryMap[entry].difficulty])
 				.join("")
 			)
 			.join("\n");
 
-		navigator.clipboard.writeText(text)
+		const url = `https://studio.uclaacm.com/game/connections/${formatDate(game.date, "url")}`;
+		const date = formatDate(game.date, "long");
+		navigator.clipboard.writeText(`ACM Studio Connections ${date} - ${game.name} by ${game.author}\n${url}\n\n${results}`)
 			.then(() => setCopySnackbar({
 				open: true,
 				message: "Copied to clipboard!",
