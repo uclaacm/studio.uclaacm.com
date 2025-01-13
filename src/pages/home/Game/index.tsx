@@ -3,13 +3,11 @@ import { Box, Button, Stack, Typography, useTheme } from "@mui/material";
 import { AnimatePresence, motion, useInView, Variants } from "framer-motion";
 import React from "react";
 import IconButton, { MotionIconButton } from "~/components/IconButton";
-import { drawRainbow } from "~/util/canvas/rainbow";
-import { useOnResize } from "~/util/useOnResize";
-import { HomeSectionProps } from "../index.page";
+import { HomeSectionProps } from "../../index.page";
 import Link from "~/components/Link";
 import Image from "next/image";
 
-import GameLogo from "./Game/dbtb.webp"
+import GameLogo from "./dbtb.webp"
 
 const itchUrl = `https://dubiousduck.itch.io/dont-break-the-bicycle`;
 const jamUrl = `https://itch.io/jam/studio-jam-2024`;
@@ -90,9 +88,14 @@ export default function HomeGame(props: HomeSectionProps) {
     }}
   >
     <Stack>
-      <Typography variant="display2" textAlign="center">
+      <Typography variant="label" textAlign="center">
         Studio Jam 2024 Winner!
       </Typography>
+      <Link href={itchUrl} textAlign="center">
+        <Typography variant="h3" textAlign="center" fontWeight="bold">
+          Don't Break the Bicycle
+        </Typography>
+      </Link>
       <Typography variant="caption" textAlign="center">
         Theme: Break the Cycle
       </Typography>
