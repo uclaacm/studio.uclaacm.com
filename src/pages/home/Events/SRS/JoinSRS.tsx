@@ -82,6 +82,7 @@ export default function SRSHome(props: SRSHomeProps) {
 						<Typography variant="body1" component="p">
 							We are accepting applications now!
 						</Typography>
+						
 					</Stack>
 					<Stack direction="row" gap={1}>
 						<Button
@@ -103,6 +104,7 @@ export default function SRSHome(props: SRSHomeProps) {
 						</Button>
 					</Stack>
 				</Stack>
+
 				<Box
 					sx={{
 						width: 600,
@@ -117,7 +119,6 @@ export default function SRSHome(props: SRSHomeProps) {
 					>
 					Image Placeholder
 				</Box>
-
 		</Container>
 	);
 }
