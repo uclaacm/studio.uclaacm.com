@@ -242,7 +242,7 @@ export default function ConnectionsRenderer(props: ConnectionsRendererProps){
 				{formatDate(game.date)}
 			</Typography>
 			<Typography variant="label">
-				{nTries} tries
+				{nTries} {nTries === 1 ? "try" : "tries"}
 			</Typography>
 		</Stack>
 		<Box sx={{
