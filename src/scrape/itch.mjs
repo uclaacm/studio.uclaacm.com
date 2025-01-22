@@ -2,6 +2,7 @@ import { JSDOM } from "jsdom";
 import fs from "node:fs";
 import { execSync } from "node:child_process"
 import prettier from "prettier";
+import assert from "node:assert";
 
 /**
  * @returns {Promise<JSDOM>}
@@ -69,6 +70,23 @@ function fsEscape(str){
 }
 
 /**
+ * NOTE: THIS MUST BE SANITIZED!!!
+ * @param {string} args
+ */
+function optimizeImage(from, to){
+	// NO SHELL INJECTIONS FOR THIS WEBSITE
+	assert(/^[a-zA-Z0-9_\-\.]+$/.test(from));
+	assert(/^[a-zA-Z0-9_\-\.]+$/.test(to));
+	// if file exists in ./bin/cwebp
+	if(fs.existsSync(`./bin/cwebp`)){
+		execSync(`./bin/cwebp -q 80 ${from} -o ${to}`);
+	}
+	else {
+		execSync(`magick convert ${from} ${to}`);
+	}
+}
+
+/**
  * @param {Collection[]} collections
  */
 async function downloadImages(collections){
@@ -90,10 +108,10 @@ async function downloadImages(collections){
 		console.log(`Writing ${filename}.png...`);
 		fs.writeFileSync(`src/data/itch/__generated__/images/${filename}.png`, Buffer.from(buffer));
 		console.log(`Converting ${filename}.png to ${filename}.webp...`);
-		execSync(`magick convert
-			src/data/itch/__generated__/images/${filename}.png
-			src/data/itch/__generated__/images/${filename}.webp
-		`);
+		optimizeImage(
+			`src/data/itch/__generated__/images/${filename}.png`,
+			`src/data/itch/__generated__/images/${filename}.webp`
+		);
 		console.log(`Deleting ${filename}.png...`);
 		fs.unlinkSync(`src/data/itch/__generated__/images/${filename}.png`);
 	}));

@@ -46,6 +46,8 @@
     "gencerts": "node genCerts.js",
     "index": "node src/content-indexer.mjs",
     "index:watch": "nodemon -w src/content-indexer.mjs -w content -e mjs,mdx src/content-indexer.mjs",
-    "scrape": "node src/scrape/itch.mjs"
+    "scrape": "node src/scrape/itch.mjs",
+    "install-deps:server": "./install-deps.sh",
+    "build:server": "yarn install-deps:server && yarn build"
   }
 }
