@@ -1,5 +1,5 @@
 import { partialShuffle } from "~/util/shuffle";
-import data from "./itch.json" assert { type: "json" };
+import data from "./__generated__/itch-data";
 import seedrandom from "seedrandom";
 
 const seed = "42";

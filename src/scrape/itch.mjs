@@ -1,5 +1,7 @@
 import { JSDOM } from "jsdom";
 import fs from "node:fs";
+import { execSync } from "node:child_process"
+import prettier from "prettier";
 
 /**
  * @returns {Promise<JSDOM>}
@@ -16,6 +18,10 @@ async function getItchHTML() {
 		return new JSDOM(text);
 	}
 }
+
+/**
+ * @typedef {{ title: string, href: string, entries: { title: string, href: string, img: string, }[] }} Collection
+ */
 
 /**
  * @returns {Promise<{ title: string, href: string, entries: { title: string, href: string, img: string, }[] }[]>}
@@ -57,10 +63,78 @@ async function getItchCollections() {
 	return collections;
 }
 
+function fsEscape(str){
+	return str
+		.replace(/[\W]/g, "_");
+}
+
+/**
+ * @param {Collection[]} collections
+ */
+async function downloadImages(collections){
+	if(!fs.existsSync("src/data/itch/__generated__")){
+		fs.mkdirSync("src/data/itch/__generated__");
+	}
+	if(!fs.existsSync("src/data/itch/__generated__/images")){
+		fs.mkdirSync("src/data/itch/__generated__/images");
+	}
+	const promises = collections.flatMap((collection) => collection.entries.map(async (entry) => {
+		if(fs.existsSync(`src/data/itch/__generated__/images/${fsEscape(entry.title)}.webp`)){
+			console.log(`${entry.title} already exists. Skipping...`);
+			return;
+		}
+		console.log(`Downloading ${entry.title}...`);
+		const response = await fetch(entry.img);
+		const buffer = await response.arrayBuffer();
+		const filename = fsEscape(entry.title);
+		console.log(`Writing ${filename}.png...`);
+		fs.writeFileSync(`src/data/itch/__generated__/images/${filename}.png`, Buffer.from(buffer));
+		console.log(`Converting ${filename}.png to ${filename}.webp...`);
+		execSync(`magick convert
+			src/data/itch/__generated__/images/${filename}.png
+			src/data/itch/__generated__/images/${filename}.webp
+		`);
+		console.log(`Deleting ${filename}.png...`);
+		fs.unlinkSync(`src/data/itch/__generated__/images/${filename}.png`);
+	}));
+	await Promise.all(promises);
+}
+
 async function scrape(){
 	const collections = await getItchCollections();
-	const json = JSON.stringify(collections, null, 2);
-	fs.writeFileSync("src/data/itch.json", json);
+	await downloadImages(collections);
+	// const
+	const imageImports = collections.flatMap(
+		({entries}, collectionIdx) => entries.map(
+			({title}, entryIdx) => `import img${collectionIdx}_${entryIdx} from ${JSON.stringify(`./images/${fsEscape(title)}.webp`)};`
+		)
+	);
+	const collectionsJson = collections.map(({entries, ...collection}, collectionIdx) => `
+		{
+			title: ${JSON.stringify(collection.title)},
+			href: ${JSON.stringify(collection.href)},
+			entries: [
+				${entries.map((entry, entryIdx) => `
+					{
+						title: ${JSON.stringify(entry.title)},
+						href: ${JSON.stringify(entry.href)},
+						img: img${collectionIdx}_${entryIdx},
+					}
+				`).join(",\n")}
+			],
+		}
+	`);
+
+	const ts = `
+		${imageImports.join("\n")}
+		export default [
+			${collectionsJson.join(",\n")}
+		];
+	`;
+	fs.writeFileSync(
+		"src/data/itch/__generated__/itch-data.ts",
+		await prettier.format(ts, { parser: "typescript" })
+	);
 }
 
 scrape();

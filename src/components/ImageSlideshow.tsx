@@ -10,12 +10,14 @@ export type ImageSlideshowImage = {
 
 export type ImageSlideshowProps = {
 	images: ImageSlideshowImage[],
+	width?: number,
 	sx?: SxProps<Theme>,
 };
 
 export default function ImageSlideshow(props: ImageSlideshowProps) {
 	const {
 		images,
+		width,
 		sx,
 	} = props;
 
@@ -51,6 +53,7 @@ export default function ImageSlideshow(props: ImageSlideshowProps) {
 		>
 			<Box
 				component={Image}
+				width={width}
 				sx={{
 					borderRadius: 1,
 					minWidth: 0,

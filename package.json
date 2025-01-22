@@ -34,17 +34,20 @@
     "seedrandom": "^3.0.5",
     "typescript": "5.7.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "jsdom": "^26.0.0"
+  },
   "scripts": {
-    "dev": "yarn index && yarn dev:next",
+    "dev": "yarn scrape && yarn index && yarn dev:next",
     "dev:next": "next dev",
     "build:next": "next build",
-    "build": "yarn index && yarn build:next",
+    "build": "yarn index && yarn scrape && yarn build:next",
     "start": "next start",
     "lint": "next lint",
     "prettier": "prettier --write src/",
     "gencerts": "node genCerts.js",
     "index": "node src/content-indexer.mjs",
-    "index:watch": "nodemon -w src/content-indexer.mjs -w content -e mjs,mdx src/content-indexer.mjs"
+    "index:watch": "nodemon -w src/content-indexer.mjs -w content -e mjs,mdx src/content-indexer.mjs",
+    "scrape": "node src/scrape/itch.mjs"
   }
 }

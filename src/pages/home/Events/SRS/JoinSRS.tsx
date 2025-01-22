@@ -15,9 +15,9 @@ import React from "react";
 import { animationStyle } from "~/util/framer/animation";
 import ImageSlideshow, { ImageSlideshowImage } from "~/components/ImageSlideshow";
 
-import BrandenLeahPitch from "./BrandenLeahPitch.jpg";
-import DemiPitch from "./DemiPitch.jpg";
-import SrsShowcase2024 from "./SrsShowcase2024.jpg";
+import BrandenLeahPitch from "./BrandenLeahPitch.webp";
+import DemiPitch from "./DemiPitch.webp";
+import SrsShowcase2024 from "./SrsShowcase2024.webp";
 
 const images: ImageSlideshowImage[] = [
 	{ alt: "Branden and Leah Pitching their game in 2024", image: BrandenLeahPitch },
@@ -31,7 +31,6 @@ export default function SRSHome(props: SRSHomeProps) {
 	const theme = useTheme();
 
 	const md = useMediaQuery(theme.breakpoints.down("md"));
-	const buttonSize = md ? "small" : "medium";
 
 	return (
 		<Container
@@ -87,10 +86,13 @@ export default function SRSHome(props: SRSHomeProps) {
 					</Button> */}
 				</Stack>
 			</Stack>
-			<ImageSlideshow images={images} sx={{
-				maxHeight: "75vh",
-				pb: 4,
-			}}/>
+			<ImageSlideshow images={images}
+				width={800}
+				sx={{
+					maxHeight: "75vh",
+					pb: 4,
+				}}
+			/>
 		</Container>
 	);
 }
