@@ -33,7 +33,17 @@ export default withBundleAnalyzer({
 				source: "/feedback",
 				destination: "https://forms.gle/HhQSGitE65vyjQKr8",
 				permanent: false,
-			}
+			},
+			{
+				source: "/srs/:slug*",
+				destination: "/events/students-run-studios/:slug*",
+				permanent: true,
+			},
+			{
+				source: "/students-run-studios/:slug*",
+				destination: "/events/students-run-studios/:slug*",
+				permanent: true,
+			},
 		]
 	},
 	pageExtensions: ["page.tsx", "page.jsx"],

@@ -55,7 +55,7 @@ const navBarContents: NavBarContents[] = [
     subitems: [
       {
         text: "SRS",
-        href: "/students-run-studios",
+        href: "/srs",
       },
       {
         text: "Workshops",

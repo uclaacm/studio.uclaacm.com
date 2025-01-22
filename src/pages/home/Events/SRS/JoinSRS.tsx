@@ -71,12 +71,12 @@ export default function SRSHome(props: SRSHomeProps) {
 					<Button
 						variant="contained"
 						sx={{ mr: 2 }}
-						href="/students-run-studios"
+						href="/srs"
 					>
 						Learn more!
 					</Button>
-					<Button
-						href="/students-run-studios"
+					{/* <Button
+						href="/srs"
 						variant="outlined"
 						size={buttonSize}
 
@@ -84,7 +84,7 @@ export default function SRSHome(props: SRSHomeProps) {
 						sx={animationStyle()}
 					>
 						Join a Studio!
-					</Button>
+					</Button> */}
 				</Stack>
 			</Stack>
 			<ImageSlideshow images={images} sx={{

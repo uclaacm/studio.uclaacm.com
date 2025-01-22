@@ -11,29 +11,28 @@ import {
 
 import React from "react";
 
-import ucloveImage from "../assets/images/uclove.png";
 import Metadata from "~/components/Metadata";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import { Card } from "~/components/Card";
 import IconButton from "~/components/IconButton";
 import { East, West } from "@mui/icons-material";
 import { getSRSTeams, NotionSRSTeamSchema } from "~/api/notion/schema/SRS";
-import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult, GetStaticProps } from "next";
+import { GetStaticProps } from "next";
 import { REVALIDATE_INTERVAL } from "~/Env";
 
 export type SRSProps = {
   teams: NotionSRSTeamSchema[];
 };
 
-type CardData = {
+type ScheduleCardData = {
   quarter: "Fall" | "Winter" | "Spring",
-  week: `Week ${number}`,
-  date: Date,
+  week: `Week ${number}` | "TBD",
+  date: Date | "TBD",
   title: string,
   description: string,
 }
 
-const cards: CardData[] = [
+const scheduleCards: ScheduleCardData[] = [
   {
     quarter: "Fall",
     week: "Week 3",
@@ -78,32 +77,46 @@ const cards: CardData[] = [
   },
   {
     quarter: "Winter",
-    week: "Week 2",
-    date: new Date("13 Jan 2025"),
+    week: "Week 3",
+    date: new Date("24 Jan 2025"),
     title: "Pitch Event",
     description: "Team leads will present their game ideas to the club",
   },
   {
     quarter: "Winter",
-    week: "Week 2",
-    date: new Date("13 Jan 2025"),
+    week: "Week 3",
+    date: new Date("24 Jan 2025"),
     title: "Member Applications Open",
     description: "Members can request to join a team",
   },
   {
     quarter: "Winter",
-    week: "Week 3",
-    date: new Date("25 Jan 2025"),
+    week: "Week 4",
+    date: new Date("28 Jan 2025"),
     title: "Member Applications Close",
     description: "",
   },
   {
     quarter: "Winter",
-    week: "Week 4",
-    date: new Date("27 Jan 2025"),
-    title: "SRS Kickoff",
+    week: "Week 5",
+    date: "TBD",
+    title: "Kickoff",
     description: "Meet your team and start working on your game",
   },
+  {
+    quarter: "Winter",
+    week: "TBD",
+    date: "TBD",
+    title: "Winter Showcase",
+    description: "Showcase your progress during winter quarter",
+  },
+  {
+    quarter: "Spring",
+    week: "TBD",
+    date: "TBD",
+    title: "Spring Showcase",
+    description: "The final showcase for your game",
+  }
 ];
 
 
@@ -126,7 +139,7 @@ export default function SRSInfo(props: SRSProps) {
 
   const theme = useTheme();
   const [currentIndex, setCurrentIndex] = React.useState(0);
-  const [firstCardActive, setFirstCardActive] = React.useState(cards.length);
+  const [firstCardActive, setFirstCardActive] = React.useState(scheduleCards.length);
 
   const date = React.useRef<Date>(undefined);
   React.useEffect(() => {
@@ -134,19 +147,19 @@ export default function SRSInfo(props: SRSProps) {
     // ignore time, only compare dates
     date.current.setHours(0,0,0,0);
     // find first card with date >= today
-    const currentIndex = cards.findIndex((card) => card.date >= date.current);
+    const currentIndex = scheduleCards.findIndex((card) => card.date >= date.current);
     if (currentIndex !== -1){
       setFirstCardActive(currentIndex);
       setCurrentIndex(Math.min(
         currentIndex,
-        cards.length - visibleCount
+        scheduleCards.length - visibleCount
       ));
     }
   }, []);
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) =>
-      Math.min(cards.length - visibleCount, prevIndex + 1)
+      Math.min(scheduleCards.length - visibleCount, prevIndex + 1)
     );
   };
 
@@ -169,7 +182,7 @@ export default function SRSInfo(props: SRSProps) {
 
   React.useEffect(() => {
     setCurrentIndex((prevIndex) =>
-      Math.min(cards.length - visibleCount, prevIndex)
+      Math.min(scheduleCards.length - visibleCount, prevIndex)
     );
   }, [visibleCount])
 
@@ -255,7 +268,7 @@ export default function SRSInfo(props: SRSProps) {
                 minWidth: "100%",
               }}
             >
-              {cards.map((card, i) => (
+              {scheduleCards.map((card, i) => (
                 <Card
                   key={`${card.title}${card.date}`}
                   elevation={i < firstCardActive ? 0 : 1}
@@ -280,14 +293,16 @@ export default function SRSInfo(props: SRSProps) {
                   <Typography variant="subtitle1" fontWeight="bold">
                     {card.quarter} {card.week}
                   </Typography>
-                  <Typography variant="subtitle2" color="text.secondary">
-                    {card.date.toDateString()}
-                  </Typography>
+                  { card.week !== "TBD" && (
+                    <Typography variant="subtitle2" color="text.secondary">
+                      {typeof card.date === "string" ? card.date : card.date.toDateString()}
+                    </Typography>
+                  )}
                   <Typography variant="body1" fontWeight="bold">
                     {card.title}
                   </Typography>
                   <Typography variant="body2">{card.description}</Typography>
-                  {i < cards.length - 1 && (
+                  {i < scheduleCards.length - 1 && (
                     <Stack
                       sx={{
                         width: theme.spacing(cardGap),
