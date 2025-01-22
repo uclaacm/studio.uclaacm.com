@@ -3,6 +3,7 @@ import fs from "node:fs";
 import { execSync } from "node:child_process"
 import prettier from "prettier";
 import assert from "node:assert";
+import path from "node:path";
 
 /**
  * @returns {Promise<JSDOM>}
@@ -74,9 +75,16 @@ function fsEscape(str){
  * @param {string} args
  */
 function optimizeImage(from, to){
-	// NO SHELL INJECTIONS FOR THIS WEBSITE
-	assert(/^[a-zA-Z0-9_\-\.]+$/.test(from));
-	assert(/^[a-zA-Z0-9_\-\.]+$/.test(to));
+	if(!fs.existsSync(from)){
+		console.error(`File ${from} does not exist!`);
+		return;
+	}
+	const toDir = path.dirname(to);
+	if(!fs.existsSync(toDir)){
+		console.error(`Directory ${toDir} does not exist!`);
+		return;
+	}
+
 	// if file exists in ./bin/cwebp
 	if(fs.existsSync(`./bin/cwebp`)){
 		execSync(`./bin/cwebp -q 80 ${from} -o ${to}`);
