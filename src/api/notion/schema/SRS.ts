@@ -1,5 +1,5 @@
 import { NotionSchemaBinding, querySchema } from "../bindings";
-import { databaseIDs } from "../core";
+import { databaseIDs } from "../databases";
 
 export type NotionSRSTeamSchema = {
 	name: string,

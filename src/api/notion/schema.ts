@@ -30,11 +30,12 @@ import {
 } from "./bindings";
 import { Block } from "./blocks";
 import {
-  databaseIDs,
   getPageBlocks,
   GetPagesInDatabaseParams,
   PropertyFilter,
 } from "./core";
+
+import { databaseIDs } from "./databases";
 
 export type NotionSchemaWithBlocks<T extends NotionSchema> = T & {
   blocks: Block[];
