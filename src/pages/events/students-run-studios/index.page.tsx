@@ -98,8 +98,15 @@ const scheduleCards: ScheduleCardData[] = [
   },
   {
     quarter: "Winter",
-    week: "Week 5",
+    week: "Week 4",
     date: new Date("2 Feb 2025"),
+    title: "Teams Announced",
+    description: "",
+  },
+  {
+    quarter: "Winter",
+    week: "Week 5",
+    date: new Date("4 Feb 2025"),
     title: "Kickoff",
     description: "Meet your team and start working on your game",
   },
@@ -384,7 +391,7 @@ export default function SRSInfo(props: SRSProps) {
               their game ideas and you can join the team of your choice!
             </Typography>
             <Typography variant="body1">
-              After the pitch event, will be able to fill out our SRS
+              After the pitch event, you will be able to fill out our SRS
               application form to join a team! Don't worry if
               you miss the pitch event, you can still join a team.
             </Typography>
