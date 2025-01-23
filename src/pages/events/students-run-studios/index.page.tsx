@@ -12,13 +12,15 @@ import {
 import React from "react";
 
 import Metadata from "~/components/Metadata";
-import Image from "next/image";
 import { Card } from "~/components/Card";
 import IconButton from "~/components/IconButton";
-import { East, Link as LinkIcon, West } from "@mui/icons-material";
+import { AccessTime, East, Link as LinkIcon, LocationCity, OpenInNew, West } from "@mui/icons-material";
 import { getSRSTeams, NotionSRSTeamSchema } from "~/api/notion/schema/SRS";
 import { GetStaticProps } from "next";
 import { REVALIDATE_INTERVAL } from "~/Env";
+import formatDate from "~/util/formatDate";
+import { formatTime } from "~/util/formatTime";
+import Link from "~/components/Link";
 
 export type SRSProps = {
   teams: NotionSRSTeamSchema[];
@@ -28,8 +30,19 @@ type ScheduleCardData = {
   quarter: "Fall" | "Winter" | "Spring",
   week: `Week ${number}` | "TBD",
   date: Date | "TBD",
+  end?: Date,
   title: string,
   description: string,
+  time?: boolean,
+  location?: {
+    name: string,
+    href: string,
+  },
+  link?: {
+    name: string,
+    href: string,
+    target?: string,
+  },
 }
 
 const scheduleCards: ScheduleCardData[] = [
@@ -78,8 +91,14 @@ const scheduleCards: ScheduleCardData[] = [
   {
     quarter: "Winter",
     week: "Week 3",
-    date: new Date("23 Jan 2025"),
+    date: new Date("23 Jan 2025 18:00:00 PST"),
+    end: new Date("23 Jan 2025 21:00:00 PST"),
+    time: true,
     title: "Pitch Event",
+    location: {
+      name: "Engineering VI: Mong Learning Center",
+      href: "https://maps.app.goo.gl/ZXu4RQpsPmdBZt7g6",
+    },
     description: "Team leads will present their game ideas to the club",
   },
   {
@@ -88,6 +107,11 @@ const scheduleCards: ScheduleCardData[] = [
     date: new Date("23 Jan 2025"),
     title: "Member Applications Open",
     description: "Members can request to join a team",
+    link: {
+      name: "Sign Up",
+      href: "/srs/sign-up",
+      target: "_blank",
+    }
   },
   {
     quarter: "Winter",
@@ -145,6 +169,7 @@ export default function SRSInfo(props: SRSProps) {
   } = props;
 
   const theme = useTheme();
+  const [loaded, setLoaded] = React.useState(false);
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [firstCardActive, setFirstCardActive] = React.useState(scheduleCards.length);
 
@@ -162,6 +187,8 @@ export default function SRSInfo(props: SRSProps) {
         scheduleCards.length - visibleCount
       ));
     }
+    // wait one animation frame to set loaded
+    requestAnimationFrame(() => setLoaded(true));
   }, []);
 
   const handleNext = () => {
@@ -210,7 +237,7 @@ export default function SRSInfo(props: SRSProps) {
       <Stack gap={4}>
         <Typography
           component="h1"
-          variant="display2"
+          variant="display1"
         >
           Student Run Studios
         </Typography>
@@ -240,7 +267,7 @@ export default function SRSInfo(props: SRSProps) {
         </Button>
         <Typography
           component="h2"
-          variant="h1"
+          variant="display2"
         >
           Schedule
         </Typography>
@@ -262,9 +289,11 @@ export default function SRSInfo(props: SRSProps) {
             <Stack direction="row"
               gap={cardGap}
               sx={{
-                transition: theme.transitions.create(["transform"], {
-                  duration: theme.transitions.duration.short,
-                }),
+                transition: loaded
+                  ? theme.transitions.create(["transform"], {
+                    duration: theme.transitions.duration.short,
+                  })
+                  : undefined,
                 transform: `
                   translateX(calc(
                     ${-currentIndex * (100 / visibleCount)}%
@@ -302,13 +331,51 @@ export default function SRSInfo(props: SRSProps) {
                   </Typography>
                   { card.week !== "TBD" && (
                     <Typography variant="subtitle2" color="text.secondary">
-                      {typeof card.date === "string" ? card.date : card.date.toDateString()}
+                      {typeof card.date === "string" ? card.date : formatDate(card.date.toDateString())}
                     </Typography>
                   )}
                   <Typography variant="body1" fontWeight="bold">
                     {card.title}
                   </Typography>
                   <Typography variant="body2">{card.description}</Typography>
+                  <Stack sx={{
+                    alignSelf: "center",
+                    textAlign: "start",
+                    mt: 2
+                  }}>
+                    { card.time === true && card.date !== "TBD" && (
+                      <Stack direction="row" gap={1} alignItems="center">
+                        <Typography variant="subtitle2" color="text.secondary" lineHeight={1}>
+                          <AccessTime/>
+                        </Typography>
+                        <Typography variant="subtitle2" color="text.secondary">
+                          {formatTime({ start: card.date, end: card.end})}
+                        </Typography>
+                      </Stack>
+                    )}
+                    { card.location && (
+                      <Stack direction="row" gap={1} alignItems="center">
+                        <Typography variant="subtitle2" color="text.secondary" lineHeight={1}>
+                          <LocationCity/>
+                        </Typography>
+                        <Typography variant="subtitle2" color="text.secondary">
+                          <Link href={card.location.href}>{card.location.name}</Link>
+                        </Typography>
+                      </Stack>
+                    )}
+                    { card.link && (
+                      <Stack direction="row" gap={1} alignItems="center">
+                        <Typography variant="subtitle2" color="text.secondary" lineHeight={1}>
+                          <OpenInNew/>
+                        </Typography>
+                        <Typography variant="subtitle2" color="text.secondary">
+                          <Link href={card.link.href} target={card.link.target}>
+                            {card.link.name}
+                          </Link>
+                        </Typography>
+                      </Stack>
+                    )}
+                  </Stack>
                   {i < scheduleCards.length - 1 && (
                     <Stack
                       sx={{
@@ -379,7 +446,7 @@ export default function SRSInfo(props: SRSProps) {
         <Box component="section">
           <Typography
             component="h2"
-            variant="h1"
+            variant="display2"
             mb={2}
           >
             Join a Team
@@ -401,15 +468,20 @@ export default function SRSInfo(props: SRSProps) {
               or contact ACM Studio or a team directly to see
               if they have any open spots!
             </Typography>
-            <Button variant="contained" href="/srs/sign-up" target="_blank">
-              Sign Up
-            </Button>
+            <Stack gap={1} sx={{ my: 2, alignItems: "start" }}>
+              <Typography variant="body1" fontWeight="bold">
+                Applications are open now!
+              </Typography>
+              <Button variant="contained" href="/srs/sign-up" target="_blank">
+                Sign Up
+              </Button>
+            </Stack>
           </Stack>
         </Box>
         <Box>
           <Typography
             component="h2"
-            variant="h1"
+            variant="display2"
             mb={2}
           >
             Current Cycle (2025)
@@ -496,7 +568,7 @@ export default function SRSInfo(props: SRSProps) {
             <Typography variant="body1">
               Leading a team is a great way to get your
               game idea made and develop your skills
-              as a project manager!
+              as a game designer or project manager!
             </Typography>
             <Typography variant="body1">
               To be qualified to lead a team, you <em>must

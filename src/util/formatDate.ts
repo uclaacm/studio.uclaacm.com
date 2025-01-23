@@ -1,7 +1,10 @@
-export default function formatDate(dateString: string, formatType: "short" | "long" | "url" = "long") {
-    const date = new Date(dateString);
+export default function formatDate(
+    dateInput: string | Date,
+    formatType: "short" | "long" | "url" = "long"
+) {
+    const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
     if (isNaN(date.getTime())) {
-        throw new Error("Invalid date string");
+        throw new Error(`Invalid date string: ${dateInput}`);
     }
 
     const options: Intl.DateTimeFormatOptions = formatType === "long"
@@ -9,6 +12,7 @@ export default function formatDate(dateString: string, formatType: "short" | "lo
             year: "numeric",
             month: "short",
             day: "numeric",
+            weekday: "short",
         }
         : {
             year: "numeric",
