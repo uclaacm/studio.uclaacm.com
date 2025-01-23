@@ -35,6 +35,11 @@ export default withBundleAnalyzer({
 				permanent: false,
 			},
 			{
+				source: "/events/students-run-studios/sign-up",
+				destination: "https://docs.google.com/forms/d/e/1FAIpQLSfQ3xTWhgN7sn7s1ddcULHNyrpmfgpkf9hkqW5uZQyPsSj9hg/viewform",
+				permanent: false,
+			},
+			{
 				source: "/srs/:slug*",
 				destination: "/events/students-run-studios/:slug*",
 				permanent: true,

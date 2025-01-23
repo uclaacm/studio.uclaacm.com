@@ -377,7 +377,7 @@ export default function SRSInfo(props: SRSProps) {
           >
             Join a Team
           </Typography>
-          <Stack gap={1}>
+          <Stack gap={1} sx={{ alignItems: "start" }}>
             <Typography variant="body1">
               Interested in joining a team? Check out the teams below!
               We will have a pitch event where team leads will present
@@ -394,6 +394,9 @@ export default function SRSInfo(props: SRSProps) {
               or contact ACM Studio or a team directly to see
               if they have any open spots!
             </Typography>
+            <Button variant="contained" href="/srs/sign-up" target="_blank">
+              Sign Up
+            </Button>
           </Stack>
         </Box>
         <Box>
