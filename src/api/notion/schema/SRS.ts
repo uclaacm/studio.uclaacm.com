@@ -6,8 +6,8 @@ export type NotionSRSTeamSchema = {
 	description: string,
 	leads: string[],
 	engine: string,
-  link: string,
-  image: string,
+	link: string,
+	image: string,
 };
 
 const srsTeamSchemaBinding = {

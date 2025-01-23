@@ -15,7 +15,7 @@ import Metadata from "~/components/Metadata";
 import Image from "next/image";
 import { Card } from "~/components/Card";
 import IconButton from "~/components/IconButton";
-import { East, West } from "@mui/icons-material";
+import { East, Link as LinkIcon, West } from "@mui/icons-material";
 import { getSRSTeams, NotionSRSTeamSchema } from "~/api/notion/schema/SRS";
 import { GetStaticProps } from "next";
 import { REVALIDATE_INTERVAL } from "~/Env";
@@ -431,20 +431,13 @@ export default function SRSInfo(props: SRSProps) {
                 ], {
                   duration: theme.transitions.duration.short,
                 }),
-                textAlign: "center",
-                ...team.link && {
-                  "&:hover": {
-                    backgroundColor: "rgba(0, 0, 0, 0.5)",
-                    transform: "scale(1.01)",
-                  }
-                },
                 gap: 2,
                 p: 0,
                 pt: team.image ? 0 : 4,
               }}
             >
               {team.image && <Box
-                component={Image}
+                component="img"
                 src={team.image}
                 alt=""
                 sx={{
@@ -456,8 +449,8 @@ export default function SRSInfo(props: SRSProps) {
                   )`
                 }}
               />}
-              <Box sx={{ px: 2, pb: 4 }}>
-                <Box component="header" sx={{ mb: 1 }}>
+              <Stack sx={{ px: 2, pb: 4, gap: 1, height: "100%" }}>
+                <Box component="header" textAlign="center">
                   <Typography variant="h3" component="h2" fontWeight="bold">
                     {team.name}
                   </Typography>
@@ -466,40 +459,18 @@ export default function SRSInfo(props: SRSProps) {
                   </Typography>
                 </Box>
                 <Typography variant="body1"
+                  sx={{ flexGrow: 1, }}
                   textAlign="start"
                 >{team.description}</Typography>
-
                 {team.link &&
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                      transform: "translate(-50%, -50%)",
-                      opacity: 0,
-                      transition: theme.transitions.create("opacity", {
-                        duration: theme.transitions.duration.short,
-                      }),
-                      "&:hover": {
-                        opacity: 1,
-                      },
-                    }}
+                  <IconButton
+                    sx={{ alignSelf: "end" }}
+                    href={team.link}
                   >
-                    <Button
-                      sx={{
-                        opacity: 1,
-                        width: "500px",
-                        height: "500px",
-                        color: "white",
-                        backgroundColor: "rgba(255, 255, 255, 0)",
-                      }}
-                      href={team.link}
-                    >
-                      See Team
-                    </Button>
-                  </Box>
+                    <LinkIcon/>
+                  </IconButton>
                 }
-              </Box>
+              </Stack>
             </Card>
           ))}
         </Box>
