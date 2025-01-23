@@ -91,7 +91,7 @@ const scheduleCards: ScheduleCardData[] = [
   {
     quarter: "Winter",
     week: "Week 3",
-    date: new Date("23 Jan 2025 18:00:00 PST"),
+    date: new Date("23 Jan 2025 18:30:00 PST"),
     end: new Date("23 Jan 2025 21:00:00 PST"),
     time: true,
     title: "Pitch Event",
@@ -337,7 +337,9 @@ export default function SRSInfo(props: SRSProps) {
                   <Typography variant="body1" fontWeight="bold">
                     {card.title}
                   </Typography>
-                  <Typography variant="body2">{card.description}</Typography>
+                  <Typography variant="body2" sx={{
+                    flexGrow: 1
+                  }}>{card.description}</Typography>
                   <Stack sx={{
                     alignSelf: "center",
                     textAlign: "start",
