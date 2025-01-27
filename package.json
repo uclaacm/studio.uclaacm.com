@@ -3,7 +3,6 @@
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
-    "@fontsource/noto-color-emoji": "^5.1.0",
     "@fontsource/poppins": "^5.1.0",
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/react": "^3.0.1",

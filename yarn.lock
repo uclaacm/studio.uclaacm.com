@@ -269,11 +269,6 @@
   resolved "https://registry.yarnpkg.com/@floating-ui/utils/-/utils-0.2.8.tgz#21a907684723bbbaa5f0974cf7730bd797eb8e62"
   integrity sha512-kym7SodPp8/wloecOpcmSnWJsK7M0E5Wg8UcFA+uO4B9s5d0ywXOEro/8HM9x0rW+TljRzul/14UYz3TleT3ig==
 
-"@fontsource/noto-color-emoji@^5.1.0":
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/@fontsource/noto-color-emoji/-/noto-color-emoji-5.1.0.tgz#d696644794cccc1e102f4a067c210d21e408491e"
-  integrity sha512-aIoFwdRnAd+NX8Mi5sL8qksWN1xYO5FElyes8hkhgqOatZOIAQlhOURaTqHpU5KgyucBlUWcts1ht0yNee6y0g==
-
 "@fontsource/poppins@^5.1.0":
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/@fontsource/poppins/-/poppins-5.1.0.tgz#919205f53d99ec4751a945057ef525f06681df8a"

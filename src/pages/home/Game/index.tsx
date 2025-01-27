@@ -231,7 +231,7 @@ export default function HomeGame(props: HomeSectionProps) {
               right: 0,
               top: 0,
               bottom: 0,
-              textAlign: "left",
+              textAlign: "center",
               padding: 2,
             }}
             variants={{
@@ -266,6 +266,8 @@ export default function HomeGame(props: HomeSectionProps) {
               width: "1em",
               height: "1em",
               position: "absolute",
+              textAlign: "center",
+              p: 0,
             }}
             transition={{ duration: transitionDuration, ease: "circIn" }}
             variants={{
