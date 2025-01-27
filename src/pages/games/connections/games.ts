@@ -22,6 +22,33 @@ export type Game = InternalGame | ExternalGame;
 
 const gamesUnsorted: Game[] = [
 	{
+		name: "Enemy",
+		date: "27 Jan 2025",
+		author: "Aubrey Clark",
+		categories: [
+			{
+				name: "Enemies in Mario",
+				difficulty: 1,
+				entries: ["Goomba", "Bom-omb", "Boo", "Piranha"],
+			},
+			{
+				name: "Final Bosses",
+				difficulty: 2,
+				entries: ["Ender Dragon", "GLaDOS", "Hades", "Bowser"],
+			},
+			{
+				name: "Bosses who don't fight alone",
+				difficulty: 3,
+				entries: ["Mantis Lord", "Theseus", "Trigger Twin", "Godskin Apostle"],
+			},
+			{
+				name: "Boney Enemies",
+				difficulty: 4,
+				entries: ["Stalnox", "Drybones", "Sans", "Skeleton"],
+			},
+		]
+	},
+	{
 		name: "Extreme Demon",
 		date: "26 January 2025",
 		author: "Zandy Zhao",
