@@ -15,6 +15,11 @@ export default withBundleAnalyzer({
 	async redirects() {
 		return [
 			{
+				source: "/eclipse-rsvp",
+				destination: "https://docs.google.com/forms/d/e/1FAIpQLSf3Fa7DclMJ3JVVduSjCY5kgi1nA-q4L4S-qy8Oi78sQ_nDUA/viewform",
+				permanent: false,
+			},
+			{
 				source: "/workshops/:slug*",
 				destination: "/events/workshops/:slug*",
 				permanent: true,
