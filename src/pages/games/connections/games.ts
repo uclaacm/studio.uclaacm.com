@@ -37,7 +37,7 @@ const gamesUnsorted: Game[] = [
 				entries: ["Ender Dragon", "GLaDOS", "Hades", "Bowser"],
 			},
 			{
-				name: "Bosses who don't fight alone",
+				name: "Bosses who fight with friends",
 				difficulty: 3,
 				entries: ["Mantis Lord", "Theseus", "Trigger Twin", "Godskin Apostle"],
 			},
