@@ -159,7 +159,7 @@ export default function ConnectionsRenderer(props: ConnectionsRendererProps){
 			)
 			.join("\n");
 
-		const url = `https://studio.uclaacm.com/game/connections/${formatDate(game.date, "url")}`;
+		const url = `https://studio.uclaacm.com/connections/${formatDate(game.date, "url")}`;
 		const date = formatDate(game.date, "long");
 		navigator.clipboard.writeText(`ACM Studio Connections ${date} - ${game.name} by ${game.author}\n${url}\n\n${results}`)
 			.then(() => setCopySnackbar({
