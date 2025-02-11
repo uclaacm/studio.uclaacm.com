@@ -49,33 +49,6 @@ const gamesUnsorted: Game[] = [
 		]
 	},
 	{
-		name: "Extreme Demon",
-		date: "26 January 2025",
-		author: "Zandy Zhao",
-		categories: [
-			{
-				name: "NPC TURNS CURRENCY INTO STRENGTH",
-				difficulty: 1,
-				entries: ["BLOODBORNE", "DARK SOULS II", "DARK SOULS III", "ELDEN RING"],
-			},
-			{
-				name: "CONTAINS A BOSS THAT'S VERY EASILY PARRIABLE",
-				difficulty: 2,
-				entries: ["DARK SOULS", "MGR REVENGENCE", "SEKIRO", "SPACE MARINE 2"],
-			},
-			{
-				name: "GAMES WITH A SWORDSMAN AS ONE OF THE BEST CHARACTERS",
-				difficulty: 3,
-				entries: ["BALDUR'S GATE 3", "BATMAN: ARKHAM KNIGHT", "DARKEST DUNGEON", "RUINED KING"],
-			},
-			{
-				name: "GAMES THAT CAN BE VERY FRUSTRATING TO PLAY DEPENDING ON YOUR TEAMMATES",
-				difficulty: 4,
-				entries: ["MARVEL RIVALS", "BRAWL STARS", "TITANFALL 2", "DEEP ROCK GALACTIC"],
-			},
-		],
-	},
-	{
 		name: "Word",
 		date: "12 January 2025",
 		author: "Aubrey Clark",
