@@ -64,11 +64,24 @@ export function NotionRichTextRenderer({
   );
 }
 
-type NotionBlockRendererProps = {
-  block: Block;
+export type NotionBlockRenderOptions = {
+  lineHeight?: string,
+  textIndent?: string,
 };
 
-function NotionBlockRenderer({ block }: NotionBlockRendererProps) {
+type NotionBlockRendererProps = {
+  block: Block,
+  renderOptions?: NotionBlockRenderOptions,
+};
+
+function NotionBlockRenderer(props: NotionBlockRendererProps) {
+  const {
+    block,
+    renderOptions = {
+      lineHeight: "1.5",
+      textIndent: "0",
+    }
+  } = props;
   const theme = useTheme();
 
   const textTypeMap = {
@@ -93,9 +106,12 @@ function NotionBlockRenderer({ block }: NotionBlockRendererProps) {
     },
     paragraph: {
       marginBottom: 1,
+      lineHeight: renderOptions.lineHeight,
+      textIndent: renderOptions.textIndent,
     },
   };
 
+  // typography blocks
   if (block.type in textTypeMap) {
     const rt = block[block.type].rich_text as (Block & {
       type: "paragraph";
@@ -104,7 +120,9 @@ function NotionBlockRenderer({ block }: NotionBlockRendererProps) {
     return (
       <Typography
         variant={textTypeMap[block.type]}
-        sx={textTypeStyle[block.type]}
+        sx={{
+          ...textTypeStyle[block.type]
+        }}
       >
         <NotionRichTextRenderer richText={rt} />
       </Typography>
@@ -189,11 +207,13 @@ function NotionBlockRenderer({ block }: NotionBlockRendererProps) {
 }
 
 export type NotionBlocksRendererProps = {
-  blocks: Block[];
+  blocks: Block[],
+  renderOptions?: NotionBlockRenderOptions
 };
 
 export default function NotionBlocksRenderer({
   blocks,
+  renderOptions,
 }: NotionBlocksRendererProps) {
   // notion returns each bulleted item individually
   // so the parent must add the <ul> (or <ol>)
@@ -233,7 +253,7 @@ export default function NotionBlocksRenderer({
         return (
           <Container key={blocks.at(0).id}>
             {blocks.map((block) => (
-              <NotionBlockRenderer key={block.id} block={block} />
+              <NotionBlockRenderer key={block.id} block={block} renderOptions={renderOptions} />
             ))}
           </Container>
         );

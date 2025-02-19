@@ -16,19 +16,16 @@ import {
 import {
   AnimationPlaybackControls,
   Easing,
-  stagger,
   useAnimate,
   useInView,
 } from "framer-motion";
 import React from "react";
 import { animationStyle } from "~/util/framer/animation";
-import sleep from "~/util/sleep";
-import HeroCarousel from "~/components/HeroCarousel";
 import MasonryCarousel, {
   MasonryCarouselCellData,
 } from "~/components/MasonryCarousel";
 import { links } from "~/Strings";
-import { getRandomGameJamGames } from "~/data/itch";
+import { getRandomGameJamGames } from "~/data/itch/index";
 
 export type OurJamsProps = {};
 

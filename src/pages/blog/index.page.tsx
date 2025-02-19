@@ -42,7 +42,7 @@ type TutorialItemProps = {
 export const categoryBaseUrlMap = {
   "Byte Sized Tutorials": "byte-sized-tutorials",
   "Studio Scoop": "studio-scoop",
-  Miscellanious: "miscellanious",
+  "Miscellaneous": "articles",
 };
 
 function ArticleEntry(props: TutorialItemProps) {
@@ -188,10 +188,10 @@ export default function Blog(props: BlogProps) {
               <Stack key={entry.id} sx={{ gap: 1 }}>
                 <ArticleEntry
                   entry={entry}
-                  hrefBaseUrl="byte-sized-tutorials"
+                  hrefBaseUrl={categoryBaseUrlMap[entry.category]}
                 />
                 <Box display="flex" justifyContent="end" key={entry.id}>
-                  <Link href="/byte-sized-tutorials" variant="body1">
+                  <Link href={categoryBaseUrlMap[entry.category]} variant="body1">
                     All of {entry.category}
                   </Link>
                 </Box>
@@ -208,11 +208,13 @@ export default function Blog(props: BlogProps) {
       <Box>
         <ArticlesContainer>
           {nonHighlightArticles.map((entry, i) => (
-            <ArticleEntry
-              key={entry.id}
-              entry={entry}
-              hrefBaseUrl="byte-sized-tutorials"
-            />
+            <>
+              <ArticleEntry
+                key={entry.id}
+                entry={entry}
+                hrefBaseUrl={categoryBaseUrlMap[entry.category] ?? "byte-sized-tutorials"}
+              />
+            </>
           ))}
         </ArticlesContainer>
       </Box>

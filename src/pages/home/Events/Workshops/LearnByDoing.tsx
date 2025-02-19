@@ -15,7 +15,6 @@ import {
   bodyMinHeight,
   bodyOffset,
   bodyPaddingBottom,
-  headerTopPadding,
 } from "../EventHeader";
 import { HomeSectionProps } from "~/pages/index.page";
 
@@ -80,8 +79,6 @@ export default function LearnByDoing(props: LearnByDoingProps) {
 
     timelineAnimateControls.current.start();
 
-    // await new Promise((r) => setTimeout(r, 250));
-
     await animate(
       ".workshop__labs-underline",
       { ["--underline-percent" as any]: 1 },
@@ -113,8 +110,25 @@ export default function LearnByDoing(props: LearnByDoingProps) {
         width: "100%",
         height: `calc(${bodyMinHeight(theme)})`,
         pb: `calc(${bodyPaddingBottom(theme)})`,
+        overflow: "clip",
+        position: "relative",
       })}
     >
+      {/* bottom gradient */}
+      <Box
+        sx={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: theme.spacing(8),
+          background: `linear-gradient(
+            180deg,
+            rgba(255,255,255,0) 0%,
+            rgba(255,255,255,255) 100%
+          )`,
+        }}
+      />
       <Typography
         component="div"
         variant="display1"

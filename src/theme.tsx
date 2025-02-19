@@ -3,7 +3,6 @@ import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import "@fontsource/poppins/800.css";
 import "@fontsource/poppins/400.css";
 import "@fontsource/poppins";
-import "@fontsource/noto-color-emoji";
 import { PaletteOptions } from "@mui/material/styles";
 import BasicLink from "./components/BasicLink";
 
@@ -34,7 +33,7 @@ const theme = createTheme({
   palette: paletteOptions,
   spacing: SPACING,
   typography: {
-    fontFamily: ["Poppins", "Noto Color Emoji", "sans-serif"].join(","),
+    fontFamily: ["Poppins", "sans-serif"].join(","),
   },
   components: {
     MuiButtonBase: {

@@ -8,19 +8,13 @@
 import { Client } from "@notionhq/client";
 import {
   BlockObjectResponse,
-  ListBlockChildrenParameters,
   ListBlockChildrenResponse,
   QueryDatabaseParameters,
   QueryDatabaseResponse,
 } from "@notionhq/client/build/src/api-endpoints";
 import { Block } from "./blocks";
 
-const secret = process.env.NOTION_SECRET;
-export const databaseIDs = {
-  officers: process.env.NOTION_OFFICERS_DATABASE_ID,
-  socialLinks: process.env.NOTION_OFFICER_SOCIAL_LINKS_DATABASE_ID,
-  debugArticles: process.env.NOTION_DEBUG_ARTICLES_DATABASE_ID,
-};
+export const secret = process.env.NOTION_SECRET;
 
 const client = new Client({
   auth: secret,

@@ -2,9 +2,10 @@ import { Box, BoxProps, Stack, useMediaQuery, useTheme } from "@mui/material";
 import React, { useImperativeHandle } from "react";
 import { useSize } from "~/util/useOnResize";
 import MasonryCarouselRow from "./MasonryCarouselRow";
+import { StaticImageData } from "next/image";
 
 export type MasonryCarouselCellData = {
-  src?: string;
+  src?: string | StaticImageData;
   href?: string;
   title?: React.ReactNode;
 };

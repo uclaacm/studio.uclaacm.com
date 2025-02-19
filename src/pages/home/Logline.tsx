@@ -15,7 +15,7 @@ import MasonryCarousel, { MasonryCarouselCellData } from "~/components/MasonryCa
 import { HomeSectionProps } from "../index.page";
 import React from "react";
 import Link from "next/link";
-import { getRandomGames } from "~/data/itch";
+import { getRandomGames } from "~/data/itch/index";
 
 const MotionLink = motion.create(Link);
 

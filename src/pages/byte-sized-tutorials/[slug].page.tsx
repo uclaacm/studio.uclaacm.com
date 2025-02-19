@@ -6,9 +6,6 @@ import {
 } from "~/components/ArticleBackend";
 import { ArticleRenderer } from "~/components/ArticleFrontend";
 
-// export const getServerSideProps = createGetServerSideProps({
-// 	category: "byteSizedTutorials",
-// })
 export const getStaticProps = createGetStaticProps({
   category: "byteSizedTutorials",
 });

@@ -1,17 +1,16 @@
 import * as React from "react";
 
-import dynamic from "next/dynamic";
-
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 import Typography from "@mui/material/Typography";
 
 import List from "@mui/material/List";
 import Backdrop from "@mui/material/Backdrop";
-import ListItem, { ListItemProps } from "@mui/material/ListItem";
+import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import MuiListItemIcon from "@mui/material/ListItemIcon";
 import {
+  Collapse,
   SwipeableDrawer,
   Theme,
   styled,
@@ -23,19 +22,67 @@ import NextLink from "next/link";
 import Image from "next/image";
 
 import LogoIcon from "~/assets/images/icons/logo.svg";
-import HomeIcon from "~/assets/images/icons/home.svg";
 import MenuIcon from "~/assets/images/icons/menu.svg";
-import InfoIcon from "~/assets/images/icons/info.svg";
 import DiscordIcon from "~/assets/images/icons/dev/DiscordLogo.svg";
 import FacebookIcon from "~/assets/images/icons/dev/facebook.svg";
 import InstagramIcon from "~/assets/images/icons/dev/instagram.svg";
-import ControllerIcon from "~/assets/images/icons/controller.svg";
-import BookIcon from "~/assets/images/icons/archive-book.svg";
-import CalendarIcon from "~/assets/images/icons/calendar.svg";
 import { useRouter } from "next/router";
 import matchPath from "~/util/matchPath";
 import IsaxIcon from "./IsaxIcon";
 import IconButton from "./IconButton";
+import Link from "./Link";
+
+const navBarContents: NavBarContents[] = [
+  {
+    icon: "isax-home5",
+    text: "Home",
+    href: "/",
+    hrefIsEnd: true,
+  },
+  {
+    icon: "isax-info-circle5",
+    text: "About",
+    href: "/about",
+  },
+  {
+    icon: "isax-book5",
+    text: "Blog",
+    href: "/blog",
+  },
+  {
+    icon: "isax-calendar5",
+    text: "Events",
+    subitems: [
+      {
+        text: "SRS",
+        href: "/srs",
+      },
+      {
+        text: "Workshops",
+        href: "/workshops",
+      },
+      {
+        text: "Calendar",
+        href: "/events",
+      }
+    ]
+  },
+  {
+    icon: "isax-game5",
+    text: "Games",
+    subitems: [
+      {
+        text: "Connections",
+        href: "/games/connections",
+      },
+      {
+        text: "Crosswords",
+        href: "/games/crosswords",
+      },
+    ],
+  }
+];
+
 
 const DRAWER_ICON_WIDTH = 36;
 const DRAWER_ICON_WIDTH_PX = `${DRAWER_ICON_WIDTH}px`;
@@ -62,78 +109,103 @@ const Drawer = styled(MuiDrawer, {
   },
 }));
 
-const Selection = dynamic(
-  () => import("~/components/Selection").then((mod) => mod.Selection),
-  { ssr: false },
-);
-
 type DrawerListItemProps = {
-  children?: React.ReactNode;
-  href?: string;
-} & Omit<ListItemProps, "children">;
+  content: NavBarContents,
+  active?: boolean,
+  onMouseEnter?: () => void,
+}
 
-const DrawerListItem = React.forwardRef<HTMLLIElement, DrawerListItemProps>(
-  ({ children, href, ...rest }: DrawerListItemProps, ref) => (
-    <ListItem disableGutters disablePadding ref={ref} {...rest}>
+function DrawerListItem(props: DrawerListItemProps){
+  const {
+    content,
+    active = false,
+  } = props;
+  const [open, setOpen] = React.useState(false);
+
+  return <>
+    <ListItem disableGutters disablePadding>
       <ListItemButton
-        disableGutters
-        disableRipple
-        disableTouchRipple
-        {...(href ? { href, component: NextLink } : {})}
+        onClick={() => setOpen(!open)}
+        onMouseEnter={() => { setOpen(true); props.onMouseEnter?.() }}
+        onMouseLeave={() => setOpen(false)}
+        sx={{
+          pl: 1,
+        }}
+        {...("href" in content && { component: Link, href: content.href })}
       >
-        {children}
+        <ListItemIcon>
+          <IsaxIcon
+            name={content.icon}
+            sx={{
+              padding: 0.25,
+              fontSize: DRAWER_ICON_WIDTH_PX,
+            }}
+            color={active ? "primary" : "black"}
+          />
+        </ListItemIcon>
+        <Typography variant="label">
+          {content.text}
+        </Typography>
       </ListItemButton>
     </ListItem>
-  ),
-);
+    { "subitems" in content && (
+      <List disablePadding
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)}
+      >
+        <Collapse in={open}>
+          {content.subitems.map((subitem, i) => (
+            <ListItem
+              key={i}
+              disableGutters
+              disablePadding
+            >
+              <ListItemButton
+                component={Link}
+                href={subitem.href}
+              >
+                <Typography variant="label"
+                  fontSize="75%"
+                  sx={theme => ({
+                    pl: `calc(${DRAWER_ICON_WIDTH_PX} + ${theme.spacing(1.5)})`
+                  })}
+                >
+                  {subitem.text}
+                </Typography>
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </Collapse>
+      </List>
+    )}
+  </>
+}
 
 const ListItemIcon = styled(MuiListItemIcon)(({ theme }) => ({
   minWidth: "initial",
   marginRight: `calc(${theme.spacing(1)} + ${drawerPadding(theme)})`,
 }));
 
-export type NavBarContents = {
-  icon: typeof MenuIcon;
-  text?: string;
-  href?: string;
-  hrefIsEnd?: boolean;
-  hideInRadial?: boolean;
-};
+export type FlatNavBarContents = {
+  icon: typeof MenuIcon,
+  text?: string,
+  hrefIsEnd?: boolean,
+  href: string,
+}
+
+export type NestedNavBarContents = {
+  icon: typeof MenuIcon,
+  text?: string,
+  subitems: Omit<FlatNavBarContents, "icon">[],
+}
+
+export type NavBarContents = FlatNavBarContents | NestedNavBarContents;
 
 export type NavBarSocials = {
-  icon: typeof DiscordIcon;
-  text: string;
-  href: string;
+  icon: string,
+  text: string,
+  href: string,
 };
-
-const navBarContents: NavBarContents[] = [
-  {
-    icon: HomeIcon,
-    text: "home",
-    href: "/",
-    hrefIsEnd: true,
-  },
-  {
-    icon: InfoIcon,
-    text: "about",
-    href: "/about",
-  },
-  // {
-  // 	icon: ControllerIcon,
-  // 	text: "showcase",
-  // 	href: "/showcase",
-  // },
-  {
-    icon: BookIcon,
-    text: "blog",
-    href: "/blog",
-  },
-  {
-    icon: CalendarIcon,
-    text: "events",
-    href: "/events",
-  },
-];
 
 const navBarSocials: NavBarSocials[] = [
   {
@@ -159,42 +231,30 @@ export default function NavBar() {
   const [open, setOpen] = React.useState(false);
   const toggleOpen = (v: boolean) => () => setOpen(v);
 
-  // refs for each navbar entry + logo
-  const buttonRefs = Array.from({ length: navBarContents.length }).map((_) =>
-    React.useRef<HTMLLIElement>(null),
-  );
+  const getCurrentNavBarIndex = () => (
+    navBarContents.findIndex((contents) =>
+      "href" in contents
+        ? matchPath(router.asPath, contents.href, { end: contents.hrefIsEnd })
+        : contents.subitems.some(subitem =>
+            matchPath(router.asPath, subitem.href, { end: subitem.hrefIsEnd })
+          ),
+    ) ?? 0
+  )
 
   // index of current page in the navbar
-  const [currentPageButtonIndex, setCurrentPageButtonIndex] =
-    React.useState<number>(
-      navBarContents.findIndex(({ href, hrefIsEnd }) =>
-        matchPath(router.asPath, href, { end: hrefIsEnd }),
-      ) ?? 0,
-    );
+  const [currentPageButtonIndex, setCurrentPageButtonIndex] = React.useState<number>(
+    getCurrentNavBarIndex()
+  );
+
   // update current nav bar page on route change
   React.useEffect(() => {
-    const newPageButtonIndex =
-      navBarContents.findIndex(({ href, hrefIsEnd }) =>
-        matchPath(router.asPath, href, { end: hrefIsEnd }),
-      ) ?? 0;
+    const newPageButtonIndex = getCurrentNavBarIndex();
     if (currentPageButtonIndex !== newPageButtonIndex)
       setCurrentPageButtonIndex(newPageButtonIndex);
   }, [router.asPath]);
 
-  // highlighted nav bar page
-  const [selectedButtonIndex, setSelectedButtonIndex] = React.useState<number>(
-    currentPageButtonIndex,
-  );
-
-  // reset selected page to the current page when close menu
-  React.useEffect(() => {
-    if (open === false && selectedButtonIndex !== currentPageButtonIndex)
-      setSelectedButtonIndex(currentPageButtonIndex);
-  }, [open]);
-
   const onMouseEnterListItem = (i: number) => () => {
     setOpen(true);
-    setSelectedButtonIndex(i);
   };
 
   const theme = useTheme();
@@ -220,50 +280,13 @@ export default function NavBar() {
             />
           </Box>
         </ListItem>
-        {navBarContents.map(({ icon, text, href }, i) => (
+        {navBarContents.map((contents, i) => (
           <DrawerListItem
             key={i}
             onMouseEnter={onMouseEnterListItem(i)}
-            ref={buttonRefs[i]}
-            href={href}
-            {...(md
-              ? {
-                  onClick: () => setOpen(false),
-                }
-              : {})}
-          >
-            <Box
-              sx={(theme) => ({
-                display: "flex",
-                alignItems: "center",
-                padding: `0 ${theme.spacing(1)}`,
-              })}
-            >
-              <ListItemIcon
-                sx={{
-                  ...(text ? {} : { mr: 0 }),
-                }}
-              >
-                <Image
-                  src={icon}
-                  alt={text}
-                  width={DRAWER_ICON_WIDTH}
-                  style={{ padding: theme.spacing(0.25) }}
-                />
-              </ListItemIcon>
-              {text && (
-                <Typography
-                  variant="display2"
-                  sx={(theme) => ({
-                    mr: theme.spacing(1),
-                    fontSize: "2rem",
-                  })}
-                >
-                  {text}
-                </Typography>
-              )}
-            </Box>
-          </DrawerListItem>
+            content={contents}
+            active={currentPageButtonIndex === i}
+          />
         ))}
       </List>
       <Box display="flex" flexDirection="row" sx={{ width: DRAWER_WIDTH_OPEN }}>
@@ -289,11 +312,8 @@ export default function NavBar() {
             >
               <ListItemButton
                 disableGutters
-                disableRipple
-                disableTouchRipple
-                component={NextLink}
+                component={Link}
                 href={href}
-                target="_blank"
               >
                 <ListItemIcon>
                   <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -352,7 +372,7 @@ export default function NavBar() {
       {!md && (
         <>
           {/* This drawer is to act like the hitbox for the drawer for flexbox calculations, since the
-				actual drawer is absolutely positioned */}
+				  actual drawer is absolutely positioned */}
           <Drawer
             variant="permanent"
             open={false}
@@ -414,13 +434,6 @@ export default function NavBar() {
         open={open}
         sx={(theme) => ({ zIndex: theme.zIndex.drawer - 1 })}
       />
-      {!md && (
-        <Selection
-          selectionRef={buttonRefs[selectedButtonIndex]}
-          containerSelector=".MuiBox-root"
-          fixed
-        />
-      )}
     </>
   );
 }
