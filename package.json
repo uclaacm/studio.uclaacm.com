@@ -36,7 +36,7 @@
     "typescript": "5.7.2"
   },
   "scripts": {
-    "dev": "yarn scrape && yarn index && yarn dev:next",
+    "dev": "yarn index && yarn dev:next",
     "dev:next": "next dev",
     "build:next": "next build",
     "build": "yarn index && yarn scrape && yarn build:next",
