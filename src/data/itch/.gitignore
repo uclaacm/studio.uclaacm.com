@@ -1,0 +1,3 @@
+# we want to include generated files for those who don't have 
+# image processing tools installed
+!__generated__
