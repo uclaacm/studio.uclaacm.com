@@ -22,6 +22,33 @@ export type Game = InternalGame | ExternalGame;
 
 const gamesUnsorted: Game[] = [
 	{
+		name: `Pokemon 2`,
+		date: "5 Mar 2025",
+		author: "Andrew Douglas",
+		categories: [
+			{
+				name: "Pokemon That Can Learn Heavy Slam",
+				difficulty: 1,
+				entries: ["Snorlax", "Aggron", "Hariyama", "Dhelmise"],
+			},
+			{
+				name: "Baby Pokemon",
+				difficulty: 2,
+				entries: ["Munchlax", "Bonsly", "Togepi", "Budew"],
+			},
+			{
+				name: "Pokemon That Are Immune to Ground Types",
+				difficulty: 3,
+				entries: ["Azelf", "Hydreigon", "Pidgeot", "Shedinja"],
+			},
+			{
+				name: "Ride Pokemon",
+				difficulty: 4,
+				entries: ["Tauros", "Basculegion", "Koraidon", "Miraidon"],
+			},
+		]
+	},
+	{
 		name: `Peak\u00E9mon`,
 		date: "10 Feb 2025",
 		author: "Matthew Workman",
