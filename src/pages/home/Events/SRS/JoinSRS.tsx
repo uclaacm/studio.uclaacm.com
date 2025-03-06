@@ -86,28 +86,6 @@ export default function SRSHome(props: SRSHomeProps) {
 					</Button> */}
 				</Stack>
 			</Stack>
-      <Box
-        sx={[
-          (theme) => ({
-            left: 0,
-            right: theme.spacing(8),
-            top: 0,
-            bottom: theme.spacing(8),
-            [theme.breakpoints.down("md")]: {
-              position: "unset",
-            },
-            pointerEvents: "none",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexGrow: 1,
-            zIndex: -1,
-          }),
-          animationStyle({ translateY: 16 }),
-        ]}
-      >
-        <AxolotlAnimation inView={inView} />
-      </Box>
 			<ImageSlideshow images={images}
 				width={800}
 				sx={{
