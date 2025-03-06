@@ -14,7 +14,7 @@ import {
 import React from "react";
 import { animationStyle } from "~/util/framer/animation";
 import ImageSlideshow, { ImageSlideshowImage } from "~/components/ImageSlideshow";
-
+import AxolotlAnimation from "./AxolotlAnimation";
 import BrandenLeahPitch from "./BrandenLeahPitch.webp";
 import DemiPitch from "./DemiPitch.webp";
 import SrsShowcase2024 from "./SrsShowcase2024.webp";
@@ -86,6 +86,28 @@ export default function SRSHome(props: SRSHomeProps) {
 					</Button> */}
 				</Stack>
 			</Stack>
+      <Box
+        sx={[
+          (theme) => ({
+            left: 0,
+            right: theme.spacing(8),
+            top: 0,
+            bottom: theme.spacing(8),
+            [theme.breakpoints.down("md")]: {
+              position: "unset",
+            },
+            pointerEvents: "none",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexGrow: 1,
+            zIndex: -1,
+          }),
+          animationStyle({ translateY: 16 }),
+        ]}
+      >
+        <AxolotlAnimation inView={inView} />
+      </Box>
 			<ImageSlideshow images={images}
 				width={800}
 				sx={{

@@ -1,4 +1,5 @@
 import {
+  Box,
   Container,
   Stack,
   Typography,
@@ -6,15 +7,14 @@ import {
 } from "@mui/material";
 import { bodyMinHeight, bodyOffset } from "../EventHeader";
 import {
-  AnimationPlaybackControls,
   motion,
-  useAnimate,
   useInView,
 } from "framer-motion";
 import React from "react";
 import { animationStyle } from "~/util/framer/animation";
 import { HomeSectionProps } from "~/pages/index.page";
 import { UnderlineTypographyItem } from "../../Mission/Animation";
+import AxolotlAnimation from "./AxolotlAnimation";
 
 export type SRSHomeProps = {} & HomeSectionProps;
 
@@ -22,27 +22,13 @@ export default function SRSHome(props: SRSHomeProps) {
   const { id } = props;
 
   const theme = useTheme();
-  const [scope, animate] = useAnimate();
+  const containerRef = React.useRef<HTMLDivElement>(undefined);
 
-  const inView = useInView(scope);
-  const [playedAnimation, setPlayedAnimation] = React.useState(false);
-
-  let cancellationToken = false;
-  let currentAnimation: AnimationPlaybackControls = null;
-
-  async function animationSequence() {
-  }
-
-  React.useEffect(() => {
-    if (inView && !playedAnimation) {
-      animationSequence();
-      setPlayedAnimation(true);
-    }
-  }, [inView, playedAnimation]);
+  const inView = useInView(containerRef);
 
   return (
     <Container
-      ref={scope}
+      ref={containerRef}
       maxWidth="lg"
       component={motion.div}
       id={id}
@@ -51,6 +37,8 @@ export default function SRSHome(props: SRSHomeProps) {
         scrollMarginTop: `calc(${bodyOffset(theme)})`,
         width: "100%",
         minHeight: `calc(${bodyMinHeight(theme)})`,
+        display: "flex",
+        flexDirection: "column",
       })}
       initial="initial"
       whileInView="inView"
@@ -64,7 +52,6 @@ export default function SRSHome(props: SRSHomeProps) {
       <Stack gap={4}>
         <Typography
           variant="display2"
-          className="community__section"
           sx={animationStyle()}
         >
           ACM Studio's Flagship Program
@@ -76,6 +63,28 @@ export default function SRSHome(props: SRSHomeProps) {
           {" "}<UnderlineTypographyItem>production</UnderlineTypographyItem>
         </Typography>
       </Stack>
+      <Box
+        sx={[
+          (theme) => ({
+            left: 0,
+            right: theme.spacing(8),
+            top: 0,
+            bottom: theme.spacing(8),
+            [theme.breakpoints.down("md")]: {
+              position: "unset",
+            },
+            pointerEvents: "none",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexGrow: 1,
+            zIndex: -1,
+          }),
+          animationStyle({ translateY: 16 }),
+        ]}
+      >
+        <AxolotlAnimation inView={inView} />
+      </Box>
     </Container>
   );
 }
