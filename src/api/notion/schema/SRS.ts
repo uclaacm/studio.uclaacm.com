@@ -1,13 +1,13 @@
 import { NotionSchemaBinding, querySchema } from "../bindings";
-import { databaseIDs } from "../core";
+import { databaseIDs } from "../databases";
 
 export type NotionSRSTeamSchema = {
 	name: string,
 	description: string,
 	leads: string[],
 	engine: string,
-  link: string,
-  image: string,
+	link: string,
+	image: string,
 };
 
 const srsTeamSchemaBinding = {

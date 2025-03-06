@@ -34,5 +34,27 @@ export const Card = styled(
 			var(--mui-palette-primary-main)
 			${15 + 10 * elevation}%
 		)`,
-	}
+		'&::-webkit-scrollbar': {
+			width: '0.3em'
+		},
+		'&::-webkit-scrollbar:horizontal': {
+			display: 'none'
+		},
+		'&::-webkit-scrollbar-track': {
+			display: 'none'
+		},
+		'&::-webkit-scrollbar-track-piece:end': {
+			marginBottom: 8
+		},
+		'&::-webkit-scrollbar-track-piece:start': {
+			marginTop: 8
+		},
+		'&::-webkit-scrollbar-thumb': {
+			backgroundColor: '#FF8C93',
+			borderRadius: 4
+		},
+		'@-moz-document url-prefix()': { // For Firefox styles
+			scrollbarColor: '#FF8C93 #FFFFFF',
+		},
+	},
 }));

@@ -19,7 +19,10 @@ export default React.forwardRef<HTMLDivElement, MasonryCarouselCellProps>(
     const theme = useTheme();
 
     const { data, dragging, canHover } = props;
-    const { src, href, title } = data;
+    const { href, title } = data;
+
+    // TODO: Optimize this to use next/image
+    const src = typeof data.src === "string" ? data.src : data.src.src;
 
     const [hovering, setHovering] = React.useState(false);
 

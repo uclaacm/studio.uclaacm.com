@@ -32,6 +32,7 @@ import TouchingGrass from "./Images/hike-touching-grass.webp";
 import ACMGenMeeting from "./Images/acm-gen-meeting.webp";
 import StudioGenMeeting from "./Images/studio-gen-meeting.webp";
 import { HomeSectionProps } from "~/pages/index.page";
+import ImageSlideshow from "~/components/ImageSlideshow";
 
 export type CommunityProps = {} & HomeSectionProps;
 
@@ -46,18 +47,6 @@ const images = [
 
 export default function Community(props: CommunityProps) {
   const { id } = props;
-
-  const [curImageIndex, setCurImageIndex] = React.useState(0);
-  const curImage = React.useMemo(() => images[curImageIndex], [curImageIndex]);
-
-  React.useEffect(() => {
-    const timeout = setTimeout(() => {
-      setCurImageIndex((x) => (x + 1) % images.length);
-    }, 5000);
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [curImage]);
 
   const theme = useTheme();
   const [scope, animate] = useAnimate();
@@ -240,39 +229,7 @@ export default function Community(props: CommunityProps) {
               animationStyle(),
             ]}
           >
-            <AnimatePresence initial={false}>
-              <Box
-                key={curImageIndex}
-                component={motion.div}
-                sx={(theme) => ({
-                  overflow: "clip",
-                  opacity: 0,
-                  gridRowStart: "1",
-                  gridColumnStart: "1",
-                  zIndex: 100,
-                  position: "relative",
-                  width: "100%",
-                  height: "100%",
-                })}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 16 }}
-              >
-                <Box
-                  component={Image}
-                  sx={(theme) => ({
-                    borderRadius: 1,
-                    minWidth: 0,
-                    minHeight: 0,
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                  })}
-                  src={curImage.image}
-                  alt={curImage.alt}
-                />
-              </Box>
-            </AnimatePresence>
+            <ImageSlideshow images={images} />
           </Box>
           {medium && (
             <Stack direction="row" gap={1}>
