@@ -2,6 +2,13 @@
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/8dd726a7-23aa-4b82-ae3b-8c1c034a01d9/deploy-status)](https://app.netlify.com/sites/vermillion-hummingbird-d28997/deploys)
 
+## Contributing
+
+Make sure code looks alright before commiting. You can use prettier if you have it installed, but I just use the LSP's formatter (on VSCode its "Format Document": `Alt+Shift+F` on windows and `Shift+Option+F` on Mac). As long as you indent correctly and try to make sure
+things don't take up too many columns, it's fine.
+
+Before you push to `main` or merge into `prod`, ***make sure the code builds***. Just because it works in `dev`, doesn't mean it actually deploys. Just run `yarn build` before building, which will check for type errors and errors in files you haven't checked.
+
 ## Setup
 
 ### NodeJS
@@ -78,7 +85,3 @@ The branch `prod` is automatically deployed to the Netlify project `vermillion-h
 Netlify uses a CI process, so unsuccessful builds will *not* break everything. However, unsuccessful builds happen a lot, even with type errors that you may not get on your machine. To test if the build *should* work on Netlify's servers, you can run `yarn build`. Depending on your version of `node`, you can also install the Netlify CLI and do a local build.
 
 If you need access to the Netlify, ask Aubrey. Note that the main configuration needed for Netlify to work is to set up the environment variables [as shown above](#environment-variables).
-
-### Contributing
-
-Please run `yarn prettier` before committing!!!! This is to make every file have normalized spacing and such. If needed, we can use a precommit hook, but I don't think it's that serious.
