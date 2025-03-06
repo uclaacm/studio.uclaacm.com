@@ -22,7 +22,7 @@ export type Game = InternalGame | ExternalGame;
 
 const gamesUnsorted: Game[] = [
 	{
-		name: `Pokemon 2`,
+		name: "Pokemon 2",
 		date: "5 Mar 2025",
 		author: "Andrew Douglas",
 		categories: [
