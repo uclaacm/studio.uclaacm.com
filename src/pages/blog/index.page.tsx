@@ -43,6 +43,7 @@ export const categoryBaseUrlMap = {
   "Byte Sized Tutorials": "byte-sized-tutorials",
   "Studio Scoop": "studio-scoop",
   "Miscellaneous": "articles",
+  "Sblog": "sblog",
 };
 
 function ArticleEntry(props: TutorialItemProps) {
