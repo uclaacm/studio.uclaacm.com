@@ -14,7 +14,7 @@ import {
 import React from "react";
 import { animationStyle } from "~/util/framer/animation";
 import ImageSlideshow, { ImageSlideshowImage } from "~/components/ImageSlideshow";
-
+import AxolotlAnimation from "./AxolotlAnimation";
 import BrandenLeahPitch from "./BrandenLeahPitch.webp";
 import DemiPitch from "./DemiPitch.webp";
 import SrsShowcase2024 from "./SrsShowcase2024.webp";
