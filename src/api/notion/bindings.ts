@@ -151,7 +151,7 @@ export function propertyTryGetDate(
   prop: PageObjectResponse["properties"][string],
 ): string | null {
   if (prop.type === "date") {
-    const date = prop.date.start;
+    const date = prop.date?.start ?? prop.date?.end ?? null;
     return date;
   }
   return null;
