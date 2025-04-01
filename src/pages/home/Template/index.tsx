@@ -3,7 +3,7 @@ import { useInView } from "framer-motion";
 import React from "react";
 import { HomeSectionProps } from "../../index.page";
 
-export default function Template(props: HomeSectionProps) {
+export function Template(props: HomeSectionProps) {
   const { setActive, id } = props;
 
   const root = React.useRef<HTMLDivElement>(undefined);
