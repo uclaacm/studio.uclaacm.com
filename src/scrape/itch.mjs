@@ -91,7 +91,7 @@ async function getItchCollections() {
 			const header = collectionRow.querySelector("h2");
 			const link = header.querySelector("a");
 			const href = link.getAttribute("href");
-			const title = link.textContent.trim();
+			const title = link.textContent.trim().replaceAll(/\s+/g, " ");
 
 			const entries = [...collectionRow.querySelectorAll(".game_cell")]
 				.map((gameCell) => {

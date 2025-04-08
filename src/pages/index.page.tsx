@@ -2,6 +2,7 @@ import * as React from "react";
 
 import Box from "@mui/material/Box";
 
+import FiatLudum from "./home/FiatLudum";
 import HomeGame from "./home/Game";
 import Logline from "./home/Logline";
 import Mission from "./home/Mission";
@@ -58,6 +59,7 @@ export const homeEventSections: HomeSection[] = [
 ];
 
 export const homeSections: HomeSection[] = [
+  { title: "Fiat Ludum", Render: FiatLudum, props: { id: "fiat-ludum" } },
   { title: "Game Showcase", Render: HomeGame, props: { id: "game-showcase" } },
   { title: "Logline", Render: Logline, props: { id: "logline" } },
   { title: "Mission", Render: Mission, props: { id: "mission" } },
