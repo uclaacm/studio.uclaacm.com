@@ -27,6 +27,7 @@ export default function BackgroundContainer({
           gridTemplate: "1fr / 1fr",
         },
         rootSx,
+        
       ]}
     >
       <Box sx={{ gridArea: "1 / 1 / 1 / 1" }}>{background}</Box>
