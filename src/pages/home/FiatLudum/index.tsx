@@ -57,7 +57,7 @@ export default function FiatLudum(props: HomeSectionProps) {
       <Box component={Image} src={FiatLudumArt} alt="Fiat Ludum"
         sx={{
           height: "auto",
-          maxWidth: "100%",
+          maxWidth: "120vh",
           gridRow: "1 / 1",
           gridColumn: "1 / 1",
         }}
