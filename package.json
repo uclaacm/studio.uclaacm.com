@@ -20,7 +20,7 @@
     "@types/react-katex": "^3.0.4",
     "@types/seedrandom": "^3.0.8",
     "date-fns": "^4.1.0",
-    "fast-glob": "^3.3.2",
+    "fast-glob": "^3.3.3",
     "framer-motion": "^11.2.11",
     "highlight.js": "^11.9.0",
     "jsdom": "^26.0.0",
@@ -33,6 +33,7 @@
     "remark-frontmatter": "^5.0.0",
     "remark-mdx-frontmatter": "^5.0.0",
     "seedrandom": "^3.0.5",
+    "sharp": "^0.34.1",
     "typescript": "5.7.2"
   },
   "scripts": {
@@ -47,6 +48,7 @@
     "index:watch": "nodemon -w src/content-indexer.mjs -w content -e mjs,mdx src/content-indexer.mjs",
     "scrape": "node src/scrape/itch.mjs",
     "install-deps:server": "bash ./install-deps.sh",
-    "build:server": "yarn install-deps:server && yarn build"
+    "build:server": "yarn install-deps:server && yarn build",
+    "optimize-images": "node util/optimize-static-images.mjs"
   }
 }
