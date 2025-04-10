@@ -72,13 +72,16 @@ export default function FiatLudum(props: HomeSectionProps) {
             component={Image}
             src={FiatLudumArt}
             alt="Fiat Ludum"
-            sx={{
+            sx={[
+            {
               borderRadius: 1,
               height: "auto",
               width: "100%",
-              maxWidth: "800px",
+              maxWidth: "100vh",
               minWidth: 0,
-            }}
+            },
+            isMd && {maxWidth: "115vh"}
+          ]}
           />
         <Stack
           direction="row"
