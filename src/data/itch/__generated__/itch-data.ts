@@ -82,7 +82,7 @@ import img12_5 from "./images/Catacomb.webp";
 import img13_0 from "./images/Unfortunate_Circumstances___.webp";
 import img13_1 from "./images/Farming_Frenzy.webp";
 import img13_2 from "./images/The_Itsy_Bitsy_Scientist.webp";
-import img13_3 from "./images/Fill_in_the_Way____.webp";
+import img13_3 from "./images/Fill_in_the_Way_________________.webp";
 import img13_4 from "./images/Home_Defender.webp";
 import img13_5 from "./images/Project_Plum.webp";
 import img14_0 from "./images/Feline_vs__Farmer.webp";
@@ -333,7 +333,7 @@ export default [
 
       {
         title: "Axobeats",
-        href: "https://sandra-lin.itch.io/axobeats",
+        href: "https://sangix.itch.io/axobeats",
         img: img2_9,
       },
 
@@ -770,7 +770,7 @@ export default [
       },
 
       {
-        title: "Fill in the Way [ ]",
+        title: "Fill in the Way [              ]",
         href: "https://jabenero.itch.io/fill-in-the-way-home",
         img: img13_3,
       },

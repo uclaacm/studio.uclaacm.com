@@ -7,3 +7,28 @@
 html {
   scroll-behavior: smooth;
 }
+
+&::-webkit-scrollbar {
+  width: '0.3em'
+}
+
+&::-webkit-scrollbar:horizontal {
+  display: 'none'
+}
+
+&::-webkit-scrollbar-track {
+  display: 'none'
+}
+
+&::-webkit-scrollbar-track-piece:end {
+  margin-bottom: 8
+}
+
+&::-webkit-scrollbar-track-piece:start {
+  margin-top: 8
+}
+
+&::-webkit-scrollbar-thumb {
+  background-color: '#FF8C93';
+  border-radius: 4;
+}

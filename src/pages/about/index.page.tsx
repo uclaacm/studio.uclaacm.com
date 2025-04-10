@@ -57,15 +57,13 @@ export async function getStaticProps(
       : undefined,
   );
 
-  const { presidents, chairs, interns, other } = objectGroupBy(
+  const { presidents, chairs, other } = objectGroupBy(
     current,
     ({ category }) =>
       category === "President"
       ? "presidents"
       : category === "Chair"
       ? "chairs"
-      : category === "Intern"
-      ? "interns"
       : "other",
   );
 
@@ -80,7 +78,6 @@ export async function getStaticProps(
           presidents,
           chairs,
           other,
-          interns,
         },
       },
     },
@@ -334,7 +331,6 @@ type AboutProps = {
     current: {
       presidents: OfficerWithSocialLinks[],
       chairs: OfficerWithSocialLinks[],
-      interns: OfficerWithSocialLinks[],
       other: OfficerWithSocialLinks[],
     };
     alumni: OfficerWithSocialLinks[],
@@ -441,6 +437,7 @@ export default function About({ officers }: AboutProps) {
             <Officer key={officer.name} officer={officer} />
           ))}
         </OfficersContainer>
+        {/* ONLY USE WHEN THERE ARE INTERNS
         { officers.current.interns.length > 0 && <>
           <Typography variant="h2" color="primary.main" mb={2}>
             Meet the interns
@@ -452,7 +449,7 @@ export default function About({ officers }: AboutProps) {
               <Officer key={intern.name} officer={intern} showBody />
             ))}
           </OfficersContainer>
-        </>}
+        </>} */}
         <Typography variant="h2" color="primary.main" mb={2}>
           Alumni
         </Typography>

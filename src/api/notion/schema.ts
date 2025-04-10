@@ -182,7 +182,7 @@ export async function getOfficerSocialLinks() {
 const articleCategorySelectMap = {
   byteSizedTutorials: "Byte Sized Tutorials",
   scoop: "Studio Scoop",
-  showcase: "Showcase",
+  sblog: "Sblog", 
   miscellaneous: "Miscellaneous",
 } as const;
 
