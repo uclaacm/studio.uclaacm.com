@@ -22,6 +22,33 @@ export type Game = InternalGame | ExternalGame;
 
 const gamesUnsorted: Game[] = [
 	{
+		name: "Chains (of Others)",
+		date: "13 April 2025",
+		author: "Zandy Zhao",
+		categories: [
+			{
+				name: "Limbus Company",
+				difficulty: 1,
+				entries: ["FACE", "THE SIN", "SAVE", "THE EGO"],
+			},
+			{
+				name: "Ultrakill",
+				difficulty: 2,
+				entries: ["MANKIND", "IS DEAD", "BLOOD", "IS FUEL"],
+			},
+			{
+				name: "Warhammer 40K",
+				difficulty: 3,
+				entries: ["only", "in death", "does", "duty end"],
+			},
+			{
+				name: "Fallout (slightly paraphrased)",
+				difficulty: 4,
+				entries: ["War", "never changes", "but", "men do"],
+			},
+		]
+	},
+	{
 		name: "Pokemon 2",
 		date: "5 Mar 2025",
 		author: "Andrew Douglas",
