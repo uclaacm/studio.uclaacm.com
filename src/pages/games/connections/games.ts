@@ -22,6 +22,33 @@ export type Game = InternalGame | ExternalGame;
 
 const gamesUnsorted: Game[] = [
 	{
+		name: "Enemies: Phase 2",
+		date: "5 May 2025",
+		author: "Andrew Douglas",
+		categories: [
+			{
+				name: "Under the Sea",
+				difficulty: 1,
+				entries: ["Elder Guardian", "Blooper", "Ghost Leviathan", "River Zora"],
+			},
+			{
+				name: "Enemies You Recruit",
+				difficulty: 2,
+				entries: ["Dante", "Magus", "Eternatus", "Necromancer (Castle Crashers)"],
+			},
+			{
+				name: "Dark Reflection",
+				difficulty: 3,
+				entries: ["SA-X", "Shadow the Hedgehog", "Mr. L.", "Dark Pit"],
+			},
+			{
+				name: "Knock Them, Finish Them",
+				difficulty: 4,
+				entries: ["Koopa Troopa", "Bokoblin", "Mummy (Stardew Valley)", "Clicker (TLOU)"],
+			},
+		]
+	},
+	{
 		name: "Chains (of Others)",
 		date: "13 April 2025",
 		author: "Zandy Zhao",

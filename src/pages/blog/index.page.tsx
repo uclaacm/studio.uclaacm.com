@@ -174,7 +174,7 @@ export default function Blog(props: BlogProps) {
     [theme.breakpoints.down("sm")]: {
       gridTemplateColumns: "1fr",
     },
-  }));
+  })); 
 
   return (
     <BackgroundContainer>
