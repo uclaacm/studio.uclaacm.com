@@ -141,12 +141,15 @@ export default function Blog(props: BlogProps) {
   const { articles, articleCategories } = props;
   const tutorials = articleCategories["Byte Sized Tutorials"] ?? [];
   const scoop = articleCategories["Studio Scoop"] ?? [];
-  const miscellanious = articleCategories["Miscellanious"] ?? [];
+  const miscellaneous = articleCategories["Miscellaneous"] ?? [];
+
+  const getMostRecent = (articles: NotionArticleSchema[]) =>
+    [...articles].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0];
 
   const highlight: (NotionArticleSchema | undefined)[] = [
-    tutorials.at(0),
-    scoop.at(0),
-    miscellanious.at(0),
+    getMostRecent(tutorials),
+    getMostRecent(scoop),
+    getMostRecent(miscellaneous),
   ];
 
   const highlightIds = new Set(
@@ -171,16 +174,20 @@ export default function Blog(props: BlogProps) {
     [theme.breakpoints.down("sm")]: {
       gridTemplateColumns: "1fr",
     },
-  }));
+  })); 
 
   return (
     <BackgroundContainer>
       <Metadata title="Blog" />
-      <Typography variant="h1" mb={4}>
-        Blog
+      <Typography mb={4} variant="display1" sx={{ lineHeight: 1 }}>
+        Studio Blog
+      </Typography>
+      <Typography mb={4} variant="h3" sx={{ lineHeight: 1 }}>
+        Read articles written by Studio officers, from tutorials and guides to opinion pieces and game reviews.
+        Check out our featured articles!
       </Typography>
       <Typography variant="h2" mb={2}>
-        Highlight
+        Featured
       </Typography>
       <Box sx={{ mb: 4 }}>
         <ArticlesContainer>
