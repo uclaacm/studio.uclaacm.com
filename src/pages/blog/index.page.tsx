@@ -141,7 +141,7 @@ export default function Blog(props: BlogProps) {
   const { articles, articleCategories } = props;
   const tutorials = articleCategories["Byte Sized Tutorials"] ?? [];
   const scoop = articleCategories["Studio Scoop"] ?? [];
-  const miscellanious = articleCategories["Miscellanious"] ?? [];
+  const miscellaneous = articleCategories["Miscellaneous"] ?? [];
 
   const getMostRecent = (articles: NotionArticleSchema[]) =>
     [...articles].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0];
@@ -149,7 +149,7 @@ export default function Blog(props: BlogProps) {
   const highlight: (NotionArticleSchema | undefined)[] = [
     getMostRecent(tutorials),
     getMostRecent(scoop),
-    getMostRecent(miscellanious),
+    getMostRecent(miscellaneous),
   ];
 
   const highlightIds = new Set(
