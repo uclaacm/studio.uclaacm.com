@@ -23,7 +23,7 @@ export type Game = InternalGame | ExternalGame;
 const gamesUnsorted: Game[] = [
 	{
 		name: "Zandy's Zingers",
-		date: "7 May 2025",
+		date: "8 May 2025",
 		author: "Zandy Zhao",
 		categories: [
 			{
