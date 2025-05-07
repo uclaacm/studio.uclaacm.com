@@ -22,6 +22,33 @@ export type Game = InternalGame | ExternalGame;
 
 const gamesUnsorted: Game[] = [
 	{
+		name: "Zandy's Zingers",
+		date: "7 May 2025",
+		author: "Zandy Zhao",
+		categories: [
+			{
+				name: "Baddies (Female (THESE ARE NOT MY PERSONAL OPINIONS I DO NOT CLAIM THEM)",
+				difficulty: 1,
+				entries: ["Firefly (THE SUIT ONLY)", "Yuri Claude", "Scout's mom", "Grace Howard"],
+			},
+			{
+				name: "Bad Games",
+				difficulty: 2,
+				entries: ["Brawl Stars", "Valorant", "League of Legends", "Genshin Impact"],
+			},
+			{
+				name: "Baddies (Male) (these are facts)",
+				difficulty: 3,
+				entries: ["Zandy Zhao", "Neuvillette", "Solemn Lament Yi Sang", "bbno$"],
+			},
+			{
+				name: "Bad Feelings",
+				difficulty: 4,
+				entries: ["Letting go of a connection that could've easily been repaired with simply communication", "Missing a headshot", "Losing", "Playing Valorant"],
+			},
+		]
+	},
+	{
 		name: "Sparks Line(s) High",
 		date: "7 May 2025",
 		author: "Zandy Zhao",
