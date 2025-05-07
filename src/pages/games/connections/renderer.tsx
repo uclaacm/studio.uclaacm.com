@@ -60,7 +60,23 @@ export default function ConnectionsRenderer(props: ConnectionsRendererProps){
 
 	const [solvedCategories, setSolvedCategories] = React.useState<Category[]>([]);
 	const [selectedEntries, setSelectedEntries] = React.useState<string[]>([]);
-	const [oneAwaySnackbarOpen, setOneAwaySnackbarOpen] = React.useState(false);
+	const [submitInfoSnackbar, setSubmitInfoSnackbar] = React.useState<{
+		open: boolean,
+		oneAway?: boolean,
+		alreadySubmitted?: boolean,
+	}>({
+		open: false,
+		oneAway: false,
+		alreadySubmitted: false,
+	});
+
+	const setSubmitInfoSnackbarOpen = React.useCallback((open: boolean) => {
+		setSubmitInfoSnackbar(x => ({
+			...x,
+			open,
+		}));
+	}, [setSubmitInfoSnackbar]);
+
 	const [copySnackbar, setCopySnackbar] = React.useState<{
 		open: boolean,
 		message?: string,
@@ -128,21 +144,42 @@ export default function ConnectionsRenderer(props: ConnectionsRendererProps){
 	}
 
 	const submitEntries = () => {
-		const categories = selectedEntries.map(entry => entryCategoryMap[entry]);
+		// clone this because sorting mutates
+		const selected = [...selectedEntries].sort();
+
+		// see if history contains selectedEntries
+		const alreadySubmitted = history.current.some(entries => entries.every(entry => selected.includes(entry)));
+
+		const categories = selected.map(entry => entryCategoryMap[entry]);
 		const uniqueCategories = new Set(categories);
+		let oneAway = false;
 		if (uniqueCategories.size === 1) {
 			setSolvedCategories(x => [...x, categories[0]]);
-			setRemainingEntries(x => x.filter(entry => !selectedEntries.includes(entry)));
+			setRemainingEntries(x => x.filter(entry => !selected.includes(entry)));
 		}
 		else {
 			if (uniqueCategories.size === 2) {
 				if(categories.filter(c => c === categories[0]).length === 3){
-					setOneAwaySnackbarOpen(true);
+					oneAway = true;
 				}
 			}
 			setSelectedEntries([]);
 		}
-		history.current.push(selectedEntries.sort());
+
+		if (oneAway || alreadySubmitted) {
+			setSubmitInfoSnackbar(s => ({
+				...s,
+				open: true,
+				oneAway,
+				alreadySubmitted
+			}));
+		}
+
+		if (alreadySubmitted) {
+			return;
+		}
+
+		history.current.push(selected);
 		setSelectedEntries([]);
 		setNTries(x => x + 1);
 	}
@@ -193,18 +230,21 @@ export default function ConnectionsRenderer(props: ConnectionsRendererProps){
 			author={game.author}
 		/>
 		<Snackbar
-			open={oneAwaySnackbarOpen}
-			onClose={() => setOneAwaySnackbarOpen(false)}
+			open={submitInfoSnackbar.open}
+			onClose={() => setSubmitInfoSnackbarOpen(false)}
 			autoHideDuration={5000}
 			anchorOrigin={{ vertical: "top", horizontal: "center" }}
 		>
 			<Alert
-				onClose={() => setOneAwaySnackbarOpen(false)}
+				onClose={() => setSubmitInfoSnackbarOpen(false)}
 				severity="info"
 				variant="filled"
 				sx={{ width: '100%' }}
 			>
-				1 Away!
+				{ submitInfoSnackbar.oneAway
+					? submitInfoSnackbar.alreadySubmitted ? "1 Away! (Already submitted this combination!)" : "1 Away!"
+					: submitInfoSnackbar.alreadySubmitted ? "Already submitted this combination!" : "You shouldn't be able to see this message!"
+				}
 			</Alert>
 		</Snackbar>
 		<Snackbar
