@@ -22,6 +22,33 @@ export type Game = InternalGame | ExternalGame;
 
 const gamesUnsorted: Game[] = [
 	{
+		name: "Sparks Line(s) High",
+		date: "7 May 2025",
+		author: "Zandy Zhao",
+		categories: [
+			{
+				name: "Minos Prime",
+				difficulty: 1,
+				entries: ["Die", "Crush", "Thy end is now", "Weak"],
+			},
+			{
+				name: "Firefist Office Survivor Gregor",
+				difficulty: 2,
+				entries: ["They're all from our Office...", "What'd I say, big sis?", "... serve revenge piping hot!", "...I can almost see them again."],
+			},
+			{
+				name: "Silence (Arknights)",
+				difficulty: 3,
+				entries: ["Doctor, you're kinder these days.", "...This news brings me even greater joy than my promotion.", "Zzzz...", "My hope is to rid the world of Oripathy... even if it means risking my life in the process."],
+			},
+			{
+				name: "Dreadnought (Space Marines 2)",
+				difficulty: 4,
+				entries: ["Lead me to the slaughter.", "Vile sons of Magnus! Is he here!?", "...empty threats logged", "...I cast you DOWN!"],
+			},
+		]
+	},
+	{
 		name: "Enemies: Phase 2",
 		date: "5 May 2025",
 		author: "Andrew Douglas",
