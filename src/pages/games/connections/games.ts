@@ -22,6 +22,33 @@ export type Game = InternalGame | ExternalGame;
 
 const gamesUnsorted: Game[] = [
 	{
+		name: "Why did you curse me with \"natural born genius?\"",
+		date: "9 May 2025",
+		author: "Zandy Zhao",
+		categories: [
+			{
+				name: "Characters with Flamethrower Gauntlets/Attachments",
+				difficulty: 1,
+				entries: ["Firefist Office Survivor Gregor", "Optimus Prime", "Cad Bane", "Rumble"],
+			},
+			{
+				name: "Characters with a really cool sword",
+				difficulty: 2,
+				entries: ["LCB Sinner Faust", "Artoria Pendragon", "NAMELESS", "Guts"],
+			},
+			{
+				name: "Support Characters",
+				difficulty: 3,
+				entries: ["Rodian, Princess of La Manchaland", "Zenyatta", "Jeff the Shark", "Engineer (if you use his machine)"],
+			},
+			{
+				name: "Characters with dual guns",
+				difficulty: 4,
+				entries: ["Solemn Lament Yi Sang", "Dante (not the Limbus one)", "Marneus Calgar", "Billy Kid"],
+			},
+		]
+	},
+	{
 		name: "Zandy's Zingers",
 		date: "8 May 2025",
 		author: "Zandy Zhao",
