@@ -4,6 +4,7 @@ import GitHubIcon from "~/assets/images/icons/dev/GitHub.svg";
 
 export function getIconFromType(type: string): React.ReactNode | null {
   const theme = useTheme();
+  if (!type) return null;
   type = type.toLowerCase().replaceAll(/\W+/g, "");
   if (["itch", "itchio"].includes(type)) {
     return (
