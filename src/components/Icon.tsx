@@ -4,6 +4,7 @@ import IsaxIcon from "./IsaxIcon";
 import DiscordIcon from "~/assets/images/icons/dev/DiscordLogo.svg";
 import DiscordIconWhite from "~/assets/images/icons/dev/DiscordLogo-White.svg";
 import FacebookIcon from "~/assets/images/icons/dev/facebook.svg";
+import ItchIcon from "~/assets/images/icons/dev/itchio.svg";
 import Image from "next/image";
 import React from "react";
 
@@ -20,6 +21,9 @@ const imageIconMap = {
   },
   facebook: {
     DEFAULT: FacebookIcon,
+  },
+  itch: {
+    DEFAULT: ItchIcon,
   },
 } as const;
 

@@ -26,6 +26,7 @@ import MenuIcon from "~/assets/images/icons/menu.svg";
 import DiscordIcon from "~/assets/images/icons/dev/DiscordLogo.svg";
 import FacebookIcon from "~/assets/images/icons/dev/facebook.svg";
 import InstagramIcon from "~/assets/images/icons/dev/instagram.svg";
+import ItchIcon from "~/assets/images/icons/dev/itchio_black.svg";
 import { useRouter } from "next/router";
 import matchPath from "~/util/matchPath";
 import IsaxIcon from "./IsaxIcon";
@@ -223,6 +224,11 @@ const navBarSocials: NavBarSocials[] = [
     href: "https://discord.com/invite/bBk2Mcw",
     text: "Discord",
   },
+  {
+    icon: ItchIcon,
+    href: "https://acmstudio.itch.io/",
+    text: "Itch.io",
+  }
 ];
 
 export default function NavBar() {
