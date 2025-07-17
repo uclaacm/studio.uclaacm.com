@@ -297,7 +297,6 @@ export type NotionTOCRendererProps = {
 export function NotionTOCRenderer({
   blocks
 }: NotionTOCRendererProps) {
-  console.log(blocks);
   const headings = React.useMemo(() => {
     return blocks.filter((b): b is Extract<Block, { type: `heading_${number}` }> => b.type.startsWith("heading_"))
       .map((b) => getHeadingInfo(b))
