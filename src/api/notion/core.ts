@@ -62,6 +62,34 @@ export async function getDatabaseProperties({
   return (await client.databases.retrieve({ database_id })).properties;
 }
 
+export type GetBlockChildrenParams = {
+  blockID: string;
+};
+
+export async function getBlockChildren({
+  blockID,
+}: GetBlockChildrenParams): Promise<BlockObjectResponse[]> {
+  const results: ListBlockChildrenResponse["results"] = [];
+  let cursor: string = undefined;
+  while (true) {
+    const {
+      results: blockResults,
+      next_cursor,
+      has_more,
+    } = await client.blocks.children.list({
+      block_id: blockID,
+      start_cursor: cursor,
+    });
+    results.push(...blockResults);
+    if (has_more) {
+      cursor = next_cursor;
+    } else {
+      break;
+    }
+  }
+  return results.filter((v): v is BlockObjectResponse => "type" in v);
+}
+
 export type GetPageBlocksParams = {
   pageID: string;
 };
@@ -69,28 +97,18 @@ export type GetPageBlocksParams = {
 export async function getPageBlocks({
   pageID,
 }: GetPageBlocksParams): Promise<Block[]> {
-  const results: ListBlockChildrenResponse["results"] = [];
-  let cursor: string = undefined;
-  while (true) {
-    const {
-      results: pageResults,
-      next_cursor,
-      has_more,
-    } = await client.blocks.children.list({
-      block_id: pageID,
-      start_cursor: cursor,
-    });
-    results.push(...pageResults);
-    if (has_more) {
-      cursor = next_cursor;
-    } else {
-      break;
-    }
-  }
-  return results
-    .map((v) => {
-      if (!("type" in v)) return null;
+  const blocks = await getBlockChildren({ blockID: pageID });
 
+  // flattens nested blocks (tables) into unnested versions
+  const blocksFlattened = await Promise.all(blocks
+    .map(async (v) => {
+      if (v.type !== "table") return [v];
+      const tableRows = await getBlockChildren({ blockID: v.id });
+      return [v, ...tableRows];
+    })).then(nested => nested.flat());
+
+  return blocksFlattened
+    .map((v) => {
       const {
         object,
         parent,
@@ -101,7 +119,7 @@ export async function getPageBlocks({
         has_children,
         archived,
         ...rest
-      } = v as BlockObjectResponse;
+      } = v;
       return rest;
     })
     .filter((v) => v !== null);

@@ -1,4 +1,4 @@
-import { Box, Divider, SxProps, Typography, useTheme } from "@mui/material";
+import { Box, Divider, Paper, Stack, SxProps, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from "@mui/material";
 import { RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints";
 import { Block, getPlainText } from "~/api/notion/blocks";
 import Highlight from "./Highlight";
@@ -7,12 +7,29 @@ import Link from "./Link";
 import { BlockMath, InlineMath } from "react-katex";
 import React from "react";
 
+function getHeadingInfo(block: Extract<Block, { type: `heading_${number}` }>): { id: string, level: number, text: RichTextItemResponse[] } {
+  switch (block.type) {
+    case "heading_1":
+      return { id: block.id, level: 1, text: block.heading_1.rich_text };
+    case "heading_2":
+      return { id: block.id, level: 2, text: block.heading_2.rich_text };
+    case "heading_3":
+      return { id: block.id, level: 3, text: block.heading_3.rich_text };
+  }
+}
+
+function getIDFromText(text: string): string {
+  return text.replace(/\s+/g, "-").toLowerCase();
+}
+
 export type NotionRichTextRendererProps = {
   richText: RichTextItemResponse[];
+  forceBold?: boolean;
 };
 
 export function NotionRichTextRenderer({
   richText,
+  forceBold = false,
 }: NotionRichTextRendererProps) {
   return (
     <>
@@ -27,17 +44,17 @@ export function NotionRichTextRenderer({
           } else {
             const Container = v.text.link?.url
               ? ({ children }) => (
-                  <Link href={v.text.link.url} target="_blank">
-                    {children}
-                  </Link>
-                )
+                <Link href={v.text.link.url} target="_blank">
+                  {children}
+                </Link>
+              )
               : ({ children }) => <>{children}</>;
             return (
               <Container key={i}>
                 <Box
                   component="span"
                   sx={{
-                    fontWeight: v.annotations.bold ? "bold" : "normal",
+                    fontWeight: v.annotations.bold || forceBold ? "bold" : "normal",
                     fontStyle: v.annotations.italic ? "italic" : "normal",
                     textDecoration:
                       [
@@ -93,16 +110,16 @@ function NotionBlockRenderer(props: NotionBlockRendererProps) {
 
   const textTypeStyle: { [k: string]: SxProps } = {
     heading_1: {
-      marginTop: 4,
-      marginBottom: 2,
+      marginTop: 8,
+      marginBottom: 4,
     },
     heading_2: {
-      marginTop: 2,
-      marginBottom: 1,
+      marginTop: 6,
+      marginBottom: 2,
     },
     heading_3: {
-      marginTop: 1,
-      marginBottom: 1,
+      marginTop: 4,
+      marginBottom: 2,
     },
     paragraph: {
       marginBottom: 1,
@@ -123,6 +140,7 @@ function NotionBlockRenderer(props: NotionBlockRendererProps) {
         sx={{
           ...textTypeStyle[block.type]
         }}
+        id={getIDFromText(getPlainText(rt))}
       >
         <NotionRichTextRenderer richText={rt} />
       </Typography>
@@ -152,7 +170,7 @@ function NotionBlockRenderer(props: NotionBlockRendererProps) {
           display: "block",
           maxWidth: "75%",
           margin: "auto",
-          marginBottom: theme.spacing(2),
+          my: 8,
         }}
       >
         <img
@@ -206,6 +224,106 @@ function NotionBlockRenderer(props: NotionBlockRendererProps) {
   }
 }
 
+export type NotionTableRowRendererProps = {
+  row: Extract<Block, { type: "table_row" }>,
+  nColumnHeaders?: number,
+  header?: boolean,
+};
+
+export function NotionTableRowRenderer({
+  row,
+  nColumnHeaders = 0,
+  header = false,
+}: NotionTableRowRendererProps) {
+  return <TableRow>
+    {row.table_row.cells.map((cell, i) => {
+      const isHeader = header || i < nColumnHeaders;
+      return <TableCell key={i} sx={theme => ({
+        backgroundColor: isHeader ? `color-mix(in srgb, transparent, ${theme.palette.primary.main} 10%)` : "transparent",
+        // borderBottomColor: "primary.main",
+      })}>
+        <NotionRichTextRenderer richText={cell} forceBold={isHeader} />
+      </TableCell>
+    })}
+  </TableRow>
+}
+
+export type NotionTableRendererProps = {
+  table: Extract<Block, { type: "table" }>,
+  rows: Extract<Block, { type: "table_row" }>[],
+};
+
+export function NotionTableRenderer({
+  table,
+  rows,
+}: NotionTableRendererProps) {
+  // NOTE: has_column_header means that the first row is a header
+  // I don't know why it is called "column" header.
+  const nColumnHeaders = table.table.has_row_header ? 1 : 0;
+  const header = table.table.has_column_header ? [rows[0]] : [];
+  const body = rows.slice(header.length);
+
+  return (
+    <TableContainer component={Paper} sx={theme => ({
+      border: `2px solid`, borderColor: `color-mix(in srgb, transparent, ${theme.palette.primary.main} 25%)`,
+      width: "auto",
+      mx: "auto",
+      mt: 4,
+      mb: 8,
+      maxWidth: theme.breakpoints.values.md,
+    })}>
+      <Table>
+        {header.length > 0 && (
+          <TableHead>
+            {header.map((row) => (
+              <NotionTableRowRenderer key={row.id} row={row} nColumnHeaders={nColumnHeaders} header />
+            ))}
+          </TableHead>
+        )}
+        <TableBody>
+          {body.map((row) => (
+            <NotionTableRowRenderer key={row.id} row={row} nColumnHeaders={nColumnHeaders} />
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
+
+export type NotionTOCRendererProps = {
+  blocks: Block[],
+}
+
+export function NotionTOCRenderer({
+  blocks
+}: NotionTOCRendererProps) {
+  const headings = React.useMemo(() => {
+    return blocks.filter((b): b is Extract<Block, { type: `heading_${number}` }> => b.type.startsWith("heading_"))
+      .map((b) => getHeadingInfo(b))
+      .map(({text, ...rest}) => ({ plainText: getPlainText(text), ...rest }))
+  }, [blocks]);
+
+  return (
+    <Box component="nav">
+      <Stack component="ul" sx={{
+        pl: 0,
+      }}>
+        {headings.map((heading) => (
+          <Typography
+            variant="body2"
+            component="li"
+            key={heading.plainText}
+            sx={theme => ({
+              pl: theme.spacing(heading.level * 2),
+              listStyle: "inside",
+            })}
+          ><Link href={`#${getIDFromText(heading.plainText)}`}>{heading.plainText}</Link></Typography>
+        ))}
+      </Stack>
+  </Box>
+  );
+}
+
 export type NotionBlocksRendererProps = {
   blocks: Block[],
   renderOptions?: NotionBlockRenderOptions
@@ -217,7 +335,6 @@ export default function NotionBlocksRenderer({
 }: NotionBlocksRendererProps) {
   // notion returns each bulleted item individually
   // so the parent must add the <ul> (or <ol>)
-
   const preprocessedBlocks = React.useMemo(() => {
     return blocks.reduce<Block[][]>((acc, cur) => {
       if (acc.length === 0) {
@@ -232,6 +349,10 @@ export default function NotionBlocksRenderer({
           cur.type !== first.type
         ) {
           acc.push([cur]);
+        } else if ((cur.type === "table") || (first.type === "table" && cur.type !== "table_row")) {
+          acc.push([cur]);
+        } else if ((cur.type === "table_of_contents") || (first.type === "table_of_contents")) {
+          acc.push([cur]);
         } else {
           acc.at(-1).push(cur);
         }
@@ -242,17 +363,24 @@ export default function NotionBlocksRenderer({
 
   return (
     <>
-      {preprocessedBlocks.flatMap((blocks) => {
+      {preprocessedBlocks.flatMap((curBlocks) => {
+        const firstBlock = curBlocks[0];
+        if (firstBlock.type === "table") {
+          return <NotionTableRenderer table={firstBlock} rows={curBlocks.filter((b) => b.type === "table_row")} key={firstBlock.id} />;
+        }
+        if (firstBlock.type === "table_of_contents") {
+          return <NotionTOCRenderer blocks={blocks} key={firstBlock.id} />;
+        }
         const Container =
-          blocks[0].type === "bulleted_list_item"
+          firstBlock.type === "bulleted_list_item"
             ? ({ children }) => <ul>{children}</ul>
-            : blocks[0].type === "numbered_list_item"
-              ? ({ children }) => <ol>{children}</ol>
+            : firstBlock.type === "numbered_list_item"
+              ? ({ children }) => <ul>{children}</ul>
               : ({ children }) => <React.Fragment>{children}</React.Fragment>;
 
         return (
-          <Container key={blocks.at(0).id}>
-            {blocks.map((block) => (
+          <Container key={curBlocks.at(0).id}>
+            {curBlocks.map((block) => (
               <NotionBlockRenderer key={block.id} block={block} renderOptions={renderOptions} />
             ))}
           </Container>

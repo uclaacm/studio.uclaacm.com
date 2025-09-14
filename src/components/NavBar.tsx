@@ -214,11 +214,11 @@ const navBarSocials: NavBarSocials[] = [
     href: "https://www.instagram.com/acmstudio.ucla/",
     text: "Instagram",
   },
-  {
+  /*{
     icon: FacebookIcon,
     href: "https://www.facebook.com/groups/uclaacmstudio/",
     text: "Facebook",
-  },
+  },*/
   {
     icon: DiscordIcon,
     href: "https://discord.com/invite/bBk2Mcw",
