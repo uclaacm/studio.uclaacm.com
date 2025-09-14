@@ -73,7 +73,7 @@ export default function FiatLudum(props: HomeSectionProps) {
                     Join us for our Fall General Meeting!
                 </Typography>
                 <Typography variant='h3' textAlign='center'>
-                    on September 30th at 6PM
+                    on September 30th at 6PM, @ Ackerman Grand Ballroom
                 </Typography>
                 <Box
                     style={{
