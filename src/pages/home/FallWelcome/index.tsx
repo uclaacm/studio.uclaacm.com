@@ -11,6 +11,7 @@ import React from "react";
 import { HomeSectionProps } from "../../index.page";
 import Image from "next/image";
 import FallWelcomeArt from './fall-welcome.svg'
+import FallWelcomePhoneArt from './fall-welcome-phone.svg'
 import DiscordIcon from "~/assets/images/icons/dev/DiscordLogo-White.svg";
 
 export default function FiatLudum(props: HomeSectionProps) {
@@ -42,6 +43,7 @@ export default function FiatLudum(props: HomeSectionProps) {
     >
       <Stack
         sx={{
+          display: 'flex',
           height: "100%",
           alignItems: "center",
           pt: 16,
@@ -52,57 +54,84 @@ export default function FiatLudum(props: HomeSectionProps) {
         }}
       >
           <Box
-            sx={[
-            {
-              alignItems: 'center',
-              backgroundImage: `url("${FallWelcomeArt.src}")`,
-              backgroundSize: 'cover',
-              border: `4px solid ${theme.palette.secondary.light}`,
-              borderRadius: 1,
-              display: 'flex',
-              height: "100%",
-              justifyContent: 'center',
-              width: "90vw",
-            }
-          ]}>
-            <Box>
-                <Typography variant='h1' fontWeight='bold' textAlign='center' color={theme.palette.primary.main}
-                    style={{
-                    }}
-                >
-                    Join us for our Fall General Meeting!
-                </Typography>
-                <Typography variant='h3' textAlign='center'>
-                    on September 30th at 6PM, @ Ackerman Grand Ballroom
-                </Typography>
-                <Box
-                    style={{
-                        display: 'flex',
-                        gap: '1.5rem',
-                        justifyContent: 'center',
-                        marginTop: '2rem',
-                    }}
-                >
-                    <Button
-                        size={isMd ? "small" : "large"}
-                        href="https://discord.com/invite/bBk2Mcw"
-                        variant="contained"
+            sx={{
+                my: 'auto',
+                height: isMd ? 'auto' : '100%',
+            }}
+          >
+              <Image src={FallWelcomePhoneArt} alt='Welcome to ACM Studio'
+                style={{
+                    display: isMd ? 'block' : 'none',
+                    height: '20vh',
+                    width: '85vw',
+                }}
+              />
+              <Box
+                sx={[
+                {
+                  alignItems: isMd ? 'none' : 'center',
+                  backgroundImage: isMd ? 'none' : `url("${FallWelcomeArt.src}")`,
+                  backgroundPosition: 'center center',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundSize: isMd? '100%' : 'cover',
+                  border: isMd ? 'none' : `4px solid ${theme.palette.secondary.light}`,
+                  borderRadius: 1,
+                  display: 'flex',
+                  height: "100%",
+                  justifyContent: 'center',
+                  marginTop: isMd ? '-3vh' : 0,
+                  width: "90vw",
+                }
+              ]}>
+                <Box>
+                    <Typography variant='h1' fontWeight='bold' textAlign='center' color={theme.palette.primary.main}
+                        style={{
+                        }}
                     >
-                        <Image src={DiscordIcon} alt='Discord link'
-                            style={{
-                                marginRight: '0.5rem',
+                        Join us at our Fall General Meeting for Big ACM!
+                    </Typography>
+                    <Typography variant='h3' textAlign='center'>
+                        on September 30th at 6PM, @ Ackerman Grand Ballroom
+                    </Typography>
+                    <Box
+                        style={{
+                            alignItems: 'center',
+                            display: 'flex',
+                            flexDirection: isMd ? 'column' : 'row',
+                            gap: '1.5rem',
+                            justifyContent: 'center',
+                            marginTop: '2rem',
+                        }}
+                    >
+                        <Button
+                            size={isMd ? "medium" : "large"}
+                            href="https://discord.com/invite/bBk2Mcw"
+                            variant="contained"
+                            sx={{
+                                height: isMd ? '4rem' : 'auto',
+                                width: isMd ? '18rem' : 'auto',
                             }}
-                        ></Image> Find us on Discord
-                    </Button>
-                    <Button
-                        size={isMd ? "small" : "large"}
-                        href="https://acmstudio.carrd.co/?fbclid=PAZXh0bgNhZW0CMTEAAafjlegVdROgda4BRfDG9C76KgkzB4kgIZeH9jwAoZGqqow2x4f_S6NUbjWk6Q_aem_5vAwl4F_rOmAb3RDNZQVzA"
-                        variant="outlined"
-                    >
-                        Other links
-                    </Button>
+                        >
+                            <Image src={DiscordIcon} alt='Discord link'
+                                style={{
+                                    marginRight: '0.5rem',
+                                }}
+                            ></Image> Find us on Discord
+                        </Button>
+                        <Button
+                            size={isMd ? "medium" : "large"}
+                            href="https://acmstudio.carrd.co/?fbclid=PAZXh0bgNhZW0CMTEAAafjlegVdROgda4BRfDG9C76KgkzB4kgIZeH9jwAoZGqqow2x4f_S6NUbjWk6Q_aem_5vAwl4F_rOmAb3RDNZQVzA"
+                            variant="outlined"
+                            sx={{
+                                height: isMd ? '4rem' : 'auto',
+                                width: isMd ? '18rem' : 'auto',
+                            }}
+                        >
+                            Other links
+                        </Button>
+                    </Box>
                 </Box>
-            </Box>
+              </Box>
           </Box>
       </Stack>
     </Box>
