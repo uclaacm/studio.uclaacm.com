@@ -161,6 +161,21 @@ const eventSchemaBinding = {
   description: { source: "property", propertyName: "Description", type: "string" },
 } satisfies NotionSchemaBinding<NotionEventSchema>;
 
+// Database of a few upcoming events for the front page
+export type CurrentEventsSchema = {
+  title: string,
+  date: string,
+  location: string,
+  description: string,
+};
+
+const currentEventSchemaBinding = {
+  title: { source: 'property', propertyName: 'Event Title', type: 'string' },
+  date: { source: 'property', propertyName: 'Event Date/Time', type: 'string' },
+  location: { source: 'property', propertyName: 'Event Location', type: 'string' },
+  description: { source: 'property', propertyName: 'Description', type: 'string' },
+} satisfies NotionSchemaBinding<CurrentEventsSchema>;
+
 export async function getOfficers() {
   return querySchema<NotionOfficerSchema>(officerSchemaBinding, {
     database_id: databaseIDs.officers,
@@ -341,5 +356,11 @@ export async function getEvents(options: GetEventsOptions = {}) {
     filter: {
       and: filters,
     }
+  });
+}
+
+export async function getCurrentEvents() {
+  return querySchema<CurrentEventsSchema>(currentEventSchemaBinding, {
+    database_id: databaseIDs.currentEvents,
   });
 }

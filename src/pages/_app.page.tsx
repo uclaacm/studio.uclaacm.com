@@ -10,6 +10,9 @@ import "~/stylesheets/main.css";
 import "~/stylesheets/iconsax.css";
 import "~/stylesheets/highlight.css";
 
+import '@mantine/core/styles.css';
+import '@mantine/carousel/styles.css';
+
 import Layout from "~/components/Layout";
 import { InputProvider } from "~/components/Input";
 import Head from "next/head";
