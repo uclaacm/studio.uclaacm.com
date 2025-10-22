@@ -37,7 +37,7 @@ function CurrentEventsCarousel({ events }: CurrentEventProps) {
       nextControlIcon={<Image src={ArrowIcon} alt="previous" width={24} height={24} style={{ opacity: '0.8', transform: 'rotate(180deg)' }} />}
       withIndicators
       emblaOptions={{ loop: true }}
-      height={isMd ? '60vh' : '50vh'}
+      height={isMd ? '60dvh' : '50dvh'}
       slideGap='md'
       styles={{
         root: {
@@ -137,7 +137,7 @@ export default function CurrentEvents(props: HomeSectionProps & CurrentEventProp
       ref={root}
       sx={{
         width: "100%",
-        height: "100vh",
+        height: "100dvh",
         scrollSnapAlign: "start",
         position: "relative",
         display: "flex",
@@ -165,7 +165,7 @@ export default function CurrentEvents(props: HomeSectionProps & CurrentEventProp
           <Image src={FallWelcomePhoneArt} alt='Welcome to ACM Studio'
             style={{
                 display: isMd ? 'block' : 'none',
-                height: '20vh',
+                height: '20dvh',
                 marginBottom: '1rem',
                 marginLeft: 'auto',
                 marginRight: 'auto',
@@ -186,7 +186,7 @@ export default function CurrentEvents(props: HomeSectionProps & CurrentEventProp
               flexDirection: 'column',
               height: "100%",
               justifyContent: isMd ? 'center' : 'end',
-              marginTop: isMd ? '-9vh' : 0,
+              marginTop: isMd ? '-9dvh' : 0,
               paddingBottom: '2rem',
               width: "90vw",
             }
