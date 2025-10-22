@@ -37,7 +37,7 @@ function CurrentEventsCarousel({ events }: CurrentEventProps) {
       nextControlIcon={<Image src={ArrowIcon} alt="previous" width={24} height={24} style={{ opacity: '0.8', transform: 'rotate(180deg)' }} />}
       withIndicators
       emblaOptions={{ loop: true }}
-      height={'50vh'}
+      height={isMd ? '60vh' : '50vh'}
       slideGap='md'
       styles={{
         root: {
@@ -106,7 +106,7 @@ function CurrentEventsCarousel({ events }: CurrentEventProps) {
               <Typography variant='body2' textAlign='center'>
                 {ev.location}
               </Typography>
-              <Typography variant='body1' textAlign='center'>
+              <Typography variant={isMd? 'body2' : 'body1'} textAlign='center'>
                 {ev.description}
               </Typography>
             </Stack>
@@ -166,7 +166,10 @@ export default function CurrentEvents(props: HomeSectionProps & CurrentEventProp
             style={{
                 display: isMd ? 'block' : 'none',
                 height: '20vh',
-                width: '85vw',
+                marginBottom: '1rem',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                width: '75vw',
             }}
           />
           <Box
@@ -193,7 +196,7 @@ export default function CurrentEvents(props: HomeSectionProps & CurrentEventProp
               style={{
                   alignItems: 'center',
                   display: 'flex',
-                  flexDirection: isMd ? 'column' : 'row',
+                  flexDirection: 'row',
                   gap: '1.5rem',
                   justifyContent: 'center',
                   marginTop: '2rem',
@@ -212,7 +215,7 @@ export default function CurrentEvents(props: HomeSectionProps & CurrentEventProp
                       style={{
                           marginRight: '0.5rem',
                       }}
-                  ></Image> Find us on Discord
+                  ></Image> {isMd ? 'Discord' : 'Find us on Discord'}
               </Button>
               <Button
                   size={isMd ? "medium" : "large"}
