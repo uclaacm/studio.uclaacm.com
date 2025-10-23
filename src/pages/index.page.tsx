@@ -40,7 +40,7 @@ type UniqueHomeSectionProps = {
 export type HomeSectionProps = CommonHomeSectionProps & UniqueHomeSectionProps;
 
 export async function getStaticProps(): Promise<GetStaticPropsResult<HomeProps>> {
-  const events = await getCurrentEvents();
+  const events = await getCurrentEvents({ sortBy: 'dateSort', direction: 'ascending' });
   return {
     props: { events },
     revalidate: REVALIDATE_INTERVAL,

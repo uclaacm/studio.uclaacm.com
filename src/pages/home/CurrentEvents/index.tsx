@@ -79,6 +79,7 @@ function CurrentEventsCarousel({ events }: CurrentEventProps) {
               display: 'flex',
               height: '100%',
               justifyContent: 'center',
+              width: '100%',
             }}
           >
             <Box

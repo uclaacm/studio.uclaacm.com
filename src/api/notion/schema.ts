@@ -164,6 +164,7 @@ const eventSchemaBinding = {
 // Database of a few upcoming events for the front page
 export type CurrentEventsSchema = {
   title: string,
+  dateSort: string,
   date: string,
   location: string,
   description: string,
@@ -171,7 +172,8 @@ export type CurrentEventsSchema = {
 
 const currentEventSchemaBinding = {
   title: { source: 'property', propertyName: 'Event Title', type: 'string' },
-  date: { source: 'property', propertyName: 'Event Date/Time', type: 'string' },
+  dateSort: { source: 'property', propertyName: 'Event Date (Sort)', type: 'date' },
+  date: { source: 'property', propertyName: 'Event Date (Displayed)', type: 'string' },
   location: { source: 'property', propertyName: 'Event Location', type: 'string' },
   description: { source: 'property', propertyName: 'Description', type: 'string' },
 } satisfies NotionSchemaBinding<CurrentEventsSchema>;
@@ -359,8 +361,23 @@ export async function getEvents(options: GetEventsOptions = {}) {
   });
 }
 
-export async function getCurrentEvents() {
+export async function getCurrentEvents(options?: {
+  sortBy?: keyof CurrentEventsSchema;
+  direction: 'ascending' | 'descending';
+}) {
+  const { sortBy, direction } = options ?? {};
+
+  const sorts = sortBy
+    ? [
+        {
+          property: currentEventSchemaBinding[sortBy].propertyName,
+          direction,
+        },
+      ]
+    : undefined;
+
   return querySchema<CurrentEventsSchema>(currentEventSchemaBinding, {
     database_id: databaseIDs.currentEvents,
+    sorts,
   });
 }
