@@ -22,87 +22,6 @@ export type Game = InternalGame | ExternalGame;
 
 const gamesUnsorted: Game[] = [
 	{
-		name: "Why did you curse me with \"natural born genius?\"",
-		date: "9 May 2025",
-		author: "Zandy Zhao",
-		categories: [
-			{
-				name: "Characters with Flamethrower Gauntlets/Attachments",
-				difficulty: 1,
-				entries: ["Firefist Office Survivor Gregor", "Optimus Prime", "Cad Bane", "Rumble"],
-			},
-			{
-				name: "Characters with a really cool sword",
-				difficulty: 2,
-				entries: ["LCB Sinner Faust", "Artoria Pendragon", "NAMELESS", "Guts"],
-			},
-			{
-				name: "Support Characters",
-				difficulty: 3,
-				entries: ["Rodian, Princess of La Manchaland", "Zenyatta", "Jeff the Shark", "Engineer (if you use his machine)"],
-			},
-			{
-				name: "Characters with dual guns",
-				difficulty: 4,
-				entries: ["Solemn Lament Yi Sang", "Dante (not the Limbus one)", "Marneus Calgar", "Billy Kid"],
-			},
-		]
-	},
-	{
-		name: "Zandy's Zingers",
-		date: "8 May 2025",
-		author: "Zandy Zhao",
-		categories: [
-			{
-				name: "Baddies (Female (THESE ARE NOT MY PERSONAL OPINIONS I DO NOT CLAIM THEM)",
-				difficulty: 1,
-				entries: ["Firefly (THE SUIT ONLY)", "Yuri Claude", "Scout's mom", "Grace Howard"],
-			},
-			{
-				name: "Bad Games",
-				difficulty: 2,
-				entries: ["Brawl Stars", "Valorant", "League of Legends", "Genshin Impact"],
-			},
-			{
-				name: "Baddies (Male) (these are facts)",
-				difficulty: 3,
-				entries: ["Zandy Zhao", "Neuvillette", "Solemn Lament Yi Sang", "bbno$"],
-			},
-			{
-				name: "Bad Feelings",
-				difficulty: 4,
-				entries: ["Letting go of a connection that could've easily been repaired with simply communication", "Missing a headshot", "Losing", "Playing Valorant"],
-			},
-		]
-	},
-	{
-		name: "Sparks Line(s) High",
-		date: "7 May 2025",
-		author: "Zandy Zhao",
-		categories: [
-			{
-				name: "Minos Prime",
-				difficulty: 1,
-				entries: ["Die", "Crush", "Thy end is now", "Weak"],
-			},
-			{
-				name: "Firefist Office Survivor Gregor",
-				difficulty: 2,
-				entries: ["They're all from our Office...", "What'd I say, big sis?", "... serve revenge piping hot!", "...I can almost see them again."],
-			},
-			{
-				name: "Silence (Arknights)",
-				difficulty: 3,
-				entries: ["Doctor, you're kinder these days.", "...This news brings me even greater joy than my promotion.", "Zzzz...", "My hope is to rid the world of Oripathy... even if it means risking my life in the process."],
-			},
-			{
-				name: "Dreadnought (Space Marines 2)",
-				difficulty: 4,
-				entries: ["Lead me to the slaughter.", "Vile sons of Magnus! Is he here!?", "...empty threats logged", "...I cast you DOWN!"],
-			},
-		]
-	},
-	{
 		name: "Enemies: Phase 2",
 		date: "5 May 2025",
 		author: "Andrew Douglas",
@@ -289,33 +208,6 @@ const gamesUnsorted: Game[] = [
 				name: "GAMES THAT CAN BE VERY FRUSTRATING TO PLAY DEPENDING ON YOUR TEAMMATES",
 				difficulty: 4,
 				entries: ["MARVEL RIVALS", "BRAWL STARS", "TITANFALL 2", "DEEP ROCK GALACTIC"],
-			},
-		],
-	},
-	{
-		name: "Word",
-		date: "12 January 2025",
-		author: "Aubrey Clark",
-		categories: [
-			{
-				name: "Ore in Minecraft",
-				difficulty: 1,
-				entries: ["Copper", "Gold", "Emerald", "Diamond"],
-			},
-			{
-				name: "Pokemon Games",
-				difficulty: 2,
-				entries: ["X", "Shield", "White", "Red"],
-			},
-			{
-				name: "Words in Legend of Zelda Games",
-				difficulty: 3,
-				entries: ["Sword", "Wind", "Breath", "Tears"],
-			},
-			{
-				name: "First Words in 2024 Game Awards Winners",
-				difficulty: 4,
-				entries: ["Arkham", "Metaphor", "Black", "Astro"],
 			},
 		],
 	},
