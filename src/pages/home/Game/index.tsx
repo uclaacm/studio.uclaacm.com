@@ -7,10 +7,10 @@ import { HomeSectionProps } from "../../index.page";
 import Link from "~/components/Link";
 import Image from "next/image";
 
-import GameLogo from "./dbtb.webp"
+import GameLogo from "./oitc.webp"
 
-const itchUrl = `https://dubiousduck.itch.io/dont-break-the-bicycle`;
-const jamUrl = `https://itch.io/jam/studio-jam-2024`;
+const itchUrl = `https://jomnaq.itch.io/one-in-the-chamber`;
+const jamUrl = `https://itch.io/jam/studio-jam-2025`;
 
 export default function HomeGame(props: HomeSectionProps) {
   const [loaded, setLoaded] = React.useState(false);
@@ -34,7 +34,7 @@ export default function HomeGame(props: HomeSectionProps) {
 
   React.useEffect(() => {
     if(!iframe) return;
-    console.log("HI");
+    //console.log("HI");
     if(iframe.contentDocument.readyState === "complete"){
       setCanvas(iframe.contentDocument.querySelector("canvas"));
     }
@@ -85,43 +85,49 @@ export default function HomeGame(props: HomeSectionProps) {
       gap: 2,
       mx: "auto",
       maxWidth: theme.breakpoints.values.md,
+      //mb: 6,
     }}
   >
     <Stack>
       <Typography variant="label" textAlign="center">
-        Studio Jam 2024 Winner!
+        Studio Jam 2025 Winner!
       </Typography>
       <Link href={itchUrl} textAlign="center">
         <Typography variant="h3" textAlign="center" fontWeight="bold">
-          Don't Break the Bicycle
+          One in the Chamber
         </Typography>
       </Link>
       <Typography variant="caption" textAlign="center">
-        Theme: Break the Cycle
+        Theme: You Only Have One
       </Typography>
     </Stack>
     <Box sx={{
       display: "grid",
-      grid: "1fr / 1fr",
+      gridTemplateColumns: "1fr 1fr",
+      gridTemplateRows: "1fr 1fr",
       borderRadius: 1,
       overflow: "clip",
+      width: '90%',
+      height: '90%',
+      marginBottom: 3,
     }}>
-      <Box component={Image} src={GameLogo} alt="Don't Break the Bicycle"
+      <Box component={Image} src={GameLogo} alt="One in the Chamber"
         sx={{
-          height: "auto",
-          maxWidth: "100%",
-          gridRow: "1 / 1",
-          gridColumn: "1 / 1",
+          height: "100%",
+          width: "100%",
+          //maxWidth: "100%",
+          gridRow: "1 / 3",
+          gridColumn: "1 / 3",
         }}
       />
       <Button
         variant="contained"
         onClick={() => setLoaded(true)}
         sx={{
-          alignSelf: "center",
-          justifySelf: "center",
-          gridRow: "1 / 1",
-          gridColumn: "1 / 1",
+          gridRow: "1 / 3",
+          gridColumn: "1 / 3",
+          placeSelf: "center",
+          zIndex: 1,
         }}
       >Play game</Button>
     </Box>
@@ -142,7 +148,7 @@ export default function HomeGame(props: HomeSectionProps) {
       {loaded && <Box
         ref={setIframe}
         component="iframe"
-        src={"/game-jam-winners/dbtb/index.html"}
+        src={"/game-jam-winners/oitc/index.html"}
         sx={{
           width: "100%",
           height: "100%",
@@ -253,8 +259,8 @@ export default function HomeGame(props: HomeSectionProps) {
               variants={typographyItem}
               sx={{ p: 1, }}
             >
-              <Link href={itchUrl}><em>Don't Break the Bicycle</em></Link> is
-              the winner to ACM Studio's first <Link href={jamUrl}><em>Studio Jam!</em></Link>
+              <Link href={itchUrl}><em>One in the Chamber</em></Link> is
+              the winner to ACM Studio's second <Link href={jamUrl}><em>Studio Jam!</em></Link>
               {" "}Participate in future Studio Jams for a chance
               to win prizes and have your game featured on our website!
             </Typography>

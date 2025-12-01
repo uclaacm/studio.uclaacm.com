@@ -12,6 +12,8 @@ import {
   CurrentEventsSchema
 } from "~/api/notion/schema";
 
+
+//in future, don't delete from here, just comment out or un comment / reorder
 import CurrentEvents from "./home/CurrentEvents";
 import Logline from "./home/Logline";
 import Mission from "./home/Mission";
@@ -19,10 +21,11 @@ import HomeNavigation from "./home/HomeNavigation";
 import Workshops from "./home/Events/Workshops";
 import GameJams from "./home/Events/GameJams";
 import Socials from "./home/Events/Socials";
-import SpeakerEvents from "./home/Events/SpeakerEvents";
+import SpeakerEvents from "./home/Events/SpeakerEvents"; 
 import E1 from "./home/Events/E1";
 import SRS from "./home/Events/SRS";
 import Metadata from "~/components/Metadata";
+import HomeGame from "./home/Game";
 
 type HomeProps = {
   events: CurrentEventsSchema[];
@@ -77,7 +80,9 @@ export const homeEventSections: HomeSection[] = [
   },
 ];
 
+//in future, don't delete from here, just comment out or un comment / reorder 
 export const homeSections: HomeSection[] = [
+  { title: "Game Showcase", Render: HomeGame, props: { id: "game-showcase" } },
   { title: "Current Events", Render: CurrentEvents, props: { id: "current-events" } },
   { title: "Logline", Render: Logline, props: { id: "logline" } },
   { title: "Mission", Render: Mission, props: { id: "mission" } },

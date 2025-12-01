@@ -5,7 +5,7 @@
     "@emotion/styled": "^11.10.6",
     "@fontsource/poppins": "^5.1.0",
     "@mantine/carousel": "^8.3.5",
-    "@mantine/core": "^8.3.5",
+    "@mantine/core": "^8.3.9",
     "@mantine/hooks": "^8.3.5",
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
