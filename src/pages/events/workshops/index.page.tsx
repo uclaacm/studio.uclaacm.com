@@ -93,6 +93,14 @@ export default function Workshops(props: WorkshopsProps) {
     return dayOrder.indexOf(a) - dayOrder.indexOf(b);
   });
 
+  days.forEach((day, index) => {
+    if(day == "Invalid Date")
+      {
+        days.splice(index, 1)
+      }
+
+  })
+
   return (
     <Container
       maxWidth="md"
@@ -124,6 +132,7 @@ export default function Workshops(props: WorkshopsProps) {
             Week
           </Typography>
           {days.map((day) => (
+            
             <Typography key={day} variant="title2" textAlign="center">
               {day}
             </Typography>

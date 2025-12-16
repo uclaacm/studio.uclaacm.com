@@ -41,7 +41,7 @@ type TutorialItemProps = {
 
 export const categoryBaseUrlMap = {
   "Byte Sized Tutorials": "byte-sized-tutorials",
-  "Studio Scoop": "studio-scoop",
+  "Studio Scoop": "studio-scoops",
   "Miscellaneous": "articles",
   "Sblog": "sblog",
 };
@@ -80,6 +80,7 @@ function ArticleEntry(props: TutorialItemProps) {
           alt=""
           sx={{
             width: "100%",
+            height: "100%",
             objectFit: "contain",
             aspectRatio: "16/9",
             borderRadius: 1,

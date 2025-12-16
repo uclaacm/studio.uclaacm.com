@@ -2,10 +2,10 @@ import { createGetStaticProps } from "~/components/ArticleListBackend";
 import ArticleList from "~/components/ArticleListFrontend";
 
 export const getStaticProps = createGetStaticProps({
-  category: "byteSizedTutorials",
+  category: "miscellaneous",
 });
 
 export default ArticleList({
-  collectionName: "Byte Sized Tutorials",
-  baseUrl: "byte-sized-tutorials",
+  collectionName: "Miscellaneous",
+  baseUrl: "articles",
 });

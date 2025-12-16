@@ -39,23 +39,18 @@ function ArticleEntry({ article, baseUrl }: ArticleEntryProps) {
         })}
       >
         <Box
-          sx={{
-            width: "100%",
-            padding: 2,
-          }}
-        >
-          <img
-            src={imageUrl}
-            alt=""
-            style={{
-              minHeight: 0,
-              minWidth: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "contain",
-            }}
-          ></img>
-        </Box>
+                  component="img"
+                  src={imageUrl}
+                  alt=""
+                  sx={{
+                    width: "100%",
+                    objectFit: "contain",
+                    aspectRatio: "16/9",
+                    borderRadius: 1,
+                    overflow: "clip",
+                    display: "block",
+                  }}
+                />
         <Box>
           <Typography
             variant="h3"

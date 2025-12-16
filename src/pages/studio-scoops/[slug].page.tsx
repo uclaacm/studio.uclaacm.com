@@ -10,13 +10,13 @@ import { ArticleRenderer } from "~/components/ArticleFrontend";
 // 	category: "byteSizedTutorials",
 // })
 export const getStaticProps = createGetStaticProps({
-  category: "byteSizedTutorials",
+  category: "scoop",
 });
 
 export const getStaticPaths = createGetStaticPaths({
-  category: "byteSizedTutorials",
+  category: "scoop",
 });
 
 export default ArticleRenderer({
-  baseUrl: "/byte-sized-tutorials",
+  baseUrl: "/studio-scoops",
 });

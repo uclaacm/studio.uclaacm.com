@@ -6,10 +6,10 @@ import ArticleList from "~/components/ArticleListFrontend";
 // 	category: "byteSizedTutorials",
 // });
 export const getStaticProps = createGetStaticProps({
-  category: "byteSizedTutorials",
+  category: "scoop",
 });
 
 export default ArticleList({
-  collectionName: "Byte Sized Tutorials",
-  baseUrl: "byte-sized-tutorials",
+  collectionName: "Studio Scoop",
+  baseUrl: "studio-scoops",
 });
