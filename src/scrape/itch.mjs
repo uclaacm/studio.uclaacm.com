@@ -140,7 +140,7 @@ function getImageConversionCommand(from, to, options){
 	if (commandCache !== null) {
 		if(commandCache.command === "magick"){
 			const flags = ``;
-			return `${commandCache.path} convert ${from} ${to} ${flags}`;
+			return `${commandCache.path} ${from} ${to} ${flags}`;
 		}
 		else if (commandCache.command === "cwebp"){
 			const flags = `${options?.quiet ? "-quiet" : ""}`
