@@ -1,2 +1,5 @@
 [build]
 command = "yarn build:server"
+
+[build.environment]
+SECRETS_SCAN_SMART_DETECTION_OMIT_VALUES = "AIzaSyAJm9b5oQP8TJIg7I6w9WROeFjTJJ4semE"
