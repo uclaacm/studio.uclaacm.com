@@ -56,8 +56,5 @@
     "install-deps:server": "bash ./install-deps.sh",
     "build:server": "yarn install-deps:server && yarn build",
     "optimize-images": "node util/optimize-static-images.mjs"
-  },
-  "engines": {
-  "node": ">=20.9.0"
   }
 }
