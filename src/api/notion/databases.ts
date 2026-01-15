@@ -5,5 +5,5 @@ export const databaseIDs = {
   debugArticles: "457c5b5607df4219a8640d78d20b0962",
   events: "14559cee2cd3803a88a9ef31032830a1",
   currentEvents: "29559cee2cd3819b86bdcd613a50a94d",
-  srsTeams: "17159cee2cd38045a00dccee1e3fa398",
+  srsTeams: "2e959cee2cd3804ba5a9c80b79259ccc",
 };

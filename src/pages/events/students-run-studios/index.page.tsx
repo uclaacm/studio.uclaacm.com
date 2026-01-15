@@ -486,7 +486,7 @@ export default function SRSInfo(props: SRSProps) {
             variant="display2"
             mb={2}
           >
-            Current Cycle (2025)
+            Current Cycle (2026)
           </Typography>
           <Typography variant="body1">
             Meet our teams this year!
