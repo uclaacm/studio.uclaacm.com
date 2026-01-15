@@ -48,63 +48,49 @@ type ScheduleCardData = {
 const scheduleCards: ScheduleCardData[] = [
   {
     quarter: "Fall",
-    week: "Week 3",
-    date: new Date("19 Oct 2024"),
-    title: "Team Lead Seminar",
+    week: "Week 4",
+    date: new Date("23 Oct 2025"),
+    title: "SRS Team Lead Interest Day",
     description: "Learn how to create a marketable idea and pitch it to the club!",
   },
   {
     quarter: "Fall",
     week: "Week 4",
-    date: new Date("24 Oct 2024"),
-    title: "Team Lead Seminar",
-    description: "Learn how to create a marketable idea and pitch it to the club!",
-  },
-  {
-    quarter: "Fall",
-    week: "Week 4",
-    date: new Date("26 Oct 2024"),
-    title: "Team Lead Seminar",
-    description: "Learn how to manage a team and create a project timeline.",
-  },
-  {
-    quarter: "Fall",
-    week: "Week 4",
-    date: new Date("26 Oct 2024"),
+    date: new Date("23 Oct 2025"),
     title: "Team Lead Applications Open",
     description: "",
   },
   {
     quarter: "Fall",
     week: "Week 6",
-    date: new Date("9 Nov 2024"),
+    date: new Date("7 Nov 2025"),
     title: "Team Lead Applications Close",
     description: "",
   },
   {
     quarter: "Winter",
-    week: "Week 0",
-    date: new Date("3 Jan 2025"),
+    week: "Week 2",
+    date: new Date("15 Jan 2026"),
     title: "Prototype Due",
     description: "Team leads will have to submit a prototype of their game idea.",
   },
   {
     quarter: "Winter",
-    week: "Week 3",
-    date: new Date("23 Jan 2025 18:30:00 PST"),
-    end: new Date("23 Jan 2025 21:00:00 PST"),
+    week: "Week 2",
+    date: new Date("15 Jan 2026 18:00:00 PST"),
+    end: new Date("15 Jan 2026 20:00:00 PST"),
     time: true,
     title: "Pitch Event",
     location: {
-      name: "Engineering VI: Mong Learning Center",
-      href: "https://maps.app.goo.gl/ZXu4RQpsPmdBZt7g6",
+      name: "Dodd Hall 146",
+      href: "https://maps.app.goo.gl/kQnEhG5vLVa2ZfZu7",
     },
     description: "Team leads will present their game ideas to the club",
   },
   {
     quarter: "Winter",
     week: "Week 3",
-    date: new Date("23 Jan 2025"),
+    date: new Date("15 Jan 2026"),
     title: "Member Applications Open",
     description: "Members can request to join a team",
     link: {
@@ -115,29 +101,29 @@ const scheduleCards: ScheduleCardData[] = [
   },
   {
     quarter: "Winter",
-    week: "Week 4",
-    date: new Date("31 Jan 2025"),
+    week: "Week 3",
+    date: new Date("23 Jan 2026"),
     title: "Member Applications Close",
     description: "",
   },
   {
     quarter: "Winter",
     week: "Week 4",
-    date: new Date("2 Feb 2025"),
+    date: new Date("25 Jan 2026"),
     title: "Teams Announced",
     description: "",
   },
   {
     quarter: "Winter",
-    week: "Week 5",
-    date: new Date("4 Feb 2025"),
+    week: "Week 4",
+    date: new Date("27 Jan 2026"),
     title: "Kickoff",
     description: "Meet your team and start working on your game",
   },
   {
     quarter: "Winter",
-    week: "TBD",
-    date: "TBD",
+    week: "Week 10",
+    date: new Date("12 March 2026"),
     title: "Winter Showcase",
     description: "Showcase your progress during winter quarter",
   },
@@ -251,19 +237,19 @@ export default function SRSInfo(props: SRSProps) {
             concept into reality!
           </Typography>
           <Typography>
-            Last year, we had over 100 students collaborate to make
-            11 finished games, all of which you can play on the
+            Last year, we had students collaborate to make
+            7 finished games, some of which you can play on the
             official itch.io site!
           </Typography>
         </Stack>
         <Button
           variant="contained"
-          href="https://itch.io/c/4447548/students-run-studios-2024"
+          href="https://itch.io/c/5885402/student-run-studios-2025"
           sx={{
             alignSelf: "start",
           }}
         >
-          See the 2024 entries on itch.io!
+          See the 2025 entries on itch.io!
         </Button>
         <Typography
           component="h2"
