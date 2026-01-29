@@ -26,6 +26,7 @@ import E1 from "./home/Events/E1";
 import SRS from "./home/Events/SRS";
 import Metadata from "~/components/Metadata";
 import HomeGame from "./home/Game";
+import Banner from "./home/Banner";
 
 type HomeProps = {
   events: CurrentEventsSchema[];
@@ -128,6 +129,7 @@ export default function Home({ events }: HomeProps) {
             );
           })}
           ;
+          <Banner></Banner>
         </Box>
       </Box>
     </MantineProvider>
