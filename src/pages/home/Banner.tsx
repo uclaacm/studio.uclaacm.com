@@ -7,6 +7,7 @@ import SportsEsportsIcon from '@mui/icons-material/SportsEsports'
 import InstagramIcon from '@mui/icons-material/Instagram'
 import VideogameAssetIcon from '@mui/icons-material/VideogameAsset'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 
 export default function Banner() {
   const [isVisible, setIsVisible] = useState(true)
@@ -106,11 +107,12 @@ export default function Banner() {
         borderBottom: '2px solid #f8bbd0',
         boxShadow: isHovered ? '0 4px 12px rgba(216, 27, 96, 0.15)' : '0 2px 4px rgba(0,0,0,0.1)',
         overflow: 'hidden',
-        maxHeight: isHovered ? '180px' : '32px',
+        maxHeight: isHovered ? '180px' : '62px',
         transition: theme.transitions.create(['max-height', 'box-shadow'], {
           duration: 500,
           easing: isHovered ? theme.transitions.easing.easeOut : theme.transitions.easing.easeInOut,
         }),
+        cursor: isHovered ? 'default' : 'pointer',
         '&::before': {
           content: '""',
           position: 'absolute',
@@ -178,29 +180,61 @@ export default function Banner() {
             Join ACM Studio!
           </Typography>
 
+          {/* Tagline - always visible */}
+          <Typography
+            sx={{
+              color: 'text.secondary',
+              fontSize: { xs: '0.65rem', md: '0.75rem' },
+              lineHeight: 1.3,
+              fontStyle: 'italic',
+              mt: 0.25,
+            }}
+          >
+            Keep up to date with all our latest events.
+          </Typography>
+
+          {/* Hover indicator - disappears when expanded */}
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              mt: 0,
+              opacity: isHovered ? 0 : 1,
+              maxHeight: isHovered ? '0' : '16px',
+              overflow: 'visible',
+              transition: 'opacity 0.3s ease-in-out, max-height 0.3s ease-in-out',
+            }}
+          >
+            <KeyboardArrowDownIcon
+              sx={(theme) => ({
+                fontSize: '1rem',
+                color: theme.palette.primary.main,
+                animation: 'bounce 2s infinite',
+                '@keyframes bounce': {
+                  '0%, 100%': {
+                    transform: 'translateY(0)',
+                  },
+                  '50%': {
+                    transform: 'translateY(3px)',
+                  },
+                },
+              })}
+            />
+          </Box>
+
+          {/* Expanded content */}
           <Box
             sx={{
               opacity: isHovered ? 1 : 0,
               maxHeight: isHovered ? '150px' : '0',
-              overflow: 'hidden',
+              overflow: 'visible',
               transition: isHovered 
                 ? 'opacity 0.3s ease-out 0.05s, max-height 0.5s ease-out'
                 : 'opacity 0.3s ease-in 0.1s, max-height 0.5s ease-in-out',
               mt: isHovered ? 1 : 0,
             }}
           >
-            <Typography
-              sx={{
-                color: 'text.secondary',
-                fontSize: { xs: '0.7rem', md: '0.8rem' },
-                lineHeight: 1.3,
-                mb: 1,
-                fontStyle: 'italic',
-              }}
-            >
-              Keep up to date with all our latest events.
-            </Typography>
-            
             <Box sx={{ mb: 1 }}>
               <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, flexWrap: 'wrap' }}>
                 {linksRow1.map((link, index) => (
