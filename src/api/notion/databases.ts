@@ -6,4 +6,5 @@ export const databaseIDs = {
   events: "14559cee2cd3803a88a9ef31032830a1",
   currentEvents: "29559cee2cd3819b86bdcd613a50a94d",
   srsTeams: "2e959cee2cd3804ba5a9c80b79259ccc",
+  banner: "2f759cee2cd380c2be77ffa4088bc390",
 };

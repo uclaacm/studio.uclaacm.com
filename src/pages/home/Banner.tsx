@@ -8,13 +8,23 @@ import InstagramIcon from '@mui/icons-material/Instagram'
 import VideogameAssetIcon from '@mui/icons-material/VideogameAsset'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import { getBannerLinks, NotionBannerLinksSchema } from '~/api/notion/schema'
+import { GetStaticProps } from "next";
+import { REVALIDATE_INTERVAL } from "~/Env";
 
-export default function Banner() {
+
+
+export type BannerProps = {
+  links: NotionBannerLinksSchema[];
+};
+
+
+export default function Banner(props: BannerProps) {
   const [isVisible, setIsVisible] = useState(true)
   const [isLoading, setIsLoading] = useState(true)
   const [isHovered, setIsHovered] = useState(false)
 
-  const linksRow1 = [
+  /*const linksRow1 = [
     {
       text: 'SRS Signup Form',
       href: 'https://forms.gle/4crduK38zV62n52n8',
@@ -25,7 +35,9 @@ export default function Banner() {
       href: 'https://forms.gle/sEWCKc8NT1uuGkup9',
       icon: <SportsEsportsIcon sx={{ fontSize: '1rem' }} />
     },
-  ]
+  ]*/
+
+  const {links} = props;
 
   const DiscordIcon = () => (
     <svg
@@ -237,10 +249,10 @@ export default function Banner() {
           >
             <Box sx={{ mb: 1 }}>
               <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, flexWrap: 'wrap' }}>
-                {linksRow1.map((link, index) => (
+                {links.map((link, index) => (
                   <Link
                     key={index}
-                    href={link.href}
+                    href={link.url}
                     sx={(theme) => ({
                       display: 'inline-flex',
                       alignItems: 'center',
@@ -262,7 +274,7 @@ export default function Banner() {
                       },
                     })}
                   >
-                    {link.icon}
+                    {<EditIcon sx={{ fontSize: '1rem' }} />}
                     <span>{link.text}</span>
                   </Link>
                 ))}
