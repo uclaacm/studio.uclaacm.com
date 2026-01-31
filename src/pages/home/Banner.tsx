@@ -8,6 +8,7 @@ import InstagramIcon from '@mui/icons-material/Instagram'
 import VideogameAssetIcon from '@mui/icons-material/VideogameAsset'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import { getBannerLinks, NotionBannerLinksSchema } from '~/api/notion/schema'
 import { GetStaticProps } from "next";
 import { REVALIDATE_INTERVAL } from "~/Env";
@@ -103,7 +104,53 @@ export default function Banner(props: BannerProps) {
     loadBannerState()
   }, [])
 
-  if (isLoading || !isVisible) return null
+  const handleReopen = () => {
+    setIsVisible(true)
+    try {
+      localStorage.removeItem('banner-closed')
+    } catch (error) {
+      console.error('Failed to remove banner state:', error)
+    }
+  }
+
+  if (isLoading) return null
+
+  // Reopen button when banner is closed
+  if (!isVisible) {
+    return (
+      <Box
+        sx={(theme) => ({
+          position: 'fixed',
+          top: 8,
+          right: 8,
+          zIndex: { xs: theme.zIndex.drawer - 10, md: theme.zIndex.drawer - 3 },
+        })}
+      >
+        <IconButton
+          onClick={handleReopen}
+          sx={(theme) => ({
+            width: 32,
+            height: 32,
+            bgcolor: 'rgba(248, 187, 208, 0.9)',
+            border: '2px solid #d81b60',
+            borderRadius: 2,
+            transition: theme.transitions.create(['background-color', 'transform', 'border-color'], {
+              duration: theme.transitions.duration.standard,
+            }),
+            '&:hover': {
+              bgcolor: '#f48fb1',
+              borderColor: '#c2185b',
+              boxShadow: 2,
+              transform: 'scale(1.1)',
+            },
+          })}
+          aria-label="Reopen banner"
+        >
+          <KeyboardArrowDownIcon sx={{ width: 20, height: 20, color: '#d81b60' }} />
+        </IconButton>
+      </Box>
+    )
+  }
 
   return (
     <Box
@@ -119,7 +166,7 @@ export default function Banner(props: BannerProps) {
         borderBottom: '2px solid #f8bbd0',
         boxShadow: isHovered ? '0 4px 12px rgba(216, 27, 96, 0.15)' : '0 2px 4px rgba(0,0,0,0.1)',
         overflow: 'hidden',
-        maxHeight: isHovered ? '180px' : '62px',
+        maxHeight: isHovered ? '200px' : '78px',
         transition: theme.transitions.create(['max-height', 'box-shadow'], {
           duration: 500,
           easing: isHovered ? theme.transitions.easing.easeOut : theme.transitions.easing.easeInOut,
@@ -168,8 +215,8 @@ export default function Banner(props: BannerProps) {
           maxWidth: '100%',
           mx: 'auto',
           px: 2,
-          pt: 0.5,
-          pb: isHovered ? 1 : 0.5,
+          pt: 1,
+          pb: isHovered ? 1.5 : 1,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -340,7 +387,7 @@ export default function Banner(props: BannerProps) {
           sx={(theme) => ({
             position: 'absolute',
             right: 8,
-            top: 6,
+            top: 8,
             width: 20,
             height: 20,
             bgcolor: 'rgba(248, 187, 208, 0.8)',
