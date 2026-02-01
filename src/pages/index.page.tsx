@@ -26,9 +26,12 @@ import E1 from "./home/Events/E1";
 import SRS from "./home/Events/SRS";
 import Metadata from "~/components/Metadata";
 import HomeGame from "./home/Game";
+import Banner from "./home/Banner";
+import { getBannerLinks, NotionBannerLinksSchema } from '~/api/notion/schema';
 
 type HomeProps = {
   events: CurrentEventsSchema[];
+  links: NotionBannerLinksSchema[];
 };
 
 type CommonHomeSectionProps = {
@@ -44,8 +47,9 @@ export type HomeSectionProps = CommonHomeSectionProps & UniqueHomeSectionProps;
 
 export async function getStaticProps(): Promise<GetStaticPropsResult<HomeProps>> {
   const events = await getCurrentEvents({ sortBy: 'dateSort', direction: 'ascending' });
+  const bannerLinks = await getBannerLinks();
   return {
-    props: { events },
+    props: { events, links: bannerLinks},
     revalidate: REVALIDATE_INTERVAL,
   };
 }
@@ -89,7 +93,7 @@ export const homeSections: HomeSection[] = [
   ...homeEventSections,
 ];
 
-export default function Home({ events }: HomeProps) {
+export default function Home({ events, links}: HomeProps) {
   const scrollContainer = React.useRef<HTMLElement | null>(null);
 
   const [activeSection, setActive] = React.useState("#game-showcase");
@@ -128,6 +132,7 @@ export default function Home({ events }: HomeProps) {
             );
           })}
           ;
+          <Banner links = {links}></Banner>
         </Box>
       </Box>
     </MantineProvider>

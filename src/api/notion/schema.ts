@@ -111,6 +111,16 @@ const socialLinksBinding: NotionSchemaBinding<NotionSocialLinksSchema> = {
   officer: { source: "property", propertyName: "Officer", type: "string" },
 };
 
+export type NotionBannerLinksSchema = {
+  text: string;
+  url: string;
+};
+
+const bannerLinksBinding: NotionSchemaBinding<NotionBannerLinksSchema> = {
+  text: {source: "property", propertyName: "Link Text", type: "string"},
+  url: {source: "property", propertyName: "URL", type: "url"}
+} satisfies NotionSchemaBinding<NotionBannerLinksSchema>;
+
 export type NotionArticleSchema = {
   notionID: string;
   id: string;
@@ -194,6 +204,11 @@ export async function getOfficerSocialLinks() {
   return querySchema<NotionSocialLinksSchema>(socialLinksBinding, {
     database_id: databaseIDs.socialLinks,
   });
+}
+
+export async function getBannerLinks()
+{
+  return querySchema<NotionBannerLinksSchema>(bannerLinksBinding, {database_id: databaseIDs.banner});
 }
 
 const articleCategorySelectMap = {
