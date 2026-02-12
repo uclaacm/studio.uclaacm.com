@@ -178,6 +178,8 @@ export type CurrentEventsSchema = {
   date: string,
   location: string,
   description: string,
+  linkText?: string,
+  linkURL?: string,
 };
 
 const currentEventSchemaBinding = {
@@ -186,6 +188,8 @@ const currentEventSchemaBinding = {
   date: { source: 'property', propertyName: 'Event Date (Displayed)', type: 'string' },
   location: { source: 'property', propertyName: 'Event Location', type: 'string' },
   description: { source: 'property', propertyName: 'Description', type: 'string' },
+  linkText: { source: 'property', propertyName: 'Link Text', type: 'string' },
+  linkURL: { source: 'property', propertyName: 'Link URL', type: 'url' },
 } satisfies NotionSchemaBinding<CurrentEventsSchema>;
 
 export async function getOfficers() {
