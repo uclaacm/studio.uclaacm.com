@@ -29,7 +29,7 @@ type CurrentEventProps = {
 function CurrentEventsCarousel({ events }: CurrentEventProps) {
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.down("md"));
-
+  console.log(events)
   return (
     <Carousel
       withControls
@@ -110,6 +110,30 @@ function CurrentEventsCarousel({ events }: CurrentEventProps) {
               <Typography variant={isMd? 'body2' : 'body1'} textAlign='center'>
                 {ev.description}
               </Typography>
+              {(ev.linkURL && ev.linkText) ? (
+              <Box
+              style={{
+                  alignItems: 'center',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  gap: '1.5rem',
+                  justifyContent: 'center',
+                  marginTop: '2rem',
+              }}
+              >
+                <Button
+                    size={isMd ? "small" : "medium"}
+                    href={ev.linkURL}
+                    variant="contained"
+                    sx={{
+                        height: isMd ? '4rem' : 'auto',
+                        width: isMd ? '18rem' : 'auto',
+                    }}
+                >
+                    {ev.linkText}
+                </Button>
+              </Box>
+              ) : null}
             </Stack>
           </Card>
         </Carousel.Slide>
