@@ -166,7 +166,7 @@ export default function Banner(props: BannerProps) {
         borderBottom: '2px solid #f8bbd0',
         boxShadow: isHovered ? '0 4px 12px rgba(216, 27, 96, 0.15)' : '0 2px 4px rgba(0,0,0,0.1)',
         overflow: 'hidden',
-        maxHeight: isHovered ? '200px' : '78px',
+        maxHeight: isHovered ? 'none' : '78px',
         transition: theme.transitions.create(['max-height', 'box-shadow'], {
           duration: 500,
           easing: isHovered ? theme.transitions.easing.easeOut : theme.transitions.easing.easeInOut,
@@ -286,7 +286,7 @@ export default function Banner(props: BannerProps) {
           <Box
             sx={{
               opacity: isHovered ? 1 : 0,
-              maxHeight: isHovered ? '150px' : '0',
+              maxHeight: isHovered ? 'none' : '0',
               overflow: 'visible',
               transition: isHovered 
                 ? 'opacity 0.3s ease-out 0.05s, max-height 0.5s ease-out'
