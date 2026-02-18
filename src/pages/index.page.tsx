@@ -86,7 +86,7 @@ export const homeEventSections: HomeSection[] = [
 
 //in future, don't delete from here, just comment out or un comment / reorder 
 export const homeSections: HomeSection[] = [
-  { title: "Game Showcase", Render: HomeGame, props: { id: "game-showcase" } },
+  //{ title: "Game Showcase", Render: HomeGame, props: { id: "game-showcase" } },
   { title: "Current Events", Render: CurrentEvents, props: { id: "current-events" } },
   { title: "Logline", Render: Logline, props: { id: "logline" } },
   { title: "Mission", Render: Mission, props: { id: "mission" } },

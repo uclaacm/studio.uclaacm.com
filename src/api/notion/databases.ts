@@ -1,5 +1,8 @@
 export const databaseIDs = {
   // database IDs are not private don't worry
+  // to find ID, on notion, go to share  -> copy link, and the last 36 chacarcters are ID
+  // ex: https://www.notion.so/{workspace_name}/{database_id}?v={view_id} 
+
   officers: "f82a1e06e36345088fa782632acf1dee",
   socialLinks: "71a67370c416472096621cbb25335ae4",
   debugArticles: "457c5b5607df4219a8640d78d20b0962",

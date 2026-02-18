@@ -41,9 +41,10 @@ type TutorialItemProps = {
 
 export const categoryBaseUrlMap = {
   "Byte Sized Tutorials": "byte-sized-tutorials",
-  "Studio Scoop": "studio-scoops",
+  //"Studio Scoop": "studio-scoops",
   "Miscellaneous": "articles",
-  "Sblog": "sblog",
+  //"Sblog": "sblog",
+  "League of Analysts": "league-of-analysts",
 };
 
 function ArticleEntry(props: TutorialItemProps) {
@@ -141,7 +142,8 @@ function ArticleEntry(props: TutorialItemProps) {
 export default function Blog(props: BlogProps) {
   const { articles, articleCategories } = props;
   const tutorials = articleCategories["Byte Sized Tutorials"] ?? [];
-  const scoop = articleCategories["Studio Scoop"] ?? [];
+  //const scoop = articleCategories["Studio Scoop"] ?? [];
+  const scoop = articleCategories["League of Analysts"] ?? [];
   const miscellaneous = articleCategories["Miscellaneous"] ?? [];
 
   const getMostRecent = (articles: NotionArticleSchema[]) =>

@@ -59,6 +59,10 @@ const navBarContents: NavBarContents[] = [
         href: "/srs",
       },
       {
+        text: "Game Jams",
+        href: "/game-jams",
+      },
+      {
         text: "Workshops",
         href: "/workshops",
       },

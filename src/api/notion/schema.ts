@@ -220,6 +220,7 @@ const articleCategorySelectMap = {
   scoop: "Studio Scoop",
   sblog: "Sblog", 
   miscellaneous: "Miscellaneous",
+  loa: "League of Analysts",
 } as const;
 
 export type ArticleCategory = keyof typeof articleCategorySelectMap;
