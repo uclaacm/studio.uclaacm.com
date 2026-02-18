@@ -102,20 +102,38 @@ export default function HomeGame(props: HomeSectionProps) {
       </Typography>
     </Stack>
     <Box sx={{
+      position: "relative",
       display: "grid",
       gridTemplateColumns: "1fr 1fr",
       gridTemplateRows: "1fr 1fr",
-      borderRadius: 1,
       overflow: "clip",
       width: '90%',
       height: '90%',
       marginBottom: 3,
+      borderRadius: 1,
     }}>
+      {/* Blurred background image */}
       <Box component={Image} src={GameLogo} alt="One in the Chamber"
         sx={{
+          position: "absolute",
+          filter: "blur(2px)",
+          objectFit: "cover",
           height: "100%",
           width: "100%",
-          //maxWidth: "100%",
+          justifySelf: "center",
+          alignSelf: "center",
+          zIndex: -1,
+          opacity: 0.2,
+        }}
+      />
+      <Box component={Image} src={GameLogo} alt="One in the Chamber"
+        sx={{
+          objectFit: "contain",
+          height: "max-content",
+          borderRadius: 1,
+          width: "100%",
+          justifySelf: "center",
+          alignSelf: "center",
           gridRow: "1 / 3",
           gridColumn: "1 / 3",
         }}
