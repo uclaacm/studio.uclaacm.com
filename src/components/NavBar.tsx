@@ -60,7 +60,7 @@ const navBarContents: NavBarContents[] = [
       },
       {
         text: "Game Jams",
-        href: "/game-jams",
+        href: "/events/game-jams",
       },
       {
         text: "Workshops",
