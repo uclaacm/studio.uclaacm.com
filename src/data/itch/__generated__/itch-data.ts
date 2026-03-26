@@ -1,216 +1,416 @@
-import img0_0 from "./images/Faithless.webp";
-import img0_1 from "./images/Manny_Takes_on_Upper_Management__Demo_.webp";
-import img1_0 from "./images/Rhythm_Realm__Dragon_Hymn.webp";
-import img1_1 from "./images/Reminiscence.webp";
-import img2_0 from "./images/SunRun.webp";
-import img2_1 from "./images/Evil_Farming_Game.webp";
-import img2_2 from "./images/Alien_Dog_Deportation.webp";
-import img2_3 from "./images/Her_Heart_s_in_the_cards.webp";
-import img3_0 from "./images/Kelp__unfinished_LD57_.webp";
-import img3_1 from "./images/Take_Your_Meds.webp";
-import img3_2 from "./images/Aquaferno.webp";
-import img4_0 from "./images/Deskenestration.webp";
-import img4_1 from "./images/Catstronaut__The_Journey_Home.webp";
-import img5_0 from "./images/SnowballShootout.webp";
-import img5_1 from "./images/Snowman_Roadkill_Simulator.webp";
-import img5_2 from "./images/Snowballin_.webp";
-import img5_3 from "./images/Slay_the_Snowball.webp";
-import img5_4 from "./images/Snow_Bear.webp";
-import img5_5 from "./images/balls.webp";
-import img5_6 from "./images/Hilltop_Havoc.webp";
-import img5_7 from "./images/How_To_Snowball__.webp";
-import img5_8 from "./images/Just_a_Chill_Ball.webp";
-import img6_0 from "./images/Otter_Half.webp";
-import img6_1 from "./images/David_s_Disciples.webp";
-import img6_2 from "./images/AfterWorld.webp";
-import img6_3 from "./images/K_Off.webp";
-import img6_4 from "./images/Run_Away.webp";
-import img7_0 from "./images/Tour_de_Axolotl.webp";
-import img7_1 from "./images/The_Inn.webp";
-import img7_2 from "./images/Don_t_Break_the_Bicycle.webp";
-import img7_3 from "./images/Incident_at_Sector_37.webp";
-import img7_4 from "./images/_LOTLNECK__Studio_Jam_2024_Entry_.webp";
-import img7_5 from "./images/Bullet_Axolothell.webp";
-import img7_6 from "./images/Splatcho.webp";
-import img7_7 from "./images/Swingz_alotl.webp";
-import img7_8 from "./images/Vengeance.webp";
-import img7_9 from "./images/Axobeats.webp";
-import img7_10 from "./images/BoringDeskJobSimulator.webp";
-import img7_11 from "./images/Axolotris.webp";
-import img7_12 from "./images/good_job_team_we_ve_successfully_game_jammed.webp";
-import img7_13 from "./images/Another_Day_At_Work.webp";
-import img7_14 from "./images/Axoteque.webp";
-import img7_15 from "./images/How_to_Take_Care_Of_An_Axolotl.webp";
-import img7_16 from "./images/White_Elephant.webp";
-import img8_0 from "./images/_Over_Lord_of_the_Flies.webp";
-import img8_1 from "./images/Gobblin__Goblin.webp";
-import img8_2 from "./images/Clocked_In.webp";
-import img8_3 from "./images/Antonio.webp";
-import img8_4 from "./images/Miniature_Mayhem.webp";
-import img8_5 from "./images/Cat_tastrophe.webp";
-import img8_6 from "./images/A_Night_at_the_Dining_Table.webp";
-import img8_7 from "./images/smolloween.webp";
-import img8_8 from "./images/Hell_s_Kitchen.webp";
-import img8_9 from "./images/Swarmaggedon.webp";
-import img8_10 from "./images/AntQueen.webp";
-import img9_0 from "./images/Dreamcatcher.webp";
-import img9_1 from "./images/Bob_the_Cat.webp";
-import img9_2 from "./images/Massature.webp";
-import img9_3 from "./images/All_Card_Memories.webp";
-import img9_4 from "./images/Villainess_x_Reborn__Early_Build_.webp";
-import img9_5 from "./images/SCARAB.webp";
-import img9_6 from "./images/Upcast_Blue.webp";
-import img9_7 from "./images/Transform.webp";
-import img9_8 from "./images/GLOWSHADE.webp";
-import img9_9 from "./images/Love_on_Rizz_Island.webp";
-import img9_10 from "./images/__Star_Death__.webp";
-import img10_0 from "./images/The_Dragon_Lord.webp";
-import img10_1 from "./images/Crab_Squid.webp";
-import img10_2 from "./images/Last_Stand.webp";
-import img11_0 from "./images/BruinWalk.webp";
-import img11_1 from "./images/Meowy_and_The_Parthenyan.webp";
-import img11_2 from "./images/Zephyr.webp";
-import img11_3 from "./images/Necroshamancer.webp";
-import img11_4 from "./images/Summoner_Wanted.webp";
-import img13_0 from "./images/Robot_with_a_Fish.webp";
-import img13_1 from "./images/Meow_Maze.webp";
-import img13_2 from "./images/Polarity.webp";
-import img14_0 from "./images/game_with_lights.webp";
-import img14_1 from "./images/Flight_Up_the_Sky.webp";
-import img14_2 from "./images/A_Hike.webp";
-import img14_3 from "./images/All_I_Want_for_Christmas_Is_Stardom.webp";
-import img14_4 from "./images/Birdealis.webp";
-import img14_5 from "./images/Aurora_Blast.webp";
-import img14_6 from "./images/LIGHTS.webp";
-import img15_0 from "./images/Gunnahide.webp";
-import img15_1 from "./images/Space_Dread.webp";
-import img15_2 from "./images/Untitled_Cat_Cafe.webp";
-import img16_0 from "./images/Feather_Falling.webp";
-import img16_1 from "./images/Brute_Force.webp";
-import img17_0 from "./images/Crowded_Mind.webp";
-import img17_1 from "./images/O_bby_Had_a_Farm.webp";
-import img17_2 from "./images/Skyway_2_Heaven.webp";
-import img17_3 from "./images/Onism.webp";
-import img17_4 from "./images/Forget_Me_Not.webp";
-import img17_5 from "./images/Catacomb.webp";
-import img18_0 from "./images/Unfortunate_Circumstances___.webp";
-import img18_1 from "./images/Farming_Frenzy.webp";
-import img18_2 from "./images/The_Itsy_Bitsy_Scientist.webp";
-import img18_3 from "./images/Fill_in_the_Way_________________.webp";
-import img18_4 from "./images/Home_Defender.webp";
-import img18_5 from "./images/Project_Plum.webp";
-import img19_0 from "./images/Feline_vs__Farmer.webp";
-import img20_0 from "./images/Xinshen.webp";
-import img20_1 from "./images/Idoll.webp";
-import img20_2 from "./images/Capsule.webp";
-import img20_3 from "./images/Boelter.webp";
-import img20_4 from "./images/Coda.webp";
-import img20_5 from "./images/On_My_Own.webp";
-import img21_0 from "./images/Deliverance.webp";
-import img21_1 from "./images/Legend_of_the_BruinBot.webp";
-import img21_2 from "./images/Crab_Courier.webp";
-import img21_3 from "./images/Packigeon.webp";
-import img21_4 from "./images/Heartbreak_Express.webp";
-import img22_0 from "./images/Phemie_s_Fable.webp";
-import img22_1 from "./images/Prom_Pandemonium.webp";
-import img22_2 from "./images/Vastitas_Fracturae.webp";
-import img22_3 from "./images/Nine_Knives.webp";
-import img22_4 from "./images/Time_To_Live__10.webp";
-import img22_5 from "./images/Scribble_Rush___LD51_Version.webp";
-import img22_6 from "./images/Color_Copy_Cats.webp";
-import img22_7 from "./images/Scratching_By.webp";
-import img23_0 from "./images/Bibingka_Save_World___UCLA_Snowjam_2022__Team_7_.webp";
-import img23_1 from "./images/Parry_Samurai.webp";
-import img23_2 from "./images/Don_t_Freeze.webp";
-import img23_3 from "./images/Feral_Freeze.webp";
-import img23_4 from "./images/Permafrost.webp";
-import img23_5 from "./images/Santa_s_Diner.webp";
-import img23_6 from "./images/Honey_did_you_Defrost_the_Chicken_.webp";
-import img24_0 from "./images/Ronin.webp";
-import img24_1 from "./images/Lovebird.webp";
-import img24_2 from "./images/Debugger__SRS_Version_.webp";
-import img24_3 from "./images/UC_Love__FULL_VERSION__.webp";
-import img24_4 from "./images/Spiritshard.webp";
-import img24_5 from "./images/Kronos.webp";
-import img24_6 from "./images/In_Your_Demons.webp";
-import img24_7 from "./images/A_Hero_s_Quest.webp";
-import img24_8 from "./images/Rhythm_Operation.webp";
-import img24_9 from "./images/Food_Fight.webp";
-import img25_0 from "./images/Love_Defishency.webp";
-import img25_1 from "./images/Dust_Bunny_Takeover.webp";
-import img25_2 from "./images/A_Spooky_Town_Where_Your_Dog_is_Missing.webp";
-import img25_3 from "./images/Felight.webp";
-import img25_4 from "./images/Wrong_Place___Wrong_Time.webp";
-import img26_0 from "./images/Riftrunner.webp";
-import img26_1 from "./images/Project_Build.webp";
-import img26_2 from "./images/What_Remains_of_Ashes.webp";
-import img26_3 from "./images/Project_Archivist.webp";
-import img27_0 from "./images/Baking_Block_Party.webp";
-import img27_1 from "./images/The_Adventures_of_Bruton.webp";
-import img27_2 from "./images/Super_Demon_Bowl.webp";
-import img27_3 from "./images/Dancing_With_The_Devil.webp";
-import img27_4 from "./images/pubert.webp";
-import img28_0 from "./images/Duck_Duck_TOAST.webp";
-import img28_1 from "./images/Bready_or_Not_.webp";
-import img28_2 from "./images/Caked_Up.webp";
-import img28_3 from "./images/The_Rise_Of_Toasty.webp";
-import img28_4 from "./images/Yuki_Katamari.webp";
-import img28_5 from "./images/Shrine_of_Ocula.webp";
-import img28_6 from "./images/Bready_2_Die.webp";
-import img28_7 from "./images/Toast_Em_All.webp";
-import img28_8 from "./images/Toasterman.webp";
-import img28_9 from "./images/Burnt_ToaSt.webp";
-import img29_0 from "./images/In_Balance.webp";
-import img29_1 from "./images/mundaydreaming.webp";
-import img29_2 from "./images/Chronondrum.webp";
-import img29_3 from "./images/Crybaby_sitter.webp";
-import img29_4 from "./images/Best_Game_Ever.webp";
-import img29_5 from "./images/Healer_s_Bloom.webp";
-import img29_6 from "./images/Dear_Ghost.webp";
-import img30_0 from "./images/Bonsai_at_Twilight.webp";
-import img30_1 from "./images/Cranky.webp";
-import img31_0 from "./images/I_Need_A_Hero___A_Super_Powered_Dating_Adventure.webp";
-import img31_1 from "./images/Wayfarer.webp";
-import img31_2 from "./images/HellScape.webp";
-import img31_3 from "./images/Skreech_.webp";
-import img31_4 from "./images/Title_II.webp";
-import img31_5 from "./images/Splekbot.webp";
-import img32_0 from "./images/Surrender_the_Core.webp";
-import img32_1 from "./images/A_Taste_of_the_Past_Jam_Version.webp";
-import img33_0 from "./images/I_ll_Come_Back_To_You.webp";
-import img33_1 from "./images/Grab_Presents__Avoid_Zombies.webp";
-import img33_2 from "./images/Epic_Parkour_Santa.webp";
-import img33_3 from "./images/Crafty_Chaos.webp";
-import img34_0 from "./images/Kyklos.webp";
-import img34_1 from "./images/Anything_For_You.webp";
-import img35_0 from "./images/ChronoChef.webp";
-import img35_1 from "./images/Ramen_for_Two.webp";
-import img36_0 from "./images/Horus.webp";
-import img36_1 from "./images/The_Trolley.webp";
-import img36_2 from "./images/Interlink.webp";
-import img36_3 from "./images/Pinrut___2D_Boss_Rush.webp";
-import img36_4 from "./images/Sorting_Simulator.webp";
-import img36_5 from "./images/Flight_Cycle.webp";
-import img36_6 from "./images/Snap.webp";
-import img37_0 from "./images/Pinball_Gardener.webp";
-import img37_1 from "./images/Pretty_Pretty_Pirates.webp";
-import img37_2 from "./images/Desert_Fishing.webp";
-import img38_0 from "./images/Tiny_Planet.webp";
+import img0_0 from "./images/The_Daedalus_Curse.webp";
+import img0_1 from "./images/Bard_Deck_Inspiration.webp";
+import img1_0 from "./images/Waddle_Waddle_Glide.webp";
+import img1_1 from "./images/Frosty_Fisher.webp";
+import img1_2 from "./images/Christmas_Spirits.webp";
+import img2_0 from "./images/Axolotluncheonette.webp";
+import img2_1 from "./images/Axo_lost_a_little.webp";
+import img2_2 from "./images/Bodhisvatta_10000_Meters_Below.webp";
+import img2_3 from "./images/RUSH_HOUR.webp";
+import img2_4 from "./images/that_time_i__an_overworked_axolotl_game_dev__awakened_a_secret_skill_to_fuse_with_other_axolotls_to_gain_stats_and_now_i.webp";
+import img2_5 from "./images/MonoSpace.webp";
+import img2_6 from "./images/One_Tap_Cook.webp";
+import img2_7 from "./images/Golotl_.webp";
+import img2_8 from "./images/One_in_the_Chamber.webp";
+import img3_0 from "./images/Mutiny_s_Final_Reward.webp";
+import img3_1 from "./images/Dealer_s_Choice.webp";
+import img3_2 from "./images/Weather_Collector.webp";
+import img3_3 from "./images/5_Second_Rule_.webp";
+import img3_4 from "./images/Afterlyft__One_Helluva_Ride.webp";
+import img3_5 from "./images/Frogs_In_A_Well.webp";
+import img3_6 from "./images/Collector_Clash.webp";
+import img3_7 from "./images/DoggoMelon.webp";
+import img3_8 from "./images/HOMUNCULUS.webp";
+import img3_9 from "./images/Sand_Suckers.webp";
+import img4_0 from "./images/Remember__You_Will_Die.webp";
+import img4_1 from "./images/Faithless.webp";
+import img4_2 from "./images/Manny_Takes_on_Upper_Management__Demo_.webp";
+import img5_0 from "./images/Rhythm_Realm__Dragon_Hymn.webp";
+import img5_1 from "./images/Reminiscence.webp";
+import img6_0 from "./images/SunRun.webp";
+import img6_1 from "./images/Evil_Farming_Game.webp";
+import img6_2 from "./images/Alien_Dog_Deportation.webp";
+import img6_3 from "./images/Her_Heart_s_in_the_cards.webp";
+import img7_0 from "./images/Kelp__unfinished_LD57_.webp";
+import img7_1 from "./images/Take_Your_Meds.webp";
+import img7_2 from "./images/Aquaferno.webp";
+import img8_0 from "./images/Deskenestration.webp";
+import img8_1 from "./images/Catstronaut__The_Journey_Home.webp";
+import img9_0 from "./images/SnowballShootout.webp";
+import img9_1 from "./images/Snowman_Roadkill_Simulator.webp";
+import img9_2 from "./images/Snowballin_.webp";
+import img9_3 from "./images/Slay_the_Snowball.webp";
+import img9_4 from "./images/Snow_Bear.webp";
+import img9_5 from "./images/balls.webp";
+import img9_6 from "./images/Hilltop_Havoc.webp";
+import img9_7 from "./images/How_To_Snowball__.webp";
+import img9_8 from "./images/Just_a_Chill_Ball.webp";
+import img10_0 from "./images/Otter_Half.webp";
+import img10_1 from "./images/David_s_Disciples.webp";
+import img10_2 from "./images/AfterWorld.webp";
+import img10_3 from "./images/K_Off.webp";
+import img10_4 from "./images/Run_Away.webp";
+import img11_0 from "./images/Tour_de_Axolotl.webp";
+import img11_1 from "./images/The_Inn.webp";
+import img11_2 from "./images/Don_t_Break_the_Bicycle.webp";
+import img11_3 from "./images/Incident_at_Sector_37.webp";
+import img11_4 from "./images/_LOTLNECK__Studio_Jam_2024_Entry_.webp";
+import img11_5 from "./images/Bullet_Axolothell.webp";
+import img11_6 from "./images/Splatcho.webp";
+import img11_7 from "./images/Swingz_alotl.webp";
+import img11_8 from "./images/Vengeance.webp";
+import img11_9 from "./images/Axobeats.webp";
+import img11_10 from "./images/BoringDeskJobSimulator.webp";
+import img11_11 from "./images/Axolotris.webp";
+import img11_12 from "./images/good_job_team_we_ve_successfully_game_jammed.webp";
+import img11_13 from "./images/Another_Day_At_Work.webp";
+import img11_14 from "./images/Axoteque.webp";
+import img11_15 from "./images/How_to_Take_Care_Of_An_Axolotl.webp";
+import img11_16 from "./images/White_Elephant.webp";
+import img12_0 from "./images/_Over_Lord_of_the_Flies.webp";
+import img12_1 from "./images/Gobblin__Goblin.webp";
+import img12_2 from "./images/Clocked_In.webp";
+import img12_3 from "./images/Antonio.webp";
+import img12_4 from "./images/Miniature_Mayhem.webp";
+import img12_5 from "./images/Cat_tastrophe.webp";
+import img12_6 from "./images/A_Night_at_the_Dining_Table.webp";
+import img12_7 from "./images/smolloween.webp";
+import img12_8 from "./images/Hell_s_Kitchen.webp";
+import img12_9 from "./images/Swarmaggedon.webp";
+import img12_10 from "./images/AntQueen.webp";
+import img13_0 from "./images/Dreamcatcher.webp";
+import img13_1 from "./images/Bob_the_Cat.webp";
+import img13_2 from "./images/Massature.webp";
+import img13_3 from "./images/All_Card_Memories.webp";
+import img13_4 from "./images/Villainess_x_Reborn__Early_Build_.webp";
+import img13_5 from "./images/SCARAB.webp";
+import img13_6 from "./images/Upcast_Blue.webp";
+import img13_7 from "./images/Transform.webp";
+import img13_8 from "./images/GLOWSHADE.webp";
+import img13_9 from "./images/Love_on_Rizz_Island.webp";
+import img13_10 from "./images/__Star_Death__.webp";
+import img14_0 from "./images/The_Dragon_Lord.webp";
+import img14_1 from "./images/Crab_Squid.webp";
+import img14_2 from "./images/Last_Stand.webp";
+import img15_0 from "./images/BruinWalk.webp";
+import img15_1 from "./images/Meowy_and_The_Parthenyan.webp";
+import img15_2 from "./images/Zephyr.webp";
+import img15_3 from "./images/Necroshamancer.webp";
+import img15_4 from "./images/Summoner_Wanted.webp";
+import img17_0 from "./images/Robot_with_a_Fish.webp";
+import img17_1 from "./images/Meow_Maze.webp";
+import img17_2 from "./images/Polarity.webp";
+import img18_0 from "./images/game_with_lights.webp";
+import img18_1 from "./images/Flight_Up_the_Sky.webp";
+import img18_2 from "./images/A_Hike.webp";
+import img18_3 from "./images/All_I_Want_for_Christmas_Is_Stardom.webp";
+import img18_4 from "./images/Birdealis.webp";
+import img18_5 from "./images/Aurora_Blast.webp";
+import img18_6 from "./images/LIGHTS.webp";
+import img19_0 from "./images/Gunnahide.webp";
+import img19_1 from "./images/Space_Dread.webp";
+import img19_2 from "./images/Untitled_Cat_Cafe.webp";
+import img20_0 from "./images/Feather_Falling.webp";
+import img20_1 from "./images/Brute_Force.webp";
+import img21_0 from "./images/Crowded_Mind.webp";
+import img21_1 from "./images/O_bby_Had_a_Farm.webp";
+import img21_2 from "./images/Skyway_2_Heaven.webp";
+import img21_3 from "./images/Onism.webp";
+import img21_4 from "./images/Forget_Me_Not.webp";
+import img21_5 from "./images/Catacomb.webp";
+import img22_0 from "./images/Unfortunate_Circumstances___.webp";
+import img22_1 from "./images/Farming_Frenzy.webp";
+import img22_2 from "./images/The_Itsy_Bitsy_Scientist.webp";
+import img22_3 from "./images/Fill_in_the_Way_________________.webp";
+import img22_4 from "./images/Home_Defender.webp";
+import img22_5 from "./images/Project_Plum.webp";
+import img23_0 from "./images/Feline_vs__Farmer.webp";
+import img24_0 from "./images/Xinshen.webp";
+import img24_1 from "./images/Idoll.webp";
+import img24_2 from "./images/Capsule.webp";
+import img24_3 from "./images/Boelter.webp";
+import img24_4 from "./images/Coda.webp";
+import img24_5 from "./images/On_My_Own.webp";
+import img25_0 from "./images/Deliverance.webp";
+import img25_1 from "./images/Legend_of_the_BruinBot.webp";
+import img25_2 from "./images/Crab_Courier.webp";
+import img25_3 from "./images/Packigeon.webp";
+import img25_4 from "./images/Heartbreak_Express.webp";
+import img26_0 from "./images/Phemie_s_Fable.webp";
+import img26_1 from "./images/Prom_Pandemonium.webp";
+import img26_2 from "./images/Vastitas_Fracturae.webp";
+import img26_3 from "./images/Nine_Knives.webp";
+import img26_4 from "./images/Time_To_Live__10.webp";
+import img26_5 from "./images/Scribble_Rush___LD51_Version.webp";
+import img26_6 from "./images/Color_Copy_Cats.webp";
+import img26_7 from "./images/Scratching_By.webp";
+import img27_0 from "./images/Bibingka_Save_World___UCLA_Snowjam_2022__Team_7_.webp";
+import img27_1 from "./images/Parry_Samurai.webp";
+import img27_2 from "./images/Don_t_Freeze.webp";
+import img27_3 from "./images/Feral_Freeze.webp";
+import img27_4 from "./images/Permafrost.webp";
+import img27_5 from "./images/Santa_s_Diner.webp";
+import img27_6 from "./images/Honey_did_you_Defrost_the_Chicken_.webp";
+import img28_0 from "./images/Ronin.webp";
+import img28_1 from "./images/Lovebird.webp";
+import img28_2 from "./images/Debugger__SRS_Version_.webp";
+import img28_3 from "./images/UC_Love__FULL_VERSION__.webp";
+import img28_4 from "./images/Spiritshard.webp";
+import img28_5 from "./images/Kronos.webp";
+import img28_6 from "./images/In_Your_Demons.webp";
+import img28_7 from "./images/A_Hero_s_Quest.webp";
+import img28_8 from "./images/Rhythm_Operation.webp";
+import img28_9 from "./images/Food_Fight.webp";
+import img29_0 from "./images/Love_Defishency.webp";
+import img29_1 from "./images/Dust_Bunny_Takeover.webp";
+import img29_2 from "./images/A_Spooky_Town_Where_Your_Dog_is_Missing.webp";
+import img29_3 from "./images/Felight.webp";
+import img29_4 from "./images/Wrong_Place___Wrong_Time.webp";
+import img30_0 from "./images/Riftrunner.webp";
+import img30_1 from "./images/Project_Build.webp";
+import img30_2 from "./images/What_Remains_of_Ashes.webp";
+import img30_3 from "./images/Project_Archivist.webp";
+import img31_0 from "./images/Baking_Block_Party.webp";
+import img31_1 from "./images/The_Adventures_of_Bruton.webp";
+import img31_2 from "./images/Super_Demon_Bowl.webp";
+import img31_3 from "./images/Dancing_With_The_Devil.webp";
+import img31_4 from "./images/pubert.webp";
+import img32_0 from "./images/Duck_Duck_TOAST.webp";
+import img32_1 from "./images/Bready_or_Not_.webp";
+import img32_2 from "./images/Caked_Up.webp";
+import img32_3 from "./images/The_Rise_Of_Toasty.webp";
+import img32_4 from "./images/Yuki_Katamari.webp";
+import img32_5 from "./images/Shrine_of_Ocula.webp";
+import img32_6 from "./images/Bready_2_Die.webp";
+import img32_7 from "./images/Toast_Em_All.webp";
+import img32_8 from "./images/Toasterman.webp";
+import img32_9 from "./images/Burnt_ToaSt.webp";
+import img33_0 from "./images/In_Balance.webp";
+import img33_1 from "./images/mundaydreaming.webp";
+import img33_2 from "./images/Chronondrum.webp";
+import img33_3 from "./images/Crybaby_sitter.webp";
+import img33_4 from "./images/Best_Game_Ever.webp";
+import img33_5 from "./images/Healer_s_Bloom.webp";
+import img33_6 from "./images/Dear_Ghost.webp";
+import img34_0 from "./images/Bonsai_at_Twilight.webp";
+import img34_1 from "./images/Cranky.webp";
+import img35_0 from "./images/I_Need_A_Hero___A_Super_Powered_Dating_Adventure.webp";
+import img35_1 from "./images/Wayfarer.webp";
+import img35_2 from "./images/HellScape.webp";
+import img35_3 from "./images/Skreech_.webp";
+import img35_4 from "./images/Title_II.webp";
+import img35_5 from "./images/Splekbot.webp";
+import img36_0 from "./images/Surrender_the_Core.webp";
+import img36_1 from "./images/A_Taste_of_the_Past_Jam_Version.webp";
+import img37_0 from "./images/I_ll_Come_Back_To_You.webp";
+import img37_1 from "./images/Grab_Presents__Avoid_Zombies.webp";
+import img37_2 from "./images/Epic_Parkour_Santa.webp";
+import img37_3 from "./images/Crafty_Chaos.webp";
+import img38_0 from "./images/Kyklos.webp";
+import img38_1 from "./images/Anything_For_You.webp";
+import img39_0 from "./images/ChronoChef.webp";
+import img39_1 from "./images/Ramen_for_Two.webp";
+import img40_0 from "./images/Horus.webp";
+import img40_1 from "./images/The_Trolley.webp";
+import img40_2 from "./images/Interlink.webp";
+import img40_3 from "./images/Pinrut___2D_Boss_Rush.webp";
+import img40_4 from "./images/Sorting_Simulator.webp";
+import img40_5 from "./images/Flight_Cycle.webp";
+import img40_6 from "./images/Snap.webp";
+import img41_0 from "./images/Pinball_Gardener.webp";
+import img41_1 from "./images/Pretty_Pretty_Pirates.webp";
+import img41_2 from "./images/Desert_Fishing.webp";
+import img42_0 from "./images/Tiny_Planet.webp";
 export default [
+  {
+    title: "2026 gift jam",
+    href: "https://itch.io/c/7072996/2026-gift-jam",
+    entries: [
+      {
+        title: "The Daedalus Curse",
+        href: "https://littlesachem.itch.io/the-daedalus-curse",
+        img: img0_0,
+      },
+
+      {
+        title: "Bard-Deck Inspiration",
+        href: "https://texttobleach.itch.io/bardeck-inspiration",
+        img: img0_1,
+      },
+    ],
+  },
+
+  {
+    title: "Snow Jam 2025-26",
+    href: "https://itch.io/c/6802087/snow-jam-2025-26",
+    entries: [
+      {
+        title: "Waddle Waddle Glide",
+        href: "https://luminra.itch.io/waddle-waddle-glide",
+        img: img1_0,
+      },
+
+      {
+        title: "Frosty Fisher",
+        href: "https://mcalmic.itch.io/frosty-fisher",
+        img: img1_1,
+      },
+
+      {
+        title: "Christmas Spirits",
+        href: "https://candidaries.itch.io/christmas-spirits",
+        img: img1_2,
+      },
+    ],
+  },
+
+  {
+    title: "Studio Jam 2025",
+    href: "https://itch.io/c/6802089/studio-jam-2025",
+    entries: [
+      {
+        title: "Axolotluncheonette",
+        href: "https://dijitalex.itch.io/axolotluncheonette",
+        img: img2_0,
+      },
+
+      {
+        title: "Axo-lost-a-little",
+        href: "https://minya-liu.itch.io/axo-lost-a-little",
+        img: img2_1,
+      },
+
+      {
+        title: "Bodhisvatta 10000 Meters Below",
+        href: "https://littlesachem.itch.io/bodhisvatta-10000-meters-below",
+        img: img2_2,
+      },
+
+      {
+        title: "RUSH HOUR",
+        href: "https://feeblescorporal.itch.io/rushhour",
+        img: img2_3,
+      },
+
+      {
+        title:
+          "that time i, an overworked axolotl game dev, awakened a secret skill to fuse with other axolotls to gain stats and now i",
+        href: "https://toastercosplay.itch.io/studio-jam-2025",
+        img: img2_4,
+      },
+
+      {
+        title: "MonoSpace",
+        href: "https://maxwe59.itch.io/monospace",
+        img: img2_5,
+      },
+
+      {
+        title: "One Tap Cook",
+        href: "https://lemmons135.itch.io/one-tap-cook",
+        img: img2_6,
+      },
+
+      {
+        title: "Golotl!",
+        href: "https://jadonz.itch.io/golotl",
+        img: img2_7,
+      },
+
+      {
+        title: "One in the Chamber",
+        href: "https://jomnaq.itch.io/one-in-the-chamber",
+        img: img2_8,
+      },
+    ],
+  },
+
+  {
+    title: "Ludum Dare 58",
+    href: "https://itch.io/c/6802072/ludum-dare-58",
+    entries: [
+      {
+        title: "Mutiny's Final Reward",
+        href: "https://oscarshs.itch.io/mutinys-final-reward",
+        img: img3_0,
+      },
+
+      {
+        title: "Dealer's Choice",
+        href: "https://candidaries.itch.io/dealers-choice",
+        img: img3_1,
+      },
+
+      {
+        title: "Weather Collector",
+        href: "https://brendan-a.itch.io/weather-collector",
+        img: img3_2,
+      },
+
+      {
+        title: "5 Second Rule!",
+        href: "https://mcalmic.itch.io/5-second-rule",
+        img: img3_3,
+      },
+
+      {
+        title: "Afterlyft: One Helluva Ride",
+        href: "https://shortstoryshort.itch.io/afterlyft",
+        img: img3_4,
+      },
+
+      {
+        title: "Frogs In A Well",
+        href: "https://camerondhughes.itch.io/frogs-in-a-well",
+        img: img3_5,
+      },
+
+      {
+        title: "Collector Clash",
+        href: "https://toastercosplay.itch.io/collector-clash",
+        img: img3_6,
+      },
+
+      {
+        title: "DoggoMelon",
+        href: "https://concl.itch.io/doggermelon",
+        img: img3_7,
+      },
+
+      {
+        title: "HOMUNCULUS",
+        href: "https://jomnaq.itch.io/homunculus",
+        img: img3_8,
+      },
+
+      {
+        title: "Sand Suckers",
+        href: "https://destroh3.itch.io/sand-suckers",
+        img: img3_9,
+      },
+    ],
+  },
+
   {
     title: "Student Run Studios (2025)",
     href: "https://itch.io/c/5885402/student-run-studios-2025",
     entries: [
       {
+        title: "Remember, You Will Die",
+        href: "https://lemonink.itch.io/remember-you-will-die",
+        img: img4_0,
+      },
+
+      {
         title: "Faithless",
         href: "https://jomnaq.itch.io/faithless",
-        img: img0_0,
+        img: img4_1,
       },
 
       {
         title: "Manny Takes on Upper Management (Demo)",
         href: "https://oscarshs.itch.io/manny-takes-on-upper-management",
-        img: img0_1,
+        img: img4_2,
       },
     ],
   },
@@ -222,13 +422,13 @@ export default [
       {
         title: "Rhythm Realm: Dragon Hymn",
         href: "https://swordman51.itch.io/rhythmrealm",
-        img: img1_0,
+        img: img5_0,
       },
 
       {
         title: "Reminiscence",
         href: "https://ashen75.itch.io/reminiscence",
-        img: img1_1,
+        img: img5_1,
       },
     ],
   },
@@ -240,25 +440,25 @@ export default [
       {
         title: "SunRun",
         href: "https://lanzalot.itch.io/sunrun",
-        img: img2_0,
+        img: img6_0,
       },
 
       {
         title: "Evil Farming Game",
         href: "https://brendan-a.itch.io/evil-farming-game",
-        img: img2_1,
+        img: img6_1,
       },
 
       {
         title: "Alien Dog Deportation",
         href: "https://feeblescorporal.itch.io/dogfarm",
-        img: img2_2,
+        img: img6_2,
       },
 
       {
         title: "Her Heart's in the cards",
         href: "https://gameonjam.itch.io/her-hearts-in-the-cards",
-        img: img2_3,
+        img: img6_3,
       },
     ],
   },
@@ -270,19 +470,19 @@ export default [
       {
         title: "Kelp (unfinished LD57)",
         href: "https://pepper-salt.itch.io/kelp-unfinished-ld57",
-        img: img3_0,
+        img: img7_0,
       },
 
       {
         title: "Take Your Meds",
         href: "https://oscarshs.itch.io/take-your-meds",
-        img: img3_1,
+        img: img7_1,
       },
 
       {
         title: "Aquaferno",
         href: "https://luminra.itch.io/aquaferno",
-        img: img3_2,
+        img: img7_2,
       },
     ],
   },
@@ -294,13 +494,13 @@ export default [
       {
         title: "Deskenestration",
         href: "https://heborine.itch.io/deskenestration",
-        img: img4_0,
+        img: img8_0,
       },
 
       {
         title: "Catstronaut: The Journey Home",
         href: "https://fionaxaria.itch.io/catstronaut",
-        img: img4_1,
+        img: img8_1,
       },
     ],
   },
@@ -312,55 +512,55 @@ export default [
       {
         title: "SnowballShootout",
         href: "https://lanzalot.itch.io/snowballshootout",
-        img: img5_0,
+        img: img9_0,
       },
 
       {
         title: "Snowman Roadkill Simulator",
         href: "https://batyaggy.itch.io/snowman-roadkill-simulator",
-        img: img5_1,
+        img: img9_1,
       },
 
       {
         title: "Snowballin'",
         href: "https://do3naut.itch.io/snowballin",
-        img: img5_2,
+        img: img9_2,
       },
 
       {
         title: "Slay the Snowball",
         href: "https://roshilel.itch.io/slay-the-snowball",
-        img: img5_3,
+        img: img9_3,
       },
 
       {
         title: "Snow Bear",
         href: "https://toastercosplay.itch.io/snow-bear",
-        img: img5_4,
+        img: img9_4,
       },
 
       {
         title: "balls",
         href: "https://lileeluna.itch.io/balls",
-        img: img5_5,
+        img: img9_5,
       },
 
       {
         title: "Hilltop Havoc",
         href: "https://brendan-a.itch.io/hill-ball",
-        img: img5_6,
+        img: img9_6,
       },
 
       {
         title: "How To Snowball?!",
         href: "https://shortstoryshort.itch.io/how-to-snowball",
-        img: img5_7,
+        img: img9_7,
       },
 
       {
         title: "Just a Chill Ball",
         href: "https://ketexon.itch.io/just-a-chill-ball",
-        img: img5_8,
+        img: img9_8,
       },
     ],
   },
@@ -372,31 +572,31 @@ export default [
       {
         title: "Otter-Half",
         href: "https://guccitheguccimonster.itch.io/otter-half",
-        img: img6_0,
+        img: img10_0,
       },
 
       {
         title: "David's Disciples",
         href: "https://pacg0.itch.io/davids-disciples",
-        img: img6_1,
+        img: img10_1,
       },
 
       {
         title: "AfterWorld",
         href: "https://agsiddiqui.itch.io/afterworld",
-        img: img6_2,
+        img: img10_2,
       },
 
       {
         title: "K-Off",
         href: "https://siyuncho.itch.io/k-off",
-        img: img6_3,
+        img: img10_3,
       },
 
       {
         title: "Run Away",
         href: "https://feeblescorporal.itch.io/run-away",
-        img: img6_4,
+        img: img10_4,
       },
     ],
   },
@@ -408,103 +608,103 @@ export default [
       {
         title: "Tour de Axolotl",
         href: "https://davnotdev.itch.io/tour-de-axolotl",
-        img: img7_0,
+        img: img11_0,
       },
 
       {
         title: "The Inn",
         href: "https://coocoochicken.itch.io/the-in",
-        img: img7_1,
+        img: img11_1,
       },
 
       {
         title: "Don't Break the Bicycle",
         href: "https://oscarshs.itch.io/dont-break-the-bicycle",
-        img: img7_2,
+        img: img11_2,
       },
 
       {
         title: "Incident at Sector 37",
         href: "https://notalobster.itch.io/incident-at-sector-37",
-        img: img7_3,
+        img: img11_3,
       },
 
       {
         title: "'LOTLNECK (Studio Jam 2024 Entry)",
         href: "https://ketexon.itch.io/lotlneck",
-        img: img7_4,
+        img: img11_4,
       },
 
       {
         title: "Bullet Axolothell",
         href: "https://ashen75.itch.io/bullet-axolothell",
-        img: img7_5,
+        img: img11_5,
       },
 
       {
         title: "Splatcho",
         href: "https://brendan-a.itch.io/splatcho",
-        img: img7_6,
+        img: img11_6,
       },
 
       {
         title: "Swingz-alotl",
         href: "https://lanzalot.itch.io/swingz-alotl",
-        img: img7_7,
+        img: img11_7,
       },
 
       {
         title: "Vengeance",
         href: "https://feeblescorporal.itch.io/vengeance",
-        img: img7_8,
+        img: img11_8,
       },
 
       {
         title: "Axobeats",
         href: "https://luminra.itch.io/axobeats",
-        img: img7_9,
+        img: img11_9,
       },
 
       {
         title: "BoringDeskJobSimulator",
         href: "https://batyaggy.itch.io/boringdeskjobsimulator",
-        img: img7_10,
+        img: img11_10,
       },
 
       {
         title: "Axolotris",
         href: "https://xvr2e7.itch.io/axolotris",
-        img: img7_11,
+        img: img11_11,
       },
 
       {
         title: "good job team we've successfully game jammed",
         href: "https://pepper-salt.itch.io/good-job-team-weve-successfully-game-jammed",
-        img: img7_12,
+        img: img11_12,
       },
 
       {
         title: "Another Day At Work",
         href: "https://sofiavp.itch.io/another-day-at-work",
-        img: img7_13,
+        img: img11_13,
       },
 
       {
         title: "Axoteque",
         href: "https://yskang.itch.io/axoteque",
-        img: img7_14,
+        img: img11_14,
       },
 
       {
         title: "How to Take Care Of An Axolotl",
         href: "https://candidaries.itch.io/how-to-take-care-of-an-axolotl",
-        img: img7_15,
+        img: img11_15,
       },
 
       {
         title: "White Elephant",
         href: "https://saiyohara.itch.io/white-elephant",
-        img: img7_16,
+        img: img11_16,
       },
     ],
   },
@@ -516,67 +716,67 @@ export default [
       {
         title: "(Over)Lord of the Flies",
         href: "https://jomnaq.itch.io/over-lord-of-the-flies",
-        img: img8_0,
+        img: img12_0,
       },
 
       {
         title: "Gobblin' Goblin",
         href: "https://jomeimei.itch.io/gobblin-goblin",
-        img: img8_1,
+        img: img12_1,
       },
 
       {
         title: "Clocked In",
         href: "https://nmokey.itch.io/clocked-in",
-        img: img8_2,
+        img: img12_2,
       },
 
       {
         title: "Antonio",
         href: "https://benjaminman.itch.io/antonio",
-        img: img8_3,
+        img: img12_3,
       },
 
       {
         title: "Miniature Mayhem",
         href: "https://brendan-a.itch.io/miniature-mayhem",
-        img: img8_4,
+        img: img12_4,
       },
 
       {
         title: "Cat-tastrophe",
         href: "https://rslashsp.itch.io/cat-tastrophe",
-        img: img8_5,
+        img: img12_5,
       },
 
       {
         title: "A Night at the Dining Table",
         href: "https://dnouglas.itch.io/a-night-at-the-dining-table",
-        img: img8_6,
+        img: img12_6,
       },
 
       {
         title: "smolloween",
         href: "https://anvipen.itch.io/smolloween",
-        img: img8_7,
+        img: img12_7,
       },
 
       {
         title: "Hell's Kitchen",
         href: "https://vlad-the-inhaler.itch.io/hells-kitchen",
-        img: img8_8,
+        img: img12_8,
       },
 
       {
         title: "Swarmaggedon",
         href: "https://do3naut.itch.io/swarmaggedon",
-        img: img8_9,
+        img: img12_9,
       },
 
       {
         title: "AntQueen",
         href: "https://pacg0.itch.io/antqueen",
-        img: img8_10,
+        img: img12_10,
       },
     ],
   },
@@ -588,67 +788,67 @@ export default [
       {
         title: "Dreamcatcher",
         href: "https://heborine.itch.io/dreamcatcher",
-        img: img9_0,
+        img: img13_0,
       },
 
       {
         title: "Bob the Cat",
         href: "https://kmbusybee.itch.io/bob-the-cat",
-        img: img9_1,
+        img: img13_1,
       },
 
       {
         title: "Massature",
         href: "https://vlad-the-inhaler.itch.io/mass",
-        img: img9_2,
+        img: img13_2,
       },
 
       {
         title: "All Card Memories",
         href: "https://michaelkho.itch.io/all-card-memories",
-        img: img9_3,
+        img: img13_3,
       },
 
       {
         title: "Villainess x Reborn (Early Build)",
-        href: "https://brandenmb.itch.io/villainess-x-reborn",
-        img: img9_4,
+        href: "https://eigenstuffs.itch.io/villainess-x-reborn",
+        img: img13_4,
       },
 
       {
         title: "SCARAB",
         href: "https://phantom-101.itch.io/scarab",
-        img: img9_5,
+        img: img13_5,
       },
 
       {
         title: "Upcast Blue",
         href: "https://ketexon.itch.io/upcast-blue",
-        img: img9_6,
+        img: img13_6,
       },
 
       {
         title: "Transform",
         href: "https://squishballhahaha.itch.io/transform",
-        img: img9_7,
+        img: img13_7,
       },
 
       {
         title: "GLOWSHADE",
         href: "https://jomnaq.itch.io/glowshade",
-        img: img9_8,
+        img: img13_8,
       },
 
       {
         title: "Love on Rizz Island",
         href: "https://shortstoryshort.itch.io/love-on-rizz-island",
-        img: img9_9,
+        img: img13_9,
       },
 
       {
         title: "☆ Star Death ☆",
         href: "https://kaylalalavalentine.itch.io/star-death",
-        img: img9_10,
+        img: img13_10,
       },
     ],
   },
@@ -660,19 +860,19 @@ export default [
       {
         title: "The Dragon Lord",
         href: "https://candidaries.itch.io/the-dragon-lord",
-        img: img10_0,
+        img: img14_0,
       },
 
       {
         title: "Crab^Squid",
         href: "https://901102wangdaniel.itch.io/crabsquid",
-        img: img10_1,
+        img: img14_1,
       },
 
       {
         title: "Last Stand",
         href: "https://satyen-subramaniam.itch.io/last-stand",
-        img: img10_2,
+        img: img14_2,
       },
     ],
   },
@@ -684,31 +884,31 @@ export default [
       {
         title: "BruinWalk",
         href: "https://nico007.itch.io/bruinwalk",
-        img: img11_0,
+        img: img15_0,
       },
 
       {
         title: "Meowy and The Parthenyan",
         href: "https://fishydawesome.itch.io/meowy-and-the-parthenyan",
-        img: img11_1,
+        img: img15_1,
       },
 
       {
         title: "Zephyr",
         href: "https://kaiway.itch.io/zephyr",
-        img: img11_2,
+        img: img15_2,
       },
 
       {
         title: "Necroshamancer",
         href: "https://shortstoryshort.itch.io/necroshamancer",
-        img: img11_3,
+        img: img15_3,
       },
 
       {
         title: "Summoner Wanted",
         href: "https://socalledwarrior.itch.io/summoner-wanted",
-        img: img11_4,
+        img: img15_4,
       },
     ],
   },
@@ -726,19 +926,19 @@ export default [
       {
         title: "Robot with a Fish",
         href: "https://leon360.itch.io/robot-with-a-fish",
-        img: img13_0,
+        img: img17_0,
       },
 
       {
         title: "Meow Maze",
         href: "https://annjessil.itch.io/meow-maze",
-        img: img13_1,
+        img: img17_1,
       },
 
       {
         title: "Polarity",
         href: "https://amfonee.itch.io/polarity",
-        img: img13_2,
+        img: img17_2,
       },
     ],
   },
@@ -749,44 +949,44 @@ export default [
     entries: [
       {
         title: "game with lights",
-        href: "https://brandenmb.itch.io/game-with-lights",
-        img: img14_0,
+        href: "https://eigenstuffs.itch.io/game-with-lights",
+        img: img18_0,
       },
 
       {
         title: "Flight Up the Sky",
         href: "https://jabenero.itch.io/flight-up-the-sky",
-        img: img14_1,
+        img: img18_1,
       },
 
       {
         title: "A Hike",
         href: "https://rslashsp.itch.io/a-hike",
-        img: img14_2,
+        img: img18_2,
       },
 
       {
         title: "All I Want for Christmas Is Stardom",
         href: "https://shortstoryshort.itch.io/all-i-want-for-christmas-is-stardom",
-        img: img14_3,
+        img: img18_3,
       },
 
       {
         title: "Birdealis",
         href: "https://sudarshanseshadri26.itch.io/birdealis",
-        img: img14_4,
+        img: img18_4,
       },
 
       {
         title: "Aurora Blast",
         href: "https://elysadoolittle.itch.io/aurora-blast",
-        img: img14_5,
+        img: img18_5,
       },
 
       {
         title: "LIGHTS",
         href: "https://notalobster.itch.io/lights",
-        img: img14_6,
+        img: img18_6,
       },
     ],
   },
@@ -798,19 +998,19 @@ export default [
       {
         title: "Gunnahide",
         href: "https://retrokopoko.itch.io/gunnahide",
-        img: img15_0,
+        img: img19_0,
       },
 
       {
         title: "Space Dread",
         href: "https://sjk03.itch.io/space-dread",
-        img: img15_1,
+        img: img19_1,
       },
 
       {
         title: "Untitled Cat Cafe",
         href: "https://nico007.itch.io/untitled-cat-cafe",
-        img: img15_2,
+        img: img19_2,
       },
     ],
   },
@@ -822,13 +1022,13 @@ export default [
       {
         title: "Feather Falling",
         href: "https://kraftingly.itch.io/feather-falling",
-        img: img16_0,
+        img: img20_0,
       },
 
       {
         title: "Brute Force",
         href: "https://hakob3215.itch.io/brute-force",
-        img: img16_1,
+        img: img20_1,
       },
     ],
   },
@@ -840,37 +1040,37 @@ export default [
       {
         title: "Crowded Mind",
         href: "https://rslashsp.itch.io/crowded",
-        img: img17_0,
+        img: img21_0,
       },
 
       {
         title: "O'bby Had a Farm",
         href: "https://diplomaticdodo.itch.io/obby-had-a-farm",
-        img: img17_1,
+        img: img21_1,
       },
 
       {
         title: "Skyway 2 Heaven",
         href: "https://raddishradish.itch.io/skyway-2-heaven",
-        img: img17_2,
+        img: img21_2,
       },
 
       {
         title: "Onism",
         href: "https://andrewyibc.itch.io/onism",
-        img: img17_3,
+        img: img21_3,
       },
 
       {
         title: "Forget-Me-Not",
         href: "https://shortstoryshort.itch.io/forget-me-not",
-        img: img17_4,
+        img: img21_4,
       },
 
       {
         title: "Catacomb",
         href: "https://thegamemaker-dev.itch.io/catacomb",
-        img: img17_5,
+        img: img21_5,
       },
     ],
   },
@@ -882,37 +1082,37 @@ export default [
       {
         title: "Unfortunate Circumstances..?",
         href: "https://dxiong2001.itch.io/unfortunate-circumstances",
-        img: img18_0,
+        img: img22_0,
       },
 
       {
         title: "Farming Frenzy",
         href: "https://rslashsp.itch.io/farming-frenzy",
-        img: img18_1,
+        img: img22_1,
       },
 
       {
         title: "The Itsy-Bitsy Scientist",
         href: "https://mangomaddness.itch.io/the-itsy-bitsy-scientist",
-        img: img18_2,
+        img: img22_2,
       },
 
       {
         title: "Fill in the Way [              ]",
         href: "https://jabenero.itch.io/fill-in-the-way-home",
-        img: img18_3,
+        img: img22_3,
       },
 
       {
         title: "Home Defender",
         href: "https://aaisara12.itch.io/home-defender",
-        img: img18_4,
+        img: img22_4,
       },
 
       {
         title: "Project Plum",
         href: "https://notalobster.itch.io/project-plum",
-        img: img18_5,
+        img: img22_5,
       },
     ],
   },
@@ -923,8 +1123,8 @@ export default [
     entries: [
       {
         title: "Feline vs. Farmer",
-        href: "https://brandenmb.itch.io/feline-vs-farmer",
-        img: img19_0,
+        href: "https://eigenstuffs.itch.io/feline-vs-farmer",
+        img: img23_0,
       },
     ],
   },
@@ -936,37 +1136,37 @@ export default [
       {
         title: "Xinshen",
         href: "https://do3naut.itch.io/xinshen",
-        img: img20_0,
+        img: img24_0,
       },
 
       {
         title: "Idoll",
         href: "https://jabenero.itch.io/idoll",
-        img: img20_1,
+        img: img24_1,
       },
 
       {
         title: "Capsule",
         href: "https://anvilesque.itch.io/capsule",
-        img: img20_2,
+        img: img24_2,
       },
 
       {
         title: "Boelter",
         href: "https://olaycolay.itch.io/boelter",
-        img: img20_3,
+        img: img24_3,
       },
 
       {
         title: "Coda",
         href: "https://kmacd02.itch.io/coda",
-        img: img20_4,
+        img: img24_4,
       },
 
       {
         title: "On My Own",
         href: "https://kmbusybee.itch.io/on-my-own",
-        img: img20_5,
+        img: img24_5,
       },
     ],
   },
@@ -978,31 +1178,31 @@ export default [
       {
         title: "Deliverance",
         href: "https://do3naut.itch.io/deliverance",
-        img: img21_0,
+        img: img25_0,
       },
 
       {
         title: "Legend of the BruinBot",
         href: "https://shortstoryshort.itch.io/legend-of-the-bruinbot",
-        img: img21_1,
+        img: img25_1,
       },
 
       {
         title: "Crab Courier",
-        href: "https://brandenmb.itch.io/crab-courier",
-        img: img21_2,
+        href: "https://eigenstuffs.itch.io/crab-courier",
+        img: img25_2,
       },
 
       {
         title: "Packigeon",
         href: "https://anvilesque.itch.io/packigeon",
-        img: img21_3,
+        img: img25_3,
       },
 
       {
         title: "Heartbreak Express",
         href: "https://wozard.itch.io/heartbreak-express",
-        img: img21_4,
+        img: img25_4,
       },
     ],
   },
@@ -1014,49 +1214,49 @@ export default [
       {
         title: "Phemie's Fable",
         href: "https://austinlaw8.itch.io/phemies-fable",
-        img: img22_0,
+        img: img26_0,
       },
 
       {
         title: "Prom Pandemonium",
         href: "https://notalobster.itch.io/prom-pandemonium",
-        img: img22_1,
+        img: img26_1,
       },
 
       {
         title: "Vastitas Fracturae",
         href: "https://gnawnitsuj.itch.io/vastitas-fracturae",
-        img: img22_2,
+        img: img26_2,
       },
 
       {
         title: "Nine Knives",
         href: "https://kaiway.itch.io/nineknives",
-        img: img22_3,
+        img: img26_3,
       },
 
       {
         title: "Time To Live: 10",
         href: "https://lancival.itch.io/ttl10",
-        img: img22_4,
+        img: img26_4,
       },
 
       {
         title: "Scribble Rush - LD51 Version",
         href: "https://str0nkyk0ng.itch.io/scribble-rush-ld",
-        img: img22_5,
+        img: img26_5,
       },
 
       {
         title: "Color Copy Cats",
         href: "https://cgullbird.itch.io/color-copy-cats",
-        img: img22_6,
+        img: img26_6,
       },
 
       {
         title: "Scratching By",
         href: "https://jomeimei.itch.io/scratching-by",
-        img: img22_7,
+        img: img26_7,
       },
     ],
   },
@@ -1068,43 +1268,43 @@ export default [
       {
         title: "Bibingka Save World! (UCLA Snowjam 2022, Team 7)",
         href: "https://kmbusybee.itch.io/snowjam-2022-team-7",
-        img: img23_0,
+        img: img27_0,
       },
 
       {
         title: "Parry Samurai",
         href: "https://abrish-giftson.itch.io/parry-samurai",
-        img: img23_1,
+        img: img27_1,
       },
 
       {
         title: "Don't Freeze",
         href: "https://jabenero.itch.io/dont-freeze",
-        img: img23_2,
+        img: img27_2,
       },
 
       {
         title: "Feral Freeze",
         href: "https://rslashsp.itch.io/feralfreeze",
-        img: img23_3,
+        img: img27_3,
       },
 
       {
         title: "Permafrost",
         href: "https://socalledwarrior.itch.io/permafrost",
-        img: img23_4,
+        img: img27_4,
       },
 
       {
         title: "Santa's Diner",
-        href: "https://brandenmb.itch.io/santas-diner",
-        img: img23_5,
+        href: "https://eigenstuffs.itch.io/santas-diner",
+        img: img27_5,
       },
 
       {
         title: "Honey did you Defrost the Chicken?",
         href: "https://kmacd02.itch.io/honey-did-you-defrost-the-chicken",
-        img: img23_6,
+        img: img27_6,
       },
     ],
   },
@@ -1116,61 +1316,61 @@ export default [
       {
         title: "Ronin",
         href: "https://aaisara12.itch.io/ronin",
-        img: img24_0,
+        img: img28_0,
       },
 
       {
         title: "Lovebird",
         href: "https://cgullbird.itch.io/lovebird",
-        img: img24_1,
+        img: img28_1,
       },
 
       {
         title: "Debugger (SRS Version)",
         href: "https://raddishradish.itch.io/debugger-srs",
-        img: img24_2,
+        img: img28_2,
       },
 
       {
         title: "UC Love (FULL VERSION!)",
         href: "https://olaycolay.itch.io/uc-love",
-        img: img24_3,
+        img: img28_3,
       },
 
       {
         title: "Spiritshard",
         href: "https://rslashsp.itch.io/spritshard",
-        img: img24_4,
+        img: img28_4,
       },
 
       {
         title: "Kronos",
         href: "https://someformofhuman.itch.io/kronos",
-        img: img24_5,
+        img: img28_5,
       },
 
       {
         title: "In Your Demons",
         href: "https://andrewyibc.itch.io/srs2022-teamdemon",
-        img: img24_6,
+        img: img28_6,
       },
 
       {
         title: "A Hero's Quest",
         href: "https://connord.itch.io/a-heros-quest",
-        img: img24_7,
+        img: img28_7,
       },
 
       {
         title: "Rhythm Operation",
         href: "https://ninjabot5.itch.io/rhythm-operation",
-        img: img24_8,
+        img: img28_8,
       },
 
       {
         title: "Food Fight",
         href: "https://sudarshanseshadri26.itch.io/food-fight",
-        img: img24_9,
+        img: img28_9,
       },
     ],
   },
@@ -1182,31 +1382,31 @@ export default [
       {
         title: "Love Defishency",
         href: "https://ssalandary.itch.io/love-defishency",
-        img: img25_0,
+        img: img29_0,
       },
 
       {
         title: "Dust Bunny Takeover",
         href: "https://raddishradish.itch.io/dust-bunny-takeover",
-        img: img25_1,
+        img: img29_1,
       },
 
       {
         title: "A Spooky Town Where Your Dog is Missing",
         href: "https://rslashsp.itch.io/a-spooky-town-where-your-dog-is-missing",
-        img: img25_2,
+        img: img29_2,
       },
 
       {
         title: "Felight",
         href: "https://austinlaw8.itch.io/felight",
-        img: img25_3,
+        img: img29_3,
       },
 
       {
         title: "Wrong Place - Wrong Time",
         href: "https://innominev3945.itch.io/wrong-place-wrong-time",
-        img: img25_4,
+        img: img29_4,
       },
     ],
   },
@@ -1218,25 +1418,25 @@ export default [
       {
         title: "Riftrunner",
         href: "https://do3naut.itch.io/riftrunner",
-        img: img26_0,
+        img: img30_0,
       },
 
       {
         title: "Project Build",
         href: "https://rvuong.itch.io/project-build",
-        img: img26_1,
+        img: img30_1,
       },
 
       {
         title: "What Remains of Ashes",
         href: "https://rslashsp.itch.io/what-remains-of-ashes",
-        img: img26_2,
+        img: img30_2,
       },
 
       {
         title: "Project Archivist",
         href: "https://johnnywan.itch.io/project-archivist",
-        img: img26_3,
+        img: img30_3,
       },
     ],
   },
@@ -1248,31 +1448,31 @@ export default [
       {
         title: "Baking Block Party",
         href: "https://charahnalaar.itch.io/baking-block-party",
-        img: img27_0,
+        img: img31_0,
       },
 
       {
         title: "The Adventures of Bruton",
         href: "https://j-singletary.itch.io/the-adventures-of-bruton",
-        img: img27_1,
+        img: img31_1,
       },
 
       {
         title: "Super Demon Bowl",
         href: "https://alex84708.itch.io/super-demon-bowl",
-        img: img27_2,
+        img: img31_2,
       },
 
       {
         title: "Dancing With The Devil",
         href: "https://purplemenace.itch.io/dancing-with-the-devil",
-        img: img27_3,
+        img: img31_3,
       },
 
       {
         title: "pubert",
         href: "https://wabadaba.itch.io/pubert",
-        img: img27_4,
+        img: img31_4,
       },
     ],
   },
@@ -1284,61 +1484,61 @@ export default [
       {
         title: "Duck Duck TOAST",
         href: "https://lancival.itch.io/duck-duck-toast",
-        img: img28_0,
+        img: img32_0,
       },
 
       {
         title: "Bready or Not!",
         href: "https://aaisara12.itch.io/breadyornot",
-        img: img28_1,
+        img: img32_1,
       },
 
       {
         title: "Caked Up",
-        href: "https://wrecker-1.itch.io/caked-up",
-        img: img28_2,
+        href: "https://kaustuv-prateeq.itch.io/caked-up",
+        img: img32_2,
       },
 
       {
         title: "The Rise Of Toasty",
         href: "https://rvuong.itch.io/the-rise-of-toasty",
-        img: img28_3,
+        img: img32_3,
       },
 
       {
         title: "Yuki Katamari",
         href: "https://rslashsp.itch.io/yuki-katamari",
-        img: img28_4,
+        img: img32_4,
       },
 
       {
         title: "Shrine of Ocula",
         href: "https://olaycolay.itch.io/shrine-of-ocula",
-        img: img28_5,
+        img: img32_5,
       },
 
       {
         title: "Bready 2 Die",
         href: "https://kaiway.itch.io/bready2die",
-        img: img28_6,
+        img: img32_6,
       },
 
       {
         title: "Toast Em All",
         href: "https://toeknee432.itch.io/toastemall",
-        img: img28_7,
+        img: img32_7,
       },
 
       {
         title: "Toasterman",
         href: "https://psutarjo.itch.io/toaster-man",
-        img: img28_8,
+        img: img32_8,
       },
 
       {
         title: "Burnt ToaSt",
         href: "https://jabenero.itch.io/burnt-toast",
-        img: img28_9,
+        img: img32_9,
       },
     ],
   },
@@ -1350,43 +1550,43 @@ export default [
       {
         title: "In Balance",
         href: "https://olaycolay.itch.io/inbalance",
-        img: img29_0,
+        img: img33_0,
       },
 
       {
         title: "mundaydreaming",
         href: "https://aaisara12.itch.io/mundaydreaming",
-        img: img29_1,
+        img: img33_1,
       },
 
       {
         title: "Chronondrum",
         href: "https://mariopng.itch.io/chronondrum",
-        img: img29_2,
+        img: img33_2,
       },
 
       {
         title: "Crybaby-sitter",
         href: "https://anakintrotter.itch.io/crybaby-sitter",
-        img: img29_3,
+        img: img33_3,
       },
 
       {
         title: "Best Game Ever",
         href: "https://brandmuffin.itch.io/best-game-ever",
-        img: img29_4,
+        img: img33_4,
       },
 
       {
         title: "Healer's Bloom",
         href: "https://zlc122.itch.io/healers-bloom",
-        img: img29_5,
+        img: img33_5,
       },
 
       {
         title: "Dear Ghost",
         href: "https://lancival.itch.io/dear-ghost",
-        img: img29_6,
+        img: img33_6,
       },
     ],
   },
@@ -1398,13 +1598,13 @@ export default [
       {
         title: "Bonsai at Twilight",
         href: "https://sonderingemily.itch.io/bonsai-at-twilight",
-        img: img30_0,
+        img: img34_0,
       },
 
       {
         title: "Cranky",
         href: "https://brandmuffin.itch.io/cranky",
-        img: img30_1,
+        img: img34_1,
       },
     ],
   },
@@ -1416,37 +1616,37 @@ export default [
       {
         title: "I Need A Hero!: A Super-Powered Dating Adventure",
         href: "https://zlc122.itch.io/i-need-a-hero-a-super-powered-dating-adventure",
-        img: img31_0,
+        img: img35_0,
       },
 
       {
         title: "Wayfarer",
         href: "https://sonderingemily.itch.io/wayfarer",
-        img: img31_1,
+        img: img35_1,
       },
 
       {
         title: "HellScape",
         href: "https://atheniann.itch.io/hellscape",
-        img: img31_2,
+        img: img35_2,
       },
 
       {
         title: "Skreech!",
         href: "https://sudarshanseshadri26.itch.io/skreech",
-        img: img31_3,
+        img: img35_3,
       },
 
       {
         title: "Title II",
         href: "https://psutarjo.itch.io/title-ii",
-        img: img31_4,
+        img: img35_4,
       },
 
       {
         title: "Splekbot",
         href: "https://aaisara12.itch.io/splekbot",
-        img: img31_5,
+        img: img35_5,
       },
     ],
   },
@@ -1458,13 +1658,13 @@ export default [
       {
         title: "Surrender the Core",
         href: "https://sirfist19.itch.io/surrender-the-core-a-roguelike-game",
-        img: img32_0,
+        img: img36_0,
       },
 
       {
         title: "A Taste of the Past Jam Version",
         href: "https://sonderingemily.itch.io/a-taste-of-the-past-jam",
-        img: img32_1,
+        img: img36_1,
       },
     ],
   },
@@ -1476,25 +1676,25 @@ export default [
       {
         title: "I'll Come Back To You",
         href: "https://sonderingemily.itch.io/ill-come-back-to-you",
-        img: img33_0,
+        img: img37_0,
       },
 
       {
         title: "Grab Presents, Avoid Zombies",
         href: "https://dp145.itch.io/grab-presents-avoid-zombies",
-        img: img33_1,
+        img: img37_1,
       },
 
       {
         title: "Epic Parkour Santa",
         href: "https://psutarjo.itch.io/parkour-santa",
-        img: img33_2,
+        img: img37_2,
       },
 
       {
         title: "Crafty Chaos",
         href: "https://markgue.itch.io/craftychaos",
-        img: img33_3,
+        img: img37_3,
       },
     ],
   },
@@ -1506,13 +1706,13 @@ export default [
       {
         title: "Kyklos",
         href: "https://smudge12.itch.io/kyklos",
-        img: img34_0,
+        img: img38_0,
       },
 
       {
         title: "Anything For You",
         href: "https://sonderingemily.itch.io/anything-for-you",
-        img: img34_1,
+        img: img38_1,
       },
     ],
   },
@@ -1524,13 +1724,13 @@ export default [
       {
         title: "ChronoChef",
         href: "https://psutarjo.itch.io/chronochef",
-        img: img35_0,
+        img: img39_0,
       },
 
       {
         title: "Ramen for Two",
         href: "https://sonderingemily.itch.io/ramen-for-two",
-        img: img35_1,
+        img: img39_1,
       },
     ],
   },
@@ -1542,43 +1742,43 @@ export default [
       {
         title: "Horus",
         href: "https://kevin-chuang.itch.io/horus",
-        img: img36_0,
+        img: img40_0,
       },
 
       {
         title: "The Trolley",
         href: "https://infirmarian.itch.io/the-trolley",
-        img: img36_1,
+        img: img40_1,
       },
 
       {
         title: "Interlink",
         href: "https://evancharfauros.itch.io/interlink",
-        img: img36_2,
+        img: img40_2,
       },
 
       {
         title: "Pinrut - 2D Boss Rush",
         href: "https://atheniann.itch.io/pinrut",
-        img: img36_3,
+        img: img40_3,
       },
 
       {
         title: "Sorting Simulator",
         href: "https://markgue.itch.io/sorting-simulator",
-        img: img36_4,
+        img: img40_4,
       },
 
       {
         title: "Flight Cycle",
         href: "https://kevin-chuang.itch.io/flight-cycle",
-        img: img36_5,
+        img: img40_5,
       },
 
       {
         title: "Snap",
         href: "https://infirmarian.itch.io/snap",
-        img: img36_6,
+        img: img40_6,
       },
     ],
   },
@@ -1590,19 +1790,19 @@ export default [
       {
         title: "Pinball Gardener",
         href: "https://kianamosser.itch.io/pinballgardener",
-        img: img37_0,
+        img: img41_0,
       },
 
       {
         title: "Pretty Pretty Pirates",
         href: "https://judykim.itch.io/pretty-pretty-pirates",
-        img: img37_1,
+        img: img41_1,
       },
 
       {
         title: "Desert Fishing",
         href: "https://infirmarian.itch.io/desert-fishing",
-        img: img37_2,
+        img: img41_2,
       },
     ],
   },
@@ -1614,7 +1814,7 @@ export default [
       {
         title: "Tiny Planet",
         href: "https://judykim.itch.io/tiny-planet",
-        img: img38_0,
+        img: img42_0,
       },
     ],
   },

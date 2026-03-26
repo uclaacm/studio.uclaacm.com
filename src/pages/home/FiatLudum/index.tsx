@@ -11,7 +11,7 @@ import React from "react";
 import { HomeSectionProps } from "../../index.page";
 import Image from "next/image";
 
-import FiatLudumArt from "./fiat-ludum-graphic-2026.webp";
+import FiatLudumArt from "./fiat-ludum-graphic-2026.png";
 
 export default function FiatLudum(props: HomeSectionProps) {
   const { setActive, id } = props;
