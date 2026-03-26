@@ -11,7 +11,7 @@ import React from "react";
 import { HomeSectionProps } from "../../index.page";
 import Image from "next/image";
 
-import FiatLudumArt from "./fiatludum.png";
+import FiatLudumArt from "./fiat-ludum-graphic-2026.webp";
 
 export default function FiatLudum(props: HomeSectionProps) {
   const { setActive, id } = props;
@@ -42,13 +42,12 @@ export default function FiatLudum(props: HomeSectionProps) {
     >
       <Stack
         sx={{
-          height: "100%",
           alignItems: "center",
           pt: 16,
           p: 4,
           gap: 3,
           mx: "auto",
-          maxWidth: theme.breakpoints.values.lg,
+          maxWidth: theme.breakpoints.values.xl,
         }}
       >
         <Stack
@@ -71,16 +70,15 @@ export default function FiatLudum(props: HomeSectionProps) {
           <Box
             component={Image}
             src={FiatLudumArt}
-            alt="Fiat Ludum"
+            alt="Let there be play: Fiat Ludum"
             sx={[
             {
-              borderRadius: 1,
+              borderRadius: 1.5,
               height: "auto",
               width: "100%",
-              maxWidth: "100vh",
+              maxWidth: "150vh",
               minWidth: 0,
-            },
-            isMd && {maxWidth: "115vh"}
+            }
           ]}
           />
         <Stack
@@ -92,7 +90,7 @@ export default function FiatLudum(props: HomeSectionProps) {
         >
           <Button
             size={isMd ? "small" : "large"}
-            href="https://docs.google.com/forms/d/e/1FAIpQLScp2rCYhtvw3d5jQb3knZU-Hir5gR6a_qRDRarjkQeuSiusBA/viewform"
+            href="https://docs.google.com/forms/d/e/1FAIpQLSc9iY8F1JgnsdAw2TN43EsWwbhJjxKe66rNPNFBov5cJfsw-g/viewform"
             variant="contained"
             sx={{}}
           >
