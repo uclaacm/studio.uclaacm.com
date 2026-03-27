@@ -406,6 +406,7 @@ export default function Banner(props: BannerProps) {
           })}
           aria-label="Close banner"
         >
+          
           <CloseIcon sx={{ width: 14, height: 14, color: '#d81b60' }} />
         </IconButton>
       </Box>
