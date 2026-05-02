@@ -24,6 +24,33 @@ const gamesUnsorted: Game[] = [
 	
 	//comment 
 	{
+		name: "Shaders Workshop",
+		date: "4 May 2026",
+		author: "Andrew Douglas",
+		categories: [
+			{
+				name: "Computer Graphics",
+				difficulty: 1,
+				entries: ["shader", "Cull", "Spline", "Mesh"],
+			},
+			{
+				name: "Handheld Tools",
+				difficulty: 2,
+				entries: ["Spade", "Club", "Compass", "Gun"],
+			},
+			{
+				name: "Going Outside",
+				difficulty: 3,
+				entries: ["Shade", "Mountains", "Pine", "Sun"],
+			},
+			{
+				name: "Human Body",
+				difficulty: 4,
+				entries: ["Spine", "Heart", "Flesh", "Skull"],
+			},
+		]
+	},
+	{
 		name: "Enemies: Phase 2",
 		date: "5 May 2025",
 		author: "Andrew Douglas",
