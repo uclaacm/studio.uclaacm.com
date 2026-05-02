@@ -31,7 +31,7 @@ const gamesUnsorted: Game[] = [
 			{
 				name: "Computer Graphics",
 				difficulty: 1,
-				entries: ["shader", "Cull", "Spline", "Mesh"],
+				entries: ["Shader", "Cull", "Spline", "Mesh"],
 			},
 			{
 				name: "Handheld Tools",
