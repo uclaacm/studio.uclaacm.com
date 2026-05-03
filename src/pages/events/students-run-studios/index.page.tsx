@@ -172,6 +172,8 @@ export default function SRSInfo(props: SRSProps) {
         currentIndex,
         scheduleCards.length - visibleCount
       ));
+    } else {
+      setCurrentIndex(scheduleCards.length - visibleCount);
     }
     // wait one animation frame to set loaded
     requestAnimationFrame(() => setLoaded(true));
