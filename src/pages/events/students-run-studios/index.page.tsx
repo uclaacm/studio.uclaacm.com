@@ -155,6 +155,7 @@ export default function SRSInfo(props: SRSProps) {
   } = props;
 
   const theme = useTheme();
+  const isMd = useMediaQuery(theme.breakpoints.down("md"));
   const [loaded, setLoaded] = React.useState(false);
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [firstCardActive, setFirstCardActive] = React.useState(scheduleCards.length);
@@ -247,6 +248,7 @@ export default function SRSInfo(props: SRSProps) {
         <Button
           variant="contained"
           href="https://itch.io/c/5885402/student-run-studios-2025"
+          size={isMd ? "small" : "medium"}
           sx={{
             alignSelf: "start",
           }}
