@@ -406,6 +406,7 @@ export default function SRSInfo(props: SRSProps) {
             <IconButton
               onClick={handlePrev}
               sx={{
+                backgroundColor: "white",
                 zIndex: 1,
               }}
             >
@@ -424,6 +425,7 @@ export default function SRSInfo(props: SRSProps) {
             <IconButton
               onClick={handleNext}
               sx={{
+                backgroundColor: "white",
                 zIndex: 1,
               }}
             >
