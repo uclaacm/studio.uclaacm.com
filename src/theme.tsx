@@ -42,6 +42,11 @@ const theme = createTheme({
         disableTouchRipple: true,
         LinkComponent: BasicLink,
       },
+      styleOverrides: {
+        root: {
+          touchAction: "manipulation",
+        },
+      },
     },
     MuiPaper: {
       styleOverrides: {

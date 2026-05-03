@@ -319,6 +319,7 @@ export default function ConnectionsRenderer(props: ConnectionsRendererProps){
 						py: 4,
 						px: 0,
 						wordBreak: "break-word",
+						touchAction: "manipulation",
 					}}
 					onClick={() => {
 						setSelectedEntries(x =>
