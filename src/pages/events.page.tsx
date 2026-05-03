@@ -34,6 +34,7 @@ import {
 import { objectGroupBy } from "~/util/polyfills";
 import IconButton from "~/components/IconButton";
 import IsaxIcon from "~/components/IsaxIcon";
+import theme from "~/theme";
 
 
 import {
@@ -219,10 +220,12 @@ function CalendarEvent({ event }: CalendarEventProps) {
 type CalendarCellProps = {
   date?: Date;
   events?: Partial<Record<EventStatus, EventData[]>>;
+  isToday?: boolean;
+  isThisMonth?: boolean;
 };
 
 function CalendarCell(props: CalendarCellProps) {
-  const { date, events } = props;
+  const { date, events, isToday, isThisMonth } = props;
 
   const loading = date === null || events === null;
 
@@ -248,6 +251,7 @@ function CalendarCell(props: CalendarCellProps) {
     >
       <Box
         sx={{
+          backgroundColor: "white",
           gridRowStart: 1,
           gridColumnStart: 1,
         }}
@@ -259,6 +263,7 @@ function CalendarCell(props: CalendarCellProps) {
           gridColumnStart: 1,
           minHeight: "8rem",
           gap: 1,
+          margin: `0 ${theme.spacing(1)}`,
         }}
       >
         {/* Date and selection indicator */}
@@ -273,6 +278,17 @@ function CalendarCell(props: CalendarCellProps) {
               variant="h3"
               sx={(theme) => ({
                 userSelect: "none",
+                color: !isThisMonth ? "lightgray" : "black",
+                ...(isToday && {
+                  bgcolor: "primary.main",
+                  color: "primary.contrastText",
+                  borderRadius: "50%",
+                  width: "2.5rem",
+                  height: "2.5rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }),
               })}
             >
               {date.getDate()}
@@ -297,6 +313,7 @@ type CalendarProps = {
   monthStartDay?: Date;
   eventsByStatus?: Partial<Record<EventStatus, EventData[]>>;
   setMonthStartDay: React.Dispatch<React.SetStateAction<Date | null>>;
+  todaysDate?: Date;
 };
 
 function Calendar({
@@ -304,6 +321,7 @@ function Calendar({
   monthStartDay,
   setMonthStartDay,
   eventsByStatus,
+  todaysDate,
 }: CalendarProps) {
   const calendarStartDay = React.useMemo(() => {
     return getFirstSundayBeforeMonth(monthStartDay);
@@ -322,6 +340,7 @@ function Calendar({
         sx={{
           display: "grid",
           gridTemplateColumns: "repeat(7, 1fr)",
+          backgroundColor: theme.palette.secondary.light,
         }}
       >
         {Array.from({ length: 7 }).map((_, i) => (
@@ -337,17 +356,24 @@ function Calendar({
           height: "100%",
           display: "grid",
           gridTemplate: "repeat(5, 1fr) / repeat(7, 1fr)",
+          backgroundColor: theme.palette.secondary.light,
         }}
         gap={0.25}
+        padding={0.25}
       >
         {Array.from({ length: 42 }).map((_, i) => {
           const cellDate = new Date(calendarStartDay);
           cellDate.setDate(cellDate.getDate() + i);
+          const normalizedDate = normalizeDate(cellDate)
+          const isThisMonth = normalizedDate.getMonth() === monthStartDay?.getMonth()
+            && normalizedDate.getFullYear() === monthStartDay?.getFullYear()
           return (
             <CalendarCell
               key={cellDate.getTime()}
-              date={normalizeDate(cellDate)}
+              date={normalizedDate}
               events={eventsByStatus}
+              isToday={todaysDate?.getTime() === normalizedDate.getTime()}
+              isThisMonth={isThisMonth}
             />
           );
         })}
@@ -481,7 +507,7 @@ export default function Events({}: EventProps) {
 
   return (
     <BackgroundContainer>
-      <Snackbar
+      {/* <Snackbar
         open={errorOpen}
         autoHideDuration={10_000}
         onClose={() => {
@@ -497,7 +523,7 @@ export default function Events({}: EventProps) {
         >
           {error.current}
         </Alert>
-      </Snackbar>
+      </Snackbar> */}
 
       <Metadata title="Events" />
       <Typography variant="h1">events</Typography>
@@ -543,13 +569,14 @@ export default function Events({}: EventProps) {
           eventsByStatus={eventsByStatus}
           monthStartDay={monthStartDay}
           setMonthStartDay={setMonthStartDay}
+          todaysDate={todayDate}
         />
-        <Divider orientation="vertical" flexItem />
+        {/* <Divider orientation="vertical" flexItem />
         <UpcomingEventsList
           data={eventsData}
           eventsByStatus={eventsByStatus}
           todaysDate={todayDate}
-        />
+        /> */}
       </Stack>
     </BackgroundContainer>
   );
