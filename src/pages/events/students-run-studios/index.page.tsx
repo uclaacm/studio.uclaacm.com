@@ -129,8 +129,8 @@ const scheduleCards: ScheduleCardData[] = [
   },
   {
     quarter: "Spring",
-    week: "TBD",
-    date: "TBD",
+    week: "Week 10",
+    date: new Date("4 June 2026"),
     title: "Spring Showcase",
     description: "The final showcase for your game",
   }
