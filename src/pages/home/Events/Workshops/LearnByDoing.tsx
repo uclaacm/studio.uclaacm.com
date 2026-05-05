@@ -114,7 +114,6 @@ export default function LearnByDoing(props: LearnByDoingProps) {
         position: "relative",
       })}
     >
-      {/* bottom gradient */}
       <Box
         sx={{
           position: "absolute",
@@ -122,11 +121,7 @@ export default function LearnByDoing(props: LearnByDoingProps) {
           left: 0,
           right: 0,
           height: theme.spacing(8),
-          background: `linear-gradient(
-            180deg,
-            rgba(255,255,255,0) 0%,
-            rgba(255,255,255,255) 100%
-          )`,
+          background: theme.palette.background.default,
         }}
       />
       <Typography
