@@ -36,6 +36,13 @@ const theme = createTheme({
     fontFamily: ["Poppins", "sans-serif"].join(","),
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundColor: `${paletteOptions.background.default} !important`,
+        },
+      },
+    },
     MuiButtonBase: {
       defaultProps: {
         disableRipple: true,

@@ -401,7 +401,7 @@ export default function NavBar() {
             }}
             PaperProps={{
               sx: {
-                backgroundColor: "white",
+                backgroundColor: theme.palette.background.default,
               },
             }}
           >
@@ -418,7 +418,7 @@ export default function NavBar() {
             PaperProps={{
               sx: {
                 borderRadius: `0 ${drawerBorderRadius(theme)} ${drawerBorderRadius(theme)} 0`,
-                backgroundColor: "white",
+                backgroundColor: theme.palette.background.default,
               }
             }}
           >
