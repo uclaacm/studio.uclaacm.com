@@ -429,7 +429,7 @@ export default function SRSInfo(props: SRSProps) {
             <IconButton
               onClick={handleNext}
               sx={{
-                backgroundColor: "white",
+                backgroundColor: theme.palette.background.default,
                 zIndex: 1,
               }}
             >
