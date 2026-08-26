@@ -54,6 +54,11 @@ export default withBundleAnalyzer({
 				destination: "/events/students-run-studios/:slug*",
 				permanent: true,
 			},
+			{
+				source: "/links",
+				destination: "/onboarding",
+				permanent: true,
+			},
 		]
 	},
 	pageExtensions: ["page.tsx", "page.jsx"],

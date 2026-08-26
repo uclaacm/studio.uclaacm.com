@@ -8,5 +8,6 @@ export const links = {
   studioSquadsForm: "https://en.wikipedia.org/wiki/Cat",
   googleCalendar: `https://calendar.google.com/calendar/u/0?cid=Y183Mjl2dTV1MW9ia2c3bnU3NjJzaDY4N2JwOEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t`,
   discord: `https://discord.com/invite/bBk2Mcw`,
+  gameJamDiscord: `https://discord.gg/5D9MB3CfqB`,
   email: `mailto:studio@uclaacm.com`,
 };
