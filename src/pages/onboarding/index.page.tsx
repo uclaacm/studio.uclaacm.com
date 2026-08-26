@@ -72,7 +72,7 @@ type Basic = {
 // the three things new members worry about, answered in as few words as possible
 const basics: Basic[] = [
   { icon: <SchoolIcon />, title: "No experience needed" },
-  { icon: <Diversity3Icon />, title: "No commitment required" },
+  { icon: <Diversity3Icon />, title: "No strict attendance" },
   { icon: <EmojiEventsIcon />, title: "You'll finish a real game" },
 ];
 
@@ -99,7 +99,7 @@ const ways: Way[] = [
     icon: <BoltIcon />,
     title: "Game jams",
     timing: "One weekend",
-    body: "A weekend-long sprint with almost no rules. We organize the teams, so you just show up and make something.",
+    body: "A weekend-long sprint where you create a full game in 48 hours. We help people find teams and we welcome all experience levels. You just show up and make something. Any and all skillsets are welcome.",
     href: "/events/game-jams",
     cta: "How game jams work",
   },
@@ -115,7 +115,7 @@ const ways: Way[] = [
     icon: <MenuBookIcon />,
     title: "ENGR 1GD",
     timing: "A course, for credit",
-    body: "The same ground workshops cover, but on a syllabus — a game dev course you can take for credit.",
+    body: "The same content workshops cover, it just has a syllabus. A game dev course you can take for credit.",
     href: siteLinks.e1,
     cta: "View the course listing",
   },
@@ -123,7 +123,7 @@ const ways: Way[] = [
     icon: <GroupsIcon />,
     title: "Students Run Studios",
     timing: "Winter & spring",
-    body: "Two quarters in a small student-run studio, prototype to launch, ending in our Spring Showcase.",
+    body: "Two quarters in a small student-run studio team. A longer-paced, more in-depth version of game jams/workshops. Make a full game and show it off at Spring Showcase.",
     href: "/srs",
     cta: "Explore SRS",
   },
@@ -210,11 +210,21 @@ type SectionProps = {
   eyebrow?: string;
   title?: React.ReactNode;
   subtitle?: React.ReactNode;
+  /** slot rendered between the title and the subtitle */
+  afterTitle?: React.ReactNode;
   children?: React.ReactNode;
   sx?: SxProps<Theme>;
 };
 
-function Section({ id, eyebrow, title, subtitle, children, sx }: SectionProps) {
+function Section({
+  id,
+  eyebrow,
+  title,
+  subtitle,
+  afterTitle,
+  children,
+  sx,
+}: SectionProps) {
   return (
     <Container
       component="section"
@@ -222,8 +232,8 @@ function Section({ id, eyebrow, title, subtitle, children, sx }: SectionProps) {
       maxWidth="lg"
       sx={[{ py: { xs: 5, md: 8 } }, ...(sx instanceof Array ? sx : [sx])]}
     >
-      {(eyebrow || title || subtitle) && (
-        <Reveal sx={{ mb: { xs: 3, md: 4 } }}>
+      {(eyebrow || title || subtitle || afterTitle) && (
+        <Reveal sx={{ mb: children ? { xs: 3, md: 4 } : 0 }}>
           {eyebrow && (
             <Typography
               variant="overline"
@@ -243,16 +253,17 @@ function Section({ id, eyebrow, title, subtitle, children, sx }: SectionProps) {
               variant="h1"
               component="h2"
               fontWeight={700}
-              sx={{ mb: subtitle ? 1.5 : 0 }}
+              sx={{ mb: subtitle || afterTitle ? 1.5 : 0 }}
             >
               {title}
             </Typography>
           )}
+          {afterTitle && <Box sx={{ mb: subtitle ? 3 : 0 }}>{afterTitle}</Box>}
           {subtitle && (
             <Typography
               variant="body1"
               component="p"
-              sx={{ maxWidth: "62ch", color: "text.secondary" }}
+              sx={{ color: "text.secondary" }}
             >
               {subtitle}
             </Typography>
@@ -464,6 +475,24 @@ function WhatWeRun() {
   );
 }
 
+// Locked in for fall; everything else still comes from the Notion database.
+const confirmedFallEvents = [
+  {
+    title: "Enormous Activities Fair (EAF)",
+    date: "September 22",
+    time: "11am – 2pm",
+    location: "Royce Quad & Wilson Plaza",
+    body: "Come find our booth and say hi. Get an introduction to ACM studio.",
+  },
+  {
+    title: "Fall General Meeting",
+    date: "September 30",
+    time: "6pm – 8pm",
+    location: "Ackerman Grand Ballroom",
+    body: "Our kickoff for the year. Learn how to get involved with ACM studio & about our initiatives.",
+  },
+];
+
 type FallEventsProps = {
   events: CurrentEventsSchema[];
 };
@@ -472,15 +501,68 @@ function FallEvents({ events }: FallEventsProps) {
   return (
     <Section
       id="fall"
+      sx={{ pb: { xs: 5, md: 7 } }}
       eyebrow="Fall quarter"
       title="Where to find us first"
+      afterTitle={
+        <Box sx={cardGrid("280px")}>
+          {confirmedFallEvents.map((event, i) => (
+            <Reveal key={event.title} delay={i * 0.06} sx={{ display: "flex" }}>
+              <Card
+                component="article"
+                opaque
+                elevation={1}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 1,
+                  width: "100%",
+                  p: 3,
+                }}
+              >
+                <Typography variant="title2" component="h3" fontWeight={700}>
+                  {event.title}
+                </Typography>
+                <Stack direction="row" gap={1} alignItems="center">
+                  <CalendarMonthIcon
+                    sx={(theme) => ({
+                      fontSize: "1.1rem",
+                      color: theme.palette.primary.main,
+                    })}
+                  />
+                  <Typography variant="body2" fontWeight={600}>
+                    {event.date} &middot; {event.time}
+                  </Typography>
+                </Stack>
+                <Stack direction="row" gap={1} alignItems="center">
+                  <PlaceIcon
+                    sx={(theme) => ({
+                      fontSize: "1.1rem",
+                      color: theme.palette.primary.main,
+                    })}
+                  />
+                  <Typography
+                    variant="body2"
+                    sx={{ color: "text.secondary" }}
+                  >
+                    {event.location}
+                  </Typography>
+                </Stack>
+                <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                  {event.body}
+                </Typography>
+              </Card>
+            </Reveal>
+          ))}
+        </Box>
+      }
       subtitle={
         events.length > 0
           ? "What's coming up as the quarter kicks off. Unless one says otherwise, there's nothing to sign up for — just show up."
-          : "We're still finalizing the fall calendar. Follow along and you'll see dates the moment they're set."
+          : "The rest of the fall calendar is still coming together. Check this website or our Instagram for updates."
       }
     >
-      {events.length > 0 ? (
+      {events.length > 0 && (
         <Box sx={cardGrid("300px")}>
           {events.map((event, i) => (
             <Reveal key={i} delay={(i % 3) * 0.06} sx={{ display: "flex" }}>
@@ -547,27 +629,6 @@ function FallEvents({ events }: FallEventsProps) {
             </Reveal>
           ))}
         </Box>
-      ) : (
-        <Reveal>
-          <Card opaque elevation={0} sx={{ p: 3 }}>
-            <Typography variant="body1" sx={{ mb: 2 }}>
-              Our calendar and Instagram are always current — everything we run
-              gets posted there first.
-            </Typography>
-            <Stack direction="row" gap={1.5} flexWrap="wrap">
-              <Button
-                variant="contained"
-                size="small"
-                href={siteLinks.googleCalendar}
-              >
-                Google Calendar
-              </Button>
-              <Button variant="outlined" size="small" href={siteLinks.insta}>
-                Instagram
-              </Button>
-            </Stack>
-          </Card>
-        </Reveal>
       )}
     </Section>
   );
@@ -675,6 +736,7 @@ function LinksSection({ links }: LinksSectionProps) {
   return (
     <Section
       id="links"
+      sx={{ pt: { xs: 5, md: 7 } }}
       eyebrow="Everything in one place"
       title="Every link you need"
       subtitle="Bookmark this page — every form, server, and calendar we use lives right here."
