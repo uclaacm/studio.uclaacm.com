@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-import { Box, IconButton, Link, Typography, Divider } from '@mui/material'
+import { Box, IconButton, Link, Typography, Divider, useMediaQuery } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from '@mui/icons-material/Edit'
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports'
@@ -19,11 +19,56 @@ export type BannerProps = {
   links: NotionBannerLinksSchema[];
 };
 
+/**
+ * SEASONAL TOGGLE — flip to false once fall quarter is over.
+ *
+ * true  → banner shows the "New? Click this" onboarding button, flanked by the
+ *         bounce chevrons, and sits slightly taller while collapsed.
+ * false → banner reverts to exactly what it was before: a single centred
+ *         chevron under the tagline, at the original collapsed height.
+ *
+ * Related: the Fall Quarter homepage panel is toggled separately by commenting
+ * out its line in `homeSections` in src/pages/index.page.tsx.
+ */
+const SHOW_ONBOARDING_CTA = true;
+
+
+/** The bouncing "there's more below" hint. Collapses away once expanded. */
+function BounceChevron({ expanded }: { expanded: boolean }) {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        opacity: expanded ? 0 : 1,
+        maxWidth: expanded ? '0' : '20px',
+        overflow: 'hidden',
+        transition: 'opacity 0.3s ease-in-out, max-width 0.3s ease-in-out',
+      }}
+    >
+      <KeyboardArrowDownIcon
+        sx={(theme) => ({
+          fontSize: '1rem',
+          color: theme.palette.primary.main,
+          animation: 'bounce 2s infinite',
+          '@keyframes bounce': {
+            '0%, 100%': { transform: 'translateY(0)' },
+            '50%': { transform: 'translateY(3px)' },
+          },
+        })}
+      />
+    </Box>
+  )
+}
 
 export default function Banner(props: BannerProps) {
   const [isVisible, setIsVisible] = useState(true)
   const [isLoading, setIsLoading] = useState(true)
   const [isHovered, setIsHovered] = useState(false)
+  // the banner expands on hover, which touch devices never fire — so on those
+  // it also expands on tap, otherwise the links inside are unreachable there
+  const canHover = useMediaQuery('(hover: hover)')
 
   /*const linksRow1 = [
     {
@@ -154,8 +199,16 @@ export default function Banner(props: BannerProps) {
 
   return (
     <Box
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      {...(canHover
+        ? {
+            onMouseEnter: () => setIsHovered(true),
+            onMouseLeave: () => setIsHovered(false),
+          }
+        : {
+            role: 'button',
+            'aria-expanded': isHovered,
+            onClick: () => setIsHovered((expanded) => !expanded),
+          })}
       sx={(theme) => ({
         position: 'fixed',
         top: 0,
@@ -166,7 +219,11 @@ export default function Banner(props: BannerProps) {
         borderBottom: '2px solid #f8bbd0',
         boxShadow: isHovered ? '0 4px 12px rgba(216, 27, 96, 0.15)' : '0 2px 4px rgba(0,0,0,0.1)',
         overflow: 'hidden',
-        maxHeight: isHovered ? 'none' : '78px',
+        maxHeight: isHovered
+          ? 'none'
+          : SHOW_ONBOARDING_CTA
+            ? { xs: '104px', sm: '92px' }
+            : { xs: '92px', sm: '78px' },
         transition: theme.transitions.create(['max-height', 'box-shadow'], {
           duration: 500,
           easing: isHovered ? theme.transitions.easing.easeOut : theme.transitions.easing.easeInOut,
@@ -252,35 +309,54 @@ export default function Banner(props: BannerProps) {
             Keep up to date with all our latest events.
           </Typography>
 
-          {/* Hover indicator - disappears when expanded */}
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              mt: 0,
-              opacity: isHovered ? 0 : 1,
-              maxHeight: isHovered ? '0' : '16px',
-              overflow: 'visible',
-              transition: 'opacity 0.3s ease-in-out, max-height 0.3s ease-in-out',
-            }}
-          >
-            <KeyboardArrowDownIcon
-              sx={(theme) => ({
-                fontSize: '1rem',
-                color: theme.palette.primary.main,
-                animation: 'bounce 2s infinite',
-                '@keyframes bounce': {
-                  '0%, 100%': {
-                    transform: 'translateY(0)',
+          {SHOW_ONBOARDING_CTA ? (
+            /* Onboarding CTA, flanked by a chevron on each side */
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 1,
+                mt: 0.75,
+              }}
+            >
+              <BounceChevron expanded={isHovered} />
+              <Link
+                href="/onboarding"
+                // the banner itself toggles on tap for touch devices; don't let
+                // following this link also collapse/expand it
+                onClick={(e) => e.stopPropagation()}
+                sx={(theme) => ({
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 0.4,
+                  textDecoration: 'none',
+                  fontSize: { xs: '0.7rem', md: '0.78rem' },
+                  fontWeight: 700,
+                  padding: '4px 12px',
+                  borderRadius: '999px',
+                  whiteSpace: 'nowrap',
+                  backgroundColor: theme.palette.primary.main,
+                  color: theme.palette.primary.contrastText,
+                  border: '1.5px solid transparent',
+                  transition: 'all 0.2s ease-in-out',
+                  '&:hover': {
+                    transform: 'translateY(-1px)',
+                    boxShadow: '0 4px 8px rgba(216, 27, 96, 0.3)',
                   },
-                  '50%': {
-                    transform: 'translateY(3px)',
-                  },
-                },
-              })}
-            />
-          </Box>
+                })}
+              >
+                New? Click this
+              </Link>
+              <BounceChevron expanded={isHovered} />
+            </Box>
+          ) : (
+            /* Original hint: one centred chevron under the tagline */
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 0 }}>
+              <BounceChevron expanded={isHovered} />
+            </Box>
+          )}
 
           {/* Expanded content */}
           <Box

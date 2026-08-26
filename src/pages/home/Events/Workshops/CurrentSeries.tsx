@@ -145,6 +145,7 @@ export default function CurrentSeries({}: CurrentSeriesProps) {
         scrollMarginTop: `calc(${bodyOffset(theme)})`,
         width: "100%",
         minHeight: `calc(${bodyMinHeight(theme)})`,
+        justifyContent: "center",
         pb: `calc(${bodyPaddingBottom(theme)})`,
       })}
     >
@@ -179,7 +180,7 @@ export default function CurrentSeries({}: CurrentSeriesProps) {
               </>}
             />
           </Stack>
-          <Stack direction="row" gap={1} sx={{
+          <Stack direction="row" gap={1} justifyContent="center" sx={{
             mt: 4
           }}>
             <Button

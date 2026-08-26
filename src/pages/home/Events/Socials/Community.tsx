@@ -163,6 +163,11 @@ export default function Community(props: CommunityProps) {
         scrollMarginTop: `calc(${bodyOffset(theme)})`,
         width: "100%",
         minHeight: `calc(${bodyMinHeight(theme)})`,
+        // content was pinned to the top of the block, leaving all the
+        // slack below it; centre it in the snap area instead
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
         pb: `calc(${bodyPaddingBottom(theme)})`,
       })}
     >

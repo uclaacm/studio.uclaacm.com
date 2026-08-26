@@ -89,6 +89,11 @@ export default function E1Home(props: SpeakerEventHomeProps) {
         scrollMarginTop: `calc(${bodyOffset(theme)})`,
         width: "100%",
         minHeight: `calc(${bodyMinHeight(theme)})`,
+        // content was pinned to the top of the block, leaving all the
+        // slack below it; centre it in the snap area instead
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
         pb: `calc(${bodyPaddingBottom(theme)})`,
       })}
     >
@@ -99,7 +104,7 @@ export default function E1Home(props: SpeakerEventHomeProps) {
             component="span"
             className="community__header-section"
             display="block"
-            sx={[animationStyle(), { mb: 4 }]}
+            sx={[animationStyle(), { mb: 2 }]}
           >
             Want a more formal learning experience?
           </Typography>
@@ -127,9 +132,9 @@ export default function E1Home(props: SpeakerEventHomeProps) {
               },
             })}
           >
-            <Stack gap={4}>
+            <Stack gap={2}>
               <Typography
-                variant="h2"
+                variant="h3"
                 className="community__section"
                 sx={animationStyle()}
               >
@@ -137,7 +142,7 @@ export default function E1Home(props: SpeakerEventHomeProps) {
                 classroom settings with zero experience needed.
               </Typography>
               <Typography
-                variant="h2"
+                variant="h3"
                 className="community__section"
                 sx={animationStyle()}
               >

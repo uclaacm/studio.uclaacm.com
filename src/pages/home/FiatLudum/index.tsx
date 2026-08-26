@@ -33,7 +33,7 @@ export default function FiatLudum(props: HomeSectionProps) {
       ref={root}
       sx={{
         width: "100%",
-        height: "100vh",
+        height: "100dvh",
         scrollSnapAlign: "start",
         position: "relative",
         display: "flex",
@@ -76,7 +76,7 @@ export default function FiatLudum(props: HomeSectionProps) {
               borderRadius: 1.5,
               height: "auto",
               width: "100%",
-              maxWidth: "150vh",
+              maxWidth: "150dvh",
               minWidth: 0,
             }
           ]}

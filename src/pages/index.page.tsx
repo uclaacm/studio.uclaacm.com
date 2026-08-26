@@ -15,6 +15,7 @@ import {
 
 //in future, don't delete from here, just comment out or un comment / reorder
 import FiatLudum from "./home/FiatLudum";
+import FallQuarter from "./home/FallQuarter";
 import CurrentEvents from "./home/CurrentEvents";
 import Logline from "./home/Logline";
 import Mission from "./home/Mission";
@@ -87,7 +88,10 @@ export const homeEventSections: HomeSection[] = [
 
 //in future, don't delete from here, just comment out or un comment / reorder 
 export const homeSections: HomeSection[] = [
-  { title: "Fiat Ludum", Render: FiatLudum, props: { id: "fiat-ludum" } },
+  // Fiat Ludum is a spring game jam - uncomment this line to bring the panel
+  // back. (Its import above is kept in place for exactly that.)
+  // { title: "Fiat Ludum", Render: FiatLudum, props: { id: "fiat-ludum" } },
+  { title: "Fall Quarter", Render: FallQuarter, props: { id: "fall-quarter" } },
   { title: "Game Showcase", Render: HomeGame, props: { id: "game-showcase" } },
   { title: "Current Events", Render: CurrentEvents, props: { id: "current-events" } },
   { title: "Logline", Render: Logline, props: { id: "logline" } },
@@ -98,7 +102,11 @@ export const homeSections: HomeSection[] = [
 export default function Home({ events, links}: HomeProps) {
   const scrollContainer = React.useRef<HTMLElement | null>(null);
 
-  const [activeSection, setActive] = React.useState("#game-showcase");
+  // derived from the list so reordering or commenting out a panel can't leave
+  // this pointing at something that isn't first (or isn't rendered at all).
+  // note: bare id, no "#" - that's what setActive passes and what
+  // HomeNavigation compares against.
+  const [activeSection, setActive] = React.useState(homeSections[0].props.id);
 
   return (
     <MantineProvider>
@@ -107,17 +115,14 @@ export default function Home({ events, links}: HomeProps) {
         <HomeNavigation active={activeSection} />
         <Box
           ref={scrollContainer}
-          sx={(theme) => ({
+          sx={{
             width: "100%",
             height: "100dvh",
             overflowY: "auto",
             scrollSnapType: "y mandatory",
             scrollBehavior: "smooth",
             scrollSnapStop: "always",
-            [theme.breakpoints.down("md")]: {
-              width: "100vw",
-            },
-          })}
+          }}
         >
           {homeSections.map(({ Render, props }) => {
             const forwarded = props.id === 'current-events' ? ({ events } as any ) : {};
@@ -133,7 +138,6 @@ export default function Home({ events, links}: HomeProps) {
               />
             );
           })}
-          ;
           <Banner links = {links}></Banner>
         </Box>
       </Box>

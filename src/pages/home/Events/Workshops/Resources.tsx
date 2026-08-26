@@ -69,7 +69,6 @@ function Cards() {
         display: "flex",
         alignItems: "center",
         pt: 2,
-        pb: `calc(${bodyOffset(theme)})`,
       })}
     >
       <Box
@@ -145,13 +144,14 @@ export default function Resources({}: ResourcesProps) {
         scrollMarginTop: `calc(${bodyOffset(theme)})`,
         width: "100%",
         minHeight: `calc(${bodyMinHeight(theme)})`,
+        justifyContent: "center",
         pb: `calc(${bodyPaddingBottom(theme)})`,
       })}
     >
       <Typography
-        variant="display1"
+        variant="display2"
         sx={{
-          mb: 4,
+          mb: 2,
         }}
       >
         Resources

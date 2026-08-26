@@ -21,7 +21,7 @@ export function Template(props: HomeSectionProps) {
       id={id}
       sx={{
         width: "100%",
-        minHeight: "100vh",
+        minHeight: "100dvh",
         scrollSnapAlign: "start",
       }}
     >
