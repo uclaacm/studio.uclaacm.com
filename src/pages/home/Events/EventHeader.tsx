@@ -5,7 +5,7 @@ export const bodyOffset = (theme: Theme) =>
   `${theme.spacing(headerTopPadding)} + ${theme.typography.h1.lineHeight} * ${theme.typography.h1.fontSize}`;
 export const bodyMinHeight = (theme: Theme) =>
   `100dvh - ${theme.spacing(headerTopPadding)} - ${theme.typography.h1.lineHeight} * ${theme.typography.h1.fontSize}`;
-export const bodyPaddingBottom = (theme: Theme) => `${bodyOffset(theme)} * 2`;
+export const bodyPaddingBottom = (theme: Theme) => theme.spacing(2);
 
 export type EventHeaderProps = {
   children?: string;

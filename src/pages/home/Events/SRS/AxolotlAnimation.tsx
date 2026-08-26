@@ -15,6 +15,17 @@ export default function AxolotlAnimation(props: AxolotlAnimationProps) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       sx={{
+        // 460px fixed was most of a section body's height budget on short
+        // viewports. Cap it at the space actually left over instead: the block
+        // gets 100dvh minus the sticky header, and the two headings above take
+        // ~200px, so ~330px is spoken for. Full 460px from ~790px of viewport
+        // upward; only shrinks where there genuinely isn't room.
+        // (height:100% does NOT work here - the flex parent has no definite
+        // height, so the percentage resolves to auto and the svg snaps back to
+        // its intrinsic 460px.)
+        maxHeight: "min(calc(100dvh - 330px), 460px)",
+        width: "auto",
+        maxWidth: "100%",
         "@keyframes axofill": { "0%": { r: "0%" }, "100%": { r: "100%" } },
         "@keyframes axopopintail": {
           "0%": { transform: "translate(130px,-100px)" },

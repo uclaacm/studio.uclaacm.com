@@ -132,6 +132,11 @@ export default function TryGameJams(props: TryGameJamsProps) {
         scrollMarginTop: `calc(${bodyOffset(theme)})`,
         width: "100%",
         minHeight: `calc(${bodyMinHeight(theme)})`,
+        // content was pinned to the top of the block, leaving all the
+        // slack below it; centre it in the snap area instead
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
         pb: `calc(${bodyPaddingBottom(theme)})`,
       })}
     >
@@ -142,7 +147,7 @@ export default function TryGameJams(props: TryGameJamsProps) {
             display: "grid",
             width: "100%",
             translate: `0 calc((1 - var(--animation-percent)) * 32vh)`,
-            mb: 4,
+            mb: 2,
           }}
         >
           <Box />
@@ -158,7 +163,7 @@ export default function TryGameJams(props: TryGameJamsProps) {
             </Typography>
             <Typography
               component="span"
-              variant="display1"
+              variant="display2"
               className="try-game-jams__header-section"
               display="block"
               sx={animationStyle()}
@@ -168,7 +173,7 @@ export default function TryGameJams(props: TryGameJamsProps) {
           </Box>
           <Box />
         </Box>
-        <Stack gap={4} className="try-game-jams__bullets">
+        <Stack gap={2} className="try-game-jams__bullets">
           <Stack
             direction="row"
             gap={2}
@@ -179,7 +184,7 @@ export default function TryGameJams(props: TryGameJamsProps) {
               🙃
             </Typography>
             <Box>
-              <Typography variant="h1" fontWeight="bold">
+              <Typography variant="h2" fontWeight="bold">
                 A low commitment experience...
               </Typography>
               <Typography variant="body1" mb={1}>
@@ -199,7 +204,7 @@ export default function TryGameJams(props: TryGameJamsProps) {
               🎮
             </Typography>
             <Box>
-              <Typography variant="h1" fontWeight="bold">
+              <Typography variant="h2" fontWeight="bold">
                 with complete control...
               </Typography>
               <Typography variant="body1">
@@ -218,7 +223,7 @@ export default function TryGameJams(props: TryGameJamsProps) {
               ✅
             </Typography>
             <Box>
-              <Typography variant="h1" fontWeight="bold">
+              <Typography variant="h2" fontWeight="bold">
                 and your own goals.
               </Typography>
               <Typography variant="body1">

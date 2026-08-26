@@ -107,6 +107,11 @@ export default function StudioSquads(props: StudioSquadsProps) {
         scrollMarginTop: `calc(${bodyOffset(theme)})`,
         width: "100%",
         minHeight: `calc(${bodyMinHeight(theme)})`,
+        // content was pinned to the top of the block, leaving all the
+        // slack below it; centre it in the snap area instead
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
         pb: `calc(${bodyPaddingBottom(theme)})`,
       })}
     >
@@ -132,7 +137,19 @@ export default function StudioSquads(props: StudioSquadsProps) {
             <Typography
               variant="title1"
               className="studio-squads__section"
-              sx={[animationStyle(), { zIndex: 5 }]}
+              sx={[
+                animationStyle(),
+                {
+                  // zIndex is inert on a static element, so this never actually
+                  // lifted the text above the card graphic behind it
+                  position: "relative",
+                  zIndex: 5,
+                  // and keep the sentence clear of that graphic, which sits
+                  // bottom-right at 40% width. below md the graphic drops into
+                  // normal flow, so there is nothing to avoid.
+                  maxWidth: { xs: "none", md: "56%" },
+                },
+              ]}
             >
               Come join a fam led by two of our officers, where you can take
               part in a variety of activities and form meaningful relationships{" "}

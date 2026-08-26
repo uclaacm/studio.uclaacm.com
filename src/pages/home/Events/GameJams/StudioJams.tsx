@@ -85,30 +85,34 @@ export default function StudioJams(props: OurJamsProps) {
         scrollMarginTop: `calc(${bodyOffset(theme)})`,
         width: "100%",
         minHeight: `calc(${bodyMinHeight(theme)})`,
+        // content was pinned to the top of the block, leaving all the
+        // slack below it; centre it in the snap area instead
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
         pb: `calc(${bodyPaddingBottom(theme)})`,
       })}
     >
       <Stack sx={{ height: "100%" }}>
         <Typography
           component="span"
-          variant="display1"
+          variant="display2"
           className="studio-jams__header"
           display="block"
-          sx={[animationStyle(), { mb: 4 }]}
+          sx={[animationStyle(), { mb: 2 }]}
         >
           Past Entries
         </Typography>
-        <Typography component="span" variant="h1">
+        <Typography component="span" variant="h2">
           Studio organizes teams for jams to save you time.
         </Typography>
-        <Typography component="span" variant="title1">
+        <Typography component="span" variant="title2">
           Here are past entries from various teams!
         </Typography>
         <Stack
           sx={{
             flexGrow: 1,
             justifyContent: "center",
-            pb: `calc(${theme.spacing(headerTopPadding)} + ${theme.typography.h1.lineHeight})`,
           }}
         >
           <Box
@@ -147,7 +151,7 @@ export default function StudioJams(props: OurJamsProps) {
             />
             <MasonryCarousel
               rows={[entries]}
-              cellWidthProportion={md ? 0.8 : undefined}
+              cellWidthProportion={md ? 0.8 : 0.36}
             />
           </Box>
           <Stack direction="row" justifyContent="end">

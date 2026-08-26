@@ -1,0 +1,370 @@
+================================================================================
+CONTENT TRIM LOG
+Shrinking the six oversized homepage snap blocks so each fits one screen.
+Every change is listed with its exact before -> after so it can be reverted
+individually. Nothing else in the repo was touched by this pass.
+================================================================================
+
+WHY
+---
+Six blocks were taller than the scrollport, so scrolling past them took more
+than one gesture. Measured at a 632px viewport, where each block gets 515px:
+
+    block                 height   padding-btm   CONTENT   over by
+    SRSHome                 658          0         658       144
+    Resources               766        170         596       251
+    TryGameJams             739        170         569       224
+    StudioJams              773        170         603       259
+    Community (socials)     588        170         417        73
+    E1Home                  754        170         583       239
+
+Two earlier attempts (scroll-snap `proximity`, and reclaiming ~138px of the
+height budget) were reverted - neither was enough, because even at ZERO padding
+five of the six still had more content than 515px. The content itself had to
+come down. That is what this pass does.
+
+RESULT
+------
+Verified in the browser: all 17 snap blocks on the homepage now fit, none
+overflow. Measurement harness read real layout from an animation frame
+(layout reads return 0 in a backgrounded tab, so this was the only reliable
+way to measure here).
+
+    before: 6 of 17 blocks overflowed
+    after:  0 of 17 overflow
+
+
+--------------------------------------------------------------------------------
+FULL REVERT
+--------------------------------------------------------------------------------
+    git checkout -- src/pages/home/Events/
+
+That restores every change in this log at once. It does NOT touch the earlier
+mobile pass (MobileFixes.txt) except for EventHeader.tsx, which also carries the
+100vh -> 100dvh change from that pass - so after a bulk revert, re-apply:
+
+    src/pages/home/Events/EventHeader.tsx line 7
+        `100vh - ...`   ->   `100dvh - ...`   (in bodyMinHeight)
+
+
+--------------------------------------------------------------------------------
+SHARED - affects all eight event bodies
+--------------------------------------------------------------------------------
+
+[A1] src/pages/home/Events/EventHeader.tsx  (line ~8)
+     bodyPaddingBottom
+        BEFORE: (theme: Theme) => `${bodyOffset(theme)} * 2`     // ~170px
+        AFTER:  (theme: Theme) => theme.spacing(2)               //   16px
+     Dead space at the bottom of every event body. Invisible on blocks that
+     were not overflowing; pure waste on the ones that were.
+     REVERT: restore the template-literal expression.
+
+
+--------------------------------------------------------------------------------
+SRSHome  (was 658 -> fits)
+--------------------------------------------------------------------------------
+
+[B1] src/pages/home/Events/SRS/SRSHome.tsx  (line ~53)
+        BEFORE: <Stack gap={4}>     // 32px between the two headings
+        AFTER:  <Stack gap={2}>     // 16px
+     REVERT: gap={2} -> gap={4}
+
+[C1/C3] src/pages/home/Events/SRS/AxolotlAnimation.tsx  (sx, line ~17)
+        BEFORE: (nothing - svg had fixed width={446} height={460})
+        AFTER:  maxHeight: "min(calc(100dvh - 330px), 460px)",
+                width: "auto",
+                maxWidth: "100%",
+     THE BIGGEST SINGLE WIN in this pass. The axolotl was 460px of a 515px
+     budget - 89% of the block - so no amount of text trimming could have
+     fixed SRSHome.
+     The cap is the space actually left over: the block gets 100dvh minus the
+     sticky header, and the two headings above take ~200px, so ~330px is
+     spoken for. Full 460px from ~790px of viewport upward; shrinks only where
+     there genuinely is not room.
+     REVERT: delete the three properties (and the comment above them).
+
+     TWO EARLIER VERSIONS OF THIS LINE WERE WRONG - do not reintroduce either:
+       - `min(44dvh, 460px)` worked but was needlessly small on mid-size
+         screens: it only reached full size at a 1045px viewport, so a typical
+         laptop got an axolotl 20-35% smaller than the original for no reason.
+       - `height: "100%"` + `maxHeight: 460` DOES NOT WORK. The flex parent has
+         no definite height (the Container uses min-height), so the percentage
+         resolves to auto and the svg snaps back to its intrinsic 460px. This
+         regressed SRSHome to 128px of overflow. Verified by measurement.
+
+[C2] src/pages/home/Events/SRS/SRSHome.tsx  (axolotl wrapper Box, line ~72)
+        BEFORE: flexGrow: 1,
+        AFTER:  flexGrow: 1,
+                minHeight: 0,
+     Flex items default to `min-height: auto`, which refuses to shrink below
+     the content's intrinsic size - i.e. below the svg's 460px. Without this
+     the cap above cannot take effect.
+     REVERT: delete the `minHeight: 0,` line.
+
+
+--------------------------------------------------------------------------------
+Resources  (was 766 -> fits)
+--------------------------------------------------------------------------------
+
+[D1] src/pages/home/Events/Workshops/Resources.tsx  (Cards(), line ~72)
+        BEFORE: pb: `calc(${bodyOffset(theme)})`,     // 117px
+        AFTER:  (removed)
+     An INNER padding-bottom of 117px stacked underneath the outer 170px from
+     [A1] - 287px of blank space in a 515px box. Removing this alone was more
+     than Resources needed.
+     REVERT: re-add the line after `pt: 2,`.
+
+[D2] src/pages/home/Events/Workshops/Resources.tsx  (line ~146)
+        BEFORE: variant="display1"  ...  mb: 4
+        AFTER:  variant="display2"  ...  mb: 2
+     The single word "Resources" was set at 4.75rem (85px line box) plus 32px
+     margin.
+     REVERT: display2 -> display1, mb: 2 -> mb: 4
+
+
+--------------------------------------------------------------------------------
+TryGameJams  (was 739 -> fits)
+--------------------------------------------------------------------------------
+
+[E1] src/pages/home/Events/GameJams/TryGameJams.tsx  (header Box, line ~145)
+        BEFORE: mb: 4        AFTER: mb: 2
+[E2] same file (line ~157)
+        BEFORE: variant="display1"   ("Try game jams.")
+        AFTER:  variant="display2"
+[E3] same file (line ~170)
+        BEFORE: <Stack gap={4} className="try-game-jams__bullets">
+        AFTER:  <Stack gap={2} className="try-game-jams__bullets">
+[E4] same file - THREE occurrences, the bullet headings
+        BEFORE: <Typography variant="h1" fontWeight="bold">
+        AFTER:  <Typography variant="h2" fontWeight="bold">
+     ("A low commitment experience...", "with complete control...",
+      "and your own goals.")
+     E4 was added in a second round: after E1-E3 this block still had only 4px
+     of margin, which would have tipped back over on a slightly shorter window.
+     REVERT: reverse each; note E4 is a replace-all of three identical lines.
+
+
+--------------------------------------------------------------------------------
+StudioJams  (was 773 -> fits)
+--------------------------------------------------------------------------------
+
+[F1] src/pages/home/Events/GameJams/StudioJams.tsx  (line ~92)
+        BEFORE: variant="display1"  ...  { mb: 4 }     ("Past Entries")
+        AFTER:  variant="display2"  ...  { mb: 2 }
+[F2] same file (line ~112) - REMOVED:
+        pb: `calc(${theme.spacing(headerTopPadding)} + ${theme.typography.h1.lineHeight})`
+     This was INVALID CSS and had never applied: it produced
+     `calc(64px + 1.25)`, and calc cannot add a <length> to a unitless
+     <number>, so the browser dropped the declaration. Removing it changes
+     nothing visually - it is a correctness cleanup, not a height saving.
+[F3/F6] same file (line ~150) - the carousel
+        BEFORE: cellWidthProportion={md ? 0.8 : undefined}   // undefined = 0.5
+        AFTER:  cellWidthProportion={md ? 0.8 : 0.36}
+     Cells are `aspectRatio: 16/9`, so their height follows their width. 0.5 of
+     the container made each cell ~320px tall. Mobile (0.8) is unchanged.
+     >>> THIS IS THE MOST VISIBLE CHANGE IN THE PASS AND THE FIRST DIAL TO
+     >>> TURN IF IT LOOKS WRONG. Desktop cells are ~28% narrower, so more of
+     >>> them fit per row. It is one number: raise toward 0.5 to undo.
+[F5] same file (line ~100)
+        BEFORE: variant="h1"   ("Studio organizes teams for jams...")
+        AFTER:  variant="h2"
+[F4] same file (line ~103)
+        BEFORE: variant="title1"   ("Here are past entries from various teams!")
+        AFTER:  variant="title2"
+
+
+--------------------------------------------------------------------------------
+E1Home / ENGR 1GD  (was 754 -> fits)
+--------------------------------------------------------------------------------
+
+[G1] src/pages/home/Events/E1/E1Home.tsx  (line ~101)
+        BEFORE: sx={[animationStyle(), { mb: 4 }]}
+        AFTER:  sx={[animationStyle(), { mb: 2 }]}
+[G2] same file (line ~134)
+        BEFORE: <Stack gap={4}>     AFTER: <Stack gap={2}>
+[G2/G3] same file - BOTH body paragraphs
+        BEFORE: variant="h2"     AFTER: variant="h3"
+     ("Get a comprehensive understanding of the Unity game engine..." and
+      "Work in small groups to create a game from design to production.")
+
+
+--------------------------------------------------------------------------------
+CurrentSeries / Workshops - NOT a height fix
+--------------------------------------------------------------------------------
+
+[H1] src/pages/home/Events/Workshops/CurrentSeries.tsx  (line ~181)
+        BEFORE: <Stack direction="row" gap={1} sx={{ mt: 4 }}>
+        AFTER:  <Stack direction="row" gap={1} justifyContent="center" sx={{ mt: 4 }}>
+     Centres the "See full schedule" button under the "From Zero to Hero"
+     series item. It was left-aligned because the row Stack defaulted to
+     justifyContent: flex-start. Purely cosmetic - unrelated to the height
+     work above. Verified: the button's centre X now equals the row's centre X.
+     REVERT: remove the justifyContent prop.
+
+
+--------------------------------------------------------------------------------
+StudioSquads / Socials - NOT a height fix
+--------------------------------------------------------------------------------
+
+[I1] src/pages/home/Events/Socials/StudioSquads.tsx  (title1, line ~131)
+     The card illustration was overlapping the tail of "...meaningful
+     relationships", cutting off its last characters.
+        BEFORE: sx={[animationStyle(), { zIndex: 5 }]}
+        AFTER:  sx={[animationStyle(), {
+                  position: "relative",
+                  zIndex: 5,
+                  maxWidth: { xs: "none", md: "56%" },
+                }]}
+     TWO separate problems:
+       1. `zIndex: 5` was INERT - z-index does nothing on a `position: static`
+          element. Someone clearly intended this text to sit above the graphic
+          and it never did. `position: relative` makes that intent real, and is
+          now a backstop if they ever overlap again.
+       2. Even lifted, text on top of a busy illustration reads badly. The
+          graphic sits bottom-right at 40% width, so the sentence is capped at
+          56% and stops clear of it.
+     Below `md` the graphic drops to `position: unset` and flows normally, so
+     there is nothing to avoid - hence the breakpoint on maxWidth.
+     COST: the sentence now wraps to 6 lines instead of 5. The block had 170px
+     of slack, so it still fits.
+     VERIFIED: no text line overlaps the image (14px clearance), and all 17
+     blocks still fit.
+     REVERT: restore `sx={[animationStyle(), { zIndex: 5 }]}`.
+
+
+--------------------------------------------------------------------------------
+Community / socials  (was 588 -> fits)
+--------------------------------------------------------------------------------
+NO CONTENT CHANGES. It was only 73px over, so [A1] alone was enough. Its
+content is untouched.
+
+
+--------------------------------------------------------------------------------
+VERTICAL CENTRING - separate pass, NOT a height fix
+--------------------------------------------------------------------------------
+
+Reported: Speaker Series, Studio Jam, SRS and Zero to Hero did not feel
+vertically centred when snapped to.
+
+Measured cause: EVERY event body had `gapTop: 0`. Content was pinned to the top
+of the block and all the slack piled up underneath it. Several files tried to
+centre with `height: "100%"` on an inner Stack plus `justifyContent: center`,
+which never worked - the parent uses `min-height`, so a percentage height
+resolves to `auto`. (Same trap as the axolotl `height: 100%` attempt in C1/C3.)
+
+    block                 off-centre BEFORE   AFTER
+    Past Entries                    138px       8px
+    Zero to Hero                    111px       8px
+    Speaker Series                  106px       0px
+    ENGR 1GD                         55px       8px
+    socials                          48px       8px
+    game-jams                        36px       8px
+    Join a Studio Squad              32px      -1px
+    SRS                               0px       0px  (see J1 - it was "full",
+                                                      not off-centre)
+
+The residual 8px is the 16px bodyPaddingBottom sitting inside the box, so
+content rests 8px above true centre. Harmless, and arguably correct as bottom
+padding.
+
+[K1] Added to the root sx of six blocks that were `display: block`:
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+     FILES: GameJams/TryGameJams.tsx, GameJams/StudioJams.tsx,
+            Socials/Community.tsx, Socials/StudioSquads.tsx,
+            SpeakerEvents/SpeakerEventsHome.tsx, E1/E1Home.tsx
+     A flex container whose height comes from `min-height` still distributes
+     free space with justify-content, which is why this works where the old
+     `height: 100%` approach did not.
+
+[K2] Added only `justifyContent: "center"` to three blocks that were already
+     flex columns:
+     FILES: SRS/SRSHome.tsx, Workshops/Resources.tsx,
+            Workshops/CurrentSeries.tsx
+
+[J1] src/pages/home/Events/SRS/SRSHome.tsx - axolotl wrapper Box
+        BEFORE: flexGrow: 1,
+                minHeight: 0,
+        AFTER:  minHeight: 0,          (flexGrow removed)
+     SRS measured as 0px off-centre because the axolotl wrapper had
+     `flexGrow: 1` and absorbed ALL the free space, then centred the axolotl
+     inside itself - which pinned the headings flush against the top of the
+     block. That is what read as "not centred". Sized to content instead, the
+     parent's justifyContent centres headings + axolotl as one group.
+     RESULT: SRS went from top:0/bottom:0 to top:15/bottom:15.
+     REVERT: re-add `flexGrow: 1,` above `minHeight: 0,`.
+
+[K3] NOT APPLIED to Workshops/LearnByDoing.tsx - deliberately.
+     Its content (723px) already OVERFLOWS its fixed 515px height, so it is
+     -104px "off-centre" in the wrong direction. Centring it would clip the top
+     as well as the bottom, i.e. lose more content. See the known issue below.
+
+VERIFIED: all 17 blocks still fit after these changes (allFit: true).
+REVERT ALL OF THIS PASS: the K1/K2 properties and J1 are inside
+`git checkout -- src/pages/home/Events/` like everything else in this log.
+
+
+--------------------------------------------------------------------------------
+WHAT WAS VERIFIED, AND WHAT WAS NOT
+--------------------------------------------------------------------------------
+
+VERIFIED
+  - `npx tsc --noEmit` passes clean.
+  - All 17 snap blocks measured in-browser: none overflow (was 6).
+  - TryGameJams inspected visually at one screen - hierarchy still reads.
+
+NOT VERIFIED
+  - SCROLL FEEL. Synthetic scroll events do not reproduce trackpad or touch
+    momentum. The geometry problem is objectively fixed; whether it now FEELS
+    right is still a human call.
+  - The StudioJams carousel at 0.36 was not cleanly eyeballed. The one attempt
+    was corrupted by debug CSS that overrode `translate`, which that carousel
+    uses to position its cells. Treat F3/F6 as the least-verified change here.
+  - Nothing was checked at a real phone width - the tooling captures at a fixed
+    1280px viewport.
+
+VIEWPORT RANGE - measured, not estimated
+  A sweep simulated viewport heights from 520px to 1300px and re-measured every
+  block at each one.
+
+      viewport      result
+      600px +       ALL BLOCKS FIT          <- including 632, 700, 800, 900,
+                                               1080, 1300
+      560px         3 blocks over by 10-22px
+      520px         5 blocks over by 18-62px
+
+  So the page is good from ~600px of viewport height upward. Below ~575px the
+  multi-scroll returns, worst on JoinSRS, Resources and TryGameJams.
+
+  The axolotl cap improved the floor as a side effect: before it, the page
+  needed 632px; after, 600px. SRSHome no longer appears in the overflow list at
+  ANY tested height.
+
+  AXOLOTL SIZE BY VIEWPORT (after C1/C3):
+      600px -> 270      700px -> 370      790px+ -> 460 (full size)
+      632px -> 302      800px -> 460      1300px -> 460
+
+  CAVEAT: the sweep varied HEIGHT ONLY, at a fixed 1280px width. Mobile widths
+  change font sizes (md/sm breakpoints) and text wrapping, so none of this
+  predicts phone behaviour.
+
+  CAVEAT 2: LearnByDoing ("workshops") is excluded from the sweep numbers. It
+  uses `height:` rather than `minHeight:`, so the simulation could not resize it
+  and its figures were artifacts. See the known issue below.
+
+
+--------------------------------------------------------------------------------
+KNOWN ISSUE FOUND BUT NOT FIXED
+--------------------------------------------------------------------------------
+
+LearnByDoing (the first Workshops block) CLIPS its content on short screens.
+It uses `height:` (fixed) plus `overflow: "clip"`, so it can never overflow
+dimensionally - it silently truncates instead. That is why it never appeared in
+the "takes two scrolls" list. At a 632px viewport it sits exactly at its limit
+(content 515 = height 515), so any shorter viewport starts cutting content off.
+
+Losing content is arguably worse than an extra scroll. Fixing it means choosing:
+  - `height` -> `minHeight` stops the truncation but reintroduces the scroll
+    problem on short screens, or
+  - trim its content the way the other five blocks were trimmed.

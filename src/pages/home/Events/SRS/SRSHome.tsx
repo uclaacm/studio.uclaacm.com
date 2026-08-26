@@ -38,6 +38,7 @@ export default function SRSHome(props: SRSHomeProps) {
         scrollMarginTop: `calc(${bodyOffset(theme)})`,
         width: "100%",
         minHeight: `calc(${bodyMinHeight(theme)})`,
+        justifyContent: "center",
         display: "flex",
         flexDirection: "column",
       })}
@@ -50,7 +51,7 @@ export default function SRSHome(props: SRSHomeProps) {
         staggerChildren: theme.transitions.duration.short / 1000,
       }}
     >
-      <Stack gap={4}>
+      <Stack gap={2}>
         <Typography
           variant="display2"
           sx={animationStyle()}
@@ -78,7 +79,11 @@ export default function SRSHome(props: SRSHomeProps) {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            flexGrow: 1,
+            // deliberately NOT flexGrow: with it, this box absorbed all the
+            // free space and centred the axolotl inside itself, which pinned
+            // the headings flush to the top of the block. Sized to content, the
+            // parent's justifyContent centres headings + axolotl as one group.
+            minHeight: 0,
             zIndex: -1,
           }),
           animationStyle({ translateY: 16 }),
