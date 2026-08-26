@@ -89,7 +89,7 @@ export default function SRSHome(props: SRSHomeProps) {
 			<ImageSlideshow images={images}
 				width={800}
 				sx={{
-					maxHeight: "75vh",
+					maxHeight: "75dvh",
 					pb: 4,
 				}}
 			/>

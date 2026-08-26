@@ -807,7 +807,7 @@ export default function OnboardingPage({ links, events }: OnboardingPageProps) {
           <Box
             sx={{
               position: "absolute",
-              top: "4vh",
+              top: "4dvh",
               right: (theme) => theme.spacing(4),
               width: "280px",
               aspectRatio: "1 / 1",

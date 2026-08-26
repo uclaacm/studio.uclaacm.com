@@ -49,7 +49,7 @@ export default function Mission(props: MissionProps) {
         <Box
           sx={{
             width: "100%",
-            height: "100vh",
+            height: "100dvh",
             background:
               "linear-gradient(to bottom, #FFFFFF00 46%, #FFC2C261 100%)",
             display: "grid",
@@ -75,7 +75,7 @@ export default function Mission(props: MissionProps) {
         maxWidth="lg"
         sx={{
           scrollSnapAlign: "start",
-          height: "100vh",
+          height: "100dvh",
           display: "flex",
           alignItems: "center",
           gridRowStart: 1,

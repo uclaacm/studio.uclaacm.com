@@ -34,7 +34,7 @@ export default function FiatLudum(props: HomeSectionProps) {
       ref={root}
       sx={{
         width: "100%",
-        height: "100vh",
+        height: "100dvh",
         scrollSnapAlign: "start",
         position: "relative",
         display: "flex",
@@ -62,7 +62,8 @@ export default function FiatLudum(props: HomeSectionProps) {
               <Image src={FallWelcomePhoneArt} alt='Welcome to ACM Studio'
                 style={{
                     display: isMd ? 'block' : 'none',
-                    height: '20vh',
+                    height: '20dvh',
+                    objectFit: 'contain',
                     width: '85vw',
                 }}
               />
@@ -79,7 +80,7 @@ export default function FiatLudum(props: HomeSectionProps) {
                   display: 'flex',
                   height: "100%",
                   justifyContent: 'center',
-                  marginTop: isMd ? '-3vh' : 0,
+                  marginTop: isMd ? '-3dvh' : 0,
                   width: "90vw",
                 }
               ]}>

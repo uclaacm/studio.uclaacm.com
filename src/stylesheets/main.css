@@ -1,34 +1,13 @@
 #__next {
-  width: 100vw;
-  height: 100vh;
-  scroll-snap-type: y mandatory;
+  /* 100vw includes the vertical scrollbar gutter but the parent does not, which
+     pushed a horizontal scrollbar on every page. 100dvh tracks the viewport the
+     user can actually see on mobile, where 100vh is the taller chrome-hidden one.
+     Kept as `height` rather than `min-height` so child percentage heights still
+     resolve against a definite value. */
+  width: 100%;
+  height: 100dvh;
 }
 
 html {
   scroll-behavior: smooth;
-}
-
-&::-webkit-scrollbar {
-  width: '0.3em'
-}
-
-&::-webkit-scrollbar:horizontal {
-  display: 'none'
-}
-
-&::-webkit-scrollbar-track {
-  display: 'none'
-}
-
-&::-webkit-scrollbar-track-piece:end {
-  margin-bottom: 8
-}
-
-&::-webkit-scrollbar-track-piece:start {
-  margin-top: 8
-}
-
-&::-webkit-scrollbar-thumb {
-  background-color: '#FF8C93';
-  border-radius: 4;
 }

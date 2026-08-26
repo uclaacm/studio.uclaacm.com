@@ -107,17 +107,14 @@ export default function Home({ events, links}: HomeProps) {
         <HomeNavigation active={activeSection} />
         <Box
           ref={scrollContainer}
-          sx={(theme) => ({
+          sx={{
             width: "100%",
             height: "100dvh",
             overflowY: "auto",
             scrollSnapType: "y mandatory",
             scrollBehavior: "smooth",
             scrollSnapStop: "always",
-            [theme.breakpoints.down("md")]: {
-              width: "100vw",
-            },
-          })}
+          }}
         >
           {homeSections.map(({ Render, props }) => {
             const forwarded = props.id === 'current-events' ? ({ events } as any ) : {};
@@ -133,7 +130,6 @@ export default function Home({ events, links}: HomeProps) {
               />
             );
           })}
-          ;
           <Banner links = {links}></Banner>
         </Box>
       </Box>

@@ -79,6 +79,7 @@ function CurrentEventsCarousel({ events }: CurrentEventProps) {
               display: 'flex',
               height: '100%',
               justifyContent: 'center',
+              position: 'relative',
               width: '100%',
             }}
           >
@@ -86,10 +87,9 @@ function CurrentEventsCarousel({ events }: CurrentEventProps) {
               style={{
                 backgroundColor: 'white',
                 borderRadius: '1rem',
-                height: '99%',
+                inset: 0,
                 opacity: '0.8',
                 position: 'absolute',
-                width: '59.8vw',
                 zIndex: -1,
               }}
             ></Box>
@@ -194,6 +194,7 @@ export default function CurrentEvents(props: HomeSectionProps & CurrentEventProp
                 marginBottom: '1rem',
                 marginLeft: 'auto',
                 marginRight: 'auto',
+                objectFit: 'contain',
                 width: '75vw',
             }}
           />

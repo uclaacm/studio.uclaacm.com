@@ -76,7 +76,7 @@ export default function GameJamInfo(props: GameJamProps) {
             
             {/* 3. Pass the required props to HomeGame */}
             <Box sx={{ 
-              height: "80vh", // Adjusted height so it fits nicely on an info page
+              height: "80dvh", // Adjusted height so it fits nicely on an info page
               position: "relative",
               borderRadius: 2,
               overflow: "hidden",

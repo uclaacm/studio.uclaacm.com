@@ -157,7 +157,7 @@ export default function HomeGame(props: HomeSectionProps) {
       id={id}
       sx={{
         width: "100%",
-        height: "100vh",
+        height: "100dvh",
         scrollSnapAlign: "center",
         position: "relative",
       }}

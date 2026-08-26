@@ -40,7 +40,7 @@ export default function EventList() {
       maxWidth="lg"
       sx={{
         scrollSnapAlign: "start",
-        height: "100vh",
+        height: "100dvh",
         display: "flex",
         alignItems: "center",
         gridRowStart: 1,

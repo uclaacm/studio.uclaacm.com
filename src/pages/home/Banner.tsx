@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-import { Box, IconButton, Link, Typography, Divider } from '@mui/material'
+import { Box, IconButton, Link, Typography, Divider, useMediaQuery } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from '@mui/icons-material/Edit'
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports'
@@ -24,6 +24,9 @@ export default function Banner(props: BannerProps) {
   const [isVisible, setIsVisible] = useState(true)
   const [isLoading, setIsLoading] = useState(true)
   const [isHovered, setIsHovered] = useState(false)
+  // the banner expands on hover, which touch devices never fire — so on those
+  // it also expands on tap, otherwise the links inside are unreachable there
+  const canHover = useMediaQuery('(hover: hover)')
 
   /*const linksRow1 = [
     {
@@ -154,8 +157,16 @@ export default function Banner(props: BannerProps) {
 
   return (
     <Box
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      {...(canHover
+        ? {
+            onMouseEnter: () => setIsHovered(true),
+            onMouseLeave: () => setIsHovered(false),
+          }
+        : {
+            role: 'button',
+            'aria-expanded': isHovered,
+            onClick: () => setIsHovered((expanded) => !expanded),
+          })}
       sx={(theme) => ({
         position: 'fixed',
         top: 0,
@@ -166,7 +177,7 @@ export default function Banner(props: BannerProps) {
         borderBottom: '2px solid #f8bbd0',
         boxShadow: isHovered ? '0 4px 12px rgba(216, 27, 96, 0.15)' : '0 2px 4px rgba(0,0,0,0.1)',
         overflow: 'hidden',
-        maxHeight: isHovered ? 'none' : '78px',
+        maxHeight: isHovered ? 'none' : { xs: '92px', sm: '78px' },
         transition: theme.transitions.create(['max-height', 'box-shadow'], {
           duration: 500,
           easing: isHovered ? theme.transitions.easing.easeOut : theme.transitions.easing.easeInOut,

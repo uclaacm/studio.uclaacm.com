@@ -93,7 +93,7 @@ export default function Logline(props: LoglineProps) {
       ref={root}
       sx={(theme) => ({
         width: "100%",
-        height: "100vh",
+        height: "100dvh",
         scrollSnapAlign: "start",
         display: "grid",
         gridTemplateColumns: "1fr 1fr",
