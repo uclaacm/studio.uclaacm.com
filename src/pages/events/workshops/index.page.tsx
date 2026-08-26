@@ -117,7 +117,13 @@ export default function Workshops(props: WorkshopsProps) {
         We host workshops on a variety of topics,
         from game development to art to music.
       </Typography>
-      <Stack component="section" spacing={1}>
+      <Stack
+        component="section"
+        spacing={1}
+        // the schedule is a 5-column grid; below md the columns would be ~70px
+        // wide, so let it scroll sideways at a legible minimum instead
+        sx={{ overflowX: { xs: "auto", md: "visible" } }}
+      >
         <Typography variant="h1">
           Winter 2025 Workshops
         </Typography>
@@ -126,6 +132,7 @@ export default function Workshops(props: WorkshopsProps) {
             display: "grid",
             gridTemplateColumns: `fit-content repeat(${days.length}, 1fr)`,
             columnGap: 1,
+            minWidth: { xs: "36rem", md: "auto" },
           }}
         >
           <Typography variant="subtitle1" textAlign="center" alignSelf="end">

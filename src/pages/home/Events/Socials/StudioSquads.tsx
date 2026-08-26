@@ -196,6 +196,12 @@ export default function StudioSquads(props: StudioSquadsProps) {
             width="600"
             sx={(theme) => ({
               width: "40%",
+              // below md this drops into normal flow, so it needs a height cap
+              [theme.breakpoints.down("md")]: {
+                width: "60%",
+                maxHeight: "20dvh",
+                objectFit: "contain",
+              },
               [theme.breakpoints.down("sm")]: {
                 width: "80%",
               },

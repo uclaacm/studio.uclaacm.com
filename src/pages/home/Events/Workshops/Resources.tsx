@@ -49,7 +49,7 @@ function ResourceCard({ topContent, children }: ResourceCardProps) {
           borderBottom: "0px solid",
           borderBottomColor: theme.palette.primary.main,
           p: 2,
-          height: "6rem",
+          height: { xs: "4rem", md: "6rem" },
         })}
       >
         {topContent}
@@ -77,8 +77,16 @@ function Cards() {
           gridTemplateColumns: "1fr 1fr 1fr",
           gap: 2,
           [theme.breakpoints.down("md")]: {
+            // stacking three cards blows past the panel height, so on mobile
+            // they stay in a row you swipe through instead
             gridTemplateColumns: "unset",
-            gridTemplateRows: "1fr 1fr 1fr",
+            gridAutoFlow: "column",
+            gridAutoColumns: "82%",
+            overflowX: "auto",
+            overscrollBehaviorX: "contain",
+            scrollSnapType: "x mandatory",
+            pb: 1,
+            "& > *": { scrollSnapAlign: "start" },
           },
         })}
       >

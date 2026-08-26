@@ -89,8 +89,10 @@ export default function SRSHome(props: SRSHomeProps) {
 			<ImageSlideshow images={images}
 				width={800}
 				sx={{
-					maxHeight: "75dvh",
-					pb: 4,
+					// once the two columns stack, 75dvh of image pushes the whole
+					// panel past its snap height
+					maxHeight: { xs: "24dvh", md: "75dvh" },
+					pb: { xs: 1, md: 4 },
 				}}
 			/>
 		</Container>

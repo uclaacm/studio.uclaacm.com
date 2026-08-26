@@ -186,6 +186,9 @@ export default function Logline(props: LoglineProps) {
           position: "relative",
           display: "grid",
           gridTemplate: "1fr / 1fr",
+          // flex items default to min-height:auto, so this refused to shrink
+          // below the carousel's own height and overlapped the text above it
+          minHeight: 0,
           overflow: "hidden",
           "&::after": {
             content: `""`,

@@ -179,6 +179,8 @@ export default function E1Home(props: SpeakerEventHomeProps) {
                 height: "80%",
                 minWidth: 0,
                 minHeight: 0,
+                // stacked on mobile - cap it so the panel still fits one screen
+                maxHeight: { xs: "22dvh", md: "none" },
                 borderRadius: 1,
                 overflow: "clip",
                 objectFit: "cover",

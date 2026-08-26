@@ -334,12 +334,20 @@ function Calendar({
   const SkeletonContainer = loading ? Skeleton : React.Fragment;
 
   return (
-    <Box sx={{ flexGrow: 4 }}>
+    <Box
+      sx={{
+        flexGrow: 4,
+        // 7 columns across a phone gives ~45px cells; scroll the whole
+        // calendar sideways at a legible minimum instead of crushing it
+        overflowX: { xs: "auto", md: "visible" },
+      }}
+    >
       {/* Days of the week */}
       <Box
         sx={{
           display: "grid",
           gridTemplateColumns: "repeat(7, 1fr)",
+          minWidth: { xs: "40rem", md: "auto" },
           backgroundColor: theme.palette.secondary.light,
         }}
       >
@@ -356,6 +364,7 @@ function Calendar({
           height: "100%",
           display: "grid",
           gridTemplate: "repeat(5, 1fr) / repeat(7, 1fr)",
+          minWidth: { xs: "40rem", md: "auto" },
           backgroundColor: theme.palette.secondary.light,
         }}
         gap={0.25}

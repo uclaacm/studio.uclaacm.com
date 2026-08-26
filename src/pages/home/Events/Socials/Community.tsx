@@ -227,9 +227,12 @@ export default function Community(props: CommunityProps) {
               {
                 flexBasis: 0,
                 minWidth: 0,
+                minHeight: 0,
                 flexGrow: 1,
                 display: "grid",
                 gridTemplateRows: "1fr",
+                // stacked on mobile, so it must not claim the image's full height
+                maxHeight: { xs: "26dvh", md: "none" },
               },
               animationStyle(),
             ]}

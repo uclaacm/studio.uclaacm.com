@@ -6,4 +6,9 @@ export const getServerSideProps = createGetServerSideProps({
   category: "scoop",
 });
 
-export default ArticleRenderer;
+// ArticleRenderer is a factory - it must be CALLED to produce the page
+// component. Exporting it bare made React render a function that returns a
+// function, i.e. a blank page.
+export default ArticleRenderer({
+  baseUrl: "/column",
+});
