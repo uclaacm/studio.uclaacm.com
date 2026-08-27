@@ -59,6 +59,9 @@ type WorkshopsProps = {
   >>,
 };
 
+/** a quarter is 10 weeks; anything outside that is not part of the schedule */
+const WEEKS_IN_QUARTER = 10;
+
 export default function Workshops(props: WorkshopsProps) {
   const {
     workshopsByWeekDay,
@@ -101,6 +104,21 @@ export default function Workshops(props: WorkshopsProps) {
 
   })
 
+  // the entries that actually have a workshop, in the order they happen -
+  // this is what the phone layout lists. Capped at the 10 weeks in a quarter,
+  // same as the grid: dateToQuarterWeek sometimes hands back week numbers in
+  // the 40s, and those are out of quarter rather than real entries.
+  const scheduledWorkshops = workshops
+    .filter(
+      ({ workshop, week }) =>
+        workshop !== undefined && week >= 1 && week <= WEEKS_IN_QUARTER,
+    )
+    .sort((a, b) =>
+      a.week !== b.week
+        ? a.week - b.week
+        : dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day),
+    );
+
   return (
     <Container
       maxWidth="md"
@@ -117,22 +135,61 @@ export default function Workshops(props: WorkshopsProps) {
         We host workshops on a variety of topics,
         from game development to art to music.
       </Typography>
-      <Stack
-        component="section"
-        spacing={1}
-        // the schedule is a 5-column grid; below md the columns would be ~70px
-        // wide, so let it scroll sideways at a legible minimum instead
-        sx={{ overflowX: { xs: "auto", md: "visible" } }}
-      >
+      <Stack component="section" spacing={1} sx={{ minWidth: 0 }}>
         <Typography variant="h1">
           Winter 2025 Workshops
         </Typography>
+
+        {/*
+          Phones get the same information as a plain list. The week-by-day grid
+          needs ~36rem to stay legible, which is wider than a phone, and it is
+          mostly "No workshop" filler - a whole quarter is typically a handful
+          of real entries. Listing only those fits without scrolling sideways
+          and without clipping any titles.
+        */}
+        <Stack
+          component="ol"
+          spacing={1.5}
+          sx={{
+            display: { xs: "flex", md: "none" },
+            listStyle: "none",
+            m: 0,
+            p: 0,
+          }}
+        >
+          {scheduledWorkshops.length === 0 && (
+            <Typography variant="body1" fontStyle="italic">
+              No workshops scheduled yet this quarter.
+            </Typography>
+          )}
+          {scheduledWorkshops.map(({ workshop, week, day }) => (
+            <Card
+              component="li"
+              key={`${week}-${day}`}
+              elevation={1}
+              sx={{ display: "block" }}
+            >
+              <Typography variant="subtitle2" color="primary" fontWeight={700}>
+                Week {week} &middot; {day}
+              </Typography>
+              <Typography variant="title1" component="h3">
+                {workshop.name}
+              </Typography>
+              {workshop.description && (
+                <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                  {workshop.description}
+                </Typography>
+              )}
+            </Card>
+          ))}
+        </Stack>
+
         <Box
           sx={{
-            display: "grid",
+            display: { xs: "none", md: "grid" },
             gridTemplateColumns: `fit-content repeat(${days.length}, 1fr)`,
             columnGap: 1,
-            minWidth: { xs: "36rem", md: "auto" },
+            minWidth: 0,
           }}
         >
           <Typography variant="subtitle1" textAlign="center" alignSelf="end">
@@ -144,7 +201,7 @@ export default function Workshops(props: WorkshopsProps) {
               {day}
             </Typography>
           ))}
-          {Array.from({ length: 10 }).map((_, i) => i + 1).map((week) => (
+          {Array.from({ length: WEEKS_IN_QUARTER }).map((_, i) => i + 1).map((week) => (
             days.map((day, dayIndex) => {
               const workshop = workshopsByWeekDay?.[week]?.[day];
               return <Card
@@ -179,7 +236,7 @@ export default function Workshops(props: WorkshopsProps) {
               </Card>
             })
           ))}
-          {Array.from({ length: 10 }).map((_, i) => (
+          {Array.from({ length: WEEKS_IN_QUARTER }).map((_, i) => (
             <Typography key={i} variant="subtitle1" textAlign="center"
               alignSelf="center"
               sx={{

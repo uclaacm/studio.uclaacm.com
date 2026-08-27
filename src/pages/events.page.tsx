@@ -337,9 +337,13 @@ function Calendar({
     <Box
       sx={{
         flexGrow: 4,
-        // 7 columns across a phone gives ~45px cells; scroll the whole
-        // calendar sideways at a legible minimum instead of crushing it
-        overflowX: { xs: "auto", md: "visible" },
+        // Seven columns need ~40rem to stay readable, so the grid is desktop
+        // only - phones get <MonthAgenda /> instead. minWidth:0 matters as
+        // well: as a flex item this defaults to min-content, so the 40rem grid
+        // used to force the whole page wider instead of scrolling inside it.
+        display: { xs: "none", md: "block" },
+        minWidth: 0,
+        overflowX: "auto",
       }}
     >
       {/* Days of the week */}
@@ -388,6 +392,87 @@ function Calendar({
         })}
       </Box>
     </Box>
+  );
+}
+
+type MonthAgendaProps = {
+  monthStartDay?: Date;
+  eventsByStatus?: Partial<Record<EventStatus, EventData[]>>;
+  loading?: boolean;
+};
+
+/**
+ * The phone view of a month. A 7x6 grid cannot show an event title in ~45px of
+ * column, so instead of shrinking it (or making the page scroll sideways) the
+ * same events are listed a day at a time, which fits any width and clips
+ * nothing.
+ */
+function MonthAgenda({
+  monthStartDay,
+  eventsByStatus,
+  loading,
+}: MonthAgendaProps) {
+  const daysWithEvents = React.useMemo(() => {
+    if (!monthStartDay) return [];
+    const inMonth = (eventsByStatus?.confirmed ?? [])
+      .filter((event) => {
+        const date = new Date(event.start.dateTime);
+        return (
+          date.getMonth() === monthStartDay.getMonth() &&
+          date.getFullYear() === monthStartDay.getFullYear()
+        );
+      })
+      .sort(
+        (a, b) =>
+          new Date(a.start.dateTime).getTime() -
+          new Date(b.start.dateTime).getTime(),
+      );
+
+    const byDay = new Map<number, EventData[]>();
+    inMonth.forEach((event) => {
+      const key = normalizeDate(new Date(event.start.dateTime)).getTime();
+      byDay.set(key, [...(byDay.get(key) ?? []), event]);
+    });
+    return [...byDay.entries()];
+  }, [eventsByStatus, monthStartDay]);
+
+  return (
+    <Stack
+      sx={{
+        display: { xs: "flex", md: "none" },
+        gap: 2,
+        // it sits next to the (hidden) grid in a row Stack, so without this it
+        // shrinks to its content and the loading skeletons collapse to nothing
+        flexGrow: 1,
+        width: "100%",
+        minWidth: 0,
+      }}
+    >
+      {loading &&
+        Array.from({ length: 3 }).map((_, i) => (
+          <Skeleton key={`loading${i}`} height="140px" />
+        ))}
+      {!loading && daysWithEvents.length === 0 && (
+        <Typography variant="body1">nothing on this month</Typography>
+      )}
+      {!loading &&
+        daysWithEvents.map(([day, events]) => (
+          <Box key={day}>
+            <Typography variant="title2" fontWeight={700} gutterBottom>
+              {new Date(day).toLocaleDateString("default", {
+                weekday: "long",
+                month: "long",
+                day: "numeric",
+              })}
+            </Typography>
+            <Stack gap={1}>
+              {events.map((event) => (
+                <EventCard event={event} key={event.start.dateTime} />
+              ))}
+            </Stack>
+          </Box>
+        ))}
+    </Stack>
   );
 }
 
@@ -549,8 +634,10 @@ export default function Events({}: EventProps) {
               <ArrowLeftIcon />
             </MUIIconButton>
           </Stack>
-          {/* width is set to be ~ the maximum width that any month will take up */}
-          <Box width="26rem">
+          {/* 26rem is ~the widest any month name gets, which is wider than a
+            phone all by itself. Let it be a hard cap rather than a fixed
+            width so the row can shrink to whatever space there is. */}
+          <Box sx={{ width: "100%", maxWidth: "26rem", minWidth: 0 }}>
             <Typography
               variant="h2"
               textAlign="center"
@@ -572,7 +659,12 @@ export default function Events({}: EventProps) {
           </Stack>
         </Stack>
       </SkeletonContainer>
-      <Stack direction="row" gap={2}>
+      <Stack direction="row" gap={2} sx={{ minWidth: 0 }}>
+        <MonthAgenda
+          monthStartDay={monthStartDay}
+          eventsByStatus={eventsByStatus}
+          loading={monthStartDay === null || eventsData === null}
+        />
         <Calendar
           data={eventsData}
           eventsByStatus={eventsByStatus}
