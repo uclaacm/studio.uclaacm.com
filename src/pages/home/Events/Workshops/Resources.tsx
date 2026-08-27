@@ -131,23 +131,19 @@ function Cards() {
         </ResourceCard>
       </Box>
 
-      {/* the cards scroll sideways on mobile; say so, since a swipe affordance
-          is not otherwise discoverable */}
+      {/* the cards scroll sideways on mobile - the nudging arrow is the whole
+          affordance now; the "swipe for more" label that used to sit next to it
+          was wide enough to collide with the cards */}
       <Stack
         aria-hidden
         direction="row"
         alignItems="center"
         justifyContent="flex-end"
-        gap={0.25}
         sx={(theme) => ({
           display: { xs: "flex", md: "none" },
-          mt: 0.5,
           color: theme.palette.primary.main,
         })}
       >
-        <Typography variant="caption" sx={{ fontWeight: 700 }}>
-          swipe for more
-        </Typography>
         <KeyboardArrowRightIcon
           sx={{
             fontSize: "1rem",
