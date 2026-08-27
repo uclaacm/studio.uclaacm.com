@@ -93,7 +93,13 @@ export default function StudioJams(props: OurJamsProps) {
         pb: `calc(${bodyPaddingBottom(theme)})`,
       })}
     >
-      <Stack sx={{ height: "100%" }}>
+      {/*
+        height:100% does not resolve against a min-height parent, so once this
+        Container became a flex column the Stack collapsed to its content and
+        starved the carousel below it of height (it rendered zero cells).
+        Filling the column instead gives the carousel real space back.
+      */}
+      <Stack sx={{ flexGrow: 1, minHeight: 0, width: "100%" }}>
         <Typography
           component="span"
           variant="display2"
