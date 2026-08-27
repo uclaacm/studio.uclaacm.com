@@ -450,8 +450,16 @@ export default function Banner(props: BannerProps) {
         </Box>
 
         <IconButton
-          onClick={() => {
+          onClick={(e) => {
+            // On touch the banner itself toggles expand/collapse on tap, so a
+            // click that reaches it from in here counts as a toggle too. That
+            // made every close silently flip `isHovered`, and the banner then
+            // reopened expanded, collapsed, expanded... on alternate closes.
+            e.stopPropagation()
             setIsVisible(false)
+            // reopening should always start from the collapsed state rather
+            // than resuming whatever it happened to be before it was closed
+            setIsHovered(false)
             try {
               localStorage.setItem('banner-closed', JSON.stringify({
                 timestamp: Date.now()
