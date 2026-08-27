@@ -35,6 +35,9 @@ function HomeNavigationEntry(props: HomeNavigationEntryProps) {
       underline="none"
       sx={(theme) => ({
         minWidth: "12rem",
+        // without this the browser waits to see if a tap is a double-tap
+        // before dispatching the click, which reads as the menu lagging
+        touchAction: "manipulation",
         opacity,
         color,
         ":hover": {
@@ -112,66 +115,89 @@ export default function HomeNavigation(props: HomeNavigationProps) {
           open={open}
           onClick={() => setOpen(false)}
         />
-        <Stack
-          sx={(theme) => ({
-            px: 0.5,
-            py: 0.25,
-            backgroundColor: theme.palette.background.paper,
-            borderRadius: "8px",
-            maxWidth: open ? "12rem" : `calc(6px + ${theme.spacing(1)})`,
-            overflow: "clip",
-            /**
-             * Hover-capable devices only. A tap leaves :hover stuck on touch,
-             * which gave the bar a second, independent way to be wide: it
-             * would open visually while `open` stayed false, so no backdrop
-             * appeared and the state machine still thought it was closed. The
-             * next tap then hit the "else" branch - dimming but calling
-             * preventDefault - and only a third tap scrolled. Worse, it
-             * desynced again after every navigation, because setOpen(false)
-             * left the stuck :hover holding the bar open. Leaving this out on
-             * touch makes `open` the only thing that widens it.
-             */
-            ...(canHover
-              ? {
-                  ":hover": {
-                    maxWidth: "12rem",
-                    outlineColor: theme.palette.primary.main,
-                  },
-                }
-              : {}),
-            outline: "1px solid transparent",
-            transition: theme.transitions.create(
-              ["max-width", "outline-color"],
-              {
-                duration: theme.transitions.duration.short,
-                easing: theme.transitions.easing.easeOut,
-              },
-            ),
-            zIndex: theme.zIndex.drawer - 1,
-          })}
+        {/*
+          Collapsed, the bar is a 14px border box with 4px of padding a side,
+          leaving each link just 6px of tappable width - and a tap on that
+          padding lands on no link at all, so nothing happens. That is why
+          opening it took several goes. This transparent collar catches those
+          near-misses and opens the menu, without making the bar itself any
+          wider. It only pads while closed on touch, so it never sits between
+          a finger and the backdrop once the menu is open.
+        */}
+        <Box
+          onClick={canHover || open ? undefined : () => setOpen(true)}
+          sx={{
+            display: "flex",
+            // Generous on the axis that is actually hard to hit: the closed
+            // bar is a 14px-wide ribbon, so the horizontal padding is what
+            // turns it into a real target.
+            px: canHover || open ? 0 : 3.5,
+            py: canHover || open ? 0 : 2.5,
+            touchAction: "manipulation",
+            cursor: canHover || open ? undefined : "pointer",
+          }}
         >
-          {homeSections.map(({ title, props: { id } }) => (
-            <HomeNavigationEntry
-              key={title}
-              active={id === active}
-              title={title}
-              href={`#${id}`}
-              canHover={canHover}
-              onClick={
-                canHover
-                  ? () => setOpen(false)
-                  : (ev) => {
-                      if (open) {
-                        setOpen(false);
-                      } else {
-                        setOpen(true);
-                        ev.preventDefault();
+          <Stack
+            sx={(theme) => ({
+              px: 0.5,
+              py: 0.25,
+              backgroundColor: theme.palette.background.paper,
+              borderRadius: "8px",
+              maxWidth: open ? "12rem" : `calc(6px + ${theme.spacing(1)})`,
+              overflow: "clip",
+              /**
+               * Hover-capable devices only. A tap leaves :hover stuck on touch,
+               * which gave the bar a second, independent way to be wide: it
+               * would open visually while `open` stayed false, so no backdrop
+               * appeared and the state machine still thought it was closed. The
+               * next tap then hit the "else" branch - dimming but calling
+               * preventDefault - and only a third tap scrolled. Worse, it
+               * desynced again after every navigation, because setOpen(false)
+               * left the stuck :hover holding the bar open. Leaving this out on
+               * touch makes `open` the only thing that widens it.
+               */
+              ...(canHover
+                ? {
+                    ":hover": {
+                      maxWidth: "12rem",
+                      outlineColor: theme.palette.primary.main,
+                    },
+                  }
+                : {}),
+              outline: "1px solid transparent",
+              transition: theme.transitions.create(
+                ["max-width", "outline-color"],
+                {
+                  duration: theme.transitions.duration.short,
+                  easing: theme.transitions.easing.easeOut,
+                },
+              ),
+              zIndex: theme.zIndex.drawer - 1,
+            })}
+          >
+            {homeSections.map(({ title, props: { id } }) => (
+              <HomeNavigationEntry
+                key={title}
+                active={id === active}
+                title={title}
+                href={`#${id}`}
+                canHover={canHover}
+                onClick={
+                  canHover
+                    ? () => setOpen(false)
+                    : (ev) => {
+                        if (open) {
+                          setOpen(false);
+                        } else {
+                          setOpen(true);
+                          ev.preventDefault();
+                        }
                       }
-                    }
-              }
-            />
-          ))}
-        </Stack>
+                }
+              />
+            ))}
+          </Stack>
+        </Box>
       </Stack>
     </>
   );
