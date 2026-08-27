@@ -167,7 +167,23 @@ export default function LearnByDoing(props: LearnByDoingProps) {
         </AnimatedUnderline>{" "}
         in a quarter.
       </Typography>
-      <Stack justifyContent="center" sx={{ flexGrow: 1, mb: 4 }}>
+      {/* The svg is width/height 100%, but height:100% can't resolve against a
+        flex item whose own height comes from its content, so it fell back to
+        the viewBox aspect ratio (505px at desktop width) and overflowed the
+        panel by ~200px - `overflow: clip` then cut the graphic off just above
+        the week markers, which is what made it read as off-centre. minHeight:0
+        gives the Stack a real flex height so height:100% resolves and the
+        drawing scales down to fit, centred by the default xMidYMid. The extra
+        bottom margin clears the background bar pinned to the panel's foot.
+        Mobile keeps the old behaviour. */}
+      <Stack
+        justifyContent="center"
+        sx={{
+          flexGrow: 1,
+          mb: { xs: 4, md: 8 },
+          minHeight: { xs: "auto", md: 0 },
+        }}
+      >
         <Timeline
           width="100%"
           height="100%"

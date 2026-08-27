@@ -42,6 +42,9 @@ export default function SRSHome(props: SRSHomeProps) {
 				minHeight: `calc(${bodyMinHeight(theme)})`,
 				display: "grid",
 				gridTemplateColumns: md ? "1fr" : "1fr 1fr",
+				// this panel is a grid, so it missed the flex-centring the other
+				// sections got; alignContent centres its rows in the snap area
+				alignContent: "center",
 				gap: theme.spacing(4),
 			})}
 		>

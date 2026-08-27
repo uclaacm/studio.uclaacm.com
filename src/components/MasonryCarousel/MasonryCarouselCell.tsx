@@ -12,19 +12,41 @@ export type MasonryCarouselCellProps = {
   data: MasonryCarouselCellData;
   canHover?: boolean;
   dragging: React.RefObject<boolean>;
+  /** touch only: whether this is the cell the row currently has revealed */
+  open?: boolean;
+  /** touch only: ask the row to reveal or hide this cell */
+  onToggle?: () => void;
 };
 
 export default React.forwardRef<HTMLDivElement, MasonryCarouselCellProps>(
   function MasonryCarouselCell(props: MasonryCarouselCellProps, ref) {
     const theme = useTheme();
 
-    const { data, dragging, canHover } = props;
-    const { href, title } = data;
+    const { data, dragging, canHover, open, onToggle } = props;
+    // destructuring `data` directly threw for any cell the carousel asked for
+    // but couldn't supply, and one throw here unmounts the whole carousel -
+    // which looks exactly like "the carousel just didn't render"
+    const { href, title } = data ?? {};
 
     // TODO: Optimize this to use next/image
-    const src = typeof data.src === "string" ? data.src : data.src.src;
+    const src = typeof data?.src === "string" ? data.src : data?.src?.src;
 
-    const [hovering, setHovering] = React.useState(false);
+    const [pointerHover, setPointerHover] = React.useState(false);
+    // where hovering can't happen, the row decides which cell is revealed
+    const hovering = canHover ? pointerHover : !!open;
+
+    /**
+     * These have to be exclusive. Leaving the mouse handlers attached on a
+     * touch screen meant a tap raised the overlay via the synthesised
+     * mouseenter and the click toggle immediately dropped it again, so the
+     * first tap only ever produced a grey flash.
+     */
+    const interaction = canHover
+      ? {
+          onMouseEnter: () => setPointerHover(true),
+          onMouseLeave: () => setPointerHover(false),
+        }
+      : { onClick: () => onToggle?.() };
 
     return (
       <MotionStack
@@ -48,15 +70,7 @@ export default React.forwardRef<HTMLDivElement, MasonryCarouselCellProps>(
           },
         }}
         animate={hovering ? "hover" : "default"}
-        onMouseEnter={() => setHovering(true)}
-        onMouseLeave={() => setHovering(false)}
-        {...(!canHover
-          ? {
-              onClick: () => {
-                setHovering((v) => !v);
-              },
-            }
-          : {})}
+        {...interaction}
       >
         <Box
           component={motion.div}

@@ -94,7 +94,8 @@ export default function E1Home(props: SpeakerEventHomeProps) {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        pb: `calc(${bodyPaddingBottom(theme)})`,
+        // the shared 16px leaves the mobile buttons almost flush with the edge
+        pb: { xs: theme.spacing(5), md: `calc(${bodyPaddingBottom(theme)})` },
       })}
     >
       <Box>
