@@ -120,10 +120,25 @@ export default function HomeNavigation(props: HomeNavigationProps) {
             borderRadius: "8px",
             maxWidth: open ? "12rem" : `calc(6px + ${theme.spacing(1)})`,
             overflow: "clip",
-            ":hover": {
-              maxWidth: "12rem",
-              outlineColor: theme.palette.primary.main,
-            },
+            /**
+             * Hover-capable devices only. A tap leaves :hover stuck on touch,
+             * which gave the bar a second, independent way to be wide: it
+             * would open visually while `open` stayed false, so no backdrop
+             * appeared and the state machine still thought it was closed. The
+             * next tap then hit the "else" branch - dimming but calling
+             * preventDefault - and only a third tap scrolled. Worse, it
+             * desynced again after every navigation, because setOpen(false)
+             * left the stuck :hover holding the bar open. Leaving this out on
+             * touch makes `open` the only thing that widens it.
+             */
+            ...(canHover
+              ? {
+                  ":hover": {
+                    maxWidth: "12rem",
+                    outlineColor: theme.palette.primary.main,
+                  },
+                }
+              : {}),
             outline: "1px solid transparent",
             transition: theme.transitions.create(
               ["max-width", "outline-color"],
