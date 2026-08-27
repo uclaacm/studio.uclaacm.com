@@ -91,7 +91,7 @@ const ways: Way[] = [
     icon: <Icon name="discord" color="inherit" />,
     title: "Join the Discord",
     timing: "Takes a minute",
-    body: "Announcements, teammate hunting, and people who'll answer your questions at 2am.",
+    body: "Announcements, meet fellow game-jammers, and play games with us. If you love a game, chances are there's a board member that loves it too.",
     href: siteLinks.discord,
     cta: "Join the Discord",
   },
@@ -99,7 +99,7 @@ const ways: Way[] = [
     icon: <BoltIcon />,
     title: "Game jams",
     timing: "One weekend",
-    body: "A weekend-long sprint where you create a full game in 48 hours. We help people find teams and we welcome all experience levels. You just show up and make something. Any and all skillsets are welcome.",
+    body: "For the people who can't afford quarter-long projects. A low-time-investment gamedev experience where you cram a full game in 48 hours. Show up, get assigned to a team, and make something. Any and all skillsets are welcome.",
     href: "/events/game-jams",
     cta: "How game jams work",
   },
@@ -107,7 +107,7 @@ const ways: Way[] = [
     icon: <SchoolIcon />,
     title: "Workshops",
     timing: "An hour a week",
-    body: "Weekly guided labs that take you from an empty project to a finished game over the quarter.",
+    body: "Weekly guided labs that take you from an empty project to a finished game over the quarter. Earn prizes by going to workshops consistently!",
     href: "/workshops",
     cta: "See the current series",
   },
@@ -115,7 +115,7 @@ const ways: Way[] = [
     icon: <MenuBookIcon />,
     title: "ENGR 1GD",
     timing: "A course, for credit",
-    body: "The same content workshops cover, it just has a syllabus. A game dev course you can take for credit.",
+    body: "Navigate your way through Boelter hall once a week to attend a class on game development. Covers similar content to workshops. Ends off with a capstone project where you form teams and make your own game!",
     href: siteLinks.e1,
     cta: "View the course listing",
   },
@@ -123,7 +123,7 @@ const ways: Way[] = [
     icon: <GroupsIcon />,
     title: "Students Run Studios",
     timing: "Winter & spring",
-    body: "Two quarters in a small student-run studio team. A longer-paced, more in-depth version of game jams/workshops. Make a full game and show it off at Spring Showcase.",
+    body: "Two quarters in a small student-run studio team. A longer-paced, more in-depth version of game jams/workshops. Make a full game and show it off at Spring Showcase!",
     href: "/srs",
     cta: "Explore SRS",
   },
@@ -559,7 +559,7 @@ function FallEvents({ events }: FallEventsProps) {
       subtitle={
         events.length > 0
           ? "What's coming up as the quarter kicks off. Unless one says otherwise, there's nothing to sign up for — just show up."
-          : "The rest of the fall calendar is still coming together. Check this website or our Instagram for updates."
+          : "The rest of the fall calendar isn't out yet. Check this website or our Instagram for updates."
       }
     >
       {events.length > 0 && (
@@ -739,7 +739,7 @@ function LinksSection({ links }: LinksSectionProps) {
       sx={{ pt: { xs: 5, md: 7 } }}
       eyebrow="Everything in one place"
       title="Every link you need"
-      subtitle="Bookmark this page — every form, server, and calendar we use lives right here."
+      subtitle="All the links (including signup forms) will be linked here, so make sure to bookmark this page."
     >
       <Stack gap={{ xs: 4, md: 5 }}>
         {links.length > 0 && (
@@ -803,8 +803,7 @@ function LinksSection({ links }: LinksSectionProps) {
             variant="body2"
             sx={{ color: "text.secondary", textAlign: "center", pt: 2 }}
           >
-            Still not sure where to start? Say hi in the Discord — someone will
-            point you at the right thing.
+            Still not sure where to start? Chat a bit in the Discord and introduce yourself. Most of us don't bite.
           </Typography>
         </Reveal>
       </Stack>

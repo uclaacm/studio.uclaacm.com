@@ -131,7 +131,15 @@ export default function HomeNavigation(props: HomeNavigationProps) {
             // Generous on the axis that is actually hard to hit: the closed
             // bar is a 14px-wide ribbon, so the horizontal padding is what
             // turns it into a real target.
-            px: canHover || open ? 0 : 3.5,
+            //
+            // Asymmetric on purpose. Padding it evenly centred the bar inside
+            // the collar and shoved the dots inward, off the edge they have
+            // always sat against. The negative margin cancels the left pad so
+            // the dots do not move at all: the hit area reaches out to the
+            // screen edge on one side and inward on the other.
+            ml: canHover || open ? 0 : -1,
+            pl: canHover || open ? 0 : 1,
+            pr: canHover || open ? 0 : 7,
             py: canHover || open ? 0 : 2.5,
             touchAction: "manipulation",
             cursor: canHover || open ? undefined : "pointer",
