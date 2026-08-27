@@ -8,6 +8,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import React from "react";
 import Link from "~/components/Link";
 import Image from "next/image";
 
@@ -63,6 +64,30 @@ function ResourceCard({ topContent, children }: ResourceCardProps) {
 }
 
 function Cards() {
+  const scroller = React.useRef<HTMLDivElement>(null);
+  // the hint only means anything while there is somewhere left to swipe to
+  const [moreToSee, setMoreToSee] = React.useState(false);
+
+  React.useEffect(() => {
+    const el = scroller.current;
+    if (!el) return;
+    const update = () => {
+      // scrollWidth - clientWidth is as far left as it can go; a pixel of
+      // slack keeps fractional layout widths from leaving it permanently "on"
+      const remaining = el.scrollWidth - el.clientWidth - el.scrollLeft;
+      setMoreToSee(remaining > 1);
+    };
+    update();
+    el.addEventListener("scroll", update, { passive: true });
+    // the row is only scrollable below md, so re-check when it is re-laid out
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    return () => {
+      el.removeEventListener("scroll", update);
+      observer.disconnect();
+    };
+  }, []);
+
   return (
     <Box
       sx={(theme) => ({
@@ -74,6 +99,7 @@ function Cards() {
       })}
     >
       <Box
+        ref={scroller}
         sx={(theme) => ({
           display: "grid",
           gridTemplateColumns: "1fr 1fr 1fr",
@@ -133,7 +159,10 @@ function Cards() {
 
       {/* the cards scroll sideways on mobile - the nudging arrow is the whole
           affordance now; the "swipe for more" label that used to sit next to it
-          was wide enough to collide with the cards */}
+          was wide enough to collide with the cards. It fades out on the last
+          card, where there is nothing left to swipe to. Fading rather than
+          unmounting keeps it holding its space, so the cards do not jump
+          sideways as you reach the end. */}
       <Stack
         aria-hidden
         direction="row"
@@ -142,6 +171,11 @@ function Cards() {
         sx={(theme) => ({
           display: { xs: "flex", md: "none" },
           color: theme.palette.primary.main,
+          opacity: moreToSee ? 1 : 0,
+          pointerEvents: "none",
+          transition: theme.transitions.create("opacity", {
+            duration: theme.transitions.duration.shortest,
+          }),
         })}
       >
         <KeyboardArrowRightIcon
