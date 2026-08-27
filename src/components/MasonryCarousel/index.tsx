@@ -51,7 +51,11 @@ export default React.forwardRef<HTMLDivElement, MasonryCarouselProps>(
         containerSize !== null
           ? containerSize.inlineSize * cellWidthProportion
           : null,
-      [containerSize],
+      // cellWidthProportion belongs here too: it flips when a `useMediaQuery`
+      // breakpoint resolves after hydration, which usually happens without the
+      // container ever changing size, and the memo would otherwise keep
+      // serving a width computed for the other breakpoint.
+      [containerSize, cellWidthProportion],
     );
 
     useImperativeHandle(ref, () => containerRef.current);
@@ -68,7 +72,13 @@ export default React.forwardRef<HTMLDivElement, MasonryCarouselProps>(
           ...(sx instanceof Array ? sx : [sx]),
         ]}
       >
+        {/*
+          Must be > 0, not merely non-null: a 0 measurement still passes a null
+          check but produces zero-width cells, i.e. a carousel that renders
+          nothing. Waiting for a real width makes this deterministic.
+        */}
         {cellWidth !== null &&
+          cellWidth > 0 &&
           rows.map((cells, i) => (
             // Note: the key here forces a complete rerender
             // whenever the cellWidth changes
@@ -81,6 +91,7 @@ export default React.forwardRef<HTMLDivElement, MasonryCarouselProps>(
               cells={cells}
               left={i % 2 === 1}
               speed={speed}
+              canHover={canHover}
               nVirtualizedCells={Math.ceil(1 / cellWidthProportion) + 2}
             />
           ))}

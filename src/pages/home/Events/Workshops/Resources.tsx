@@ -19,6 +19,7 @@ import {
 } from "~/util/framer/variants";
 import { bodyMinHeight, bodyOffset, bodyPaddingBottom } from "../EventHeader";
 import { Card } from "~/components/Card";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 export type ResourcesProps = {};
 
@@ -68,7 +69,8 @@ function Cards() {
         flexGrow: 1,
         display: "flex",
         alignItems: "center",
-        pt: 2,
+        // the swipe hint below needs its space back on mobile
+        pt: { xs: 1, md: 2 },
       })}
     >
       <Box
@@ -128,6 +130,35 @@ function Cards() {
           in the workshop.
         </ResourceCard>
       </Box>
+
+      {/* the cards scroll sideways on mobile; say so, since a swipe affordance
+          is not otherwise discoverable */}
+      <Stack
+        aria-hidden
+        direction="row"
+        alignItems="center"
+        justifyContent="flex-end"
+        gap={0.25}
+        sx={(theme) => ({
+          display: { xs: "flex", md: "none" },
+          mt: 0.5,
+          color: theme.palette.primary.main,
+        })}
+      >
+        <Typography variant="caption" sx={{ fontWeight: 700 }}>
+          swipe for more
+        </Typography>
+        <KeyboardArrowRightIcon
+          sx={{
+            fontSize: "1rem",
+            animation: "nudge 1.6s ease-in-out infinite",
+            "@keyframes nudge": {
+              "0%, 100%": { transform: "translateX(0)" },
+              "50%": { transform: "translateX(3px)" },
+            },
+          }}
+        />
+      </Stack>
     </Box>
   );
 }

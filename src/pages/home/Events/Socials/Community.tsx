@@ -178,7 +178,7 @@ export default function Community(props: CommunityProps) {
             display: "grid",
             width: "100%",
             translate: `0 calc((1 - var(--animation-percent)) * 32vh)`,
-            mb: 4,
+            mb: { xs: 1, md: 4 },
           }}
         >
           <Box />
@@ -225,14 +225,17 @@ export default function Community(props: CommunityProps) {
             className="community__section"
             sx={[
               {
-                flexBasis: 0,
                 minWidth: 0,
-                minHeight: 0,
-                flexGrow: 1,
                 display: "grid",
                 gridTemplateRows: "1fr",
-                // stacked on mobile, so it must not claim the image's full height
-                maxHeight: { xs: "26dvh", md: "none" },
+                // Stacked on mobile: flex-basis drives the main size in a column,
+                // so `height` alone was ignored and the box collapsed to 0 (the
+                // slides inside are height:100%). Give it a fixed band instead.
+                // Row layout from md up keeps the original 0-basis / grow-1.
+                flexBasis: { xs: "26dvh", md: 0 },
+                flexGrow: { xs: 0, md: 1 },
+                flexShrink: 0,
+                overflow: "hidden",
               },
               animationStyle(),
             ]}
@@ -240,7 +243,7 @@ export default function Community(props: CommunityProps) {
             <ImageSlideshow images={images} />
           </Box>
           {medium && (
-            <Stack direction="row" gap={1}>
+            <Stack direction="row" gap={1} sx={{ flexShrink: 0 }}>
               {buttons}
             </Stack>
           )}
