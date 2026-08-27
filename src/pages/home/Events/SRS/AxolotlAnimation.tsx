@@ -23,7 +23,11 @@ export default function AxolotlAnimation(props: AxolotlAnimationProps) {
         // (height:100% does NOT work here - the flex parent has no definite
         // height, so the percentage resolves to auto and the svg snaps back to
         // its intrinsic 460px.)
-        maxHeight: "min(calc(100dvh - 330px), 460px)",
+        maxHeight: {
+          // headings wrap to more lines on a phone, so leave them more room
+          xs: "min(calc(100dvh - 430px), 460px)",
+          sm: "min(calc(100dvh - 330px), 460px)",
+        },
         width: "auto",
         maxWidth: "100%",
         "@keyframes axofill": { "0%": { r: "0%" }, "100%": { r: "100%" } },

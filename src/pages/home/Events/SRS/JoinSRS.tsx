@@ -45,7 +45,7 @@ export default function SRSHome(props: SRSHomeProps) {
 				gap: theme.spacing(4),
 			})}
 		>
-			<Stack gap={4}>
+			<Stack gap={{ xs: 2, md: 4 }}>
 				<Typography
 					variant="display2"
 					className="community__section"
@@ -55,14 +55,14 @@ export default function SRSHome(props: SRSHomeProps) {
 				>
 					Join a Studio
 				</Typography>
-				<Stack gap={2}>
-					<Typography variant="body1" component="p">
+				<Stack gap={{ xs: 1, md: 2 }}>
+					<Typography variant="body1" component="p" sx={{ fontSize: { xs: "0.875rem", sm: "inherit" } }}>
 						SRS has been ACM Studio's Flagship Program for over 6 years, seeing the creation of over 50 games! SRS is perfect to grow your skills working in a group environment and create an amazing portfolio piece.
 					</Typography>
-					<Typography variant="body1" component="p">
+					<Typography variant="body1" component="p" sx={{ fontSize: { xs: "0.875rem", sm: "inherit" } }}>
 						At the end, present your 2 quarters of work to over a hundred people, including industry professionals, at our Spring Showcase!
 					</Typography>
-					<Typography variant="body1" component="p">
+					<Typography variant="body1" component="p" sx={{ fontSize: { xs: "0.875rem", sm: "inherit" } }}>
 						We are accepting applications now!
 					</Typography>
 				</Stack>
@@ -89,8 +89,11 @@ export default function SRSHome(props: SRSHomeProps) {
 			<ImageSlideshow images={images}
 				width={800}
 				sx={{
-					maxHeight: "75dvh",
-					pb: 4,
+					// the copy alone fills a phone panel, so there is no room for
+					// the slideshow underneath it; it returns from sm upward
+					display: { xs: "none", sm: "block" },
+					maxHeight: { sm: "24dvh", md: "75dvh" },
+					pb: { sm: 1, md: 4 },
 				}}
 			/>
 		</Container>
