@@ -110,11 +110,32 @@ export const homeSections: HomeSection[] = [
   ...homeEventSections,
 ];*/
 
+const renderers = {
+  CurrentEvents,
+  E1,
+  FallQuarter,
+  FiatLudum,
+  GameJams,
+  HomeGame,
+  Logline,
+  Mission,
+  Socials,
+  SpeakerEvents,
+  SRS,
+  Workshops,
+}
+
+type RendererName = keyof typeof renderers;
+
+function isRendererName(value: string): value is RendererName {
+  return value in renderers;
+}
+
 function ParseHomeSections(sections: HomepageSectionsSchema[]) {
   return (
     sections?.map((sec) => ({
       title: sec.title,
-      Render: Logline,
+      Render: isRendererName(sec.title) ? renderers[sec.title] : Logline,
       props: { id: sec.title },
     }))
   );
