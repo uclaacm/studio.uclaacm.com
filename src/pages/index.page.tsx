@@ -9,7 +9,9 @@ import { MantineProvider } from "@mantine/core";
 import { REVALIDATE_INTERVAL } from "~/Env";
 import {
   getCurrentEvents,
-  CurrentEventsSchema
+  CurrentEventsSchema,
+  getHomepageSections,
+  HomepageSectionsSchema
 } from "~/api/notion/schema";
 
 
@@ -33,25 +35,30 @@ import { getBannerLinks, NotionBannerLinksSchema } from '~/api/notion/schema';
 
 type HomeProps = {
   events: CurrentEventsSchema[];
+  sections: HomepageSectionsSchema[];
   links: NotionBannerLinksSchema[];
 };
 
 type CommonHomeSectionProps = {
   setActive: () => void;
-  scrollContainerRef: React.MutableRefObject<HTMLElement>;
+  scrollContainerRef: React.RefObject<HTMLElement>;
 };
 
 type UniqueHomeSectionProps = {
   id: string;
 };
 
-export type HomeSectionProps = CommonHomeSectionProps & UniqueHomeSectionProps;
+export type HomeSectionProps = CommonHomeSectionProps &
+  UniqueHomeSectionProps & {
+    sections?: HomeSection[];
+  };
 
 export async function getStaticProps(): Promise<GetStaticPropsResult<HomeProps>> {
   const events = await getCurrentEvents({ sortBy: 'dateSort', direction: 'ascending' });
+  const sections = await getHomepageSections();
   const bannerLinks = await getBannerLinks();
   return {
-    props: { events, links: bannerLinks},
+    props: { events, sections, links: bannerLinks},
     revalidate: REVALIDATE_INTERVAL,
   };
 }
@@ -63,7 +70,11 @@ export type HomeSection = {
   props: UniqueHomeSectionProps;
 };
 
-export const homeEventSections: HomeSection[] = [
+export type NotionHomeSectionProps = HomeProps & {
+  HomeSection: HomeSection;
+};
+
+/*export const homeEventSections: HomeSection[] = [
   {
     title: "SRS",
     longTitle: "Students Run Studios",
@@ -97,22 +108,34 @@ export const homeSections: HomeSection[] = [
   { title: "Logline", Render: Logline, props: { id: "logline" } },
   { title: "Mission", Render: Mission, props: { id: "mission" } },
   ...homeEventSections,
-];
+];*/
 
-export default function Home({ events, links}: HomeProps) {
+function ParseHomeSections(sections: HomepageSectionsSchema[]) {
+  return (
+    sections?.map((sec) => ({
+      title: sec.title,
+      Render: Logline,
+      props: { id: sec.title },
+    }))
+  );
+}
+
+export default function Home({ events, links, sections }: HomeProps) {
   const scrollContainer = React.useRef<HTMLElement | null>(null);
+
+  const homeSections: HomeSection[] = ParseHomeSections(sections);
 
   // derived from the list so reordering or commenting out a panel can't leave
   // this pointing at something that isn't first (or isn't rendered at all).
   // note: bare id, no "#" - that's what setActive passes and what
   // HomeNavigation compares against.
-  const [activeSection, setActive] = React.useState(homeSections[0].props.id);
+  const [activeSection, setActive] = React.useState(homeSections[0].props.id);  // TODO: fix the id being same as title
 
   return (
     <MantineProvider>
       <Box position="relative">
         <Metadata />
-        <HomeNavigation active={activeSection} />
+        <HomeNavigation active={activeSection} sections={homeSections} />
         <Box
           ref={scrollContainer}
           sx={{
@@ -130,6 +153,7 @@ export default function Home({ events, links}: HomeProps) {
               <Render
                 key={props.id}
                 {...props}
+                sections={homeSections}
                 {...forwarded}
                 setActive={() => {
                   setActive(props.id);
@@ -138,7 +162,7 @@ export default function Home({ events, links}: HomeProps) {
               />
             );
           })}
-          <Banner links = {links}></Banner>
+          <Banner links={links}></Banner>
         </Box>
       </Box>
     </MantineProvider>
