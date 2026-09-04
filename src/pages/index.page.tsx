@@ -15,7 +15,7 @@ import {
 } from "~/api/notion/schema";
 
 
-//in future, don't delete from here, just comment out or un comment / reorder
+// DO NOT delete these; whether sections are displayed should be handled in the Notion database
 import FiatLudum from "./home/FiatLudum";
 import FallQuarter from "./home/FallQuarter";
 import CurrentEvents from "./home/CurrentEvents";
@@ -49,9 +49,8 @@ type UniqueHomeSectionProps = {
 };
 
 export type HomeSectionProps = CommonHomeSectionProps &
-  UniqueHomeSectionProps & {
-    sections?: HomeSection[];
-  };
+  UniqueHomeSectionProps &
+  { sections?: HomeSection[]; };
 
 export async function getStaticProps(): Promise<GetStaticPropsResult<HomeProps>> {
   const events = await getCurrentEvents({ sortBy: 'dateSort', direction: 'ascending' });
@@ -69,46 +68,6 @@ export type HomeSection = {
   longTitle?: string;
   props: UniqueHomeSectionProps;
 };
-
-export type NotionHomeSectionProps = HomeProps & {
-  HomeSection: HomeSection;
-};
-
-/*export const homeEventSections: HomeSection[] = [
-  {
-    title: "SRS",
-    longTitle: "Students Run Studios",
-    Render: SRS,
-    props: { id: "srs" },
-  },
-  { title: "Workshops", Render: Workshops, props: { id: "workshops" } },
-  { title: "Game Jams", Render: GameJams, props: { id: "game-jams" } },
-  { title: "Socials", Render: Socials, props: { id: "socials" } },
-  {
-    title: "Speaker Events",
-    Render: SpeakerEvents,
-    props: { id: "speaker-events" },
-  },
-  {
-    title: "ENGR1GD",
-    longTitle: "Game Dev Course (ENGR 1GD)",
-    Render: E1,
-    props: { id: "engr1" },
-  },
-];
-
-//in future, don't delete from here, just comment out or un comment / reorder 
-export const homeSections: HomeSection[] = [
-  // Fiat Ludum is a spring game jam - uncomment this line to bring the panel
-  // back. (Its import above is kept in place for exactly that.)
-  // { title: "Fiat Ludum", Render: FiatLudum, props: { id: "fiat-ludum" } },
-  { title: "Fall Quarter", Render: FallQuarter, props: { id: "fall-quarter" } },
-  { title: "Game Showcase", Render: HomeGame, props: { id: "game-showcase" } },
-  { title: "Current Events", Render: CurrentEvents, props: { id: "current-events" } },
-  { title: "Logline", Render: Logline, props: { id: "logline" } },
-  { title: "Mission", Render: Mission, props: { id: "mission" } },
-  ...homeEventSections,
-];*/
 
 const renderers = {
   CurrentEvents,
@@ -136,7 +95,7 @@ function ParseHomeSections(sections: HomepageSectionsSchema[]) {
     sections?.filter(sec => isRendererName(sec.renderName) && sec.displayed).map((sec) => ({
       title: sec.title,
       Render: renderers[sec.renderName],
-      props: { id: sec.title },
+      props: { id: sec.sectionId },
     }))
   );
 }
@@ -150,7 +109,7 @@ export default function Home({ events, links, sections }: HomeProps) {
   // this pointing at something that isn't first (or isn't rendered at all).
   // note: bare id, no "#" - that's what setActive passes and what
   // HomeNavigation compares against.
-  const [activeSection, setActive] = React.useState(homeSections[0].props.id);  // TODO: fix the id being same as title
+  const [activeSection, setActive] = React.useState(homeSections[0].props.id);
 
   return (
     <MantineProvider>
