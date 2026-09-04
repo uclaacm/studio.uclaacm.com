@@ -132,10 +132,10 @@ function isRendererName(value: string): value is RendererName {
 }
 
 function ParseHomeSections(sections: HomepageSectionsSchema[]) {
-  return (
-    sections?.map((sec) => ({
+  return (  // Filters out invalid render names and intentionally hidden sections
+    sections?.filter(sec => isRendererName(sec.renderName) && sec.displayed).map((sec) => ({
       title: sec.title,
-      Render: isRendererName(sec.renderName) ? renderers[sec.renderName] : Logline,  // TODO: change Logline fallback
+      Render: renderers[sec.renderName],
       props: { id: sec.title },
     }))
   );
