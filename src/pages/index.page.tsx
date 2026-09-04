@@ -135,7 +135,7 @@ function ParseHomeSections(sections: HomepageSectionsSchema[]) {
   return (
     sections?.map((sec) => ({
       title: sec.title,
-      Render: isRendererName(sec.title) ? renderers[sec.title] : Logline,
+      Render: isRendererName(sec.renderName) ? renderers[sec.renderName] : Logline,  // TODO: change Logline fallback
       props: { id: sec.title },
     }))
   );

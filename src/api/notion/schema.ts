@@ -197,6 +197,7 @@ const currentEventSchemaBinding = {
 export type HomepageSectionsSchema = {
   title: string,
   index: number,
+  renderName: string,
   contentKey: string,  // Name associated with relevant databaseId
   hardCoded: boolean,
   displayed: boolean,
@@ -205,6 +206,7 @@ export type HomepageSectionsSchema = {
 const homepageSectionsBinding = {
   title: { source: 'property', propertyName: 'Section Title', type: 'string' },
   index: { source: 'property', propertyName: 'Index', type: 'number' },
+  renderName: { source: 'property', propertyName: 'Render Name', type: 'string' },
   contentKey: { source: 'property', propertyName: 'Content Key', type: 'string'},
   hardCoded: { source: 'property', propertyName: 'Hard Coded?', type: 'checkbox' },
   displayed: { source: 'property', propertyName: 'Displayed?', type: 'checkbox' },
