@@ -9,11 +9,13 @@ import { MantineProvider } from "@mantine/core";
 import { REVALIDATE_INTERVAL } from "~/Env";
 import {
   getCurrentEvents,
-  CurrentEventsSchema
+  CurrentEventsSchema,
+  getHomepageSections,
+  HomepageSectionsSchema
 } from "~/api/notion/schema";
 
 
-//in future, don't delete from here, just comment out or un comment / reorder
+// DO NOT delete these; whether sections are displayed should be handled in the Notion database
 import FiatLudum from "./home/FiatLudum";
 import FallQuarter from "./home/FallQuarter";
 import CurrentEvents from "./home/CurrentEvents";
@@ -33,25 +35,29 @@ import { getBannerLinks, NotionBannerLinksSchema } from '~/api/notion/schema';
 
 type HomeProps = {
   events: CurrentEventsSchema[];
+  sections: HomepageSectionsSchema[];
   links: NotionBannerLinksSchema[];
 };
 
 type CommonHomeSectionProps = {
   setActive: () => void;
-  scrollContainerRef: React.MutableRefObject<HTMLElement>;
+  scrollContainerRef: React.RefObject<HTMLElement>;
 };
 
 type UniqueHomeSectionProps = {
   id: string;
 };
 
-export type HomeSectionProps = CommonHomeSectionProps & UniqueHomeSectionProps;
+export type HomeSectionProps = CommonHomeSectionProps &
+  UniqueHomeSectionProps &
+  { sections?: HomeSection[]; };
 
 export async function getStaticProps(): Promise<GetStaticPropsResult<HomeProps>> {
   const events = await getCurrentEvents({ sortBy: 'dateSort', direction: 'ascending' });
+  const sections = await getHomepageSections();
   const bannerLinks = await getBannerLinks();
   return {
-    props: { events, links: bannerLinks},
+    props: { events, sections, links: bannerLinks},
     revalidate: REVALIDATE_INTERVAL,
   };
 }
@@ -63,44 +69,41 @@ export type HomeSection = {
   props: UniqueHomeSectionProps;
 };
 
-export const homeEventSections: HomeSection[] = [
-  {
-    title: "SRS",
-    longTitle: "Students Run Studios",
-    Render: SRS,
-    props: { id: "srs" },
-  },
-  { title: "Workshops", Render: Workshops, props: { id: "workshops" } },
-  { title: "Game Jams", Render: GameJams, props: { id: "game-jams" } },
-  { title: "Socials", Render: Socials, props: { id: "socials" } },
-  {
-    title: "Speaker Events",
-    Render: SpeakerEvents,
-    props: { id: "speaker-events" },
-  },
-  {
-    title: "ENGR1GD",
-    longTitle: "Game Dev Course (ENGR 1GD)",
-    Render: E1,
-    props: { id: "engr1" },
-  },
-];
+const renderers = {
+  CurrentEvents,
+  E1,
+  FallQuarter,
+  FiatLudum,
+  GameJams,
+  HomeGame,
+  Logline,
+  Mission,
+  Socials,
+  SpeakerEvents,
+  SRS,
+  Workshops,
+}
 
-//in future, don't delete from here, just comment out or un comment / reorder 
-export const homeSections: HomeSection[] = [
-  // Fiat Ludum is a spring game jam - uncomment this line to bring the panel
-  // back. (Its import above is kept in place for exactly that.)
-  // { title: "Fiat Ludum", Render: FiatLudum, props: { id: "fiat-ludum" } },
-  { title: "Fall Quarter", Render: FallQuarter, props: { id: "fall-quarter" } },
-  { title: "Game Showcase", Render: HomeGame, props: { id: "game-showcase" } },
-  { title: "Current Events", Render: CurrentEvents, props: { id: "current-events" } },
-  { title: "Logline", Render: Logline, props: { id: "logline" } },
-  { title: "Mission", Render: Mission, props: { id: "mission" } },
-  ...homeEventSections,
-];
+type RendererName = keyof typeof renderers;
 
-export default function Home({ events, links}: HomeProps) {
+function isRendererName(value: string): value is RendererName {
+  return value in renderers;
+}
+
+function ParseHomeSections(sections: HomepageSectionsSchema[]) {
+  return (  // Filters out invalid render names and intentionally hidden sections
+    sections?.filter(sec => isRendererName(sec.renderName) && sec.displayed).map((sec) => ({
+      title: sec.title,
+      Render: renderers[sec.renderName],
+      props: { id: sec.sectionId },
+    }))
+  );
+}
+
+export default function Home({ events, links, sections }: HomeProps) {
   const scrollContainer = React.useRef<HTMLElement | null>(null);
+
+  const homeSections: HomeSection[] = ParseHomeSections(sections);
 
   // derived from the list so reordering or commenting out a panel can't leave
   // this pointing at something that isn't first (or isn't rendered at all).
@@ -112,7 +115,7 @@ export default function Home({ events, links}: HomeProps) {
     <MantineProvider>
       <Box position="relative">
         <Metadata />
-        <HomeNavigation active={activeSection} />
+        <HomeNavigation active={activeSection} sections={homeSections} />
         <Box
           ref={scrollContainer}
           sx={{
@@ -130,6 +133,7 @@ export default function Home({ events, links}: HomeProps) {
               <Render
                 key={props.id}
                 {...props}
+                sections={homeSections}
                 {...forwarded}
                 setActive={() => {
                   setActive(props.id);
@@ -138,7 +142,7 @@ export default function Home({ events, links}: HomeProps) {
               />
             );
           })}
-          <Banner links = {links}></Banner>
+          <Banner links={links}></Banner>
         </Box>
       </Box>
     </MantineProvider>

@@ -14,7 +14,7 @@ import React from "react";
 export type MissionProps = {} & HomeSectionProps;
 
 export default function Mission(props: MissionProps) {
-  const { setActive, id } = props;
+  const { setActive, id, sections } = props;
   const theme = useTheme();
 
   const root = React.useRef<HTMLDivElement>(undefined);
@@ -106,7 +106,7 @@ export default function Mission(props: MissionProps) {
           </Typography>
         </Box>
       </Container>
-      <EventList />
+      <EventList sections={sections ?? []} />
     </Box>
   );
 }

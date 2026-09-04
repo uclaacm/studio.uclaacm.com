@@ -36,6 +36,7 @@ import {
 } from "./core";
 
 import { databaseIDs } from "./databases";
+import { Component } from "react";
 
 export type NotionSchemaWithBlocks<T extends NotionSchema> = T & {
   blocks: Block[];
@@ -191,6 +192,27 @@ const currentEventSchemaBinding = {
   linkText: { source: 'property', propertyName: 'Link Text', type: 'string' },
   linkURL: { source: 'property', propertyName: 'Link URL', type: 'url' },
 } satisfies NotionSchemaBinding<CurrentEventsSchema>;
+
+// Database for homepage sections
+export type HomepageSectionsSchema = {
+  title: string,
+  index: number,
+  displayed: boolean,
+  hardCoded: boolean,
+  renderName: string,
+  sectionId: string,
+  contentKey: string,  // Name associated with relevant databaseId
+};
+
+const homepageSectionsBinding = {
+  title: { source: 'property', propertyName: 'Section Title', type: 'string' },
+  index: { source: 'property', propertyName: 'Index', type: 'number' },
+  displayed: { source: 'property', propertyName: 'Displayed?', type: 'checkbox' },
+  hardCoded: { source: 'property', propertyName: 'Hard Coded?', type: 'checkbox' },
+  renderName: { source: 'property', propertyName: 'Render Name', type: 'string' },
+  sectionId: {source: 'property', propertyName: 'Section ID', type: 'string' },
+  contentKey: { source: 'property', propertyName: 'Content Key', type: 'string'},
+} satisfies NotionSchemaBinding<HomepageSectionsSchema>;
 
 export async function getOfficers() {
   return querySchema<NotionOfficerSchema>(officerSchemaBinding, {
@@ -399,5 +421,17 @@ export async function getCurrentEvents(options?: {
   return querySchema<CurrentEventsSchema>(currentEventSchemaBinding, {
     database_id: databaseIDs.currentEvents,
     sorts,
+  });
+}
+
+export async function getHomepageSections() {
+  return querySchema<HomepageSectionsSchema>(homepageSectionsBinding, {
+    database_id: databaseIDs.homepageSections,
+    sorts: [
+      {
+        property: homepageSectionsBinding.index.propertyName,
+        direction: 'ascending',
+      }
+    ],
   });
 }
