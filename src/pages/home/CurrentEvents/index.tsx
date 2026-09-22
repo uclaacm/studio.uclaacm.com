@@ -30,6 +30,55 @@ function CurrentEventsCarousel({ events }: CurrentEventProps) {
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.down("md"));
   console.log(events)
+  if (!events?.length) {
+    return (
+      <Box
+        style={{
+          alignItems: 'center',
+          display: 'flex',
+          height: isMd ? '60dvh' : '50dvh',
+          justifyContent: 'center',
+          margin: '0 auto',
+          width: isMd ? '80vw' : '60vw',
+        }}
+      >
+        <Card
+          elevation={0}
+          style={{
+            alignItems: 'center',
+            display: 'flex',
+            height: '100%',
+            justifyContent: 'center',
+            position: 'relative',
+            width: '75%',
+          }}
+        >
+          <Box
+            style={{
+              backgroundColor: 'white',
+              borderRadius: '1rem',
+              inset: 0,
+              opacity: '0.8',
+              position: 'absolute',
+              zIndex: -1,
+            }}
+          ></Box>
+          <Stack gap={1}
+            style={{
+              margin: '0 2rem',
+            }}
+          >
+            <Typography variant='h3' textAlign='center'>
+              No upcoming events
+            </Typography>
+            <Typography variant={isMd ? 'body2' : 'body1'} textAlign='center'>
+              Check back soon, or join our Discord to be the first to hear about new events!
+            </Typography>
+          </Stack>
+        </Card>
+      </Box>
+    );
+  }
   return (
     <Carousel
       withControls

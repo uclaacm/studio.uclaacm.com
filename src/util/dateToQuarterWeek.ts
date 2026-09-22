@@ -1,18 +1,18 @@
 const quarters = [
 	{
 		quarter: "Fall",
-		year: 2024,
-		week0Monday: new Date("23 Sep 2024"),
+		year: 2026,
+		week0Monday: new Date("23 Sep 2026"),
 	},
 	{
 		quarter: "Winter",
-		year: 2025,
-		week0Monday: new Date("30 Dec 2024"),
+		year: 2027,
+		week0Monday: new Date("30 Dec 2026"),
 	},
 	{
 		quarter: "Spring",
-		year: 2025,
-		week0Monday: new Date("26 Mar 2025"),
+		year: 2027,
+		week0Monday: new Date("26 Mar 2027"),
 	},
 ]
 

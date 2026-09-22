@@ -10,9 +10,9 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
 import { BoldTypographyItem, createParentVariants } from "./Animation";
 import { ArrowRight } from "@mui/icons-material";
 import React from "react";
-import { homeEventSections } from "~/pages/index.page";
+import type { HomeSection } from "~/pages/index.page";
 
-export default function EventList() {
+export default function EventList({ sections }: { sections: HomeSection[] }) {
   const theme = useTheme();
 
   const parentVariants = createParentVariants(theme);
@@ -23,7 +23,7 @@ export default function EventList() {
     bounce: 0.3,
   });
 
-  const underlinePercents = homeEventSections.map((_, i) =>
+  const underlinePercents = sections.map((_, i) =>
     useMotionValue(i === 0 ? 1 : 0),
   );
   const underlinePercentSprings = underlinePercents.map((mv) =>
@@ -92,7 +92,7 @@ export default function EventList() {
         >
           {/* relative position here to use offsetTop relative to this stack */}
           <Stack order={2} position="relative" alignItems="start" gap={0.5}>
-            {homeEventSections.map(
+            {sections.map(
               ({ title, longTitle = title, props: { id } }, i) => (
                 <Typography
                   key={title}

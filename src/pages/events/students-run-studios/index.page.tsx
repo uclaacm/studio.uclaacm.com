@@ -261,6 +261,13 @@ export default function SRSInfo(props: SRSProps) {
         >
           Schedule
         </Typography>
+        <Typography
+          component="p"
+          variant="body1"
+        >
+          TDB, check back later this quarter!
+        </Typography>
+        { false &&
         <Box
           sx={{
             width: "100%",
@@ -437,6 +444,7 @@ export default function SRSInfo(props: SRSProps) {
             </IconButton>
           </Stack>
         </Box>
+        }
         <Box component="section">
           <Typography
             component="h2"
@@ -447,6 +455,9 @@ export default function SRSInfo(props: SRSProps) {
           </Typography>
           <Stack gap={1} sx={{ alignItems: "start" }}>
             <Typography variant="body1">
+              Applications start Winter quarter, in the meantime, check out what teams last year made!
+            </Typography>
+            {/* <Typography variant="body1">
               Interested in joining a team? Check out the teams below!
               We will have a pitch event where team leads will present
               their game ideas and you can join the team of your choice!
@@ -469,10 +480,10 @@ export default function SRSInfo(props: SRSProps) {
               <Button variant="contained" href="/srs/sign-up" target="_blank">
                 Sign Up
               </Button>
-            </Stack>
+            </Stack> */}
           </Stack>
         </Box>
-        <Box>
+        {/* <Box>
           <Typography
             component="h2"
             variant="display2"
@@ -549,7 +560,7 @@ export default function SRSInfo(props: SRSProps) {
               </Stack>
             </Card>
           ))}
-        </Box>
+        </Box> */}
         <Box component="section">
           <Typography
             component="h2"

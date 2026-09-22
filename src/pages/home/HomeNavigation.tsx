@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import IsaxIcon from "~/components/IsaxIcon";
-import { homeSections } from "../index.page";
+import type { HomeSection } from "../index.page";
 
 type HomeNavigationEntryProps = {
   title: string;
@@ -88,10 +88,11 @@ function HomeNavigationEntry(props: HomeNavigationEntryProps) {
 
 export type HomeNavigationProps = {
   active: string;
+  sections: HomeSection[];
 };
 
 export default function HomeNavigation(props: HomeNavigationProps) {
-  const { active } = props;
+  const { active, sections } = props;
 
   const [open, setOpen] = React.useState(false);
   const canHover = useMediaQuery("(hover:hover)");
@@ -183,7 +184,7 @@ export default function HomeNavigation(props: HomeNavigationProps) {
               zIndex: theme.zIndex.drawer - 1,
             })}
           >
-            {homeSections.map(({ title, props: { id } }) => (
+            {sections.map(({ title, props: { id } }) => (
               <HomeNavigationEntry
                 key={title}
                 active={id === active}

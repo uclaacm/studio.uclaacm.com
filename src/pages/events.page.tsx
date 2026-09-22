@@ -344,6 +344,7 @@ function Calendar({
         display: { xs: "none", md: "block" },
         minWidth: 0,
         overflowX: "auto",
+        alignSelf: "flex-start",
       }}
     >
       {/* Days of the week */}
@@ -365,7 +366,6 @@ function Calendar({
       <Box
         sx={{
           width: "100%",
-          height: "100%",
           display: "grid",
           gridTemplate: "repeat(5, 1fr) / repeat(7, 1fr)",
           minWidth: { xs: "40rem", md: "auto" },
@@ -672,12 +672,12 @@ export default function Events({}: EventProps) {
           setMonthStartDay={setMonthStartDay}
           todaysDate={todayDate}
         />
-        {/* <Divider orientation="vertical" flexItem />
+        <Divider orientation="vertical" flexItem />
         <UpcomingEventsList
           data={eventsData}
           eventsByStatus={eventsByStatus}
           todaysDate={todayDate}
-        /> */}
+        />
       </Stack>
     </BackgroundContainer>
   );

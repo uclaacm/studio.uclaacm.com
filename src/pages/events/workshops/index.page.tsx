@@ -1,4 +1,4 @@
-import { Box, Container, Stack, Typography } from "@mui/material";
+import { Box, Container, Divider, Stack, Typography } from "@mui/material";
 import { GetServerSideProps } from "next";
 import { getEvents, NotionEventSchema } from "~/api/notion/schema";
 import { Card } from "~/components/Card";
@@ -19,6 +19,12 @@ export const getServerSideProps: GetServerSideProps<WorkshopsProps> = async () =
   >((acc, workshop) => {
     const date = new Date(`${workshop.date} PST`);
     const day = date.toLocaleDateString("en-US", { weekday: "long" });
+    const dateLabel = date.toLocaleDateString("en-US", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
     const { quarter, week, year } = dateToQuarterWeek(date);
 
     if (!acc[year]) {
@@ -33,7 +39,7 @@ export const getServerSideProps: GetServerSideProps<WorkshopsProps> = async () =
       acc[year][quarter][week] = {};
     }
 
-    acc[year][quarter][week][day] = workshop;
+    acc[year][quarter][week][day] = { ...workshop, dateLabel };
 
     return acc;
   }, {});
@@ -52,10 +58,15 @@ export const getServerSideProps: GetServerSideProps<WorkshopsProps> = async () =
   };
 }
 
+type WorkshopEntry = NotionEventSchema & {
+  /** the workshop's date, already written out for display */
+  dateLabel: string;
+};
+
 type WorkshopsProps = {
   workshopsByWeekDay:
   Partial<Record<number,
-    Partial<Record<string, NotionEventSchema>>
+    Partial<Record<string, WorkshopEntry>>
   >>,
 };
 
@@ -66,22 +77,6 @@ export default function Workshops(props: WorkshopsProps) {
   const {
     workshopsByWeekDay,
   } = props;
-  const workshops = Object.entries(workshopsByWeekDay ?? {}).flatMap(
-    ([week, byDay]) => Object.entries(byDay ?? {}).flatMap(
-      ([day, workshop]) => ({
-        workshop,
-        week: parseInt(week),
-        day,
-      })
-    )
-  )
-
-  // get set of possible days for workshops
-  const daySet = new Set(
-    Object.values(workshopsByWeekDay ?? {})
-      .flatMap((byDay) => Object.keys(byDay ?? {}))
-  );
-
   // order by day of week
   const dayOrder = [
     "Sunday",
@@ -92,32 +87,39 @@ export default function Workshops(props: WorkshopsProps) {
     "Friday",
     "Saturday"
   ];
-  const days = Array.from(daySet).sort((a, b) => {
-    return dayOrder.indexOf(a) - dayOrder.indexOf(b);
-  });
 
-  days.forEach((day, index) => {
-    if(day == "Invalid Date")
-      {
-        days.splice(index, 1)
-      }
-
-  })
-
-  // the entries that actually have a workshop, in the order they happen -
-  // this is what the phone layout lists. Capped at the 10 weeks in a quarter,
-  // same as the grid: dateToQuarterWeek sometimes hands back week numbers in
-  // the 40s, and those are out of quarter rather than real entries.
-  const scheduledWorkshops = workshops
+  const scheduledWorkshops = Object.entries(workshopsByWeekDay ?? {})
+    .flatMap(([week, byDay]) =>
+      Object.entries(byDay ?? {}).map(([day, workshop]) => ({
+        workshop,
+        week: parseInt(week),
+        day,
+      })),
+    )
     .filter(
-      ({ workshop, week }) =>
-        workshop !== undefined && week >= 1 && week <= WEEKS_IN_QUARTER,
+      ({ workshop, week, day }) =>
+        workshop !== undefined &&
+        dayOrder.includes(day) &&
+        week >= 1 &&
+        week <= WEEKS_IN_QUARTER,
     )
     .sort((a, b) =>
       a.week !== b.week
         ? a.week - b.week
         : dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day),
     );
+
+  const weeks = scheduledWorkshops.reduce<
+    { week: number; entries: typeof scheduledWorkshops }[]
+  >((acc, entry) => {
+    const openGroup = acc[acc.length - 1];
+    if (openGroup?.week === entry.week) {
+      openGroup.entries.push(entry);
+    } else {
+      acc.push({ week: entry.week, entries: [entry] });
+    }
+    return acc;
+  }, []);
 
   return (
     <Container
@@ -137,117 +139,60 @@ export default function Workshops(props: WorkshopsProps) {
       </Typography>
       <Stack component="section" spacing={1} sx={{ minWidth: 0 }}>
         <Typography variant="h1">
-          Winter 2025 Workshops
+          Fall 2026 Workshops
         </Typography>
 
-        {/*
-          Phones get the same information as a plain list. The week-by-day grid
-          needs ~36rem to stay legible, which is wider than a phone, and it is
-          mostly "No workshop" filler - a whole quarter is typically a handful
-          of real entries. Listing only those fits without scrolling sideways
-          and without clipping any titles.
-        */}
-        <Stack
-          component="ol"
-          spacing={1.5}
-          sx={{
-            display: { xs: "flex", md: "none" },
-            listStyle: "none",
-            m: 0,
-            p: 0,
-          }}
-        >
-          {scheduledWorkshops.length === 0 && (
-            <Typography variant="body1" fontStyle="italic">
-              No workshops scheduled yet this quarter.
-            </Typography>
-          )}
-          {scheduledWorkshops.map(({ workshop, week, day }) => (
-            <Card
-              component="li"
-              key={`${week}-${day}`}
-              elevation={1}
-              sx={{ display: "block" }}
-            >
-              <Typography variant="subtitle2" color="primary" fontWeight={700}>
-                Week {week} &middot; {day}
-              </Typography>
-              <Typography variant="title1" component="h3">
-                {workshop.name}
-              </Typography>
-              {workshop.description && (
-                <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                  {workshop.description}
-                </Typography>
-              )}
-            </Card>
-          ))}
-        </Stack>
-
-        <Box
-          sx={{
-            display: { xs: "none", md: "grid" },
-            gridTemplateColumns: `fit-content repeat(${days.length}, 1fr)`,
-            columnGap: 1,
-            minWidth: 0,
-          }}
-        >
-          <Typography variant="subtitle1" textAlign="center" alignSelf="end">
-            Week
+        {weeks.length === 0 ? (
+          <Typography variant="body1" fontStyle="italic">
+            No workshops scheduled yet this quarter.
           </Typography>
-          {days.map((day) => (
-            
-            <Typography key={day} variant="title2" textAlign="center">
-              {day}
-            </Typography>
-          ))}
-          {Array.from({ length: WEEKS_IN_QUARTER }).map((_, i) => i + 1).map((week) => (
-            days.map((day, dayIndex) => {
-              const workshop = workshopsByWeekDay?.[week]?.[day];
-              return <Card
-                component="section"
-                key={workshop?.name ?? `${week}-${day}`}
-                sx={{
-                  gridColumnStart: dayIndex + 2,
-                  gridRowStart: week + 1,
-                  mb: 1,
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-                elevation={workshop === undefined ? 0 : 1}
-              >
-                {workshop &&
-                  <>
-                    <Typography variant="title1">{workshop.name}</Typography>
-                    <Typography variant="subtitle2">Week {week} {day}</Typography>
-                    <Typography variant="body2">{workshop.description}</Typography>
-                  </>
-                }
-                {workshop === undefined &&
-                  <Stack sx={{
-                    flexGrow: 1,
-                    justifyContent: "center",
-                  }}>
-                    <Typography variant="body2" fontStyle="italic" textAlign="center">
-                      No workshop
-                    </Typography>
-                  </Stack>
-                }
-              </Card>
-            })
-          ))}
-          {Array.from({ length: WEEKS_IN_QUARTER }).map((_, i) => (
-            <Typography key={i} variant="subtitle1" textAlign="center"
-              alignSelf="center"
-              sx={{
-                gridColumnStart: 1,
-                gridRowStart: i + 2,
-              }}
-            >
-              {i + 1}
-            </Typography>
-          ))}
-        </Box>
+        ) : (
+          <Stack
+            component="ol"
+            spacing={4}
+            sx={{
+              listStyle: "none",
+              m: 0,
+              p: 0,
+            }}
+          >
+            {weeks.map(({ week, entries }) => (
+              <Box component="li" key={week}>
+                <Typography
+                  variant="title2"
+                  component="h3"
+                  color="primary"
+                  fontWeight={700}
+                >
+                  Week {week}
+                </Typography>
+                <Divider sx={{ mt: 0.5, mb: 1.5 }} />
+                <Stack spacing={1.5}>
+                  {entries.map(({ workshop, day }) => (
+                    <Card key={`${week}-${day}`} elevation={1}>
+                      <Typography variant="subtitle2" fontWeight={700}>
+                        {[workshop.dateLabel, workshop.subcategory]
+                          .filter(Boolean)
+                          .join(" \u00b7 ")}
+                      </Typography>
+                      <Typography variant="title1" component="h4">
+                        {workshop.name}
+                      </Typography>
+                      {workshop.description && (
+                        <Typography
+                          variant="body2"
+                          sx={{ color: "text.secondary" }}
+                        >
+                          {workshop.description}
+                        </Typography>
+                      )}
+                    </Card>
+                  ))}
+                </Stack>
+              </Box>
+            ))}
+          </Stack>
+        )}
       </Stack>
     </Container>
   );
