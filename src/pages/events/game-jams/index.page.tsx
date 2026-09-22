@@ -55,13 +55,13 @@ export default function GameJamInfo(props: GameJamProps) {
               Check out some of our past game jam winners below, or enter the next game jam yourself!
             </Typography>
           </Stack>
-          <Button
+          {/* <Button
             variant="contained"
             href="https://itch.io/c/5885402/student-run-studios-2025"
             sx={{ alignSelf: "start", mt: 2 }}
           >
-            Enter Game Jam
-          </Button>
+            See Past Studio Jam Winners!
+          </Button> */}
         </Box>
 
         <Stack gap={2}>
