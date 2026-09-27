@@ -34,7 +34,7 @@ const fallEvents = [
     abbreviation: "Fall GM",
     date: "October 2",
     time: "6pm – 8pm",
-    location: "Mong Auditorium",
+    location: "Mong Learning Center",
     body: "Our kickoff for the year. Learn how to get involved with ACM studio & about our initiatives.",
   },
 ];
