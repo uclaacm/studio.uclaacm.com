@@ -32,9 +32,9 @@ const fallEvents = [
   {
     name: "Fall General Meeting",
     abbreviation: "Fall GM",
-    date: "September 30",
+    date: "October 2",
     time: "6pm – 8pm",
-    location: "Ackerman Grand Ballroom",
+    location: "Mong Learning Center",
     body: "Our kickoff for the year. Learn how to get involved with ACM studio & about our initiatives.",
   },
 ];
