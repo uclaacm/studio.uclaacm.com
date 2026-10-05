@@ -22,20 +22,20 @@ import { HomeSectionProps } from "../../index.page";
  */
 const fallEvents = [
   {
-    name: "Enormous Activities Fair",
-    abbreviation: "EAF",
-    date: "September 22",
-    time: "11am – 2pm",
-    location: "Royce Quad & Wilson Plaza",
-    body: "Come find our booth and say hi. Get an introduction to ACM studio.",
+    name: "ACM Studio GM",
+    abbreviation: "Studio GM",
+    date: "October 7",
+    time: "7pm – 9pm",
+    location: "Engineering VI Mong Auditorium",
+    body: "Learn about all the ACM studio initiatives & how you can participate in game dev. Come meet the officers and your fellow aspiring game devs!",
   },
   {
-    name: "Fall General Meeting",
-    abbreviation: "Fall GM",
-    date: "October 2",
+    name: "First Workshop!! (intro to game design)",
+    abbreviation: "Workshop 1",
+    date: "October 12",
     time: "6pm – 8pm",
-    location: "Mong Learning Center",
-    body: "Our kickoff for the year. Learn how to get involved with ACM studio & about our initiatives.",
+    location: "Kerkhoff Stateroom",
+    body: "Come to our first workshop of the year and learn about game design!",
   },
 ];
 
