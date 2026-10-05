@@ -28,7 +28,6 @@ import NorthEastIcon from "@mui/icons-material/NorthEast";
 import PlaceIcon from "@mui/icons-material/Place";
 import SchoolIcon from "@mui/icons-material/School";
 import VideogameAssetIcon from "@mui/icons-material/VideogameAsset";
-
 import { Card } from "~/components/Card";
 import Icon from "~/components/Icon";
 import Link from "~/components/Link";
@@ -491,6 +490,20 @@ const confirmedFallEvents = [
     location: "Ackerman Grand Ballroom",
     body: "Our kickoff for the year. Learn how to get involved with ACM studio & about our initiatives.",
   },
+  {
+    title: "ACM Studio GM",
+    date: "October 7",
+    time: "7pm – 9pm",
+    location: "Engineering VI Mong Auditorium",
+    body: "Learn about all the ACM studio initiatives & how you can participate in game dev.",
+  },
+  {
+    title: "First Workshop!! (intro to game design)",
+    date: "October 12",
+    time: "6pm – 8pm",
+    location: "Kerkhoff Stateroom",
+    body: "Come to our first workshop of the year and learn about game design!",
+  }
 ];
 
 type FallEventsProps = {
