@@ -24,6 +24,33 @@ const gamesUnsorted: Game[] = [
 	
 	//comment 
 	{
+		name: "Pokemon 3",
+		date: "6 Oct 2026",
+		author: "Joshua Villanova",
+		categories: [
+			{
+				name: "Evolved Using Dusk Stone",
+				difficulty: 1,
+				entries: ["Honchkrow", "Chandelure", "Mismagius", "Aegislash"],
+			},
+			{
+				name: "Pokemon Go 12km Egg Hatches",
+				difficulty: 2,
+				entries: ["Shroodle", "Sandile", "Varoom", "Vullaby"],
+			},
+			{
+				name: "Evil Team Leader Ace Pokemon",
+				difficulty: 3,
+				entries: ["Weavile", "Camerupt", "Hydreigon", "Sylveon"],
+			},
+			{
+				name: "Abilities That Activate in Sun",
+				difficulty: 4,
+				entries: ["Leafeon", "Helioptile", "Meganium", "Jynx"],
+			},
+		]
+	},
+	{
 		name: "Shaders Workshop",
 		date: "4 May 2026",
 		author: "Andrew Douglas",
