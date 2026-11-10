@@ -15,6 +15,7 @@ import React from "react";
 import { Card } from "~/components/Card";
 import { links } from "~/Strings";
 import { HomeSectionProps } from "../../index.page";
+import Link from "~/components/Link";
 
 /**
  * The two fall dates that are locked in. Everything else for the quarter goes
@@ -22,20 +23,22 @@ import { HomeSectionProps } from "../../index.page";
  */
 const fallEvents = [
   {
-    name: "ACM Studio GM",
-    abbreviation: "Studio GM",
-    date: "October 7",
-    time: "7pm – 9pm",
-    location: "Engineering VI Mong Auditorium",
-    body: "Learn about all the ACM studio initiatives & how you can participate in game dev. Come meet the officers and your fellow aspiring game devs!",
+    name: "ACM Studio Game Show",
+    abbreviation: "Fall Game Show",
+    date: "November 12th",
+    time: "6pm – 8pm",
+    location: "Dodd Hall 175",
+    body: "Get hyped!!! 🎉 Our annual Spring Game Show is back and better than ever! Take a break from hitting the books and come flex your knowledge of all things video games and Studio!",
+    link: ""
   },
   {
-    name: "First Workshop!! (intro to game design)",
-    abbreviation: "Workshop 1",
-    date: "October 12",
+    name: "Join ACM Studio Game Jam",
+    abbreviation: "Studio Jam Kickoff",
+    date: "November 13th",
     time: "6pm – 8pm",
-    location: "Kerkhoff Stateroom",
-    body: "Come to our first workshop of the year and learn about game design!",
+    location: "Engineering VI 289",
+    body: "Featuring industry judges! Programmers, artists, musicians, writers... Come join and work with a team!",
+    link: "https://docs.google.com/forms/d/e/1FAIpQLSfrVVteVaZIcHhF-P7smCOgJjpDL04wUDQ89wkcJ-3X0iXfBA/viewform"
   },
 ];
 
@@ -144,6 +147,7 @@ export default function FallQuarter(props: HomeSectionProps) {
                 <Typography variant="body2" sx={{ color: "text.secondary" }}>
                   {event.body}
                 </Typography>
+                {event.link != "" && <Link href={event.link}>Sign up</Link>}
               </Card>
             ))}
           </Box>
