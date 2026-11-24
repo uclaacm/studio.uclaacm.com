@@ -23,22 +23,22 @@ import Link from "~/components/Link";
  */
 const fallEvents = [
   {
-    name: "ACM Studio Game Show",
-    abbreviation: "Fall Game Show",
-    date: "November 12th",
+    name: "Workshop 7: Building Your Game",
+    abbreviation: "Studio Dojo",
+    date: "November 23rd",
     time: "6pm – 8pm",
-    location: "Dodd Hall 175",
-    body: "Get hyped!!! 🎉 Our annual Spring Game Show is back and better than ever! Take a break from hitting the books and come flex your knowledge of all things video games and Studio!",
+    location: "Mathematical Sciences 6229",
+    body: "JOIN US FOR WORKSHOP SEVEN, the final in our series of fall workshops, where we'll talk about building your AWESOME game, as well as having a short showcase so everyone can see each others' cool and great works!!!!!",
     link: ""
   },
   {
-    name: "Join ACM Studio Game Jam",
-    abbreviation: "Studio Jam Kickoff",
-    date: "November 13th",
+    name: "Studio Fall Showcase",
+    abbreviation: "Fall Showcase",
+    date: "December 4th",
     time: "6pm – 8pm",
-    location: "Engineering VI 289",
-    body: "Featuring industry judges! Programmers, artists, musicians, writers... Come join and work with a team!",
-    link: "https://docs.google.com/forms/d/e/1FAIpQLSfrVVteVaZIcHhF-P7smCOgJjpDL04wUDQ89wkcJ-3X0iXfBA/viewform"
+    location: "Engineering VI Mong",
+    body: "Come play the games other members have worked on this quarter and give feedback! We will have playable demos from Studio teams and guest professionals to talk about their experience in the games industry! Sign up to table your game using the link :)",
+    link: "https://forms.gle/s5D5PpLv1EpzQumh9"
   },
 ];
 
